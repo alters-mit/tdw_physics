@@ -1,16 +1,16 @@
-from typing import TypeVar, Generic, List
+from typing import List, Dict
 from abc import ABC, abstractmethod
 from pathlib import Path
 from tqdm import tqdm
 import h5py
+import numpy as np
+import random
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw_physics.trial_writers.trial_writer import TrialWriter
 
-T = TypeVar('T', bound=TrialWriter)
 
-
-class PhysicsDataset(Controller, ABC, Generic[T]):
+class PhysicsDataset(Controller, ABC):
     """
     Abstract class for a physics dataset.
 
@@ -21,8 +21,6 @@ class PhysicsDataset(Controller, ABC, Generic[T]):
         2. Get commands to initialize the trial. Write "static" data (which doesn't change between trials).
         3. Run the trial until it is "done" (defined by output from the writer). Write per-frame data to disk,.
         4. Clean up the scene and start a new trial.
-
-    T = A type of TrialWriter
     """
 
     def run(self, num: int, output_dir: str, temp_path: str) -> None:
@@ -45,7 +43,22 @@ class PhysicsDataset(Controller, ABC, Generic[T]):
         if temp_path.exists():
             temp_path.unlink()
 
-        commands = self._get_scene_initialization_commands()
+        # Global commands for all physics datasets.
+        commands = [{"$type": "set_screen_size",
+                     "width": 256,
+                     "height": 256},
+                    {"$type": "set_render_quality",
+                     "render_quality": 5},
+                    {"$type": "set_physics_solver_iterations",
+                     "iterations": 32},
+                    {"$type": "set_vignette",
+                     "enabled": False},
+                    {"$type": "set_shadow_strength",
+                     "strength": 1.0},
+                    {"$type": "set_sleep_threshold",
+                     "sleep_threshold": 0.1}]
+
+        commands.extend(self._get_scene_initialization_commands())
         # Add the avatar.
         commands.extend([{"$type": "create_avatar",
                           "type": "A_Img_Caps_Kinematic",
@@ -63,6 +76,10 @@ class PhysicsDataset(Controller, ABC, Generic[T]):
             if int(f.stem) > exists_up_to:
                 exists_up_to = int(f.stem)
         pbar.update(exists_up_to)
+
+        # Initialize the scene.
+        self.communicate(commands)
+
         for i in range(exists_up_to + 1, num):
             filepath = output_dir.joinpath(TDWUtils.zero_padding(i, 4) + ".hdf5")
             if not filepath.exists():
@@ -82,7 +99,7 @@ class PhysicsDataset(Controller, ABC, Generic[T]):
         """
 
         # Create the data writer.
-        writer: T = type(T)(h5py.File(str(temp_path.resolve()), "a"))
+        writer = self._get_writer(h5py.File(str(temp_path.resolve()), "a"))
 
         commands = []
         # Remove asset bundles (to prevent a memory leak).
@@ -106,7 +123,7 @@ class PhysicsDataset(Controller, ABC, Generic[T]):
         while not done and frame < 1000:
             frame += 1
             resp = self.communicate(self._get_per_frame_commands())
-            done = writer.write_frame(resp=resp, frame_num=frame)
+            frame_grp, objs_grp, tr_dict, done = writer.write_frame(resp=resp, frame_num=frame)
 
         # Cleanup.
         self.communicate(writer.get_destroy_commands())
@@ -114,6 +131,42 @@ class PhysicsDataset(Controller, ABC, Generic[T]):
         writer.f.close()
         # Move the file.
         temp_path.replace(filepath)
+
+    @abstractmethod
+    def _get_writer(self, f: h5py.File) -> TrialWriter:
+        """
+        :param f: The trial's .hdf5 file.
+
+        :return: A TrialWriter object for the current trial.
+        """
+
+        raise Exception()
+
+    @staticmethod
+    def _get_random_avatar_position(radius_min: float, radius_max: float, y_min: float, y_max: float,
+                                    center: Dict[str, float], angle_min: float = 0,
+                                    angle_max: float = 360) -> Dict[str, float]:
+        """
+        :param radius_min: The minimum distance from the center.
+        :param radius_max: The maximum distance from the center.
+        :param y_min: The minimum y positional coordinate.
+        :param y_max: The maximum y positional coordinate.
+        :param center: The centerpoint.
+        :param angle_min: The minimum angle of rotation around the centerpoint.
+        :param angle_max: The maximum angle of rotation around the centerpoint.
+
+        :return: A random position for the avatar around a centerpoint.
+        """
+
+        a_r = random.uniform(radius_min, radius_max)
+        a_x = center["x"] + a_r
+        a_z = center["z"] + a_r
+        theta = np.radians(random.uniform(angle_min, angle_max))
+        a_x = np.cos(theta) * (a_x - center["x"]) - np.sin(theta) * (a_z - center["z"]) + center["x"]
+        a_y = random.uniform(y_min, y_max)
+        a_z = np.sin(theta) * (a_x - center["x"])
+
+        return {"x": a_x, "y": a_y, "z": a_z}
 
     @abstractmethod
     def _get_scene_initialization_commands(self) -> List[dict]:
@@ -124,7 +177,7 @@ class PhysicsDataset(Controller, ABC, Generic[T]):
         raise Exception()
 
     @abstractmethod
-    def _get_trial_initialization_commands(self, writer: T) -> List[dict]:
+    def _get_trial_initialization_commands(self, writer: TrialWriter) -> List[dict]:
         """
         :param writer: The data writer.
 

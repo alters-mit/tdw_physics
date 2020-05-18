@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 
 setup(
-    name='tdw',
+    name='tdw_physics',
     version="0.1",
     description='Generic structure to create physics datasets with TDW.',
     long_description="Required Python scripts for TDW.",
@@ -21,5 +21,5 @@ setup(
     ],
     keywords='unity simulation tdw hdf5',
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),
-    install_requires=['tqdm', 'numpy', 'h5py', 'tdw'],
+    install_requires=['tqdm', 'numpy', 'h5py'],
 )
