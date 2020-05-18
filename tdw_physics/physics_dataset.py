@@ -122,7 +122,7 @@ class PhysicsDataset(Controller, ABC):
         # Continue the trial. Send commands, and parse output data.
         while not done and frame < 1000:
             frame += 1
-            resp = self.communicate(self._get_per_frame_commands())
+            resp = self.communicate(self._get_per_frame_commands(frame))
             frame_grp, objs_grp, tr_dict, done = writer.write_frame(resp=resp, frame_num=frame)
 
         # Cleanup.
@@ -187,8 +187,10 @@ class PhysicsDataset(Controller, ABC):
         raise Exception()
 
     @abstractmethod
-    def _get_per_frame_commands(self) -> List[dict]:
+    def _get_per_frame_commands(self, frame: int) -> List[dict]:
         """
+        :param frame: The current frame number.
+
         :return: Commands to send per frame.
         """
 

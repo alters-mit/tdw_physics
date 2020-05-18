@@ -1,10 +1,11 @@
 import h5py
 import numpy as np
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Optional
 from tdw.librarian import ModelRecord
+from tdw.controller import Controller
 from tdw.output_data import OutputData, Rigidbodies, Collision, EnvironmentCollision
 from tdw_physics.trial_writers.trial_writer import TrialWriter
-from tdw_physics.physics_info import PHYSICS_INFO
+from tdw_physics.physics_info import PHYSICS_INFO, PhysicsInfo
 
 
 class RigidbodyWriter(TrialWriter):
@@ -17,6 +18,9 @@ class RigidbodyWriter(TrialWriter):
         self.static_frictions = np.empty(dtype=np.float32, shape=0)
         self.dynamic_frictions = np.empty(dtype=np.float32, shape=0)
         self.bouncinesses = np.empty(dtype=np.float32, shape=0)
+
+        # The physics info of each object instance. Useful for referencing in a controller, but not written to disk.
+        self.physics_info: Dict[int, PhysicsInfo] = {}
 
     def write_static_data(self) -> h5py.Group:
         static_group = super().write_static_data()
@@ -50,6 +54,13 @@ class RigidbodyWriter(TrialWriter):
         self.static_frictions = np.append(self.static_frictions, static_friction)
         self.bouncinesses = np.append(self.bouncinesses, bounciness)
 
+        # Log the physics info per object for easy reference in a controller.
+        self.physics_info[o_id] = PhysicsInfo(record=record,
+                                              mass=mass,
+                                              dynamic_friction=dynamic_friction,
+                                              static_friction=static_friction,
+                                              bounciness=bounciness)
+
         # Return commands to create the object.
         return [{"$type": "add_object",
                  "id": o_id,
@@ -71,18 +82,21 @@ class RigidbodyWriter(TrialWriter):
                  "id": o_id,
                  "mode": "continuous_dynamic"}]
 
-    def add_object_default(self, o_id: int, name: str, position: Dict[str, float], rotation: Dict[str, float]) -> \
-            List[dict]:
+    def add_object_default(self, name: str, position: Dict[str, float], rotation: Dict[str, float],
+                           o_id: Optional[int] = None) -> List[dict]:
         """
         Add an object with default physics material values.
 
-        :param o_id: The unique ID of the object.
+        :param o_id: The unique ID of the object. If None, a random ID number will be generated.
         :param name: The name of the model.
         :param position: The initial position of the object.
         :param rotation: The initial rotation of the object.
 
         :return: A list of commands: `[add_object, set_mass, set_physic_material]`
         """
+
+        if o_id is None:
+            o_id: int = Controller.get_unique_id()
 
         info = PHYSICS_INFO[name]
         return self.add_object(o_id=o_id, record=info.record, position=position, rotation=rotation, mass=info.mass,
