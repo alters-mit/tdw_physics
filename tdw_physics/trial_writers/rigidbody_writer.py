@@ -3,7 +3,7 @@ import numpy as np
 from typing import Dict, List, Tuple
 from tdw.librarian import ModelRecord
 from tdw.output_data import OutputData, Rigidbodies, Collision, EnvironmentCollision
-from trial_writers.trial_writer import TrialWriter
+from tdw_physics.trial_writers.trial_writer import TrialWriter
 
 
 class RigidbodyWriter(TrialWriter):
