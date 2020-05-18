@@ -4,6 +4,7 @@ from typing import Dict, List, Tuple
 from tdw.librarian import ModelRecord
 from tdw.output_data import OutputData, Rigidbodies, Collision, EnvironmentCollision
 from tdw_physics.trial_writers.trial_writer import TrialWriter
+from tdw_physics.physics_info import PHYSICS_INFO
 
 
 class RigidbodyWriter(TrialWriter):
@@ -69,6 +70,24 @@ class RigidbodyWriter(TrialWriter):
                 {"$type": "set_object_collision_detection_mode",
                  "id": o_id,
                  "mode": "continuous_dynamic"}]
+
+    def add_object_default(self, o_id: int, name: str, position: Dict[str, float], rotation: Dict[str, float]) -> \
+            List[dict]:
+        """
+        Add an object with default physics material values.
+
+        :param o_id: The unique ID of the object.
+        :param name: The name of the model.
+        :param position: The initial position of the object.
+        :param rotation: The initial rotation of the object.
+
+        :return: A list of commands: `[add_object, set_mass, set_physic_material]`
+        """
+
+        info = PHYSICS_INFO[name]
+        return self.add_object(o_id=o_id, record=info.record, position=position, rotation=rotation, mass=info.mass,
+                               dynamic_friction=info.dynamic_friction, static_friction=info.static_friction,
+                               bounciness=info.bounciness)
 
     def get_send_data_commands(self) -> List[dict]:
         """
