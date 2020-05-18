@@ -85,9 +85,9 @@ class RigidbodyWriter(TrialWriter):
                           "frequency": "always"}])
         return commands
 
-    def write_frame(self, resp: List[bytes], frame_num: int, object_ids: np.array) -> Tuple[h5py.Group, h5py.Group, dict, bool]:
-        frame, objs, tr, done = super().write_frame(resp=resp, frame_num=frame_num, object_ids=object_ids)
-        num_objects = len(object_ids)
+    def write_frame(self, resp: List[bytes], frame_num: int) -> Tuple[h5py.Group, h5py.Group, dict, bool]:
+        frame, objs, tr, done = super().write_frame(resp=resp, frame_num=frame_num)
+        num_objects = len(self.object_ids)
         # Physics data.
         velocities = np.empty(dtype=np.float32, shape=(num_objects, 3))
         angular_velocities = np.empty(dtype=np.float32, shape=(num_objects, 3))
@@ -113,7 +113,7 @@ class RigidbodyWriter(TrialWriter):
                     if not ri.get_sleeping(i) and tr[ri.get_id(i)]["pos"][1] >= -1:
                         sleeping = False
                 # Add the Rigibodies data.
-                for o_id, i in zip(object_ids, range(num_objects)):
+                for o_id, i in zip(self.object_ids, range(num_objects)):
                     velocities[i] = ri_dict[o_id]["vel"]
                     angular_velocities[i] = ri_dict[o_id]["ang"]
             elif r_id == "coll":

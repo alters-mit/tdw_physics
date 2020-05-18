@@ -24,6 +24,17 @@ class TrialWriter(ABC):
         # hdf5 group for per-frame data.
         self._frames_grp = self.f.create_group("frames")
 
+    def get_destroy_commands(self) -> List[dict]:
+        """
+        :return: A list of commands to destroy all objects that have been created.
+        """
+
+        commands = []
+        for o_id in self.object_ids:
+            commands.append({"$type": "destroy_object",
+                             "id": int(o_id)})
+        return commands
+
     @abstractmethod
     def write_static_data(self) -> h5py.Group:
         """
@@ -49,18 +60,17 @@ class TrialWriter(ABC):
                 "frequency": "always"}]
 
     @abstractmethod
-    def write_frame(self, resp: List[bytes], frame_num: int, object_ids: np.array) -> Tuple[h5py.Group, h5py.Group, dict, bool]:
+    def write_frame(self, resp: List[bytes], frame_num: int) -> Tuple[h5py.Group, h5py.Group, dict, bool]:
         """
         Write a frame to the hdf5 file.
 
         :param resp: The response from the build.
         :param frame_num: The frame number.
-        :param object_ids: An ordered list of object IDs.
 
         :return: Tuple: (The frame hdf5 group, the objects hdf5 group, an ordered dictionary of Transforms data, True if the trial is "done")
         """
 
-        num_objects = len(object_ids)
+        num_objects = len(self.object_ids)
 
         # Create a group for this frame.
         frame = self._frames_grp.create_group(TDWUtils.zero_padding(frame_num, 4))
@@ -87,7 +97,7 @@ class TrialWriter(ABC):
                                                    "for": tr.get_forward(i),
                                                    "rot": tr.get_rotation(i)}})
                 # Add the Transforms data.
-                for o_id, i in zip(object_ids, range(num_objects)):
+                for o_id, i in zip(self.object_ids, range(num_objects)):
                     positions[i] = tr_dict[o_id]["pos"]
                     forwards[i] = tr_dict[o_id]["for"]
                     rotations[i] = tr_dict[o_id]["rot"]
