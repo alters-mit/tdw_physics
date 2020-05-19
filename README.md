@@ -51,12 +51,12 @@ See [toy_physics](https://github.com/alters-mit/toy_physics/), which implements 
 
 _Regardless_ of which abstract controller you use, you must override the following functions:
 
-| Function                                     | Type         | Return                                                       |
-| -------------------------------------------- | ------------ | ------------------------------------------------------------ |
-| `get_scene_initialization_commands()`        | `List[dict]` | A list of commands to initialize the dataset's scene. These commands are sent only once in the entire dataset run (e.g. post-processing commands). |
-| `get_trial_initialization_commands()`        | `List[dict]` | A list of commands to initialize a single trial. This should include all object setup, avatar position and camera rotation, etc. You do not need to include any cleanup commands such as `destroy_object`; that is handled automatically elsewhere. _NOTE:_ You must use alternate functions to add objects; see below. |
-| `get_per_frame_commands(resp: List[bytes]):` | `List[dict]` | Commands to send per-frame, based on the response from the build. |
-| `get_field_of_view()`                        | `float`      | The avatar's field of view value.                            |
+| Function                                                 | Type         | Return                                                       |
+| -------------------------------------------------------- | ------------ | ------------------------------------------------------------ |
+| `get_scene_initialization_commands()`                    | `List[dict]` | A list of commands to initialize the dataset's scene. These commands are sent only once in the entire dataset run (e.g. post-processing commands). |
+| `get_trial_initialization_commands()`                    | `List[dict]` | A list of commands to initialize a single trial. This should include all object setup, avatar position and camera rotation, etc. You do not need to include any cleanup commands such as `destroy_object`; that is handled automatically elsewhere. _NOTE:_ You must use alternate functions to add objects; see below. |
+| `get_per_frame_commands(resp: List[bytes], frame: int):` | `List[dict]` | Commands to send per-frame, based on the response from the build. |
+| `get_field_of_view()`                                    | `float`      | The avatar's field of view value.                            |
 
 ***
 
