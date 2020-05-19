@@ -63,7 +63,7 @@ class Dataset(Controller, ABC):
                     {"$type": "set_sleep_threshold",
                      "sleep_threshold": 0.1}]
 
-        commands.extend(self._get_scene_initialization_commands())
+        commands.extend(self.get_scene_initialization_commands())
         # Add the avatar.
         commands.extend([{"$type": "create_avatar",
                           "type": "A_Img_Caps_Kinematic",
@@ -71,7 +71,7 @@ class Dataset(Controller, ABC):
                          {"$type": "set_pass_masks",
                           "pass_masks": ["_img", "_id", "_depth", "_normals"]},
                          {"$type": "set_field_of_view",
-                          "field_of_view": self._get_field_of_view()},
+                          "field_of_view": self.get_field_of_view()},
                          {"$type": "send_images",
                           "frequency": "always"}])
 
@@ -115,7 +115,7 @@ class Dataset(Controller, ABC):
             commands.append({"$type": "unload_asset_bundles"})
 
         # Add commands to start the trial.
-        commands.extend(self._get_trial_initialization_commands())
+        commands.extend(self.get_trial_initialization_commands())
         # Add commands to request output data.
         commands.extend(self._get_send_data_commands())
         # Write static data to disk.
@@ -134,7 +134,7 @@ class Dataset(Controller, ABC):
         # Continue the trial. Send commands, and parse output data.
         while not done and frame < 1000:
             frame += 1
-            resp = self.communicate(self._get_per_frame_commands(frame))
+            resp = self.communicate(self.get_per_frame_commands(resp))
             frame_grp, objs_grp, tr_dict, done = self._write_frame(frames_grp=frames_grp, resp=resp, frame_num=frame)
 
         # Cleanup.
@@ -149,9 +149,9 @@ class Dataset(Controller, ABC):
         temp_path.replace(filepath)
 
     @staticmethod
-    def _get_random_avatar_position(radius_min: float, radius_max: float, y_min: float, y_max: float,
-                                    center: Dict[str, float], angle_min: float = 0,
-                                    angle_max: float = 360) -> Dict[str, float]:
+    def get_random_avatar_position(radius_min: float, radius_max: float, y_min: float, y_max: float,
+                                   center: Dict[str, float], angle_min: float = 0,
+                                   angle_max: float = 360) -> Dict[str, float]:
         """
         :param radius_min: The minimum distance from the center.
         :param radius_max: The maximum distance from the center.
@@ -175,7 +175,7 @@ class Dataset(Controller, ABC):
         return {"x": a_x, "y": a_y, "z": a_z}
 
     @abstractmethod
-    def _get_scene_initialization_commands(self) -> List[dict]:
+    def get_scene_initialization_commands(self) -> List[dict]:
         """
         :return: Commands to initialize the scene ONLY for the first time (not per-trial).
         """
@@ -183,7 +183,7 @@ class Dataset(Controller, ABC):
         raise Exception()
 
     @abstractmethod
-    def _get_trial_initialization_commands(self) -> List[dict]:
+    def get_trial_initialization_commands(self) -> List[dict]:
         """
         :return: Commands to initialize each trial.
         """
@@ -223,9 +223,9 @@ class Dataset(Controller, ABC):
         raise Exception()
 
     @abstractmethod
-    def _get_per_frame_commands(self, frame: int) -> List[dict]:
+    def get_per_frame_commands(self, resp: List[bytes]) -> List[dict]:
         """
-        :param frame: The current frame number.
+        :param resp: The output data response.
 
         :return: Commands to send per frame.
         """
@@ -233,7 +233,7 @@ class Dataset(Controller, ABC):
         raise Exception()
 
     @abstractmethod
-    def _get_field_of_view(self) -> float:
+    def get_field_of_view(self) -> float:
         """
         :return: The camera field of view.
         """

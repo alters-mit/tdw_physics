@@ -11,7 +11,8 @@ from tdw_physics.dataset import Dataset
 
 class TransformsDataset(Dataset, ABC):
     """
-    A dataset that receives and writes per frame: `Transforms`, `Images`, `CameraMatrices`. See README for more info.
+    A dataset creator that receives and writes per frame: `Transforms`, `Images`, `CameraMatrices`.
+    See README for more info.
     """
 
     def add_transforms_object(self, record: ModelRecord, position: Dict[str, float], rotation: Dict[str, float],

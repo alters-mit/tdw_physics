@@ -5,8 +5,6 @@ import numpy as np
 import pkg_resources
 import io
 import json
-from tdw.controller import Controller
-from tdw.tdw_utils import TDWUtils
 from tdw.output_data import OutputData, Rigidbodies, Collision, EnvironmentCollision
 from tdw.librarian import ModelRecord
 from tdw_physics.transforms_dataset import TransformsDataset
@@ -58,7 +56,7 @@ def _get_default_physics_info() -> Dict[str, PhysicsInfo]:
 PHYSICS_INFO: Dict[str, PhysicsInfo] = _get_default_physics_info()
 
 
-class RigidbodyDataset(TransformsDataset, ABC):
+class RigidbodiesDataset(TransformsDataset, ABC):
     def __init__(self, port: int = 1071):
         super().__init__(port=port)
 
@@ -90,7 +88,7 @@ class RigidbodyDataset(TransformsDataset, ABC):
         """
 
         # Get the add_object command.
-        add_object = self.get_add_object(object_id=o_id, record=record, position=position, rotation=rotation)
+        add_object = self.add_transforms_object(o_id=o_id, record=record, position=position, rotation=rotation)
 
         self.masses = np.append(self.masses, mass)
         self.dynamic_frictions = np.append(self.dynamic_frictions, dynamic_friction)
