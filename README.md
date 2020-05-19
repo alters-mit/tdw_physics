@@ -40,6 +40,9 @@ root/
 ....0001.hdf1
 ```
 
+- All images are 256x256
+- The `_img` pass is a .jpg and all other passes are .png
+
 ## How to Create a Dataset Controller
 
 _Regardless_ of which abstract controller you use, you must override the following functions:
@@ -195,6 +198,16 @@ frames/    # Per-frame data.
 ........ (etc.)
 ```
 
+- All object data is ordered to match `object_ids`. For example:
+  - `static/mass[0]` is the mass of `static/object_ids[0]`
+  - `frames/0000/positions[0]` is the position of `static/object_ids[0]`
+- The shape of each dataset in `objects` is determined by the number of coordinates. For example, `frames/objects/positions/` has shape `(num_objects, 3)`.
+- The  shape of all datasets in `collisions/` and `env_collisions/`are defined by the number of collisions on that frame.
+  -  `frames/collisions/relative_velocities` has the shape `(num_collisions, 3)`
+  -  `frames/collisions/object_ids` has the shape `(num_collisions, 2)` (tuple of IDs).
+  -  `frames/env_collisions/object_ids` has the shape `(num_collisions)` (only 1 ID per collision).
+  -  `frames/collisions/contacts` and `frames/env_collision/contacts` are tuples of `(normal, point)`, i.e. the shape is `(num_collisions, 2, 3)`.
+
 ***
 
 ## `TransformsDataset`
@@ -274,3 +287,11 @@ frames/    # Per-frame data.
 ........ (etc.)
 ```
 
+- All object data is ordered to match `object_ids`. For example:
+  - `static/mass[0]` is the mass of `static/object_ids[0]`
+  - `frames/0000/positions[0]` is the position of `static/object_ids[0]`
+- The shape of each dataset in `objects` is determined by the number of coordinates. For example, `frames/objects/positions/` has shape `(num_objects, 3)`.
+
+## Example
+
+See [toy_physics](https://github.com/alters-mit/toy_physics/), which implements `RigidbodiesDataset`.
