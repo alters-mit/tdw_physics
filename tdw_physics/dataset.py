@@ -1,4 +1,4 @@
-from typing import List, Dict
+from typing import List, Dict, Tuple
 from abc import ABC, abstractmethod
 from pathlib import Path
 from tqdm import tqdm
@@ -7,10 +7,9 @@ import numpy as np
 import random
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
-from tdw_physics.trial_writers.trial_writer import TrialWriter
 
 
-class PhysicsDataset(Controller, ABC):
+class Dataset(Controller, ABC):
     """
     Abstract class for a physics dataset.
 
@@ -22,6 +21,12 @@ class PhysicsDataset(Controller, ABC):
         3. Run the trial until it is "done" (defined by output from the writer). Write per-frame data to disk,.
         4. Clean up the scene and start a new trial.
     """
+
+    def __init__(self, port: int = 1071):
+        super().__init__(port=port)
+
+        # IDs of the objects in the current trial.
+        self.object_ids = np.empty(dtype=int, shape=0)
 
     def run(self, num: int, output_dir: str, temp_path: str) -> None:
         """
@@ -98,8 +103,11 @@ class PhysicsDataset(Controller, ABC):
         :param trial_num: The number of the current trial.
         """
 
-        # Create the data writer.
-        writer = self._get_writer(h5py.File(str(temp_path.resolve()), "a"))
+        # Clear the object IDs.
+        self.object_ids = np.empty(dtype=int, shape=0)
+
+        # Create the .hdf5 file.
+        f = h5py.File(str(temp_path.resolve()), "a")
 
         commands = []
         # Remove asset bundles (to prevent a memory leak).
@@ -107,9 +115,12 @@ class PhysicsDataset(Controller, ABC):
             commands.append({"$type": "unload_asset_bundles"})
 
         # Add commands to start the trial.
-        commands.extend(self._get_trial_initialization_commands(writer))
+        commands.extend(self._get_trial_initialization_commands())
         # Add commands to request output data.
-        commands.extend(writer.get_send_data_commands())
+        commands.extend(self._get_send_data_commands())
+        # Write static data to disk.
+        static_group = f.create_group("static")
+        self._write_static_data(static_group)
 
         # Send the commands and start the trial.
         resp = self.communicate(commands)
@@ -117,30 +128,25 @@ class PhysicsDataset(Controller, ABC):
 
         # Add the first frame.
         done = False
-        writer.write_frame(resp=resp, frame_num=frame)
+        frames_grp = f.create_group("frames")
+        self._write_frame(frames_grp=frames_grp, resp=resp, frame_num=frame)
 
         # Continue the trial. Send commands, and parse output data.
         while not done and frame < 1000:
             frame += 1
             resp = self.communicate(self._get_per_frame_commands(frame))
-            frame_grp, objs_grp, tr_dict, done = writer.write_frame(resp=resp, frame_num=frame)
+            frame_grp, objs_grp, tr_dict, done = self._write_frame(frames_grp=frames_grp, resp=resp, frame_num=frame)
 
         # Cleanup.
-        self.communicate(writer.get_destroy_commands())
+        commands = []
+        for o_id in self.object_ids:
+            commands.append({"$type": "destroy_object",
+                             "id": int(o_id)})
+        self.communicate(commands)
         # Close the file.
-        writer.f.close()
+        f.close()
         # Move the file.
         temp_path.replace(filepath)
-
-    @abstractmethod
-    def _get_writer(self, f: h5py.File) -> TrialWriter:
-        """
-        :param f: The trial's .hdf5 file.
-
-        :return: A TrialWriter object for the current trial.
-        """
-
-        raise Exception()
 
     @staticmethod
     def _get_random_avatar_position(radius_min: float, radius_max: float, y_min: float, y_max: float,
@@ -177,11 +183,41 @@ class PhysicsDataset(Controller, ABC):
         raise Exception()
 
     @abstractmethod
-    def _get_trial_initialization_commands(self, writer: TrialWriter) -> List[dict]:
+    def _get_trial_initialization_commands(self) -> List[dict]:
         """
-        :param writer: The data writer.
-
         :return: Commands to initialize each trial.
+        """
+
+        raise Exception()
+
+    @abstractmethod
+    def _get_send_data_commands(self) -> List[dict]:
+        """
+        :return: A list of commands to request per-frame output data. Appended to the trial initialization commands.
+        """
+
+        raise Exception()
+
+    def _write_static_data(self, static_group: h5py.Group) -> None:
+        """
+        Write static data to disk after assembling the trial initialization commands.
+
+        :param static_group: The static data group.
+        """
+
+        static_group.create_dataset("object_ids", data=self.object_ids)
+
+    @abstractmethod
+    def _write_frame(self, frames_grp: h5py.Group, resp: List[bytes], frame_num: int) -> \
+            Tuple[h5py.Group, h5py.Group, dict, bool]:
+        """
+        Write a frame to the hdf5 file.
+
+        :param frames_grp: The frames hdf5 group.
+        :param resp: The response from the build.
+        :param frame_num: The frame number.
+
+        :return: Tuple: (The frame group, the objects group, a dictionary of Transforms, True if the trial is "done")
         """
 
         raise Exception()
@@ -203,3 +239,11 @@ class PhysicsDataset(Controller, ABC):
         """
 
         raise Exception()
+
+    def add_object(self, model_name: str, position={"x": 0, "y": 0, "z": 0}, rotation={"x": 0, "y": 0, "z": 0},
+                   library: str = "") -> int:
+        raise Exception("Don't use this function; see README for functions that supersede it.")
+
+    def get_add_object(self, model_name: str, object_id: int, position={"x": 0, "y": 0, "z": 0},
+                       rotation={"x": 0, "y": 0, "z": 0}, library: str = "") -> dict:
+        raise Exception("Don't use this function; see README for functions that supersede it.")

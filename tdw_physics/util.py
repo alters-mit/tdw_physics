@@ -36,6 +36,7 @@ def get_object_look_at(o_id: int, pos: Dict[str, float], noise: float = 0) -> Li
 
     :return: A list of commands to rotate an object to look at the target position.
     """
+
     commands = [{"$type": "object_look_at_position",
                  "id": o_id,
                  "position": pos}]

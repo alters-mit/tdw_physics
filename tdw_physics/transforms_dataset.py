@@ -1,79 +1,60 @@
+from typing import List, Tuple, Dict, Optional
+from abc import ABC
 import h5py
-from abc import ABC, abstractmethod
-from typing import List, Tuple
 import numpy as np
 from tdw.tdw_utils import TDWUtils
 from tdw.output_data import OutputData, Transforms, Images, CameraMatrices
+from tdw.controller import Controller
+from tdw.librarian import ModelRecord
+from tdw_physics.dataset import Dataset
 
 
-class TrialWriter(ABC):
+class TransformsDataset(Dataset, ABC):
     """
-    Write output data from a physics trial to an hdf5 file.
-    The data is divided into two components: static (never changes during the trial) and frame (per-frame dynamic data).
+    A dataset that receives and writes per frame: `Transforms`, `Images`, `CameraMatrices`. See README for more info.
     """
 
-    def __init__(self, f: h5py.File):
+    def add_transforms_object(self, record: ModelRecord, position: Dict[str, float], rotation: Dict[str, float],
+                              o_id: Optional[int] = None) -> dict:
         """
-        :param f: The trial's hdf5 file.
-        """
+        This is a wrapper for `Controller.get_add_object()` and the `add_object` command.
+        This caches the ID of the object so that it can be easily cleaned up later.
 
-        self.f = f
+        :param record: The model record.
+        :param position: The initial position of the object.
+        :param rotation: The initial rotation of the object, in Euler angles.
+        :param o_id: The unique ID of the object. If None, a random ID is generated.
 
-        self.object_ids = np.empty(dtype=int, shape=0)
-
-        # hdf5 group for per-frame data.
-        self._frames_grp = self.f.create_group("frames")
-
-    def get_destroy_commands(self) -> List[dict]:
-        """
-        :return: A list of commands to destroy all objects that have been created.
+        :return: An `add_object` command.
         """
 
-        commands = []
-        for o_id in self.object_ids:
-            commands.append({"$type": "destroy_object",
-                             "id": int(o_id)})
-        return commands
+        if o_id is None:
+            o_id: int = Controller.get_unique_id()
 
-    @abstractmethod
-    def write_static_data(self) -> h5py.Group:
-        """
-        Write static data to the .hdf5 file (any data that doesn't change per frame).
-        This function writes object IDs. Override this function to add more static data.
+        # Log the static data.
+        self.object_ids = np.append(self.object_ids, o_id)
 
-        :return: The static data hd5f group.
-        """
+        return {"$type": "add_object",
+                "name": record.name,
+                "url": record.get_url(),
+                "scale_factor": record.scale_factor,
+                "position": position,
+                "rotation": rotation,
+                "category": record.wcategory,
+                "id": o_id}
 
-        static_group = self.f.create_group("static")
-        static_group.create_dataset("object_ids", data=self.object_ids)
-        return static_group
-
-    @abstractmethod
-    def get_send_data_commands(self) -> List[dict]:
-        """
-        :return: A list of commands: `[send_transforms, send_camera_matrices]`.
-        """
-
-        return[{"$type": "send_transforms",
+    def _get_send_data_commands(self) -> List[dict]:
+        return [{"$type": "send_transforms",
                 "frequency": "always"},
-               {"$type": "send_camera_matrices",
-                "frequency": "always"}]
+                {"$type": "send_camera_matrices",
+                 "frequency": "always"}]
 
-    @abstractmethod
-    def write_frame(self, resp: List[bytes], frame_num: int) -> Tuple[h5py.Group, h5py.Group, dict, bool]:
-        """
-        Write a frame to the hdf5 file.
-
-        :param resp: The response from the build.
-        :param frame_num: The frame number.
-
-        :return: Tuple: (The frame hdf5 group, the objects hdf5 group, an ordered dictionary of Transforms data, True if the trial is "done")
-        """
-
+    def _write_frame(self, frames_grp: h5py.Group, resp: List[bytes], frame_num: int) -> \
+            Tuple[h5py.Group, h5py.Group, dict, bool]:
         num_objects = len(self.object_ids)
 
         # Create a group for this frame.
-        frame = self._frames_grp.create_group(TDWUtils.zero_padding(frame_num, 4))
+        frame = frames_grp.create_group(TDWUtils.zero_padding(frame_num, 4))
         # Create a group for images.
         images = frame.create_group("images")
 

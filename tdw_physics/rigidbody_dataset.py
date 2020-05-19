@@ -1,17 +1,66 @@
+from typing import List, Tuple, Dict, Optional
+from abc import ABC
 import h5py
 import numpy as np
-from typing import Dict, List, Tuple, Optional
-from tdw.librarian import ModelRecord
+import pkg_resources
+import io
+import json
 from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
 from tdw.output_data import OutputData, Rigidbodies, Collision, EnvironmentCollision
-from tdw_physics.trial_writers.trial_writer import TrialWriter
-from tdw_physics.physics_info import PHYSICS_INFO, PhysicsInfo
+from tdw.librarian import ModelRecord
+from tdw_physics.transforms_dataset import TransformsDataset
+from tdw_physics.util import MODEL_LIBRARIES
 
 
-class RigidbodyWriter(TrialWriter):
-    def __init__(self, f: h5py.File):
-        super().__init__(f)
-        self.f = f
+class PhysicsInfo:
+    """
+    Physics info for an object.
+    """
+
+    def __init__(self, record: ModelRecord, mass: float, dynamic_friction: float, static_friction: float,
+                 bounciness: float):
+        """
+        :param record: The model's metadata record.
+        :param mass: The mass of the object.
+        :param dynamic_friction: The dynamic friction.
+        :param static_friction: The static friction.
+        :param bounciness: The object's bounciness.
+        """
+
+        self.record = record
+        self.mass = mass
+        self.dynamic_friction = dynamic_friction
+        self.static_friction = static_friction
+        self.bounciness = bounciness
+
+
+def _get_default_physics_info() -> Dict[str, PhysicsInfo]:
+    """
+    :return: The default object physics info from `data/physics_info.json`.
+    """
+
+    info: Dict[str, PhysicsInfo] = {}
+
+    with io.open(pkg_resources.resource_filename(__name__, "data/physics_info.json"), "rt", encoding="utf-8") as f:
+        _data = json.load(f)
+        for key in _data:
+            obj = _data[key]
+            info[key] = PhysicsInfo(record=MODEL_LIBRARIES[obj["library"]].get_record(obj["name"]),
+                                    mass=obj["mass"],
+                                    bounciness=obj["bounciness"],
+                                    dynamic_friction=obj["dynamic_friction"],
+                                    static_friction=obj["static_friction"])
+    return info
+
+
+# The default physics info
+PHYSICS_INFO: Dict[str, PhysicsInfo] = _get_default_physics_info()
+
+
+class RigidbodyDataset(TransformsDataset, ABC):
+    def __init__(self, port: int = 1071):
+        super().__init__(port=port)
 
         # Static physics data.
         self.masses = np.empty(dtype=np.float32, shape=0)
@@ -22,20 +71,13 @@ class RigidbodyWriter(TrialWriter):
         # The physics info of each object instance. Useful for referencing in a controller, but not written to disk.
         self.physics_info: Dict[int, PhysicsInfo] = {}
 
-    def write_static_data(self) -> h5py.Group:
-        static_group = super().write_static_data()
-        static_group.create_dataset("mass", data=self.masses)
-        static_group.create_dataset("static_friction", data=self.static_frictions)
-        static_group.create_dataset("dynamic_friction", data=self.dynamic_frictions)
-        static_group.create_dataset("bounciness", data=self.bouncinesses)
-        return static_group
-
-    def add_object(self, o_id: int, record: ModelRecord, position: Dict[str, float], rotation: Dict[str, float],
-                   mass: float, dynamic_friction: float, static_friction: float, bounciness: float) -> List[dict]:
+    def add_physics_object(self, record: ModelRecord, position: Dict[str, float], rotation: Dict[str, float],
+                           mass: float, dynamic_friction: float, static_friction: float, bounciness: float,
+                           o_id: Optional[int] = None) -> List[dict]:
         """
-        Get commands to add an object to the scene. In doing so, append static information about that object.
+        Get commands to add an object and assign physics properties. Write the object's static info to the .hdf5 file.
 
-        :param o_id: The unique ID of the object.
+        :param o_id: The unique ID of the object. If None, a random ID will be generated.
         :param record: The model record.
         :param position: The initial position of the object.
         :param rotation: The initial rotation of the object, in Euler angles.
@@ -47,8 +89,9 @@ class RigidbodyWriter(TrialWriter):
         :return: A list of commands: `[add_object, set_mass, set_physic_material]`
         """
 
-        # Log the static data.
-        self.object_ids = np.append(self.object_ids, o_id)
+        # Get the add_object command.
+        add_object = self.get_add_object(object_id=o_id, record=record, position=position, rotation=rotation)
+
         self.masses = np.append(self.masses, mass)
         self.dynamic_frictions = np.append(self.dynamic_frictions, dynamic_friction)
         self.static_frictions = np.append(self.static_frictions, static_friction)
@@ -62,14 +105,7 @@ class RigidbodyWriter(TrialWriter):
                                               bounciness=bounciness)
 
         # Return commands to create the object.
-        return [{"$type": "add_object",
-                 "id": o_id,
-                 "name": record.name,
-                 "url": record.get_url(),
-                 "position": position,
-                 "rotation": rotation,
-                 "scale_factor": record.scale_factor,
-                 "category": record.wcategory},
+        return [add_object,
                 {"$type": "set_mass",
                  "id": o_id,
                  "mass": mass},
@@ -82,8 +118,8 @@ class RigidbodyWriter(TrialWriter):
                  "id": o_id,
                  "mode": "continuous_dynamic"}]
 
-    def add_object_default(self, name: str, position: Dict[str, float], rotation: Dict[str, float],
-                           o_id: Optional[int] = None) -> List[dict]:
+    def add_physics_object_default(self, name: str, position: Dict[str, float], rotation: Dict[str, float],
+                                   o_id: Optional[int] = None) -> List[dict]:
         """
         Add an object with default physics material values.
 
@@ -95,20 +131,13 @@ class RigidbodyWriter(TrialWriter):
         :return: A list of commands: `[add_object, set_mass, set_physic_material]`
         """
 
-        if o_id is None:
-            o_id: int = Controller.get_unique_id()
-
         info = PHYSICS_INFO[name]
-        return self.add_object(o_id=o_id, record=info.record, position=position, rotation=rotation, mass=info.mass,
-                               dynamic_friction=info.dynamic_friction, static_friction=info.static_friction,
-                               bounciness=info.bounciness)
+        return self.add_physics_object(o_id=o_id, record=info.record, position=position, rotation=rotation,
+                                       mass=info.mass, dynamic_friction=info.dynamic_friction,
+                                       static_friction=info.static_friction, bounciness=info.bounciness)
 
-    def get_send_data_commands(self) -> List[dict]:
-        """
-        :return: A list of commands: `[send_transforms, send_camera_matrices, send_collisions, send_rigidbodies]`.
-        """
-
-        commands = super().get_send_data_commands()
+    def _get_send_data_commands(self) -> List[dict]:
+        commands = super()._get_send_data_commands()
         commands.extend([{"$type": "send_collisions",
                           "enter": True,
                           "exit": False,
@@ -118,8 +147,17 @@ class RigidbodyWriter(TrialWriter):
                           "frequency": "always"}])
         return commands
 
-    def write_frame(self, resp: List[bytes], frame_num: int) -> Tuple[h5py.Group, h5py.Group, dict, bool]:
-        frame, objs, tr, done = super().write_frame(resp=resp, frame_num=frame_num)
+    def _write_static_data(self, static_group: h5py.Group) -> None:
+        super()._write_static_data(static_group)
+
+        static_group.create_dataset("mass", data=self.masses)
+        static_group.create_dataset("static_friction", data=self.static_frictions)
+        static_group.create_dataset("dynamic_friction", data=self.dynamic_frictions)
+        static_group.create_dataset("bounciness", data=self.bouncinesses)
+
+    def _write_frame(self, frames_grp: h5py.Group, resp: List[bytes], frame_num: int) -> \
+            Tuple[h5py.Group, h5py.Group, dict, bool]:
+        frame, objs, tr, done = super()._write_frame(frames_grp=frames_grp, resp=resp, frame_num=frame_num)
         num_objects = len(self.object_ids)
         # Physics data.
         velocities = np.empty(dtype=np.float32, shape=(num_objects, 3))
