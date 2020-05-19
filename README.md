@@ -43,6 +43,10 @@ root/
 - All images are 256x256
 - The `_img` pass is a .jpg and all other passes are .png
 
+## Example
+
+See [toy_physics](https://github.com/alters-mit/toy_physics/), which implements `RigidbodiesDataset`.
+
 ## How to Create a Dataset Controller
 
 _Regardless_ of which abstract controller you use, you must override the following functions:
@@ -208,6 +212,35 @@ frames/    # Per-frame data.
   -  `frames/env_collisions/object_ids` has the shape `(num_collisions)` (only 1 ID per collision).
   -  `frames/collisions/contacts` and `frames/env_collision/contacts` are tuples of `(normal, point)`, i.e. the shape is `(num_collisions, 2, 3)`.
 
+#### `physics_info_calculator.py`
+
+Use this controller to add more default `PhysicsInfo`. The controller will assign "best guess" values based on the object's material and size.
+
+```bash
+python3 physics_info_calculator.py [ARGUMENTS]
+```
+
+| Argument | Type  | Default            | Description                        |
+| -------- | ----- | ------------------ | ---------------------------------- |
+| `--name` | `str` |                    | The name of the model.             |
+| `--lib`  | `str` | `models_full.json` | The model library.                 |
+| `--mat`  | `str` |                    | The semantic material (see below). |
+
+**Semantic Materials**
+
+- ceramic
+- concrete
+- fabric
+- glass
+- leather
+- metal
+- plastic
+- rubber
+- stone
+- wood
+- paper
+- organic
+
 ***
 
 ## `TransformsDataset`
@@ -292,6 +325,55 @@ frames/    # Per-frame data.
   - `frames/0000/positions[0]` is the position of `static/object_ids[0]`
 - The shape of each dataset in `objects` is determined by the number of coordinates. For example, `frames/objects/positions/` has shape `(num_objects, 3)`.
 
-## Example
+***
 
-See [toy_physics](https://github.com/alters-mit/toy_physics/), which implements `RigidbodiesDataset`.
+## `utils.py`
+
+Some helpful utility functions and variables.
+
+#### `MODEL_LIBRARIES`
+
+Cache of all default model libraries, mapped to their names.
+
+```python
+from tdw_physics.utils import MODEL_LIBARIES
+
+print(MODEL_LIBARIES["models_full.json"].get_record("iron_box").name) # iron_box
+```
+
+#### `def get_move_along_direction()`
+
+_Return:_ A position from pos by distance d along a directional vector defined by pos, target.
+
+```python
+from tdw_physics.utils import get_move_along_direction
+
+p_0 = {"x": 1, "y": 0, "z": -2}
+p_1 = {"x": 5, "y": 0, "z": 3.4}
+p_0 = get_move_along_direction(pos=p_0, target=p_1, d=0.7, noise=0.01)
+```
+
+| Parameter | Type               | Default | Description                         |
+| --------- | ------------------ | ------- | ----------------------------------- |
+| `pos`     | `Dict[str, float]` |         | The object's position.              |
+| `target`  | `Dict[str, float]` |         | The target position.                |
+| `d`       | `float`            |         | The distance to teleport.           |
+| `noise`   | `float`            | 0       | Add a little noise to the teleport. |
+
+#### `def get_object_look_at()`
+
+_Return:_ A list of commands to rotate an object to look at the target position.
+
+```python
+from tdw_physics.utils import get_object_look_at
+
+o_id = 0 # Assume that the object has been already added to the scene.
+p_1 = {"x": 5, "y": 0, "z": 3.4}
+p_0 = get_move_along_direction(o_id=o_id, pos=p_1, noise=5)
+```
+
+| Parameter | Type               | Default | Description                                                  |
+| --------- | ------------------ | ------- | ------------------------------------------------------------ |
+| `o_id`    | `int`              |         | The object's ID.                                             |
+| `pos`     | `Dict[str, float]` |         | The position to look at.                                     |
+| `noise`   | `float`            | 0       | Rotate the object randomly by this much after applying the look_at command. |
