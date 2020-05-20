@@ -84,6 +84,7 @@
     "dynamic_friction": 0.6,
     "library": "models_full.json",
     "mass": 0.75,
+    "name": "bowl_wood_a_01",
     "static_friction": 0.6
   },
   "bread": {
@@ -171,6 +172,7 @@
     "dynamic_friction": 0.3,
     "library": "models_full.json",
     "mass": 1.0,
+    "name": "coffeecup004",
     "static_friction": 0.3
   },
   "coffeecup004_fix": {
@@ -306,6 +308,7 @@
     "dynamic_friction": 0.4,
     "library": "models_full.json",
     "mass": 1.0,
+    "name": "peppermill",
     "static_friction": 0.4
   },
   "plate05": {
@@ -329,6 +332,7 @@
     "dynamic_friction": 0.1,
     "library": "models_full.json",
     "mass": 300.0,
+    "name": "quatre_dining_table",
     "static_friction": 0.1
   },
   "restoration_hardware_salvaged_tables": {
@@ -344,6 +348,7 @@
     "dynamic_friction": 0.4,
     "library": "models_full.json",
     "mass": 1.0,
+    "name": "salt_shaker",
     "static_friction": 0.4
   },
   "serving_bowl": {
@@ -391,6 +396,7 @@
     "dynamic_friction": 0.5,
     "library": "models_full.json",
     "mass": 0.5,
+    "name": "vk0007_steak_knife",
     "static_friction": 0.5
   },
   "vk0009_butter_knife_subd0": {
