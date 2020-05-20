@@ -72,10 +72,10 @@ class MyDataset(RigidbodiesDataset):
     def get_trial_initialization_commands(self) -> List[dict]:
         # Your code here.
 
-    def get_per_frame_commands(self, frame: int) -> List[dict]:
+    def get_per_frame_commands(self, resp: List[bytes], frame: int) -> List[dict]:
         # Your code here.
 
-    def get_field_of_view(self, resp: List[bytes]) -> float:
+    def get_field_of_view(self) -> float:
         # Your code here.
 ```
 
@@ -255,10 +255,10 @@ class MyDataset(TransformsDataset):
     def get_trial_initialization_commands(self) -> List[dict]:
         # Your code here.
 
-    def get_per_frame_commands(self, frame: int) -> List[dict]:
+    def get_per_frame_commands(self, resp: List[bytes], frame: int) -> List[dict]:
         # Your code here.
 
-    def get_field_of_view(self, resp: List[bytes]) -> float:
+    def get_field_of_view(self) -> float:
         # Your code here.
 ```
 
