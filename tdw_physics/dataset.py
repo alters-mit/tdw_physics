@@ -76,7 +76,7 @@ class Dataset(Controller, ABC):
                           "frequency": "always"}])
 
         # Skip trials that aren't on the disk, and presumably have been uploaded; jump to the highest number.
-        exists_up_to = 0
+        exists_up_to = -1
         for f in output_dir.glob("*.hdf5"):
             if int(f.stem) > exists_up_to:
                 exists_up_to = int(f.stem)
