@@ -1,5 +1,6 @@
 from argparse import ArgumentParser
 import json
+import pkg_resources
 from pathlib import Path
 from enum import Enum
 from tdw.controller import Controller
@@ -86,7 +87,7 @@ class PhysicsInfoCalculator(Controller):
     def __init__(self):
         super().__init__()
 
-        self.p = Path("physics_info.json")
+        self.p = Path(pkg_resources.resource_filename(__name__, "data/physics_info.json"))
         self.data = json.loads(self.p.read_text(encoding="utf-8"))
 
         self.communicate([{"$type": "load_scene"},
