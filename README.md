@@ -81,7 +81,16 @@ class MyDataset(RigidbodiesDataset):
 
 A dataset creator that receives and writes per frame: `Tranforms`, `Images`, `CameraMatrices`, `Rigidbodies`, `Collision`, and `EnvironmentCollision`.
 
+### Ending a trial
+
 A `RigidbodiesDataset` trial ends when all objects are "sleeping" i.e. non-moving, or after 1000 frames. Objects that have fallen below the scene's floor (y < -1) are ignored.
+
+You can override this by adding the function `def is_done()`:
+
+```python
+    def is_done(self, resp: List[bytes], frame: int) -> bool:
+        return frame > 1000 # End after 1000 frames even if objects are still moving.
+```
 
 ### Adding objects
 
@@ -182,6 +191,7 @@ frames/    # Per-frame data.
 ............_id
 ............_depth
 ............_normals
+............_flow
 ........objects/    # Per-object data.
 ............positions
 ............forwards
@@ -264,7 +274,14 @@ class MyDataset(TransformsDataset):
 
 A dataset creator that receives and writes per frame: `Transforms`, `Images`, `CameraMatrices`. 
 
-A `TransformsDataset` trial has no "end" condition based on trial output data; you will need to define this yourself. Typically, though, you will want to use a physics-based abstract class such as `RigidbodiesDataset`.
+### Ending a trial
+
+A `TransformsDataset` trial has no "end" condition based on trial output data; you will need to define this yourself by  adding the function `def is_done()`:
+
+```python
+    def is_done(self, resp: List[bytes], frame: int) -> bool:
+        return frame > 1000 # End after 1000 frames.
+```
 
 ### Adding objects
 
@@ -309,6 +326,7 @@ frames/    # Per-frame data.
 ............_id
 ............_depth
 ............_normals
+............_flow
 ........objects/    # Per-object data.
 ............positions
 ............forwards

@@ -69,7 +69,7 @@ class Dataset(Controller, ABC):
                           "type": "A_Img_Caps_Kinematic",
                           "id": "a"},
                          {"$type": "set_pass_masks",
-                          "pass_masks": ["_img", "_id", "_depth", "_normals"]},
+                          "pass_masks": ["_img", "_id", "_depth", "_normals", "_flow"]},
                          {"$type": "set_field_of_view",
                           "field_of_view": self.get_field_of_view()},
                          {"$type": "send_images",
@@ -132,10 +132,11 @@ class Dataset(Controller, ABC):
         self._write_frame(frames_grp=frames_grp, resp=resp, frame_num=frame)
 
         # Continue the trial. Send commands, and parse output data.
-        while not done and frame < 1000:
+        while not done:
             frame += 1
             resp = self.communicate(self.get_per_frame_commands(resp, frame))
             frame_grp, objs_grp, tr_dict, done = self._write_frame(frames_grp=frames_grp, resp=resp, frame_num=frame)
+            done = done or self.is_done(resp, frame)
 
         # Cleanup.
         commands = []
@@ -173,6 +174,18 @@ class Dataset(Controller, ABC):
         a_z = np.sin(theta) * (a_x - center["x"])
 
         return {"x": a_x, "y": a_y, "z": a_z}
+
+    def is_done(self, resp: List[bytes], frame: int) -> bool:
+        """
+        Override this command for special logic to end the trial.
+
+        :param resp: The output data response.
+        :param frame: The frame number.
+
+        :return: True if the trial is done.
+        """
+
+        return False
 
     @abstractmethod
     def get_scene_initialization_commands(self) -> List[dict]:
