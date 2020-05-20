@@ -87,6 +87,9 @@ class RigidbodiesDataset(TransformsDataset, ABC):
         :return: A list of commands: `[add_object, set_mass, set_physic_material]`
         """
 
+        if o_id is None:
+            o_id: int = self.get_unique_id()
+
         # Get the add_object command.
         add_object = self.add_transforms_object(o_id=o_id, record=record, position=position, rotation=rotation)
 
