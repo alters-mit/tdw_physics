@@ -416,3 +416,17 @@ if __name__ == "__main__":
 | ------------- | ----- | ------- | ------------------------------------------------------------ |
 | `dataset_dir` | `str` |         | If you don't provide a `--dir` argument, the default output director is: `"D:/" + dataset_dir` |
 
+## `extract_images.py`
+
+```python
+python3 extract_images.py [ARGUMENTS]
+```
+
+Extract `_img` images from an .hdf5 file and save them to a destination directory.
+
+| Argument  | Type  | Default | Description                                                  |
+| --------- | ----- | ------- | ------------------------------------------------------------ |
+| `--dest`  | `str` |         | Root directory for the images.                               |
+| `--src`   | `str` |         | Root source directory of the .hdf5 files.                    |
+| `--trial` | `int` | 0       | The number of the trial that will be extracted, e.g. 0 will extract `0000.hdf5`. |
+
