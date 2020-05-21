@@ -1,6 +1,6 @@
 | Scenario                   | Description                                                  | Status   | Script                              |
 | -------------------------- | ------------------------------------------------------------ | -------- | ----------------------------------- |
-| Toy Collisions             | Objects with realistic shapes and textures move around a realistic playroom. (Imagine an invisible baby taking one object at a time and pushing it around, including colliding it with the other objects in the scene.) | **Done** | `toy_physics.py`                    |
+| Toy Collisions             | Objects with realistic shapes and textures move around a realistic playroom. (Imagine an invisible baby taking one object at a time and pushing it around, including colliding it with the other objects in the scene.) | **Done** | `toy_collisions.py`                 |
 | Occlusion                  | Objects occlude each other or are occluded by barriers, creating a cluttered scene.<br />Only two objects, and move the camera around. | **Done** | `occlusion.py`                      |
 | Permanence                 | An object moves (e.g. rolls) behind an occluder, then reemerges on the other side |          |                                     |
 | Shadows                    | An object moves (e.g. rolls) into or out of a shadow or spotlight |          |                                     |
