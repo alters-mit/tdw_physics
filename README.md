@@ -395,3 +395,24 @@ p_0 = get_move_along_direction(o_id=o_id, pos=p_1, noise=5)
 | `o_id`    | `int`              |         | The object's ID.                                             |
 | `pos`     | `Dict[str, float]` |         | The position to look at.                                     |
 | `noise`   | `float`            | 0       | Rotate the object randomly by this much after applying the look_at command. |
+
+#### `def get_args()`
+
+_Return:_ Command line arguments common to all controllers.
+
+```python
+from tdw.physics_utils import get_args
+from tdw_physics.rigidbodies_dataset import RigidbodiesDataset
+
+class MyDataset(RigidbodiesDataset):
+    # Your code here.
+    
+if __name__ == "__main__":
+    args = get_args("my_dataset")
+    MyDataset().run(num=args.num, output_dir=args.dir, temp_path=args.temp)
+```
+
+| Parameter     | Type  | Default | Description                                                  |
+| ------------- | ----- | ------- | ------------------------------------------------------------ |
+| `dataset_dir` | `str` |         | If you don't provide a `--dir` argument, the default output director is: `"D:/" + dataset_dir` |
+

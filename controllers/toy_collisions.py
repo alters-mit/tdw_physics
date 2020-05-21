@@ -7,6 +7,7 @@ from tdw.tdw_utils import TDWUtils
 from tdw.librarian import ModelLibrarian
 from tdw_physics.rigidbodies_dataset import RigidbodiesDataset
 from tdw_physics.object_position import ObjectPosition
+from tdw_physics.util import get_args
 
 
 class ToysDataset(RigidbodiesDataset):
@@ -148,12 +149,6 @@ class ToysDataset(RigidbodiesDataset):
 
 
 if __name__ == "__main__":
-    from argparse import ArgumentParser
-    parser = ArgumentParser()
-    parser.add_argument("--dir", type=str, default="D:/toy_collisions", help="Root output directory.")
-    parser.add_argument("--num", type=int, default=3000, help="The number of trials in the dataset.")
-    parser.add_argument("--temp", type=str, default="D:/temp.hdf5", help="Temp path for incomplete files.")
-
-    args = parser.parse_args()
+    args = get_args("toy_collisions")
     td = ToysDataset()
     td.run(num=args.num, output_dir=args.dir, temp_path=args.temp)

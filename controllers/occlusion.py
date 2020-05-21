@@ -4,7 +4,7 @@ import random
 from tdw.librarian import ModelRecord
 from tdw.tdw_utils import TDWUtils
 from tdw_physics.transforms_dataset import TransformsDataset
-from tdw_physics.util import MODEL_LIBRARIES
+from tdw_physics.util import MODEL_LIBRARIES, get_args
 
 
 class Occlusion(TransformsDataset):
@@ -92,11 +92,5 @@ class Occlusion(TransformsDataset):
 
 
 if __name__ == "__main__":
-    from argparse import ArgumentParser
-    parser = ArgumentParser()
-    parser.add_argument("--dir", type=str, default="D:/occlusion", help="Root output directory.")
-    parser.add_argument("--num", type=int, default=1500, help="The number of trials in the dataset.")
-    parser.add_argument("--temp", type=str, default="D:/temp.hdf5", help="Temp path for incomplete files.")
-    args = parser.parse_args()
-
+    args = get_args("occlusion")
     Occlusion().run(num=args.num, output_dir=args.dir, temp_path=args.temp)

@@ -171,7 +171,7 @@ class Dataset(Controller, ABC):
         theta = np.radians(random.uniform(angle_min, angle_max))
         a_x = np.cos(theta) * (a_x - center["x"]) - np.sin(theta) * (a_z - center["z"]) + center["x"]
         a_y = random.uniform(y_min, y_max)
-        a_z = np.sin(theta) * (a_x - center["x"])
+        a_z = np.sin(theta) * (a_x - center["x"]) + np.cos(theta) * (a_z - center["z"]) + center["z"]
 
         return {"x": a_x, "y": a_y, "z": a_z}
 
