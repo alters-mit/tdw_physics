@@ -1,6 +1,8 @@
 import h5py
 from pathlib import Path
 from argparse import ArgumentParser
+from PIL import Image
+import io
 from tdw.tdw_utils import TDWUtils
 
 
@@ -18,4 +20,7 @@ if __name__ == "__main__":
 
     f = h5py.File(f"{str(Path(args.src).resolve())}/{TDWUtils.zero_padding(args.trial, 4)}.hdf5", "r")
     for fr in f["frames"]:
-        dest.joinpath(fr + ".jpg").write_bytes(f["frames"][fr]["images"]["_img"][:])
+        dest_path = dest.joinpath(fr + ".jpg")
+        img = Image.open(io.BytesIO(f["frames"][fr]["images"]["_img"][:]))
+        img.save(str(dest_path.resolve()))
+
