@@ -96,6 +96,8 @@ You can override this by adding the function `def is_done()`:
 
 **`Controller.add_object()` and `Conroller.get_add_object()` will throw an exception.** You must instead use `RigidbodiesDataset.add_physics_object()` or `RigidbodiesDataset.add_physics_object_default()`. This will automatically cache the object ID, allowing the object to be destroyed at the end of the trial.
 
+Objects should only be added in `get_trial_initialization_commands()` or (more rarely) `get_per_frame_commands()`.
+
 #### `def add_physics_object()`
 
 Get commands to add an object and assign physics properties. Write the object's static info to the .hdf5 file.
