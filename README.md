@@ -43,9 +43,9 @@ root/
 - All images are 256x256
 - The `_img` pass is a .jpg and all other passes are .png
 
-## Example
+## Controllers
 
-See [toy_physics](https://github.com/alters-mit/toy_physics/), which implements `RigidbodiesDataset`.
+See the `controllers/` directory for controllers that use `tdw_physics` as well as documentation.
 
 ## How to Create a Dataset Controller
 
