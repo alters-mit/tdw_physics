@@ -12,6 +12,10 @@ These classes create a generic structure for generating physics datasets using T
 3. `cd path/to/tdw_physics`
 4. `pip3 install -e .` (This installs the `tdw_physics` module).
 
+## Controllers
+
+See the `controllers/` directory for controllers that use `tdw_physics` as well as [documentation](controllers/README.md). See below for the output .hdf5 file structure.
+
 ## Usage
 
 tdw_physics provides abstract Controller classes. To write your own physics dataset controller, you should create a superclass of the appropriate controller.
@@ -42,10 +46,6 @@ root/
 
 - All images are 256x256
 - The `_img` pass is a .jpg and all other passes are .png
-
-## Controllers
-
-See the `controllers/` directory for controllers that use `tdw_physics` as well as [documentation](controllers/README.md).
 
 ## How to Create a Dataset Controller
 
