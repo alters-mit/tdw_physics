@@ -21,5 +21,5 @@ setup(
     ],
     keywords='unity simulation tdw hdf5',
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),
-    install_requires=['tqdm', 'numpy', 'h5py', 'pillow'],
+    install_requires=['tqdm', 'numpy', 'h5py', 'pillow', 'weighted-collection'],
 )

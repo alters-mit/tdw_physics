@@ -45,7 +45,7 @@ root/
 
 ## Controllers
 
-See the `controllers/` directory for controllers that use `tdw_physics` as well as documentation.
+See the `controllers/` directory for controllers that use `tdw_physics` as well as [documentation](controllers/README.md).
 
 ## How to Create a Dataset Controller
 
