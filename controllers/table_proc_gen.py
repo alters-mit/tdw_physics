@@ -301,7 +301,7 @@ class TableProcGenTilt(_TableProcGen):
         self._tip_pos["y"] = 0
         self._tip_table_frames = random.randint(60, 80)
         # Calculate the table force from a pre-determined value using quatre_dining_table's mass.
-        self._tip_table_force = random.uniform(15, 16.5) * PHYSICS_INFO[table_record.name].mass / 200
+        self._tip_table_force = random.uniform(15, 16.5) * PHYSICS_INFO[table_record.name].mass / 300
 
         return commands
 
