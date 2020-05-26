@@ -3,14 +3,12 @@ from pathlib import Path
 from argparse import ArgumentParser
 from PIL import Image
 import io
-from tdw.tdw_utils import TDWUtils
 
 
 if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument("--dest", type=str, help="Root directory for the images.")
     parser.add_argument("--src", type=str, help="Root source directory of the .hdf5 files.")
-    parser.add_argument("--trial", type=int, default=0, help="The number of the trial that will be extracted.")
 
     args = parser.parse_args()
 
@@ -18,9 +16,13 @@ if __name__ == "__main__":
     if not dest.exists():
         dest.mkdir(parents=True)
 
-    f = h5py.File(f"{str(Path(args.src).resolve())}/{TDWUtils.zero_padding(args.trial, 4)}.hdf5", "r")
-    for fr in f["frames"]:
-        dest_path = dest.joinpath(fr + ".jpg")
-        img = Image.open(io.BytesIO(f["frames"][fr]["images"]["_img"][:]))
-        img.save(str(dest_path.resolve()))
-
+    p = Path(args.src)
+    for trial in p.glob("*.hdf5"):
+        f = h5py.File(str(trial.resolve()), "r")
+        dest_dir = dest.joinpath(trial.stem)
+        if not dest_dir.exists():
+            dest_dir.mkdir()
+        for fr in f["frames"]:
+            dest_path = dest.joinpath(fr + ".jpg")
+            img = Image.open(io.BytesIO(f["frames"][fr]["images"]["_img"][:]))
+            img.save(str(dest_path.resolve()))
