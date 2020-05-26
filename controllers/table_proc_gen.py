@@ -288,16 +288,7 @@ class TableProcGenTilt(_TableProcGen):
                          table_record.bounds["back"],
                          table_record.bounds["left"],
                          table_record.bounds["right"]]
-        # Get the tip position furthest from the avatar (to ensure a good camera angle).
-        t_i = 0
-        max_d = 0
-        for i in range(len(tip_positions)):
-            d = TDWUtils.get_distance(self._a_pos, tip_positions[i])
-            if d > max_d:
-                max_d = d
-                t_i = i
-
-        self._tip_pos = tip_positions[t_i]
+        self._tip_pos = random.choice(tip_positions)
         self._tip_pos["y"] = 0
         self._tip_table_frames = random.randint(60, 80)
         # Calculate the table force from a pre-determined value using quatre_dining_table's mass.
