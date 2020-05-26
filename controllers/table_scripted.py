@@ -1,10 +1,11 @@
 from abc import ABC
-from typing import List
+from typing import List, Dict
 from operator import add
 import random
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw_physics.rigidbodies_dataset import RigidbodiesDataset
+from tdw_physics.util import MODEL_LIBRARIES
 
 
 class _TableScripted(RigidbodiesDataset, ABC):
@@ -23,6 +24,7 @@ class _TableScripted(RigidbodiesDataset, ABC):
                          {"x": -12.75, "y": 2.25, "z": -6.6},
                          {"x": -8.1, "y": 2.5, "z": -6.0},
                          {"x": -11.0, "y": 3.65, "z": -5.8}]
+    _TABLE_POSITION = {"x": -10.8, "y": 1.0, "z": -5.5}
 
     def __init__(self, port: int = 1071):
         super().__init__(port=port)
@@ -32,7 +34,7 @@ class _TableScripted(RigidbodiesDataset, ABC):
     def get_scene_initialization_commands(self) -> List[dict]:
         return [self.get_add_scene("archviz_house_2018"),
                 {"$type": "set_aperture",
-                 "aperture": 1.6},
+                 "aperture": 2.6},
                 {"$type": "set_focus_distance",
                  "focus_distance": 2.25},
                 {"$type": "set_post_exposure",
@@ -54,7 +56,7 @@ class _TableScripted(RigidbodiesDataset, ABC):
                      "position": {"x": -10.8, "y": _TableScripted._TABLE_HEIGHT, "z": -5.5}}]
         # Add the table.
         commands.extend(self.add_physics_object_default(name="quatre_dining_table",
-                                                        position={"x": -10.8, "y": 1.0, "z": -5.5},
+                                                        position=self._TABLE_POSITION,
                                                         rotation={"x": 0, "y": -90, "z": 0},
                                                         o_id=self._table_id))
         x0 = -9.35
@@ -160,21 +162,37 @@ class TableScriptedTilt(_TableScripted):
     Tilt a table in a pre-scripted room.
     """
 
-    _TIP_POS = {"x": -12, "y": _TableScripted._FLOOR_HEIGHT, "z": -5.5}
-
     def __init__(self, port: int = 1071):
         super().__init__(port=port)
 
         self._tip_table_frames = 0
         self._tip_table_force = 0
 
+        table_record = MODEL_LIBRARIES["models_full.json"].get_record("quatre_dining_table")
+
+        self._tip_positions = [table_record.bounds["front"],
+                               table_record.bounds["back"],
+                               table_record.bounds["left"],
+                               table_record.bounds["right"]]
+        # Set the y value of each tip position to the floor height and offset the x,z values by the table position.
+        for tip_position in self._tip_positions:
+            tip_position["y"] = self._FLOOR_HEIGHT
+            tip_position["x"] += self._TABLE_POSITION["x"]
+            tip_position["z"] += self._TABLE_POSITION["z"]
+        self._tip_pos: Dict[str, float] = {}
+
     def is_done(self, resp: List[bytes], frame: int) -> bool:
         return frame >= 300
 
     def get_trial_initialization_commands(self) -> List[dict]:
         # Set the tip force per frame and how long the table will be tipped.
-        self._tip_table_frames = random.randint(70, 90)
-        self._tip_table_force = random.uniform(15, 17)
+        self._tip_pos = random.choice(self._tip_positions)
+        if self._tip_pos == self._tip_positions[2] or self._tip_pos == self._tip_positions[3]:
+            self._tip_table_frames = 37
+            self._tip_table_force = random.uniform(30, 35)
+        else:
+            self._tip_table_frames = 27
+            self._tip_table_force = random.uniform(23, 25)
 
         return super().get_trial_initialization_commands()
 
@@ -183,7 +201,7 @@ class TableScriptedTilt(_TableScripted):
         if frame < self._tip_table_frames:
             return [{"$type": "apply_force_at_position",
                      "id": self._table_id,
-                     "position": TableScriptedTilt._TIP_POS,
+                     "position": self._tip_pos,
                      "force": {"x": 0, "y": self._tip_table_force, "z": 0}}]
         # Make the table kinematic to allow it to hang in the air.
         # Set the detection mode to continuous speculative in order to continue to detect collisions.
