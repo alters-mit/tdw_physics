@@ -34,7 +34,7 @@ class _TableScripted(RigidbodiesDataset, ABC):
     def get_scene_initialization_commands(self) -> List[dict]:
         return [self.get_add_scene("archviz_house_2018"),
                 {"$type": "set_aperture",
-                 "aperture": 1.6},
+                 "aperture": 2.6},
                 {"$type": "set_focus_distance",
                  "focus_distance": 2.25},
                 {"$type": "set_post_exposure",
@@ -186,9 +186,14 @@ class TableScriptedTilt(_TableScripted):
 
     def get_trial_initialization_commands(self) -> List[dict]:
         # Set the tip force per frame and how long the table will be tipped.
-        self._tip_table_frames = random.randint(70, 90)
-        self._tip_table_force = random.uniform(15, 17)
         self._tip_pos = random.choice(self._tip_positions)
+        self._tip_pos = self._tip_positions[0]
+        if self._tip_pos == self._tip_positions[2] or self._tip_pos == self._tip_positions[3]:
+            self._tip_table_frames = 37
+            self._tip_table_force = random.uniform(30, 35)
+        else:
+            self._tip_table_frames = 27
+            self._tip_table_force = random.uniform(23, 25)
 
         return super().get_trial_initialization_commands()
 

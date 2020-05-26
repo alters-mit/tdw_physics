@@ -140,7 +140,7 @@ class _TableProcGen(RigidbodiesDataset, ABC):
     def get_scene_initialization_commands(self) -> List[dict]:
         return [self.get_add_scene(scene_name="box_room_2018"),
                 {"$type": "set_aperture",
-                 "aperture": 1.6},
+                 "aperture": 2.6},
                 {"$type": "set_focus_distance",
                  "focus_distance": 2.25},
                 {"$type": "set_post_exposure",
