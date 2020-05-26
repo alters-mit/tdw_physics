@@ -187,7 +187,6 @@ class TableScriptedTilt(_TableScripted):
     def get_trial_initialization_commands(self) -> List[dict]:
         # Set the tip force per frame and how long the table will be tipped.
         self._tip_pos = random.choice(self._tip_positions)
-        self._tip_pos = self._tip_positions[0]
         if self._tip_pos == self._tip_positions[2] or self._tip_pos == self._tip_positions[3]:
             self._tip_table_frames = 37
             self._tip_table_force = random.uniform(30, 35)
