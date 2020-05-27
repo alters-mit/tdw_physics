@@ -3,8 +3,8 @@ import numpy as np
 import random
 from tdw.tdw_utils import TDWUtils
 from tdw.librarian import ModelLibrarian, HDRISkyboxLibrarian
-from tdw.output_data import OutputData, Transforms, Rigidbodies
-from tdw_physics.rigidbodies_dataset import TransformsDataset
+from tdw.output_data import OutputData, Transforms
+from tdw_physics.rigidbodies_dataset import RigidbodiesDataset
 from tdw_physics.util import get_args
 
 
@@ -38,7 +38,7 @@ class _Sector:
         return TDWUtils.array_to_vector3(TDWUtils.get_random_point_in_circle(center=self.c_1, radius=self.RADIUS))
 
 
-class Shadows(TransformsDataset):
+class Shadows(RigidbodiesDataset):
     """
     Move a ball to and from shadowed areas.
     """
@@ -95,16 +95,17 @@ class Shadows(TransformsDataset):
         commands = []
         # Add the ball.
         mass = random.uniform(1, 4)
-        commands.extend([self.add_transforms_object(record=self._ball,
-                                                    position=self._p0,
-                                                    rotation=TDWUtils.VECTOR3_ZERO,
-                                                    o_id=self._ball_id),
-                         {"$type": "scale_object",
+        commands.extend(self.add_physics_object(record=self._ball,
+                                                position=self._p0,
+                                                rotation=TDWUtils.VECTOR3_ZERO,
+                                                o_id=self._ball_id,
+                                                mass=mass,
+                                                dynamic_friction=random.uniform(0, 0.1),
+                                                static_friction=random.uniform(0, 0.1),
+                                                bounciness=random.uniform(0, 0.1)))
+        commands.extend([{"$type": "scale_object",
                           "scale_factor": {"x": self._BALL_SCALE, "y": self._BALL_SCALE, "z": self._BALL_SCALE},
                           "id": self._ball_id},
-                         {"$type": "set_mass",
-                          "id": self._ball_id,
-                          "mass": mass},
                          {"$type": "rotate_object_by",
                           "angle": random.uniform(30, 45),
                           "id": self._ball_id,
