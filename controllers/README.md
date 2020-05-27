@@ -24,7 +24,7 @@ The "table controllers" have an additional argument:
 | --------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | Toy Collisions  | 2-3 "toy" objects spawn in a room. One object collides with another. | `toy_collisions.py`                                          |
 | Occlusion       | Two objects and a moving camera. One object occludes the other. | `occlusion.py`                                               |
-| Permanence      | An object moves behind an occluder, then reemerges on the other side. |                                                              |
+| Permanence      | An object moves behind an occluder, then reemerges on the other side. | `permanence.py`                                              |
 | Shadows         | An object moves (e.g. rolls) into or out of a shadow or spotlight |                                                              |
 | Falling         | A table and table settings (chairs, plates, etc.) are generated. In the scripted scene, the setup is mostly pre-assigned. In the proc-gen scene, the setup is procedural.<br/><br/>Launch small objects into the air and let them fall. | `table_scripted.py --scenario fall`<br/>*and*<br/>`table_proc_gen.py --scenario fall` |
 | Sliding/Rolling | A table and table settings (chairs, plates, etc.) are generated. In the scripted scene, the setup is mostly pre-assigned. In the proc-gen scene, the setup is procedural.<br><br>Tip the table and let the objects slide and roll off of it. | `table_scripted.py --scenario tilt`<br>*and*<br>`table_proc_gen.py --scenario tilt` |
