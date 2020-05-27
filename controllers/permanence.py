@@ -72,21 +72,24 @@ class Permanence(RigidbodiesDataset):
     def get_trial_initialization_commands(self) -> List[dict]:
         commands = []
         # Add the ball.
+        mass = random.uniform(1, 4)
         commands.extend(self.add_physics_object(record=self._ball,
                                                 position={"x": random.uniform(-2.2, -2.6),
                                                           "y": 0,
-                                                          "z": random.uniform(1.5, 1.6)},
+                                                          "z": random.uniform(1.25, 1.45)},
                                                 rotation=TDWUtils.VECTOR3_ZERO,
                                                 o_id=self._ball_id,
-                                                mass=random.uniform(1, 4),
+                                                mass=mass,
                                                 dynamic_friction=random.uniform(0, 0.1),
                                                 static_friction=random.uniform(0, 0.1),
                                                 bounciness=random.uniform(0, 0.1)))
         # Set a random material.
         commands.extend(TDWUtils.set_visual_material(self, self._ball.substructure, self._ball_id,
                                                      random.choice(self._BALL_MATERIALS)))
+
         # Set a random mass and color.
         # Rotate the object and apply a force twice (to give it a spin).
+        # Set the force as a function of the mass.
         commands.extend([{"$type": "scale_object",
                           "scale_factor": {"x": self._BALL_SCALE, "y": self._BALL_SCALE, "z": self._BALL_SCALE},
                           "id": self._ball_id},
@@ -105,7 +108,7 @@ class Permanence(RigidbodiesDataset):
                           "position": {"x": 100, "y": 0, "z": 0},
                           "id": self._ball_id},
                          {"$type": "apply_force_magnitude_to_object",
-                          "magnitude": random.uniform(20, 30),
+                          "magnitude": random.uniform(10 * mass, (10 * mass) + 10),
                           "id": self._ball_id}])
         # Add an occluder.
         occ_record: ModelRecord = random.choice(self._occluders)
@@ -117,7 +120,7 @@ class Permanence(RigidbodiesDataset):
                                                 dynamic_friction=random.uniform(0.9, 1),
                                                 static_friction=random.uniform(0.9, 1),
                                                 bounciness=random.uniform(0, 0.1)))
-        s_occ = TDWUtils.get_unit_scale(occ_record) * random.uniform(1.25, 1.5)
+        s_occ = TDWUtils.get_unit_scale(occ_record) * random.uniform(0.8, 1.2)
         commands.extend([{"$type": "scale_object",
                           "scale_factor": {"x": s_occ, "y": s_occ, "z": s_occ},
                           "id": self._occ_id},
@@ -133,7 +136,7 @@ class Permanence(RigidbodiesDataset):
         commands.extend([{"$type": "teleport_avatar_to",
                           "position": {"x": random.uniform(-0.05, 0.05),
                                        "y": random.uniform(occ_y * 0.3, occ_y * 0.8),
-                                       "z": random.uniform(-2.2, -2.4)}},
+                                       "z": random.uniform(-1.5, -1.8)}},
                          {"$type": "look_at",
                           "object_id": self._occ_id,
                           "use_centroid": True},
