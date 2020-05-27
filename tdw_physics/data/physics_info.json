@@ -1,4 +1,28 @@
 {
+  "703464_elephant": {
+    "bounciness": 0.1,
+    "dynamic_friction": 0.47,
+    "library": "models_full.json",
+    "mass": 1246.9717025756836,
+    "name": "703464_elephant",
+    "static_friction": 0.47
+  },
+  "amphora_jar_vase": {
+    "bounciness": 0.2,
+    "dynamic_friction": 0.48,
+    "library": "models_full.json",
+    "mass": 8.130332238972187,
+    "name": "amphora_jar_vase",
+    "static_friction": 0.48
+  },
+  "animal_dog_rtsit_1280": {
+    "bounciness": 0.1,
+    "dynamic_friction": 0.47,
+    "library": "models_full.json",
+    "mass": 1.4751643873751163,
+    "name": "animal_dog_rtsit_1280",
+    "static_friction": 0.47
+  },
   "b03_696615_object001": {
     "bounciness": 0.35,
     "dynamic_friction": 0.43,
@@ -23,6 +47,30 @@
     "name": "b03_bucket",
     "static_friction": 0.4
   },
+  "b03_cow": {
+    "bounciness": 0.1,
+    "dynamic_friction": 0.47,
+    "library": "models_full.json",
+    "mass": 91.5872573852539,
+    "name": "b03_cow",
+    "static_friction": 0.47
+  },
+  "b03_db_apps_tech_08_04": {
+    "bounciness": 0.35,
+    "dynamic_friction": 0.43,
+    "library": "models_full.json",
+    "mass": 176.5315718203783,
+    "name": "b03_db_apps_tech_08_04",
+    "static_friction": 0.52
+  },
+  "b03_folding-screen-panel-room-divider": {
+    "bounciness": 0.58,
+    "dynamic_friction": 0.35,
+    "library": "models_full.json",
+    "mass": 243.31148475408554,
+    "name": "b03_folding-screen-panel-room-divider",
+    "static_friction": 0.4
+  },
   "b03_loafbread": {
     "bounciness": 0.1,
     "dynamic_friction": 0.47,
@@ -45,6 +93,30 @@
     "library": "models_full.json",
     "mass": 6.3887327909469604,
     "name": "b03_pot",
+    "static_friction": 0.47
+  },
+  "b03_sheep": {
+    "bounciness": 0.1,
+    "dynamic_friction": 0.47,
+    "library": "models_full.json",
+    "mass": 11.759215593338013,
+    "name": "b03_sheep",
+    "static_friction": 0.47
+  },
+  "b03_worldglobe": {
+    "bounciness": 0.58,
+    "dynamic_friction": 0.35,
+    "library": "models_full.json",
+    "mass": 18.63477509468794,
+    "name": "b03_worldglobe",
+    "static_friction": 0.4
+  },
+  "b03_zebra": {
+    "bounciness": 0.1,
+    "dynamic_friction": 0.47,
+    "library": "models_full.json",
+    "mass": 49.32248592376709,
+    "name": "b03_zebra",
     "static_friction": 0.47
   },
   "b04_at-0002": {
@@ -87,6 +159,14 @@
     "name": "b04_fruit_basket_11",
     "static_friction": 0.65
   },
+  "b04_kenmore_refr_70419": {
+    "bounciness": 0.35,
+    "dynamic_friction": 0.43,
+    "library": "models_full.json",
+    "mass": 788.7615594267845,
+    "name": "b04_kenmore_refr_70419",
+    "static_friction": 0.52
+  },
   "b04_mesh": {
     "bounciness": 0.1,
     "dynamic_friction": 0.47,
@@ -102,6 +182,14 @@
     "mass": 2.227786430157721,
     "name": "b04_plastic_bucket",
     "static_friction": 0.48
+  },
+  "b04_stringer": {
+    "bounciness": 0.58,
+    "dynamic_friction": 0.35,
+    "library": "models_full.json",
+    "mass": 125.750233232975,
+    "name": "b04_stringer",
+    "static_friction": 0.4
   },
   "b04_wicker_tray": {
     "bounciness": 0.05,
@@ -135,12 +223,76 @@
     "name": "b05_coal_hod",
     "static_friction": 0.52
   },
+  "b05_elsafe_infinity_ii": {
+    "bounciness": 0.35,
+    "dynamic_friction": 0.43,
+    "library": "models_full.json",
+    "mass": 30.872980374842882,
+    "name": "b05_elsafe_infinity_ii",
+    "static_friction": 0.52
+  },
+  "b05_gibson_j-45": {
+    "bounciness": 0.58,
+    "dynamic_friction": 0.35,
+    "library": "models_full.json",
+    "mass": 3.690580897964537,
+    "name": "b05_gibson_j-45",
+    "static_friction": 0.4
+  },
+  "b05_heavybag": {
+    "bounciness": 0.1,
+    "dynamic_friction": 0.47,
+    "library": "models_full.json",
+    "mass": 136.08215004205704,
+    "name": "b05_heavybag",
+    "static_friction": 0.47
+  },
+  "b05_kitchen_aid_toster": {
+    "bounciness": 0.35,
+    "dynamic_friction": 0.43,
+    "library": "models_full.json",
+    "mass": 3.4546338045038283,
+    "name": "b05_kitchen_aid_toster",
+    "static_friction": 0.52
+  },
+  "b05_pc-computer-printer-1": {
+    "bounciness": 0.7,
+    "dynamic_friction": 0.44,
+    "library": "models_full.json",
+    "mass": 0.42666654218919575,
+    "name": "b05_pc-computer-printer-1",
+    "static_friction": 0.48
+  },
+  "b05_safe_box": {
+    "bounciness": 0.35,
+    "dynamic_friction": 0.43,
+    "library": "models_full.json",
+    "mass": 26.848166920244694,
+    "name": "b05_safe_box",
+    "static_friction": 0.52
+  },
   "b05_table_new": {
     "bounciness": 0.35,
     "dynamic_friction": 0.43,
     "library": "models_full.json",
     "mass": 25.596065307036042,
     "name": "b05_table_new",
+    "static_friction": 0.52
+  },
+  "b05_ticketmachine": {
+    "bounciness": 0.35,
+    "dynamic_friction": 0.43,
+    "library": "models_full.json",
+    "mass": 547.6246210932732,
+    "name": "b05_ticketmachine",
+    "static_friction": 0.52
+  },
+  "b05_trophy": {
+    "bounciness": 0.35,
+    "dynamic_friction": 0.43,
+    "library": "models_full.json",
+    "mass": 12.681027888320386,
+    "name": "b05_trophy",
     "static_friction": 0.52
   },
   "b06_brass_ornate_tray": {
@@ -150,6 +302,22 @@
     "mass": 0.9894655470270663,
     "name": "b06_brass_ornate_tray",
     "static_friction": 0.52
+  },
+  "b06_firehydrant_lod0": {
+    "bounciness": 0.35,
+    "dynamic_friction": 0.43,
+    "library": "models_full.json",
+    "mass": 4.484214826952666,
+    "name": "b06_firehydrant_lod0",
+    "static_friction": 0.52
+  },
+  "backpack": {
+    "bounciness": 0.1,
+    "dynamic_friction": 0.47,
+    "library": "models_full.json",
+    "mass": 16.647519394755363,
+    "name": "backpack",
+    "static_friction": 0.47
   },
   "blue_basket": {
     "bounciness": 0.05,
@@ -167,13 +335,21 @@
     "name": "boconcept_lugo_dining_table_vray1.5",
     "static_friction": 0.4
   },
-  "bowl_wood_a_01": {
-    "bounciness": 0.5,
-    "dynamic_friction": 0.6,
+  "bongo_drum_hr_blend": {
+    "bounciness": 0.58,
+    "dynamic_friction": 0.35,
     "library": "models_full.json",
-    "mass": 0.75,
+    "mass": 9.623807715252042,
+    "name": "bongo_drum_hr_blend",
+    "static_friction": 0.4
+  },
+  "bowl_wood_a_01": {
+    "bounciness": 0.58,
+    "dynamic_friction": 0.35,
+    "library": "models_full.json",
+    "mass": 9.824297055602074,
     "name": "bowl_wood_a_01",
-    "static_friction": 0.6
+    "static_friction": 0.4
   },
   "bread": {
     "bounciness": 0.1,
@@ -223,6 +399,14 @@
     "name": "bucketnew",
     "static_friction": 0.48
   },
+  "buddah": {
+    "bounciness": 0.2,
+    "dynamic_friction": 0.48,
+    "library": "models_full.json",
+    "mass": 69.95250660181046,
+    "name": "buddah",
+    "static_friction": 0.48
+  },
   "ceramic_pot": {
     "bounciness": 0.625,
     "dynamic_friction": 0.47,
@@ -263,6 +447,14 @@
     "name": "chair_willisau_riale",
     "static_friction": 0.4
   },
+  "chista_slice_of_teak_table": {
+    "bounciness": 0.58,
+    "dynamic_friction": 0.35,
+    "library": "models_full.json",
+    "mass": 45.9468711912632,
+    "name": "chista_slice_of_teak_table",
+    "static_friction": 0.4
+  },
   "coffeecup004": {
     "bounciness": 0.4,
     "dynamic_friction": 0.3,
@@ -293,6 +485,46 @@
     "library": "models_full.json",
     "mass": 0.08737159479642287,
     "name": "cup",
+    "static_friction": 0.47
+  },
+  "dice": {
+    "bounciness": 0.7,
+    "dynamic_friction": 0.44,
+    "library": "models_full.json",
+    "mass": 0.0017000989100779407,
+    "name": "dice",
+    "static_friction": 0.48
+  },
+  "dishwasher_4": {
+    "bounciness": 0.35,
+    "dynamic_friction": 0.43,
+    "library": "models_full.json",
+    "mass": 276.53494134545326,
+    "name": "dishwasher_4",
+    "static_friction": 0.52
+  },
+  "dumbbell": {
+    "bounciness": 0.35,
+    "dynamic_friction": 0.43,
+    "library": "models_full.json",
+    "mass": 0.40857239087927155,
+    "name": "dumbbell",
+    "static_friction": 0.52
+  },
+  "dumbell_fix": {
+    "bounciness": 0.35,
+    "dynamic_friction": 0.43,
+    "library": "models_full.json",
+    "mass": 0.789733569836244,
+    "name": "dumbell_fix",
+    "static_friction": 0.52
+  },
+  "elephant_bowl": {
+    "bounciness": 0.625,
+    "dynamic_friction": 0.47,
+    "library": "models_full.json",
+    "mass": 26.49571567773819,
+    "name": "elephant_bowl",
     "static_friction": 0.47
   },
   "emeco_navy_chair": {
@@ -359,6 +591,22 @@
     "name": "int_kitchen_accessories_le_creuset_bowl_30cm",
     "static_friction": 0.47
   },
+  "kayak_small": {
+    "bounciness": 0.7,
+    "dynamic_friction": 0.44,
+    "library": "models_full.json",
+    "mass": 24.102983847260475,
+    "name": "kayak_small",
+    "static_friction": 0.48
+  },
+  "kettle": {
+    "bounciness": 0.35,
+    "dynamic_friction": 0.43,
+    "library": "models_full.json",
+    "mass": 3.486727522686124,
+    "name": "kettle",
+    "static_friction": 0.52
+  },
   "knife1": {
     "bounciness": 0.35,
     "dynamic_friction": 0.43,
@@ -368,12 +616,12 @@
     "static_friction": 0.52
   },
   "lapalma_stil_chair": {
-    "bounciness": 0.35,
-    "dynamic_friction": 0.43,
-    "library": "models_core.json",
-    "mass": 27.018904257565737,
+    "bounciness": 0.58,
+    "dynamic_friction": 0.35,
+    "library": "models_full.json",
+    "mass": 22.062773890793324,
     "name": "lapalma_stil_chair",
-    "static_friction": 0.52
+    "static_friction": 0.4
   },
   "linen_dining_chair": {
     "bounciness": 0.58,
@@ -383,6 +631,14 @@
     "name": "linen_dining_chair",
     "static_friction": 0.4
   },
+  "microwave": {
+    "bounciness": 0.35,
+    "dynamic_friction": 0.43,
+    "library": "models_full.json",
+    "mass": 38.91970179975033,
+    "name": "microwave",
+    "static_friction": 0.52
+  },
   "moet_chandon_bottle_vray": {
     "bounciness": 0.5,
     "dynamic_friction": 0.45,
@@ -390,6 +646,14 @@
     "mass": 0.39413952617906034,
     "name": "moet_chandon_bottle_vray",
     "static_friction": 0.65
+  },
+  "naughtone_pinch_stool_chair": {
+    "bounciness": 0.58,
+    "dynamic_friction": 0.35,
+    "library": "models_full.json",
+    "mass": 79.98375110328197,
+    "name": "naughtone_pinch_stool_chair",
+    "static_friction": 0.4
   },
   "orange": {
     "bounciness": 0.1,
@@ -406,6 +670,14 @@
     "mass": 1.0,
     "name": "peppermill",
     "static_friction": 0.4
+  },
+  "pillow07": {
+    "bounciness": 0.05,
+    "dynamic_friction": 0.48,
+    "library": "models_full.json",
+    "mass": 0.7548782899975777,
+    "name": "pillow07",
+    "static_friction": 0.48
   },
   "plate05": {
     "bounciness": 0.625,
@@ -431,6 +703,14 @@
     "name": "quatre_dining_table",
     "static_friction": 0.1
   },
+  "radiator_001": {
+    "bounciness": 0.35,
+    "dynamic_friction": 0.43,
+    "library": "models_full.json",
+    "mass": 344.5596630871296,
+    "name": "radiator_001",
+    "static_friction": 0.52
+  },
   "restoration_hardware_salvaged_tables": {
     "bounciness": 0.58,
     "dynamic_friction": 0.35,
@@ -439,6 +719,14 @@
     "name": "restoration_hardware_salvaged_tables",
     "static_friction": 0.4
   },
+  "safetyvault": {
+    "bounciness": 0.35,
+    "dynamic_friction": 0.43,
+    "library": "models_full.json",
+    "mass": 3085.417764186859,
+    "name": "safetyvault",
+    "static_friction": 0.52
+  },
   "salt_shaker": {
     "bounciness": 0.5,
     "dynamic_friction": 0.4,
@@ -446,6 +734,14 @@
     "mass": 1.0,
     "name": "salt_shaker",
     "static_friction": 0.4
+  },
+  "satiro_sculpture": {
+    "bounciness": 0.2,
+    "dynamic_friction": 0.48,
+    "library": "models_full.json",
+    "mass": 149.93416786193848,
+    "name": "satiro_sculpture",
+    "static_friction": 0.48
   },
   "serving_bowl": {
     "bounciness": 0.625,
@@ -463,6 +759,14 @@
     "name": "showroomfinland_tuisku_50",
     "static_friction": 0.4
   },
+  "skillet_closed": {
+    "bounciness": 0.35,
+    "dynamic_friction": 0.43,
+    "library": "models_full.json",
+    "mass": 6.863967394456267,
+    "name": "skillet_closed",
+    "static_friction": 0.52
+  },
   "skillet_open_no_lid": {
     "bounciness": 0.35,
     "dynamic_friction": 0.43,
@@ -479,12 +783,76 @@
     "name": "spoon1",
     "static_friction": 0.52
   },
+  "suitcase": {
+    "bounciness": 0.7,
+    "dynamic_friction": 0.44,
+    "library": "models_full.json",
+    "mass": 24.21727456152439,
+    "name": "suitcase",
+    "static_friction": 0.48
+  },
   "teatray": {
     "bounciness": 0.58,
     "dynamic_friction": 0.35,
     "library": "models_full.json",
     "mass": 1.4132960722781718,
     "name": "teatray",
+    "static_friction": 0.4
+  },
+  "tireamericanclassic": {
+    "bounciness": 0.7,
+    "dynamic_friction": 0.47,
+    "library": "models_full.json",
+    "mass": 3.102920116856694,
+    "name": "tireamericanclassic",
+    "static_friction": 0.47
+  },
+  "toaster": {
+    "bounciness": 0.35,
+    "dynamic_friction": 0.43,
+    "library": "models_full.json",
+    "mass": 1.3320143340388313,
+    "name": "toaster",
+    "static_friction": 0.52
+  },
+  "towel-radiator-2": {
+    "bounciness": 0.35,
+    "dynamic_friction": 0.43,
+    "library": "models_full.json",
+    "mass": 11.498816078528762,
+    "name": "towel-radiator-2",
+    "static_friction": 0.52
+  },
+  "trapezoidal_table": {
+    "bounciness": 0.58,
+    "dynamic_friction": 0.35,
+    "library": "models_full.json",
+    "mass": 50.188350677490234,
+    "name": "trapezoidal_table",
+    "static_friction": 0.4
+  },
+  "trashbin": {
+    "bounciness": 0.7,
+    "dynamic_friction": 0.44,
+    "library": "models_full.json",
+    "mass": 1.6873126570135355,
+    "name": "trashbin",
+    "static_friction": 0.48
+  },
+  "trunck": {
+    "bounciness": 0.58,
+    "dynamic_friction": 0.35,
+    "library": "models_full.json",
+    "mass": 374.6021693944931,
+    "name": "trunck",
+    "static_friction": 0.4
+  },
+  "trunk_6810-0009": {
+    "bounciness": 0.58,
+    "dynamic_friction": 0.35,
+    "library": "models_full.json",
+    "mass": 294.00393158197403,
+    "name": "trunk_6810-0009",
     "static_friction": 0.4
   },
   "vk0002_teaspoon": {
@@ -637,6 +1005,14 @@
     "library": "models_full.json",
     "mass": 0.017038713367583114,
     "name": "vk0080_soupspoon",
+    "static_friction": 0.52
+  },
+  "whirlpool_akzm7630ix": {
+    "bounciness": 0.35,
+    "dynamic_friction": 0.43,
+    "library": "models_full.json",
+    "mass": 132.10703812539577,
+    "name": "whirlpool_akzm7630ix",
     "static_friction": 0.52
   },
   "wine_box_vray": {
