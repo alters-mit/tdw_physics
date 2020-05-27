@@ -217,15 +217,42 @@ class TableScriptedTilt(_TableScripted):
             return []
 
 
+class TableScriptedFalling(_TableScripted):
+    """
+    Small objects fly up and then fall down.
+    """
+
+    def __init__(self, port: int = 1071):
+        super().__init__(port=port)
+        # Commands to be sent per-frame.
+        self._per_frame_commands: List[List[dict]] = []
+
+    def get_trial_initialization_commands(self) -> List[dict]:
+        commands = super().get_trial_initialization_commands()
+
+        del self._per_frame_commands[:]
+        self._per_frame_commands = self.get_falling_commands()
+        return commands
+
+    def get_per_frame_commands(self, resp: List[bytes], frame: int) -> List[dict]:
+        if len(self._per_frame_commands) > 0:
+            return self._per_frame_commands.pop(0)
+        else:
+            return []
+
+
 if __name__ == "__main__":
     from argparse import ArgumentParser
     parser = ArgumentParser()
     parser.add_argument("--dir", type=str, default="D:/table_scripted_tilt", help="Root output directory.")
     parser.add_argument("--num", type=int, default=1500, help="The number of trials in the dataset.")
     parser.add_argument("--temp", type=str, default="D:/temp.hdf5", help="Temp path for incomplete files.")
-    parser.add_argument("--scenario", type=str, choices=["tilt"], default="tilt", help="The type of scenario")
+    parser.add_argument("--scenario", type=str, choices=["tilt", "fall"], default="tilt", help="The type of scenario")
 
     args = parser.parse_args()
     if args.scenario == "tilt":
         c = TableScriptedTilt()
+        c.run(num=args.num, output_dir=args.dir, temp_path=args.temp)
+    elif args.scenario == "fall":
+        c = TableScriptedFalling()
         c.run(num=args.num, output_dir=args.dir, temp_path=args.temp)
