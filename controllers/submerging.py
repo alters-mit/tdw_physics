@@ -11,6 +11,27 @@ from typing import List, Dict, Tuple
 import h5py
 
 
+class _FluidType:
+    """
+    Metadata for scene object physics. Specifies mass and friction values for objects.
+    """
+    def __init__(self,
+                 fluid_type: str,
+                 viscosity: float,
+                 adhesion: float,
+                 cohesion: float):
+        """
+        :param fluid_type: Name of the fluid type.
+        :param viscosity: The viscosity value of the fluid.
+        :param adhesion: The adhesion value of the fluid.
+        :param cohesion: The cohesion value of the fluid.
+        """
+        self.fluid_type = fluid_type
+        self.viscosity = viscosity
+        self.adhesion = adhesion
+        self.cohesion = cohesion
+
+
 """
 Create a fluid "container" with the NVIDIA Flex physics engine. Run several trials, dropping ball objects of increasing mass into the fluid.
 """
@@ -19,44 +40,49 @@ class Submerge(TransformsDataset):
 
     def __init__(self):
         self.model_list = [
-                      "b03_db_apps_tech_08_04",
-                      "trashbin",
+                      #"b03_db_apps_tech_08_04",
+                      #"trashbin",
                       "trunck",
                       "whirlpool_akzm7630ix",
                       "satiro_sculpture",
-                      "towel-radiator-2",
-                      "b03_folding-screen-panel-room-divider",
-                      "naughtone_pinch_stool_chair",
-                      "microwave",
-                      "trunk_6810-0009",
-                      "suitcase",
-                      "kayak_small",
-                      "elephant_bowl",
-                      "trapezoidal_table",
-                      "b05_pc-computer-printer-1",
+                      #"towel-radiator-2",
+                      #"b03_folding-screen-panel-room-divider",
+                      #"naughtone_pinch_stool_chair",
+                      #"microwave",
+                      #"trunk_6810-0009",
+                      #"suitcase",
+                      #"kayak_small",
+                      #"elephant_bowl",
+                      #"trapezoidal_table",
+                      #"b05_pc-computer-printer-1",
                       "dishwasher_4",
-                      "chista_slice_of_teak_table",
+                      #"chista_slice_of_teak_table",
                       "buddah",
-                      "b05_elsafe_infinity_ii",
-                      "backpack",
-                      "b06_firehydrant_lod0",
+                      #"b05_elsafe_infinity_ii",
+                      #"backpack",
+                      #"b06_firehydrant_lod0",
                       "b05_ticketmachine",
-                      "b05_trophy",
-                      "b05_kitchen_aid_toster",
+                      #"b05_trophy",
+                      #"b05_kitchen_aid_toster",
                       "b05_heavybag",
-                      "bongo_drum_hr_blend",
+                      #"bongo_drum_hr_blend",
                       "b03_worldglobe",
                       #"ceramic_pot",
                       "b04_kenmore_refr_70419",
-                      "b03_zebra",
-                      "b05_gibson_j-45",
-                      "b03_cow",
-                      "b03_sheep",
-                      "b04_stringer"
+                      #"b03_zebra",
+                      #"b05_gibson_j-45",
+                      #"b03_cow",
+                      #"b03_sheep",
+                      #"b04_stringer"
                      ]
 
         self.fluid_id = None
         self.pool_id = None
+
+        self.fluid_type_names = []
+        self.fluid_types: Dict[str, _FluidType] = {}
+        self.fluid_type_selection = "water"
+
         self.special_lib = ModelLibrarian("models_special.json")
         self.full_lib = ModelLibrarian("models_full.json")
 
@@ -66,6 +92,21 @@ class Submerge(TransformsDataset):
     def get_scene_initialization_commands(self) -> List[dict]:
         if system() != "Windows":
             raise Exception("Flex fluids are only supported in Windows (see Documentation/misc_frontend/flex.md)")
+
+        # Parse the data for the available fluid types.
+        fluid_type_data = json.loads(Path("fluid_types.json").read_text())
+        for o in fluid_type_data:
+            combo = _FluidType(fluid_type = o,
+                               viscosity=fluid_type_data[o]["viscosity"],
+                               adhesion=fluid_type_data[o]["adhesion"],
+                               cohesion=fluid_type_data[o]["cohesion"],
+            self.fluid_types[o] = combo
+
+            # create the list we will randomly seklect from each trial.
+            self.fluid_type_names.append(o)
+
+        # Randomly select a fluid type
+        self.fluid_type_selection = choice(self.fluid_type_names)
 
         commands = [self.get_add_scene(scene_name="tdw_room_2018"),
                     {"$type": "set_aperture",
@@ -86,18 +127,19 @@ class Submerge(TransformsDataset):
                           "static_friction": 0.1,
                           "dynamic_friction": 0.1,
                           "particle_friction": 0.1,
-                          "viscocity": 0.001,
-                          "cohesion": 0.0015,
+                          "viscocity": 5.0,
+                          "adhesion": 0.15,
+                          "cohesion": 0.01,
                           "radius": 0.1,
                           "fluid_rest": 0.05,
                           "damping": 0.01,
                           "substep_count": 5,
-                          "iteration_count": 5,
+                          "iteration_count": 8,
                           "buoyancy": 1.0},
                          {"$type": "set_time_step", 
                          "time_step": 0.005}
                         ])
-
+ 
         return commands
 
 
@@ -112,12 +154,17 @@ class Submerge(TransformsDataset):
                                                    rotation={"x": 0, "y": 0, "z": 0},
                                                    o_id=self.pool_id))
         trial_commands.extend([{"$type": "scale_object", 
-                          "id": self.pool_id, 
-                          "scale_factor": {"x": 1.5, "y": 3.0, "z":1.5}}, 
-                         {"$type": "set_kinematic_state", 
-                          "id": self.pool_id, 
-                          "is_kinematic": True, 
-                          "use_gravity": False}])
+                                "id": self.pool_id, 
+                                "scale_factor": {"x": 1.5, "y": 3.0, "z":1.5}}, 
+                               {"$type": "set_kinematic_state", 
+                                "id": self.pool_id, 
+                                "is_kinematic": True, 
+                                "use_gravity": False}
+                               {"$type": "update_flex_container", 
+                                "container_id": 1,
+                                "viscosity": self.fluid_types[self.fluid_type_selection].viscosity,
+                                "adhesion": self.fluid_types[self.fluid_type_selection].adhesion,
+                                "cohesion": self.fluid_types[self.fluid_type_selection].cohesion}])
 
 
         # Destroy the previous fluid object, if is has been assigned.
@@ -128,7 +175,7 @@ class Submerge(TransformsDataset):
         # Select an object at random.
         model = choice(self.model_list)
         model_record = self.full_lib.get_record(model)
-        print("Starting object: " + model_record.name)
+
         # Recreate fluid.
         trial_commands.extend(self.create_fluid())
 
@@ -183,7 +230,9 @@ class Submerge(TransformsDataset):
                           "particle_spacing": 0.05},
                          {"$type": "assign_flex_container",
                            "id": fluid_id,
-                           "container_id": 0, "fluid_container": True},
+                           "container_id": 0, 
+                           "fluid_container": True,
+                           "fluid_type": self.fluid_type_selection},
                          {"$type": "step_physics", "frames": 500}]
         return command
 
