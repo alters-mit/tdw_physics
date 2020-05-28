@@ -28,13 +28,15 @@ class Dataset(Controller, ABC):
         # IDs of the objects in the current trial.
         self.object_ids = np.empty(dtype=int, shape=0)
 
-    def run(self, num: int, output_dir: str, temp_path: str) -> None:
+    def run(self, num: int, output_dir: str, temp_path: str, width: int, height: int) -> None:
         """
         Create the dataset.
 
         :param num: The number of trials in the dataset.
         :param output_dir: The root output directory.
         :param temp_path: Temporary path to a file being written.
+        :param width: Screen width in pixels.
+        :param height: Screen height in pixels.
         """
 
         pbar = tqdm(total=num)
@@ -50,8 +52,8 @@ class Dataset(Controller, ABC):
 
         # Global commands for all physics datasets.
         commands = [{"$type": "set_screen_size",
-                     "width": 256,
-                     "height": 256},
+                     "width": width,
+                     "height": height},
                     {"$type": "set_render_quality",
                      "render_quality": 5},
                     {"$type": "set_physics_solver_iterations",

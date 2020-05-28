@@ -206,4 +206,4 @@ class Stability(RigidbodiesDataset):
 
 if __name__ == "__main__":
     args = get_args("stability")
-    Stability().run(num=args.num, output_dir=args.dir, temp_path=args.temp)
+    Stability().run(num=args.num, output_dir=args.dir, temp_path=args.temp, width=args.width, height=args.height)
