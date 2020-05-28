@@ -171,8 +171,8 @@ class Shadows(RigidbodiesDataset):
         d0 = TDWUtils.get_distance(self._p0, self._p1)
         p_med = np.array([(self._p0["x"] + self._p1["x"]) / 2, 0, (self._p0["z"] + self._p1["z"]) / 2])
         p_cen = np.array([0, 0, 0])
-        a_pos = p_med + ((p_cen - p_med) / np.abs(np.linalg.norm(p_cen - p_med)) * (d0 + random.uniform(0.3, 0.4)))
-        a_pos[1] = random.uniform(0.3, 0.6)
+        a_pos = p_med + ((p_cen - p_med) / np.abs(np.linalg.norm(p_cen - p_med)) * (d0 + random.uniform(-0.01, -0.05)))
+        a_pos[1] = random.uniform(1.2, 1.5)
         commands.extend([{"$type": "teleport_avatar_to",
                           "position": TDWUtils.array_to_vector3(a_pos)},
                          {"$type": "look_at_position",
