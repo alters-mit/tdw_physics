@@ -93,4 +93,4 @@ class Occlusion(TransformsDataset):
 
 if __name__ == "__main__":
     args = get_args("occlusion")
-    Occlusion().run(num=args.num, output_dir=args.dir, temp_path=args.temp)
+    Occlusion().run(num=args.num, output_dir=args.dir, temp_path=args.temp, width=args.width, height=args.height)
