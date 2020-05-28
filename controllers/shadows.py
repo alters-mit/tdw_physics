@@ -47,11 +47,39 @@ class Shadows(RigidbodiesDataset):
     Use HDRI skyboxes and visual materials (for the ball) to change the lighting per trial.
     """
 
-    _BALL_SCALE = 0.3
-    _BALL_MATERIALS = ["aluminium_brushed", "aluminium_clean", "anodized_aluminium", "concrete_chipped_cracked",
-                       "concrete_terrazzo", "fabric_vinyl_heavy", "gold_natural", "marble_crema_valencia",
-                       "marble_griotte", "plastic_stripes", "plastic_vinyl_glossy_green", "plastic_vinyl_glossy_blue",
-                       "plastic_vinyl_glossy_orange"]
+    _BALL_SCALE = 0.5
+    _BALL_MATERIALS = ["aluminium_brushed", "aluminium_clean", "alien_rock_coral_formation", "alien_soil_acid_puddles",
+                       "aluminium_foil", "antique_bronze_darkened", "bull_leather_large_worn",
+                       "bull_leather_medium_grain", "bull_leather_medium_worn", "car_metallic_fabric_cover_crumpled",
+                       "car_synthetic_net", "chrome_v_shiny", "chrome2", "concrete", "concrete_raw_eroded",
+                       "copper_brushed", "cotton_canvas_washed_out", "cotton_check_black", "cotton_fabric_printed",
+                       "cotton_hot_orange", "cotton_linen_woven_shorn_brush", "cotton_mercerised_grey",
+                       "cotton_natural_rough", "dmd_metallic_fine", "dmls_cobalt_chrome_rough", "dmls_silver_sanded",
+                       "fabric_vinyl_heavy", "fabric_carpet_grey", "fabric_felt", "glass_clear", "gold_clean",
+                       "gold_leaf_fine", "iron_anvil_rusty", "iron_bumped", "iron_rusty", "kevlar_plain_weave",
+                       "lamb_leather", "leather_bull", "leather_fine_grain", "leather_fine_grain_pebbled",
+                       "leather_pebbled", "linen_burlap_irregular", "linen_viscose_classic_pattern",
+                       "linen_viscose_woven_cloth", "linen_woven", "marble_anemone_grey", "marble_crema_valencia",
+                       "marble_green", "marble_griotte", "metal_brushed_copper", "metal_cast", "metal_grater",
+                       "metal_iron_damaged", "metal_molten_drop_3d_print", "metal_round_mesh_layered",
+                       "metal_sandblasted", "metal_steel_galvanized_spangle", "military_camouflage",
+                       "nappa_leather_pill_quilt", "nappa_leather_switch_quilt", "nappa_leather_worn",
+                       "plaster_facade_grey", "plastic_diamond_grid_grain", "plastic_dot_recessed_grain",
+                       "plastic_grain", "plastic_stripes", "plastic_vinyl_glossy_green", "plastic_vinyl_glossy_blue",
+                       "plastic_vinyl_glossy_gray", "plastic_vinyl_glossy_green", "plastic_vinyl_glossy_light_gray",
+                       "plastic_vinyl_glossy_orange", "plastic_vinyl_glossy_red", "plastic_vinyl_glossy_white",
+                       "plastic_vinyl_glossy_yellow", "plastic_weave", "polyester_acrylic_nylon_canvas_thick_yarn",
+                       "polyester_check_interlock_pattern", "polyester_fabric_charmeuse",
+                       "polyester_hexagon_pattern_knit", "polyester_honeycomb_mesh_back",
+                       "polyester_lycra_hydrosoft_weave", "polyester_softshell_brushed", "porous_stone_mesh_concretion",
+                       "printed_cotton_rough", "printed_cotton_shirt", "rainbow_anodized_metal", "roughcast_troweled",
+                       "rusty_metal", "slate_raw", "slate_rockery", "sls_titanium", "sls_titanium_honeycomb_pattern",
+                       "sls_titanium_square_pattern", "spandex_printed_fabric", "square_padded_wall",
+                       "stone_cellular_concretion", "stone_mountain_grey", "synthetic_boldweave_ball",
+                       "synthetic_fabric_knit", "synthetic_flipflop_topstitch_diamond", "synthetic_quilted",
+                       "taurillon_leather_medium_worn", "thin_bamboo_blinds", "tiles_hexagon_bees_dirty",
+                       "travertine_persian_vein", "wicker_weave", "wood_american_cherry", "wood_beech_honey",
+                       "wool_tartan_multicolored"]
 
     # These sectors have different lighting at each point, e.g. c_0 is more shadowed than c_1.
     SECTORS = [_Sector(c_0={"x": 0.5, "y": 0, "z": 0}, c_1={"x": -0.5, "y": 0, "z": 0}),
@@ -143,7 +171,7 @@ class Shadows(RigidbodiesDataset):
         d0 = TDWUtils.get_distance(self._p0, self._p1)
         p_med = np.array([(self._p0["x"] + self._p1["x"]) / 2, 0, (self._p0["z"] + self._p1["z"]) / 2])
         p_cen = np.array([0, 0, 0])
-        a_pos = p_med + ((p_cen - p_med) / np.abs(np.linalg.norm(p_cen - p_med)) * (d0 + random.uniform(-0.1, 0.1)))
+        a_pos = p_med + ((p_cen - p_med) / np.abs(np.linalg.norm(p_cen - p_med)) * (d0 + random.uniform(0.3, 0.4)))
         a_pos[1] = random.uniform(0.3, 0.6)
         commands.extend([{"$type": "teleport_avatar_to",
                           "position": TDWUtils.array_to_vector3(a_pos)},
