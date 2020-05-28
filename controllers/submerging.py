@@ -8,7 +8,9 @@ from time import sleep
 from random import choice, uniform
 from platform import system
 from typing import List, Dict, Tuple
+from pathlib import Path
 import h5py
+import json
 
 
 class _FluidType:
@@ -81,7 +83,7 @@ class Submerge(TransformsDataset):
 
         self.fluid_type_names = []
         self.fluid_types: Dict[str, _FluidType] = {}
-        self.fluid_type_selection = "water"
+        self.fluid_type_selection = "flex_water"
 
         self.special_lib = ModelLibrarian("models_special.json")
         self.full_lib = ModelLibrarian("models_full.json")
@@ -99,14 +101,10 @@ class Submerge(TransformsDataset):
             combo = _FluidType(fluid_type = o,
                                viscosity=fluid_type_data[o]["viscosity"],
                                adhesion=fluid_type_data[o]["adhesion"],
-                               cohesion=fluid_type_data[o]["cohesion"],
+                               cohesion=fluid_type_data[o]["cohesion"])
             self.fluid_types[o] = combo
-
-            # create the list we will randomly seklect from each trial.
+            # create the list we will randomly select from each trial.
             self.fluid_type_names.append(o)
-
-        # Randomly select a fluid type
-        self.fluid_type_selection = choice(self.fluid_type_names)
 
         commands = [self.get_add_scene(scene_name="tdw_room_2018"),
                     {"$type": "set_aperture",
@@ -159,24 +157,20 @@ class Submerge(TransformsDataset):
                                {"$type": "set_kinematic_state", 
                                 "id": self.pool_id, 
                                 "is_kinematic": True, 
-                                "use_gravity": False}
-                               {"$type": "update_flex_container", 
-                                "container_id": 1,
-                                "viscosity": self.fluid_types[self.fluid_type_selection].viscosity,
-                                "adhesion": self.fluid_types[self.fluid_type_selection].adhesion,
-                                "cohesion": self.fluid_types[self.fluid_type_selection].cohesion}])
+                                "use_gravity": False}])
 
 
         # Destroy the previous fluid object, if is has been assigned.
         if self.fluid_id != None:
             trial_commands.append({"$type": "destroy_flex_object", "id": self.fluid_id})
             
-        
         # Select an object at random.
         model = choice(self.model_list)
         model_record = self.full_lib.get_record(model)
 
         # Recreate fluid.
+        # Randomly select a fluid type
+        self.fluid_type_selection = choice(self.fluid_type_names)
         trial_commands.extend(self.create_fluid())
 
         # Randomly select an object, and randomly orient it.
@@ -234,6 +228,11 @@ class Submerge(TransformsDataset):
                            "fluid_container": True,
                            "fluid_type": self.fluid_type_selection},
                          {"$type": "step_physics", "frames": 500}]
+        command.extend([{"$type": "update_flex_container", 
+                         "container_id": 0,
+                         "viscosity": self.fluid_types[self.fluid_type_selection].viscosity,
+                         "adhesion": self.fluid_types[self.fluid_type_selection].adhesion,
+                         "cohesion": self.fluid_types[self.fluid_type_selection].cohesion}])
         return command
 
 
