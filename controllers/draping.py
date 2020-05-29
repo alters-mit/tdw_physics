@@ -1,4 +1,4 @@
-from random import choice, uniform
+from random import choice, uniform, random
 from typing import List
 from tdw_physics.flex_dataset import FlexDataset
 from tdw_physics.util import MODEL_LIBRARIES, get_args
@@ -7,6 +7,7 @@ from tdw_physics.util import MODEL_LIBRARIES, get_args
 class Draping(FlexDataset):
     """
     Using NVIDIA Flex, drape a randomly-selected object with a cloth object.
+    20% of the time, no object is selected.
     """
 
     def __init__(self, port: int = 1071):
@@ -73,16 +74,18 @@ class Draping(FlexDataset):
                           {"$type": "look_at_position",
                            "position": {"x": -1.2, "y": 0.5, "z": -1.6}}]
 
-        # Add object and convert to Flex SolidActor.
-        # Give the object a high mass, for stability.
-        trial_commands.extend(self.add_solid_object(record=choice(self.object_records),
-                                                    position={"x": -1.2, "y": 0, "z": -1.6},
-                                                    rotation={"x": 0.0, "y": uniform(0, 360.0), "z": 0.0},
-                                                    mass_scale=500,
-                                                    particle_spacing=0.035))
-        # Let the object settle.
-        trial_commands.append({"$type": "step_physics",
-                               "frames": 100})
+        # 20% of the time, don't add another object.
+        if random() > 0.2:
+            # Add object and convert to Flex SolidActor.
+            # Give the object a high mass, for stability.
+            trial_commands.extend(self.add_solid_object(record=choice(self.object_records),
+                                                        position={"x": -1.2, "y": 0, "z": -1.6},
+                                                        rotation={"x": 0.0, "y": uniform(0, 360.0), "z": 0.0},
+                                                        mass_scale=500,
+                                                        particle_spacing=0.035))
+            # Let the object settle.
+            trial_commands.append({"$type": "step_physics",
+                                   "frames": 100})
         # Add the cloth with random parameters.
         trial_commands.extend(self.add_cloth_object(record=self.cloth_record,
                                                     position={"x": -1.2, "y": 2.0, "z": -1.6},

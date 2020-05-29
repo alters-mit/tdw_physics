@@ -12,7 +12,7 @@ class _Actor(ABC):
     """
 
     def __init__(self, o_id: int, mass_scale: float):
-        self.o_id = o_id
+        self.object_id = o_id
         self.mass_scale = mass_scale
 
 
@@ -81,10 +81,11 @@ class FlexDataset(TransformsDataset, ABC):
         super()._write_static_data(static_group)
 
         # Write the Flex container info.
+        container_group = static_group.create_group("container")
         for key in self._flex_container_command:
             if key == "$type":
                 continue
-            static_group.create_dataset(key, data=[self._flex_container_command[key]])
+            container_group.create_dataset(key, data=[self._flex_container_command[key]])
 
         # Flatten the actor data and write it.
         for actors, group_name in zip([self._solid_actors, self._soft_actors, self._cloth_actors],
@@ -176,7 +177,7 @@ class FlexDataset(TransformsDataset, ABC):
         :param mass_scale:
         :param o_id: The object ID. If None, a random ID is created.
 
-        :return: `[add_object, scale_object, set_flex_solid_actor, set_flex_object_mass, assign_flex_container]`
+        :return: `[add_object, scale_object, set_flex_solid_actor, assign_flex_container]`
         """
 
         if o_id is None:
@@ -225,7 +226,7 @@ class FlexDataset(TransformsDataset, ABC):
         :param mass_scale:
         :param o_id: The object ID. If None, a random ID is created.
 
-        :return: `[add_object, scale_object, set_flex_soft_actor, set_flex_object_mass, assign_flex_container]`
+        :return: `[add_object, scale_object, set_flex_soft_actor, assign_flex_container]`
         """
 
         if o_id is None:
@@ -280,7 +281,7 @@ class FlexDataset(TransformsDataset, ABC):
         :param mass_scale:
         :param o_id: The object ID. If None, a random ID is created.
 
-        :return: `[add_object, scale_object, set_flex_cloth_actor, set_flex_object_mass, set_kinematic_state, assign_flex_container]`
+        :return: `[add_object, scale_object, set_flex_cloth_actor, set_kinematic_state, assign_flex_container]`
         """
 
         if o_id is None:

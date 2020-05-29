@@ -24,6 +24,7 @@ tdw_physics provides abstract Controller classes. To write your own physics data
 | -------------------- | ------------------------------------------------------------ |
 | `RigidbodiesDataset` | `Tranforms`, `Images`, `CameraMatrices`, `Rigidbodies`, `Collision`, `EnvironmentCollision` |
 | `TransformsDataset`  | `Transforms`, `Images`, `CameraMatrices`                     |
+| `FlexDataset`        | `Transforms`, `Images`, `CameraMatrics`, `FlexParticles`     |
 
 **Every tdw_physics controller will do the following:**
 
@@ -346,6 +347,209 @@ frames/    # Per-frame data.
 - The shape of each dataset in `objects` is determined by the number of coordinates. For example, `frames/objects/positions/` has shape `(num_objects, 3)`.
 
 ***
+
+## `FlexDataset`
+
+```python
+from tdw_physics.flex_dataset import FlexDataset
+
+class MyDataset(FlexDataset):
+    def get_scene_initialization_commands(self) -> List[dict]:
+        # Your code here.
+
+    def get_trial_initialization_commands(self) -> List[dict]:
+        # Your code here.
+
+    def get_per_frame_commands(self, resp: List[bytes], frame: int) -> List[dict]:
+        # Your code here.
+
+    def get_field_of_view(self) -> float:
+        # Your code here.
+```
+
+A dataset creator that receives and writes per frame: `Transforms`, `Images`, `CameraMatrices`, and `FlexParticles`. 
+
+### Adding objects
+
+**`Controller.add_object()` and `Conroller.get_add_object()` will throw an exception.** You must instead use wrapper functions to add Flex objects. They will automatically cache the object ID, allowing the object to be destroyed at the end of the trial.
+
+#### `def add_solid_object()`
+
+_Return:_ A list of commands: `[add_object, scale_object, set_flex_solid_actor, assign_flex_container]`
+
+```python
+from tdw.librarian import ModelLibrarian
+from tdw_physics.flex_dataset import FlexDataset
+
+class MyDataset(FlexDataset):
+    def get_trial_initialization_commands(self) -> List[dict]:
+        commands = []
+        # Your code here.
+        lib = ModelLibrarian("models_full.json")
+        record = lib.get_record("microwave")
+        commands.append(self.add_solid_object(record=record, 
+                                              position={"x": 0, "y": 0, "z": 0},
+                                              rotation={"x": 0, "y": 0, "z": 0},
+                                              scale={"x": 1, "y": 1, "z": 1},
+                                              o_id=0,
+                                              mesh_expansion=0,
+                                              particle_spacing=0.125,
+                                              mass_scale=1))
+```
+
+| Parameter          | Type               | Default | Description                                                  |
+| ------------------ | ------------------ | ------- | ------------------------------------------------------------ |
+| `record`           | `ModelRecord`      |         | The model record.                                            |
+| `position`         | `Dict[str, float`] |         | The initial position of the object.                          |
+| `rotation`         | `Dict[str, float]` |         | The initial rotation of the object, in Euler angles.         |
+| `scale`            | `Dict[str, float]` | `None`  | The object scale factor. If None, the scale is (1, 1, 1).    |
+| `o_id`             | `Optional[int]`    | `None`  | The unique ID of the object. If None, a random ID is generated. |
+| `mesh_expansion`   | `float`            | 0       |                                                              |
+| `particle_spacing` | `float`            | 0.125   |                                                              |
+| `mass_scale`       | float              | 1       |                                                              |
+
+#### `def get_soft_object()`
+
+_Return:_ A list of commands: `[add_object, scale_object, set_flex_soft_actor, assign_flex_container]`
+
+```python
+from tdw.librarian import ModelLibrarian
+from tdw_physics.flex_dataset import FlexDataset
+
+class MyDataset(FlexDataset):
+    def get_trial_initialization_commands(self) -> List[dict]:
+        commands = []
+        # Your code here.
+        lib = ModelLibrarian("models_full.json")
+        record = lib.get_record("microwave")
+        commands.append(self.add_soft_object(record=record, 
+                                             position={"x": 0, "y": 0, "z": 0},
+                                             rotation={"x": 0, "y": 0, "z": 0},
+                                             scale={"x": 1, "y": 1, "z": 1},
+                                             o_id=0,
+                                             volume_sampling=2,
+                                             surface_sampling=0,
+                                             mass_scale=1,
+                                             cluster_spacing=0.2,
+                                             cluster_radius=0.2,
+                                             cluster_stiffness=0.2,
+                                             link_radius=0.1,
+                                             link_stiffness=0.5,
+                                             particle_spacing=0.02))
+```
+
+| Parameter           | Type               | Default | Description                                                  |
+| ------------------- | ------------------ | ------- | ------------------------------------------------------------ |
+| `record`            | `ModelRecord`      |         | The model record.                                            |
+| `position`          | `Dict[str, float`] |         | The initial position of the object.                          |
+| `rotation`          | `Dict[str, float]` |         | The initial rotation of the object, in Euler angles.         |
+| `scale`             | `Dict[str, float]` | `None`  | The object scale factor. If None, the scale is (1, 1, 1).    |
+| `o_id`              | `Optional[int]`    | `None`  | The unique ID of the object. If None, a random ID is generated. |
+| `volume_sampling`   | `float`            | 2       |                                                              |
+| `surface_sampling`  | `float`            | 0       |                                                              |
+| `mass_scale`        | `float`            | 1       |                                                              |
+| `cluster_spacing`   | `float`            | 0.2     |                                                              |
+| `cluster_radius`    | `float`            | 0.2     |                                                              |
+| `cluster_stiffness` | `float`            | 0.2     |                                                              |
+| `link_radius`       | `float`            | 0.1     |                                                              |
+| `link_stiffness`    | `float`            | 0.5     |                                                              |
+| `particle_spacing`  | `float`            | 0.02    |                                                              |
+
+#### `def get_cloth_object()`
+
+_Return:_ A list of commands: `[add_object, scale_object, set_flex_cloth_actor, set_kinematic_state, assign_flex_container]`
+
+```python
+from tdw.librarian import ModelLibrarian
+from tdw_physics.flex_dataset import FlexDataset
+
+class MyDataset(FlexDataset):
+    def get_trial_initialization_commands(self) -> List[dict]:
+        commands = []
+        # Your code here.
+        lib = ModelLibrarian("models_special.json")
+        record = lib.get_record("cloth_square")
+        commands.append(self.add_cloth_object(record=record, 
+                                              position={"x": 0, "y": 0, "z": 0},
+                                              rotation={"x": 0, "y": 0, "z": 0},
+                                              scale={"x": 1, "y": 1, "z": 1},
+                                              o_id=0,
+                                              mass_tesselation=1,
+                                              stretch_stiffness=0.1
+                                              bend_stiffness=0.1
+                                              tether_stiffness=0.1,
+                                              tether_give=0,
+                                              pressure=0
+                                              mass_scale=1))
+```
+
+| Parameter           | Type               | Default | Description                                                  |
+| ------------------- | ------------------ | ------- | ------------------------------------------------------------ |
+| `record`            | `ModelRecord`      |         | The model record.                                            |
+| `position`          | `Dict[str, float`] |         | The initial position of the object.                          |
+| `rotation`          | `Dict[str, float]` |         | The initial rotation of the object, in Euler angles.         |
+| `scale`             | `Dict[str, float]` | `None`  | The object scale factor. If None, the scale is (1, 1, 1).    |
+| `o_id`              | `Optional[int]`    | `None`  | The unique ID of the object. If None, a random ID is generated. |
+| `mesh_tesselation`  | `int`              | 1       |                                                              |
+| `stretch_stiffness` | `int`              | 0.1     |                                                              |
+| `bend_stiffness`    | `int`              | 0.1     |                                                              |
+| `tether_stiffness`  | `float`            | 0       |                                                              |
+| `tether_give`       | `float`            | 0       |                                                              |
+| `pressure`          | `float`            | 0       |                                                              |
+| `mass_scale`        | `float`            | 1       |                                                              |
+
+### .hdf5 file structure
+
+```
+static/    # Data that doesn't change per frame.
+....object_ids
+....container/ # Flex container parameters.
+........radius
+........solid_rest
+........fluid_rest
+........planes
+........(etc.)
+....solid_actors/ # Flex solid object parameters.
+........object_id
+........mass_scale
+........(etc.)
+....soft_actors/ # Flex soft object parameters.
+........object_id
+........mass_scale
+........(etc.)
+....cloth_actors/ # Flex cloth object parameters.
+........object_id
+........mass_scale
+........(etc.)
+frames/    # Per-frame data.
+....0000/    # The frame number.
+........images/    # Each image pass.
+............_img
+............_id
+............_depth
+............_normals
+............_flow
+........objects/    # Per-object data.
+............positions
+............forwards
+............rotations
+........camera_matrices/
+............projection_matrix
+............camera_matrix
+........particles/    # Per-object particles.
+........velocities/    # Per-object velocities.
+....0001/
+........ (etc.)
+```
+
+- All object data is ordered to match `object_ids`. For example:
+  - `static/mass[0]` is the mass of `static/object_ids[0]`
+  - `frames/0000/positions[0]` is the position of `static/object_ids[0]`
+- The shape of each dataset in `objects` is determined by the number of coordinates. For example, `frames/objects/positions/` has shape `(num_objects, 3)`.
+- **Regarding Flex data**:
+  - All static Flex data is serialized to match the `object_id` array. e.g. `static/solid_actors/mass_scale[0]` is the mass_scale of `static/solid_actors/object_id[0]`. This data *might not match the order* of `static/object_ids`.
+  - Particles and velocities _do_ match `static/object_ids`. `frame/particles[0]` is the particles for `static/object_ids[0]`.
+  - `frame/particles` and `frame/velocities` are arrays of arrays of particle data and have shape `(num_objects, len_particle_data)`.
 
 ## `utils.py`
 
