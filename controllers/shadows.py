@@ -1,8 +1,9 @@
 from typing import List, Dict
 import numpy as np
 import random
+from pathlib import Path
 from tdw.tdw_utils import TDWUtils
-from tdw.librarian import ModelLibrarian, HDRISkyboxLibrarian
+from tdw.librarian import ModelLibrarian, HDRISkyboxLibrarian, MaterialLibrarian, MaterialRecord
 from tdw.output_data import OutputData, Transforms
 from tdw_physics.rigidbodies_dataset import RigidbodiesDataset
 from tdw_physics.util import get_args
@@ -15,7 +16,7 @@ class _Sector:
     A "sub-sector" is the circle defined by one of these points and RADIUS.
     """
 
-    RADIUS = 0.5
+    RADIUS = 0.1
 
     def __init__(self, c_0: Dict[str, float], c_1: Dict[str, float]):
         """
@@ -48,38 +49,7 @@ class Shadows(RigidbodiesDataset):
     """
 
     _BALL_SCALE = 0.5
-    _BALL_MATERIALS = ["aluminium_brushed", "aluminium_clean", "alien_rock_coral_formation", "alien_soil_acid_puddles",
-                       "aluminium_foil", "antique_bronze_darkened", "bull_leather_large_worn",
-                       "bull_leather_medium_grain", "bull_leather_medium_worn", "car_metallic_fabric_cover_crumpled",
-                       "car_synthetic_net", "chrome_v_shiny", "chrome2", "concrete", "concrete_raw_eroded",
-                       "copper_brushed", "cotton_canvas_washed_out", "cotton_check_black", "cotton_fabric_printed",
-                       "cotton_hot_orange", "cotton_linen_woven_shorn_brush", "cotton_mercerised_grey",
-                       "cotton_natural_rough", "dmd_metallic_fine", "dmls_cobalt_chrome_rough", "dmls_silver_sanded",
-                       "fabric_vinyl_heavy", "fabric_carpet_grey", "fabric_felt", "glass_clear", "gold_clean",
-                       "gold_leaf_fine", "iron_anvil_rusty", "iron_bumped", "iron_rusty", "kevlar_plain_weave",
-                       "lamb_leather", "leather_bull", "leather_fine_grain", "leather_fine_grain_pebbled",
-                       "leather_pebbled", "linen_burlap_irregular", "linen_viscose_classic_pattern",
-                       "linen_viscose_woven_cloth", "linen_woven", "marble_anemone_grey", "marble_crema_valencia",
-                       "marble_green", "marble_griotte", "metal_brushed_copper", "metal_cast", "metal_grater",
-                       "metal_iron_damaged", "metal_molten_drop_3d_print", "metal_round_mesh_layered",
-                       "metal_sandblasted", "metal_steel_galvanized_spangle", "military_camouflage",
-                       "nappa_leather_pill_quilt", "nappa_leather_switch_quilt", "nappa_leather_worn",
-                       "plaster_facade_grey", "plastic_diamond_grid_grain", "plastic_dot_recessed_grain",
-                       "plastic_grain", "plastic_stripes", "plastic_vinyl_glossy_green", "plastic_vinyl_glossy_blue",
-                       "plastic_vinyl_glossy_gray", "plastic_vinyl_glossy_green", "plastic_vinyl_glossy_light_gray",
-                       "plastic_vinyl_glossy_orange", "plastic_vinyl_glossy_red", "plastic_vinyl_glossy_white",
-                       "plastic_vinyl_glossy_yellow", "plastic_weave", "polyester_acrylic_nylon_canvas_thick_yarn",
-                       "polyester_check_interlock_pattern", "polyester_fabric_charmeuse",
-                       "polyester_hexagon_pattern_knit", "polyester_honeycomb_mesh_back",
-                       "polyester_lycra_hydrosoft_weave", "polyester_softshell_brushed", "porous_stone_mesh_concretion",
-                       "printed_cotton_rough", "printed_cotton_shirt", "rainbow_anodized_metal", "roughcast_troweled",
-                       "rusty_metal", "slate_raw", "slate_rockery", "sls_titanium", "sls_titanium_honeycomb_pattern",
-                       "sls_titanium_square_pattern", "spandex_printed_fabric", "square_padded_wall",
-                       "stone_cellular_concretion", "stone_mountain_grey", "synthetic_boldweave_ball",
-                       "synthetic_fabric_knit", "synthetic_flipflop_topstitch_diamond", "synthetic_quilted",
-                       "taurillon_leather_medium_worn", "thin_bamboo_blinds", "tiles_hexagon_bees_dirty",
-                       "travertine_persian_vein", "wicker_weave", "wood_american_cherry", "wood_beech_honey",
-                       "wool_tartan_multicolored"]
+    _BALL_MATERIAL_RECORDS: List[MaterialRecord] = MaterialLibrarian(str(Path("ball_materials.json").resolve())).records
 
     # These sectors have different lighting at each point, e.g. c_0 is more shadowed than c_1.
     SECTORS = [_Sector(c_0={"x": 0.5, "y": 0, "z": 0}, c_1={"x": -0.5, "y": 0, "z": 0}),
@@ -94,7 +64,7 @@ class Shadows(RigidbodiesDataset):
         super().__init__(port=port)
 
         # Cache the ball data.
-        self._ball = ModelLibrarian("models_flex.json").get_record("sphere")
+        self._ball = ModelLibrarian("models_special.json").get_record("prim_sphere")
         self._ball_id = 0
 
         # The position the ball starts in and the position the ball is directed at.
@@ -128,6 +98,8 @@ class Shadows(RigidbodiesDataset):
         else:
             self._p0 = sector.get_p_1()
             self._p1 = sector.get_p_0()
+        self._p0["y"] = self._BALL_SCALE / 2
+        self._p1["y"] = self._BALL_SCALE / 2
 
         commands = []
         # Add the ball.
@@ -140,7 +112,10 @@ class Shadows(RigidbodiesDataset):
                                                 dynamic_friction=random.uniform(0, 0.1),
                                                 static_friction=random.uniform(0, 0.1),
                                                 bounciness=random.uniform(0, 0.1)))
+        ball_material: MaterialRecord = random.choice(self._BALL_MATERIAL_RECORDS)
         # Scale the ball and apply a force and a spin.
+        # Set a random visual material.
+        # Add a random skybox.
         commands.extend([{"$type": "scale_object",
                           "scale_factor": {"x": self._BALL_SCALE, "y": self._BALL_SCALE, "z": self._BALL_SCALE},
                           "id": self._ball_id},
@@ -157,13 +132,16 @@ class Shadows(RigidbodiesDataset):
                           "id": self._ball_id},
                          {"$type": "apply_force_magnitude_to_object",
                           "magnitude": random.uniform(5.2 * mass, 8 * mass),
-                          "id": self._ball_id}])
-        # Set a random material.
-        commands.extend(TDWUtils.set_visual_material(self, self._ball.substructure, self._ball_id,
-                                                     random.choice(self._BALL_MATERIALS)))
-
-        # Set a random skybox and rotate it for variable lighting.
-        commands.extend([self.get_add_hdri_skybox(skybox_name=random.choice(self._skyboxes)),
+                          "id": self._ball_id},
+                         {"$type": "add_material",
+                          "name": ball_material.name,
+                          "url": ball_material.get_url()},
+                         {"$type": "set_visual_material",
+                          "id": self._ball_id,
+                          "material_name": ball_material.name,
+                          "object_name": "PrimSphere",
+                          "material_index": 0},
+                         self.get_add_hdri_skybox(skybox_name=random.choice(self._skyboxes)),
                          {"$type": "rotate_hdri_skybox_by",
                           "angle": random.uniform(0, 360)}])
 
@@ -195,8 +173,7 @@ class Shadows(RigidbodiesDataset):
                 t = Transforms(r)
                 d0 = TDWUtils.get_distance(TDWUtils.array_to_vector3(t.get_position(0)), self._p0)
                 d1 = TDWUtils.get_distance(self._p0, self._p1)
-                d2 = TDWUtils.get_distance(TDWUtils.array_to_vector3(t.get_position(0)), self._p1)
-                return d2 <= 0.01 or d0 >= d1
+                return d0 > d1 * 1.5
         return False
 
 
