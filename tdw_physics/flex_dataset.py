@@ -11,9 +11,8 @@ class _Actor(ABC):
     Static data for a Flex Actor.
     """
 
-    def __init__(self, o_id: int, mass: float, mass_scale: float):
+    def __init__(self, o_id: int, mass_scale: float):
         self.o_id = o_id
-        self.mass = mass
         self.mass_scale = mass_scale
 
 
@@ -22,8 +21,8 @@ class _SolidActor(_Actor):
     Static data for a Flex Solid Actor.
     """
 
-    def __init__(self, o_id: int, mass: float, mass_scale: float, mesh_expansion: float, particle_spacing: float):
-        super().__init__(o_id, mass, mass_scale)
+    def __init__(self, o_id: int, mass_scale: float, mesh_expansion: float, particle_spacing: float):
+        super().__init__(o_id, mass_scale)
 
         self.mesh_expansion = mesh_expansion
         self.particle_spacing = particle_spacing
@@ -34,10 +33,10 @@ class _SoftActor(_Actor):
     Static data for a Flex Soft Actor.
     """
 
-    def __init__(self, o_id: int, mass: float, mass_scale: float, volume_sampling: float, surface_sampling: float,
+    def __init__(self, o_id: int, mass_scale: float, volume_sampling: float, surface_sampling: float,
                  cluster_spacing: float, cluster_radius: float, cluster_stiffness: float, link_radius: float,
                  link_stiffness: float, particle_spacing: float):
-        super().__init__(o_id, mass, mass_scale)
+        super().__init__(o_id, mass_scale)
         self.volume_sampling = volume_sampling
         self.surface_sampling = surface_sampling
         self.cluster_spacing = cluster_spacing
@@ -53,9 +52,9 @@ class _ClothActor(_Actor):
     Static data for a Flex Cloth Actor.
     """
 
-    def __init__(self, o_id: int, mass: float, mass_scale: float, mesh_tesselation: int, stretch_stiffness: float,
+    def __init__(self, o_id: int, mass_scale: float, mesh_tesselation: int, stretch_stiffness: float,
                  bend_stiffness: float, tether_stiffness: float, tether_give: float, pressure: float):
-        super().__init__(o_id, mass, mass_scale)
+        super().__init__(o_id, mass_scale)
 
         self.mesh_tesselation = mesh_tesselation
         self.stretch_stiffness = stretch_stiffness
@@ -162,7 +161,7 @@ class FlexDataset(TransformsDataset, ABC):
                                         "max_neighbors": max_neighbors}
         return self._flex_container_command
 
-    def add_solid_object(self, record: ModelRecord, position: Dict[str, float], rotation: Dict[str, float], mass: float,
+    def add_solid_object(self, record: ModelRecord, position: Dict[str, float], rotation: Dict[str, float],
                          scale: Dict[str, float] = None, mesh_expansion: float = 0, particle_spacing: float = 0.125,
                          mass_scale: float = 1, o_id: Optional[int] = None) -> List[dict]:
         """
@@ -171,7 +170,6 @@ class FlexDataset(TransformsDataset, ABC):
         :param record: The model record.
         :param position: The initial position of the object.
         :param rotation: The initial rotation of the object.
-        :param mass: The object mass.
         :param scale: The object scale factor. If None, the scale is (1, 1, 1).
         :param mesh_expansion:
         :param particle_spacing:
@@ -189,8 +187,8 @@ class FlexDataset(TransformsDataset, ABC):
         # Get the add_object command.
         add_object = self.add_transforms_object(record=record, position=position, rotation=rotation, o_id=o_id)
         # Cache the static data.
-        self._solid_actors.append(_SolidActor(o_id=o_id, mass=mass, mass_scale=mass_scale,
-                                              mesh_expansion=mesh_expansion, particle_spacing=particle_spacing))
+        self._solid_actors.append(_SolidActor(o_id=o_id, mass_scale=mass_scale, mesh_expansion=mesh_expansion,
+                                              particle_spacing=particle_spacing))
         return [add_object,
                 {"$type": "scale_object",
                  "scale_factor": scale,
@@ -200,14 +198,11 @@ class FlexDataset(TransformsDataset, ABC):
                  "mesh_expansion": mesh_expansion,
                  "particle_spacing": particle_spacing,
                  "mass_scale": mass_scale},
-                {"$type": "set_flex_object_mass",
-                 "mass": mass,
-                 "id": o_id},
                 {"$type": "assign_flex_container",
                  "container_id": 0,
                  "id": o_id}]
 
-    def add_soft_object(self, record: ModelRecord, position: Dict[str, float], rotation: Dict[str, float], mass: float,
+    def add_soft_object(self, record: ModelRecord, position: Dict[str, float], rotation: Dict[str, float],
                         scale: Dict[str, float] = None, volume_sampling: float = 2, surface_sampling: float = 0,
                         cluster_spacing: float = 0.2, cluster_radius: float = 0.2, cluster_stiffness: float = 0.2,
                         link_radius: float = 0.1, link_stiffness: float = 0.5, particle_spacing: float = 0.02,
@@ -218,7 +213,6 @@ class FlexDataset(TransformsDataset, ABC):
         :param record: The model record.
         :param position: The initial position of the object.
         :param rotation: The initial rotation of the object.
-        :param mass: The object mass.
         :param scale: The object scale factor. If None, the scale is (1, 1, 1).
         :param volume_sampling:
         :param surface_sampling:
@@ -242,7 +236,7 @@ class FlexDataset(TransformsDataset, ABC):
         # Get the add_object command.
         add_object = self.add_transforms_object(record=record, position=position, rotation=rotation, o_id=o_id)
         # Cache the static data.
-        self._soft_actors.append(_SoftActor(o_id=o_id, mass=mass, mass_scale=mass_scale,
+        self._soft_actors.append(_SoftActor(o_id=o_id, mass_scale=mass_scale,
                                             volume_sampling=volume_sampling, surface_sampling=surface_sampling,
                                             cluster_spacing=cluster_spacing, cluster_radius=cluster_radius,
                                             cluster_stiffness=cluster_stiffness, link_radius=link_radius,
@@ -262,14 +256,11 @@ class FlexDataset(TransformsDataset, ABC):
                  "link_stiffness": link_stiffness,
                  "particle_spacing": particle_spacing,
                  "mass_scale": mass_scale},
-                {"$type": "set_flex_object_mass",
-                 "mass": mass,
-                 "id": o_id},
                 {"$type": "assign_flex_container",
                  "container_id": 0,
                  "id": o_id}]
 
-    def add_cloth_object(self, record: ModelRecord, position: Dict[str, float], rotation: Dict[str, float], mass: float,
+    def add_cloth_object(self, record: ModelRecord, position: Dict[str, float], rotation: Dict[str, float],
                          scale: Dict[str, float] = None, mesh_tesselation: int = 1, stretch_stiffness: float = 0.1,
                          bend_stiffness: float = 0.1, tether_stiffness: float = 0, tether_give: float = 0,
                          pressure: float = 0, mass_scale: float = 1, o_id: Optional[int] = None) -> List[dict]:
@@ -279,7 +270,6 @@ class FlexDataset(TransformsDataset, ABC):
         :param record: The model record.
         :param position: The initial position of the object.
         :param rotation: The initial rotation of the object.
-        :param mass: The object mass.
         :param scale: The object scale factor. If None, the scale is (1, 1, 1).
         :param mesh_tesselation:
         :param stretch_stiffness:
@@ -290,7 +280,7 @@ class FlexDataset(TransformsDataset, ABC):
         :param mass_scale:
         :param o_id: The object ID. If None, a random ID is created.
 
-        :return: `[add_object, scale_object, set_flex_cloth_actor, set_flex_object_mass, assign_flex_container]`
+        :return: `[add_object, scale_object, set_flex_cloth_actor, set_flex_object_mass, set_kinematic_state, assign_flex_container]`
         """
 
         if o_id is None:
@@ -301,7 +291,7 @@ class FlexDataset(TransformsDataset, ABC):
         # Get the add_object command.
         add_object = self.add_transforms_object(record=record, position=position, rotation=rotation, o_id=o_id)
         # Cache the static data.
-        self._cloth_actors.append(_ClothActor(o_id=o_id, mass=mass, mass_scale=mass_scale,
+        self._cloth_actors.append(_ClothActor(o_id=o_id, mass_scale=mass_scale,
                                               mesh_tesselation=mesh_tesselation, stretch_stiffness=stretch_stiffness,
                                               bend_stiffness=bend_stiffness, tether_stiffness=tether_stiffness,
                                               tether_give=tether_give, pressure=pressure))
@@ -318,9 +308,10 @@ class FlexDataset(TransformsDataset, ABC):
                  "tether_give": tether_give,
                  "pressure": pressure,
                  "mass_scale": mass_scale},
-                {"$type": "set_flex_object_mass",
-                 "mass": mass,
-                 "id": o_id},
+                {"$type": "set_kinematic_state",
+                 "id": o_id,
+                 "is_kinematic": True,
+                 "use_gravity": False},
                 {"$type": "assign_flex_container",
                  "container_id": 0,
                  "id": o_id}]
