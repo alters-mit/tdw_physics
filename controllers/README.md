@@ -21,11 +21,10 @@ These arguments are common for every controller.
 | Permanence      | An object moves (e.g. rolls) behind an occluder, then reemerges on the other side; totally disappears for some time | `permanence.py`                                              |
 | Shadows         | An object moves between areas of different lighting.         | `shadows.py`                                                 |
 | Falling         | Objects are pushed upward and fall downward under gravity. _Note: There are two controllers. One is a proc-gen setup and one is nicer-looking but assembled by-hand._ | `table_scripted.py --scenario fall`<br/>*and*<br/>`table_proc_gen.py --scenario fall` |
-| Sliding/Rolling | Objects are pushed horizontally or slide down a table. _Note: There are two controllers. One is a proc-gen setup and one is nicer-looking but assembled by-hand._ | `table_scripted.py --scenario tilt`<br/>*and*<br/>`table_proc_gen.py --scenario tilt` |
+| Sliding/Rolling | Objects are pushed horizontally or slide down a table. _Note: There are two controllers. One is a proc-gen setup and one is nicer-looking but assembled by-hand._ | `table_scripted.py --scenario tilt`<br>*and*<br>`table_proc_gen.py --scenario tilt` |
 | Bouncing        | Objects collide with floors, ramps, and walls and bounce around. | `bouncing.py`                                                |
 | Stability       | Stacks of objects that fall or don't; Objects balanced or not. *(See comments in controller)* | `stability.py`                                               |
-| Draping         | A cloth falls on top of one or more rigid objects            |                                                              |
-| Folding         | A cloth takes on different shapes by folding over itself     |                                                              |
+| Draping/Folding | A cloth falls; 80% of the time onto another object.          | `draping.py`                                                 |
 | Dragging        | A rigid object is dragged or moved by pulling on a cloth under it |                                                              |
 | Containment     | A small object is contained and rattles around in a larger object, such as a bowl | `containment.py`                                             |
 | Linking         | Multiple objects are connected, e.g. by chain links, and can only move a little relative to each other |                                                              |
