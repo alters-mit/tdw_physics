@@ -57,6 +57,10 @@ PHYSICS_INFO: Dict[str, PhysicsInfo] = _get_default_physics_info()
 
 
 class RigidbodiesDataset(TransformsDataset, ABC):
+    """
+    A dataset for Rigidbody (PhysX) physics.
+    """
+
     def __init__(self, port: int = 1071):
         super().__init__(port=port)
 
