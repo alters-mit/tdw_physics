@@ -110,7 +110,7 @@ class Draping(FlexDataset):
         return 65
 
     def is_done(self, resp: List[bytes], frame: int) -> bool:
-        return frame > 1000
+        return frame > 150
 
 
 if __name__ == "__main__":
