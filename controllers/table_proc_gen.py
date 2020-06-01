@@ -330,12 +330,14 @@ class TableProcGenFalling(_TableProcGen):
         super().__init__(port=port)
         # Commands to be sent per-frame.
         self._per_frame_commands: List[List[dict]] = []
+        self._num_per_frame_commands = 0
 
     def get_trial_initialization_commands(self) -> List[dict]:
         commands = super().get_trial_initialization_commands()
 
         del self._per_frame_commands[:]
         self._per_frame_commands = self.get_falling_commands()
+        self._num_per_frame_commands = len(self._per_frame_commands)
         return commands
 
     def get_per_frame_commands(self, resp: List[bytes], frame: int) -> List[dict]:
@@ -343,6 +345,9 @@ class TableProcGenFalling(_TableProcGen):
             return self._per_frame_commands.pop(0)
         else:
             return []
+
+    def is_done(self, resp: List[bytes], frame: int) -> bool:
+        return frame > self._num_per_frame_commands + 300
 
 
 if __name__ == "__main__":

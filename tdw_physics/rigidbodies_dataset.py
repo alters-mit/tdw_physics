@@ -172,12 +172,13 @@ class RigidbodiesDataset(TransformsDataset, ABC):
         for i in range(random.randint(min_num_objects, max_num_objects)):
             o_id = small_ids.pop(0)
             force_dir = np.array([random.uniform(-0.125, 0.125), random.uniform(0.7, 1), random.uniform(-0.125, 0.125)])
-            min_force = self.physics_info[o_id].mass * 20
-            max_force = self.physics_info[o_id].mass * 22
+            force_dir = force_dir / np.linalg.norm(force_dir)
+            min_force = self.physics_info[o_id].mass * 2
+            max_force = self.physics_info[o_id].mass * 4
             force = TDWUtils.array_to_vector3(force_dir * random.uniform(min_force, max_force))
             per_frame_commands.append([{"$type": "apply_force_to_object",
                                         "force": force,
-                                        "id": small_ids.pop(0)}])
+                                        "id": o_id}])
             # Wait some frames.
             for j in range(10, 30):
                 per_frame_commands.append([])
