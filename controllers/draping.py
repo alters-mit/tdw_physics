@@ -73,7 +73,8 @@ class Draping(FlexDataset):
                            "position": {"x": -1.2, "y": 0.5, "z": -1.6}}]
 
         # 20% of the time, don't add another object.
-        if random() > 0.2:
+        another_object = random() > 0.2
+        if another_object:
             # Add object and convert to Flex SolidActor.
             # Give the object a high mass, for stability.
             trial_commands.extend(self.add_solid_object(record=choice(self.object_records),
@@ -85,20 +86,19 @@ class Draping(FlexDataset):
             trial_commands.append({"$type": "step_physics",
                                    "frames": 100})
         # Add the cloth with random parameters.
+        if another_object:
+            rotation = {"x": 0, "y": 0, "z": 0}
+        else:
+            rotation = {"x": uniform(0, 90.0), "y": uniform(-90.0, 90.0), "z": uniform(-90.0, 90.0)}
         trial_commands.extend(self.add_cloth_object(record=self.cloth_record,
-                                                    position={"x": -1.2,
-                                                              "y": 2.0,
-                                                              "z": -1.6},
-                                                    rotation={"x": uniform(0, 90.0),
-                                                              "y": uniform(-90.0, 90.0),
-                                                              "z": uniform(-90.0, 90.0)},
+                                                    position={"x": -1.2, "y": 2.0, "z": -1.6},
+                                                    rotation=rotation,
                                                     o_id=self.cloth_id,
                                                     mass_scale=1,
                                                     mesh_tesselation=1,
                                                     tether_stiffness=uniform(0.5, 1.0),
                                                     bend_stiffness=uniform(0.5, 1.0),
                                                     stretch_stiffness=uniform(0.5, 1.0)))
-
 
         return trial_commands
 
