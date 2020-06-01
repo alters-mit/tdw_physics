@@ -58,10 +58,8 @@ class Draping(FlexDataset):
                  "iteration_count": 12,
                  "substep_count": 12,
                  "radius": 0.1875,
-                 "damping": 0.25,
-                 "drag": 0},
-                {"$type": "set_time_step",
-                 "time_step": 0.03}]
+                 "damping": 0,
+                 "drag": 0}]
 
     def get_trial_initialization_commands(self) -> List[dict]:
         """
@@ -88,14 +86,19 @@ class Draping(FlexDataset):
                                    "frames": 100})
         # Add the cloth with random parameters.
         trial_commands.extend(self.add_cloth_object(record=self.cloth_record,
-                                                    position={"x": -1.2, "y": 2.0, "z": -1.6},
-                                                    rotation={"x": 0, "y": 0, "z": 0},
+                                                    position={"x": -1.2,
+                                                              "y": 2.0,
+                                                              "z": -1.6},
+                                                    rotation={"x": uniform(0, 90.0),
+                                                              "y": uniform(-90.0, 90.0),
+                                                              "z": uniform(-90.0, 90.0)},
                                                     o_id=self.cloth_id,
                                                     mass_scale=1,
                                                     mesh_tesselation=1,
                                                     tether_stiffness=uniform(0.5, 1.0),
                                                     bend_stiffness=uniform(0.5, 1.0),
                                                     stretch_stiffness=uniform(0.5, 1.0)))
+
 
         return trial_commands
 
@@ -107,7 +110,7 @@ class Draping(FlexDataset):
         return 65
 
     def is_done(self, resp: List[bytes], frame: int) -> bool:
-        return frame > 150
+        return frame > 1000
 
 
 if __name__ == "__main__":

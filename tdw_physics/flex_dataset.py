@@ -118,49 +118,6 @@ class FlexDataset(TransformsDataset, ABC):
                     particles_group.create_dataset(str(o_id), data=flex_dict[o_id]["par"])
                     velocities_group.create_dataset(str(o_id), data=flex_dict[o_id]["vel"])
         return frame, objs, tr, done
-                
-    def get_create_flex_container(self, radius: float = 0.1875, solid_rest: float = 0.125, fluid_rest: float = 0.1125,
-                                  static_friction: float = 0.5, dynamic_friction: float = 0.5,
-                                  particle_friction: float = 0.5, collision_distance: float = 0.0625,
-                                  substep_count: int = 3, iteration_count: int = 8, damping: float = 1, drag: float = 0,
-                                  shape_collision_margin: float = 0, planes: list = None, cohesion: float = 0.025,
-                                  surface_tension: float = 0, viscocity: float = 0, vorticity: float = 0,
-                                  buoyancy: float = 1, adhesion: float = 0, anisotropy_scale: float = 0,
-                                  max_particles: int = 10000, max_neighbors: int = 100) -> dict:
-        """
-        Create a valid `create_flex_container` command writes all of the parameters to the .hdf5 file.
-        The parameters of this function are identical to that of the `create_flex_container` command.
-        See the TDW Command API for more information.
-
-        :return: A valid `create_flex_container` command
-        """
-
-        if planes is None:
-            planes = []
-        self._flex_container_command = {"$type": "create_flex_container",
-                                        "radius": radius,
-                                        "solid_rest": solid_rest,
-                                        "fluid_rest": fluid_rest,
-                                        "static_friction": static_friction,
-                                        "dynamic_friction": dynamic_friction,
-                                        "particle_friction": particle_friction,
-                                        "collision_distance": collision_distance,
-                                        "substep_count": substep_count,
-                                        "iteration_count": iteration_count,
-                                        "damping": damping,
-                                        "drag": drag,
-                                        "shape_collision_margin": shape_collision_margin,
-                                        "planes": planes,
-                                        "cohesion": cohesion,
-                                        "surface_tension": surface_tension,
-                                        "viscocity": viscocity,
-                                        "vorticity": vorticity,
-                                        "buoyancy": buoyancy,
-                                        "adhesion": adhesion,
-                                        "anisotropy_scale": anisotropy_scale,
-                                        "max_particles": max_particles,
-                                        "max_neighbors": max_neighbors}
-        return self._flex_container_command
 
     def add_solid_object(self, record: ModelRecord, position: Dict[str, float], rotation: Dict[str, float],
                          scale: Dict[str, float] = None, mesh_expansion: float = 0, particle_spacing: float = 0.125,
@@ -281,7 +238,7 @@ class FlexDataset(TransformsDataset, ABC):
         :param mass_scale:
         :param o_id: The object ID. If None, a random ID is created.
 
-        :return: `[add_object, scale_object, set_flex_cloth_actor, set_kinematic_state, assign_flex_container]`
+        :return: `[add_object, scale_object, set_flex_cloth_actor, assign_flex_container]`
         """
 
         if o_id is None:
@@ -309,10 +266,6 @@ class FlexDataset(TransformsDataset, ABC):
                  "tether_give": tether_give,
                  "pressure": pressure,
                  "mass_scale": mass_scale},
-                {"$type": "set_kinematic_state",
-                 "id": o_id,
-                 "is_kinematic": True,
-                 "use_gravity": False},
                 {"$type": "assign_flex_container",
                  "container_id": 0,
                  "id": o_id}]

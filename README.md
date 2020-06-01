@@ -457,7 +457,7 @@ class MyDataset(FlexDataset):
 
 #### `def get_cloth_object()`
 
-_Return:_ A list of commands: `[add_object, scale_object, set_flex_cloth_actor, set_kinematic_state, assign_flex_container]`
+_Return:_ A list of commands: `[add_object, scale_object, set_flex_cloth_actor, assign_flex_container]`
 
 ```python
 from tdw.librarian import ModelLibrarian
