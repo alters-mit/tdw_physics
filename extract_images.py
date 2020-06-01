@@ -23,6 +23,6 @@ if __name__ == "__main__":
         if not dest_dir.exists():
             dest_dir.mkdir()
         for fr in f["frames"]:
-            dest_path = dest.joinpath(fr + ".jpg")
+            dest_path = dest_dir.joinpath(fr + ".jpg")
             img = Image.open(io.BytesIO(f["frames"][fr]["images"]["_img"][:]))
             img.save(str(dest_path.resolve()))
