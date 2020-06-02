@@ -253,7 +253,6 @@ if __name__ == "__main__":
     parser.add_argument("--num", type=int, default=1500, help="The number of trials in the dataset.")
     parser.add_argument("--temp", type=str, default="D:/temp.hdf5", help="Temp path for incomplete files.")
     parser.add_argument("--scenario", type=str, choices=["tilt", "fall"], default="tilt", help="The type of scenario")
-    parser.add_argument("--scenario", type=str, choices=["tilt"], default="tilt", help="The type of scenario")
     parser.add_argument("--width", type=int, default=256, help="Screen width in pixels.")
     parser.add_argument("--height", type=int, default=256, help="Screen width in pixels.")
 
