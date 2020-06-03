@@ -162,6 +162,22 @@ class MyDataset(RigidbodiesDataset):
 | `rotation` | `Dict[str, float]` |         | The initial rotation of the object, in Euler angles.         |
 | `o_id`     | `Optional[int]`    | `None`  | The unique ID of the object. If None, a random ID is generated. |
 
+#### `def get_objects_by_mass()`
+
+_Return:_ IDs of objects with mass <= the mass threshold.
+
+| Parameter | Type    | Default | Description         |
+| --------- | ------- | ------- | ------------------- |
+| `mass`    | `float` |         | The mass threshold. |
+
+#### `def get_falling_commands()`
+
+_Return:_ A list of lists; per-frame commands to make small objects fly up.
+
+| Parameter | Type    | Default | Description                                      |
+| --------- | ------- | ------- | ------------------------------------------------ |
+| `mass`    | `float` | 3       | Objects with <= this mass might receive a force. |
+
 #### `PHYSICS_INFO`
 
 `RigidbodiesDataset` caches default physics info per object (see above) in a dictionary where the key is the model name and the values is a `PhysicsInfo` object:
