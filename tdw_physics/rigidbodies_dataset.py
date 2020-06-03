@@ -1,3 +1,4 @@
+import random
 from typing import List, Tuple, Dict, Optional
 from abc import ABC
 import h5py
@@ -7,6 +8,7 @@ import io
 import json
 from tdw.output_data import OutputData, Rigidbodies, Collision, EnvironmentCollision
 from tdw.librarian import ModelRecord
+from tdw.tdw_utils import TDWUtils
 from tdw_physics.transforms_dataset import TransformsDataset
 from tdw_physics.util import MODEL_LIBRARIES
 
@@ -57,6 +59,10 @@ PHYSICS_INFO: Dict[str, PhysicsInfo] = _get_default_physics_info()
 
 
 class RigidbodiesDataset(TransformsDataset, ABC):
+    """
+    A dataset for Rigidbody (PhysX) physics.
+    """
+
     def __init__(self, port: int = 1071):
         super().__init__(port=port)
 
@@ -136,6 +142,47 @@ class RigidbodiesDataset(TransformsDataset, ABC):
         return self.add_physics_object(o_id=o_id, record=info.record, position=position, rotation=rotation,
                                        mass=info.mass, dynamic_friction=info.dynamic_friction,
                                        static_friction=info.static_friction, bounciness=info.bounciness)
+
+    def get_objects_by_mass(self, mass: float) -> List[int]:
+        """
+        :param mass: The mass threshold.
+
+        :return: A list of object IDs for objects with mass <= the mass threshold.
+        """
+
+        return [o for o in self.physics_info.keys() if self.physics_info[o].mass < mass]
+
+    def get_falling_commands(self, mass: float = 3) -> List[List[dict]]:
+        """
+        :param mass: Objects with <= this mass might receive a force.
+
+        :return: A list of lists; per-frame commands to make small objects fly up.
+        """
+
+        per_frame_commands: List[List[dict]] = []
+
+        # Get a list of all small objects.
+        small_ids = self.get_objects_by_mass(mass)
+        random.shuffle(small_ids)
+        max_num_objects = len(small_ids) if len(small_ids) < 8 else 8
+        min_num_objects = max_num_objects - 3
+        if min_num_objects <= 0:
+            min_num_objects = 1
+        # Add some objects.
+        for i in range(random.randint(min_num_objects, max_num_objects)):
+            o_id = small_ids.pop(0)
+            force_dir = np.array([random.uniform(-0.125, 0.125), random.uniform(0.7, 1), random.uniform(-0.125, 0.125)])
+            force_dir = force_dir / np.linalg.norm(force_dir)
+            min_force = self.physics_info[o_id].mass * 2
+            max_force = self.physics_info[o_id].mass * 4
+            force = TDWUtils.array_to_vector3(force_dir * random.uniform(min_force, max_force))
+            per_frame_commands.append([{"$type": "apply_force_to_object",
+                                        "force": force,
+                                        "id": o_id}])
+            # Wait some frames.
+            for j in range(10, 30):
+                per_frame_commands.append([])
+        return per_frame_commands
 
     def _get_send_data_commands(self) -> List[dict]:
         commands = super()._get_send_data_commands()

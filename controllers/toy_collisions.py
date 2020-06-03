@@ -151,4 +151,4 @@ class ToysDataset(RigidbodiesDataset):
 if __name__ == "__main__":
     args = get_args("toy_collisions")
     td = ToysDataset()
-    td.run(num=args.num, output_dir=args.dir, temp_path=args.temp)
+    td.run(num=args.num, output_dir=args.dir, temp_path=args.temp, width=args.width, height=args.height)
