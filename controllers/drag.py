@@ -28,6 +28,7 @@ class Drag(ClothDataset):
                  "iteration_count": 5,
                  "substep_count": 8,
                  "radius": 0.1875,
+                 "solid_rest": 0.03,
                  "damping": 0,
                  "drag": 0}]
 
@@ -40,9 +41,9 @@ class Drag(ClothDataset):
                                               o_id=self.cloth_id,
                                               mass_scale=10,
                                               mesh_tesselation=1,
-                                              tether_stiffness=random.uniform(0.5, 1.0),
-                                              bend_stiffness=random.uniform(0.5, 1.0),
-                                              stretch_stiffness=random.uniform(0.5, 1.0)))
+                                              tether_stiffness=0.5,
+                                              bend_stiffness=1,
+                                              stretch_stiffness=0.5))
         # Let the cloth settle.
         # Position and aim avatar.
         commands.extend([{"$type": "set_kinematic_state",
@@ -77,7 +78,7 @@ class Drag(ClothDataset):
     def get_per_frame_commands(self, resp: List[bytes], frame) -> List[dict]:
         commands = super().get_per_frame_commands(resp, frame)
         # Apply a force.
-        if frame == 1:
+        if 20 >= frame == 1:
             for r in resp[:-1]:
                 if FlexParticles.get_data_type_id(r) == "flex":
                     fp = FlexParticles(r)
