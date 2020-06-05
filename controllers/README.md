@@ -25,7 +25,7 @@ These arguments are common for every controller.
 | Bouncing        | Objects collide with floors, ramps, and walls and bounce around. | `bouncing.py`                                                |
 | Stability       | Stacks of objects that fall or don't; Objects balanced or not. *(See comments in controller)* | `stability.py`                                               |
 | Draping/Folding | A cloth falls; 80% of the time onto another object.          | `draping.py`                                                 |
-| Dragging        | A rigid object is dragged or moved by pulling on a cloth under it |                                                              |
+| Dragging        | A rigid object is dragged or moved by pulling on a cloth under it | `dragging.py`                                                |
 | Containment     | A small object is contained and rattles around in a larger object, such as a bowl | `containment.py`                                             |
 | Linking         | Multiple objects are connected, e.g. by chain links, and can only move a little relative to each other |                                                              |
 | Squishing       | Squishy objects deform and are restored to original shape depending on applied forces (e.g. squished when something else is on top of them or when they impact a barrier) |                                                              |

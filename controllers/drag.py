@@ -9,6 +9,10 @@ from tdw_physics.util import get_args
 
 
 class Drag(ClothDataset):
+    """
+    Add a cloth. Place an object on the cloth. Add forces to a portion of the cloth to "drag" the object.
+    """
+
     def __init__(self, port: int = 1071):
         super().__init__(port=port)
         # The number of frames during which a force will be applied.
@@ -52,7 +56,6 @@ class Drag(ClothDataset):
             self._force_range *= -1
             self._force_per_frame *= -1
         commands = []
-        # Add the cloth object.
         commands.extend(self.add_cloth_object(record=self.cloth_record,
                                               position={"x": 0, "y": 1, "z": 0},
                                               rotation=TDWUtils.VECTOR3_ZERO,
@@ -87,7 +90,7 @@ class Drag(ClothDataset):
                          {"$type": "step_physics",
                           "frames": 100},
                          {"$type": "teleport_avatar_to",
-                          "position": self.get_random_avatar_position(2, 2.3, 1, 1.3, TDWUtils.VECTOR3_ZERO)},
+                          "position": self.get_random_avatar_position(1.8, 2.1, 1, 1.3, TDWUtils.VECTOR3_ZERO)},
                          {"$type": "look_at",
                           "id": self.cloth_id,
                           "use_centroid": True}])
@@ -97,27 +100,29 @@ class Drag(ClothDataset):
         commands = super().get_per_frame_commands(resp, frame)
         # Apply a force.
         if frame < self._num_force_frames:
-            print(self._force_per_frame, self._force_axis, self._force_range)
             for r in resp[:-1]:
                 if FlexParticles.get_data_type_id(r) == "flex":
                     fp = FlexParticles(r)
-                    forces = []
-                    center = np.array(([0, 0, 0]))
-                    p_id = 0
-                    for p in fp.get_particles(0):
-                        if (0 > self._force_range > p[self._force_axis]) or \
-                                (0 < self._force_range < p[self._force_axis]):
-                            pos = np.array(p[:-1])
-                            force = ((pos - center) / np.linalg.norm(pos - center)) * self._force_per_frame
-                            forces.extend(force)
-                            forces.append(p_id)
-                        p_id += 1
-
-                    forces = np.array(forces, dtype=np.float32)
-                    forces = base64.b64encode(forces)
-                    commands.extend([{"$type": "apply_forces_to_flex_object_base64",
-                                      "forces_and_ids_base64": forces.decode(),
-                                      "id": self.cloth_id}])
+                    for i in range(fp.get_num_objects()):
+                        # Find the cloth.
+                        if fp.get_id(i) == self.cloth_id:
+                            forces = []
+                            p_id = 0
+                            for p in fp.get_particles(i):
+                                # Calculate the force.
+                                if (0 > self._force_range > p[self._force_axis]) or \
+                                        (0 < self._force_range < p[self._force_axis]):
+                                    pos = np.array(p[:-1])
+                                    force = (pos / np.linalg.norm(pos)) * self._force_per_frame
+                                    forces.extend(force)
+                                    forces.append(p_id)
+                                p_id += 1
+                            # Encode and send the force.
+                            forces = np.array(forces, dtype=np.float32)
+                            forces = base64.b64encode(forces)
+                            commands.extend([{"$type": "apply_forces_to_flex_object_base64",
+                                              "forces_and_ids_base64": forces.decode(),
+                                              "id": self.cloth_id}])
         return commands
 
 
