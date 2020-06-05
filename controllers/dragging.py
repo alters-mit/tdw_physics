@@ -8,7 +8,7 @@ from tdw_physics.cloth_dataset import ClothDataset
 from tdw_physics.util import get_args
 
 
-class Drag(ClothDataset):
+class Dragging(ClothDataset):
     """
     Add a cloth. Place an object on the cloth. Add forces to a portion of the cloth to "drag" the object.
     """
@@ -127,5 +127,5 @@ class Drag(ClothDataset):
 
 
 if __name__ == "__main__":
-    args = get_args("drag")
-    Drag().run(num=args.num, output_dir=args.dir, temp_path=args.temp, width=args.width, height=args.height)
+    args = get_args("dragging")
+    Dragging().run(num=args.num, output_dir=args.dir, temp_path=args.temp, width=args.width, height=args.height)
