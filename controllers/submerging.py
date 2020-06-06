@@ -52,9 +52,9 @@ class Submerge(TransformsDataset):
                       #"naughtone_pinch_stool_chair",
                       #"microwave",
                       #"trunk_6810-0009",
-                      #"suitcase",
+                      "suitcase",
                       #"kayak_small",
-                      #"elephant_bowl",
+                      "elephant_bowl",
                       #"trapezoidal_table",
                       #"b05_pc-computer-printer-1",
                       "dishwasher_4",
@@ -106,6 +106,9 @@ class Submerge(TransformsDataset):
             # create the list we will randomly select from each trial.
             self.fluid_type_names.append(o)
 
+        # Randomly select a fluid type
+        #self.fluid_type_selection = choice(self.fluid_type_names)
+
         commands = [self.get_add_scene(scene_name="tdw_room_2018"),
                     {"$type": "set_aperture",
                      "aperture": 4.8},
@@ -125,9 +128,9 @@ class Submerge(TransformsDataset):
                           "static_friction": 0.1,
                           "dynamic_friction": 0.1,
                           "particle_friction": 0.1,
-                          "viscocity": 5.0,
-                          "adhesion": 0.15,
-                          "cohesion": 0.01,
+                          "viscocity": self.fluid_types[self.fluid_type_selection].viscosity,
+                          "adhesion": self.fluid_types[self.fluid_type_selection].adhesion,
+                          "cohesion": self.fluid_types[self.fluid_type_selection].cohesion,
                           "radius": 0.1,
                           "fluid_rest": 0.05,
                           "damping": 0.01,
@@ -139,7 +142,6 @@ class Submerge(TransformsDataset):
                         ])
  
         return commands
-
 
     def get_trial_initialization_commands(self) -> List[dict]:
         trial_commands = []
@@ -153,7 +155,7 @@ class Submerge(TransformsDataset):
                                                    o_id=self.pool_id))
         trial_commands.extend([{"$type": "scale_object", 
                                 "id": self.pool_id, 
-                                "scale_factor": {"x": 1.5, "y": 3.0, "z":1.5}}, 
+                                "scale_factor": {"x": 1.5, "y": 2.5, "z":1.5}}, 
                                {"$type": "set_kinematic_state", 
                                 "id": self.pool_id, 
                                 "is_kinematic": True, 
@@ -169,8 +171,6 @@ class Submerge(TransformsDataset):
         model_record = self.full_lib.get_record(model)
 
         # Recreate fluid.
-        # Randomly select a fluid type
-        self.fluid_type_selection = choice(self.fluid_type_names)
         trial_commands.extend(self.create_fluid())
 
         # Randomly select an object, and randomly orient it.
@@ -200,7 +200,7 @@ class Submerge(TransformsDataset):
 
         # Position and aim avatar.
         trial_commands.extend([{"$type": "teleport_avatar_to",
-                                "position": {"x": -2.025, "y": 2.75, "z": 0}},
+                                "position": {"x": -2.675, "y": 1.375, "z": 0}},
                                {"$type": "look_at",
                                 "object_id": self.pool_id,
                                 "use_centroid": True}])
@@ -228,11 +228,7 @@ class Submerge(TransformsDataset):
                            "fluid_container": True,
                            "fluid_type": self.fluid_type_selection},
                          {"$type": "step_physics", "frames": 500}]
-        command.extend([{"$type": "update_flex_container", 
-                         "container_id": 0,
-                         "viscosity": self.fluid_types[self.fluid_type_selection].viscosity,
-                         "adhesion": self.fluid_types[self.fluid_type_selection].adhesion,
-                         "cohesion": self.fluid_types[self.fluid_type_selection].cohesion}])
+
         return command
 
 
@@ -251,4 +247,4 @@ class Submerge(TransformsDataset):
 		
 if __name__ == "__main__":
     args = get_args("submerging")
-    Submerge().run(num=args.num, output_dir=args.dir, temp_path=args.temp)
+    Submerge().run(num=args.num, output_dir=args.dir, temp_path=args.temp, width=args.width, height=args.height)
