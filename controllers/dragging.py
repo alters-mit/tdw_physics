@@ -1,4 +1,3 @@
-import base64
 import numpy as np
 import random
 from typing import List
@@ -13,14 +12,18 @@ class Dragging(ClothDataset):
     Add a cloth. Place an object on the cloth. Add forces to a portion of the cloth to "drag" the object.
     """
 
+    # Define the corners of the cloth.
+    _CORNERS: List[np.array] = [np.array([1, 0, 1]),
+                                np.array([1, 0, -1]),
+                                np.array([-1, 0, -1]),
+                                np.array([-1, 0, 1])]
+
     def __init__(self, port: int = 1071):
         super().__init__(port=port)
         # The number of frames during which a force will be applied.
         self._num_force_frames: int = 0
-        # The axis of the force (0=x, 2=z).
-        self._force_axis: int = 0
-        # Forces will only be applied to particles with coordinate values greater/lesser than this.
-        self._force_range: float = 0
+        self._corner: np.array = self._CORNERS[0]
+        self._corner_radius = 0
         # The force magnitude per frame.
         self._force_per_frame: float = 0
 
@@ -49,12 +52,13 @@ class Dragging(ClothDataset):
 
     def get_trial_initialization_commands(self) -> List[dict]:
         self._num_force_frames = random.randint(5, 10)
-        self._force_axis = 0 if random.random() < 0.5 else 2
-        self._force_range: float = random.uniform(0.5, 0.8)
-        self._force_per_frame = random.uniform(-30, -45)
-        if random.random():
-            self._force_range *= -1
-            self._force_per_frame *= -1
+
+        # Get a random corner.
+        self._corner = random.choice(self._CORNERS)
+        self._corner_radius = random.uniform(0.5, 0.85)
+
+        self._force_per_frame = random.uniform(-30, -55)
+
         commands = []
         commands.extend(self.add_cloth_object(record=self.cloth_record,
                                               position={"x": 0, "y": 1, "z": 0},
@@ -109,11 +113,13 @@ class Dragging(ClothDataset):
                             forces = []
                             p_id = 0
                             for p in fp.get_particles(i):
-                                # Calculate the force.
-                                if (0 > self._force_range > p[self._force_axis]) or \
-                                        (0 < self._force_range < p[self._force_axis]):
+                                # Add a force if this is a "corner particle".
+                                if np.abs(np.linalg.norm(p[:-1] - self._corner)) <= self._corner_radius:
+                                    # Calculate the force.
                                     pos = np.array(p[:-1])
-                                    force = (pos / np.linalg.norm(pos)) * self._force_per_frame
+                                    force = ((pos - self._corner) / np.linalg.norm(pos - self._corner)) * self.\
+                                        _force_per_frame
+                                    # Add the force and particle ID.
                                     forces.extend(force)
                                     forces.append(p_id)
                                 p_id += 1
