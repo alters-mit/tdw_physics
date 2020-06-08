@@ -118,10 +118,8 @@ class Dragging(ClothDataset):
                                     forces.append(p_id)
                                 p_id += 1
                             # Encode and send the force.
-                            forces = np.array(forces, dtype=np.float32)
-                            forces = base64.b64encode(forces)
                             commands.extend([{"$type": "apply_forces_to_flex_object_base64",
-                                              "forces_and_ids_base64": forces.decode(),
+                                              "forces_and_ids_base64": TDWUtils.get_base64_flex_particle_forces(forces),
                                               "id": self.cloth_id}])
         return commands
 
