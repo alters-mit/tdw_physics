@@ -73,6 +73,10 @@ class Draping(ClothDataset):
 
         return trial_commands
 
+    def get_per_frame_commands(self, resp: List[bytes], frame: int) -> List[dict]:
+        return [{"$type": "focus_on_object",
+                 "object_id": self.cloth_id}]
+
 
 if __name__ == "__main__":
     args = get_args("draping")

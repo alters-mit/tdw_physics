@@ -97,11 +97,13 @@ class Dragging(ClothDataset):
                           "position": self.get_random_avatar_position(1.8, 2.1, 1, 1.3, TDWUtils.VECTOR3_ZERO)},
                          {"$type": "look_at",
                           "id": self.cloth_id,
-                          "use_centroid": True}])
+                          "use_centroid": True},
+                         {"$type": "focus_on_object",
+                          "object_id": self.cloth_id}])
         return commands
 
     def get_per_frame_commands(self, resp: List[bytes], frame) -> List[dict]:
-        commands = super().get_per_frame_commands(resp, frame)
+        commands = []
         # Apply a force.
         if frame < self._num_force_frames:
             for r in resp[:-1]:
