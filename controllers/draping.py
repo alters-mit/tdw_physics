@@ -1,43 +1,14 @@
 from random import choice, uniform, random
 from typing import List
-from tdw_physics.flex_dataset import FlexDataset
-from tdw_physics.util import MODEL_LIBRARIES, get_args
+from tdw_physics.cloth_dataset import ClothDataset
+from tdw_physics.util import get_args
 
 
-class Draping(FlexDataset):
+class Draping(ClothDataset):
     """
     Using NVIDIA Flex, drape a randomly-selected object with a cloth object.
     20% of the time, no object is selected.
     """
-
-    def __init__(self, port: int = 1071):
-        object_names = ["linbrazil_diz_armchair",
-                        "whirlpool_akzm7630ix",
-                        "12_01_010",
-                        "12_01_015",
-                        "b05_trophy",
-                        "b05_elsafe_infinity_ii",
-                        "b03_cylinder004",
-                        "naughtone_pinch_stool_chair",
-                        "b04_bowl_smooth",
-                        "b03_bfg_silvertoown",
-                        "backpack",
-                        "amphora_jar_vase",
-                        "suitcase",
-                        "microwave",
-                        "towel-radiator-2",
-                        "chista_slice_of_teak_table",
-                        "bongo_drum_hr_blend",
-                        "b03_worldglobe",
-                        "elephant_bowl",
-                        "trapezoidal_table"]
-        # Load the objects.
-        self.object_records = [MODEL_LIBRARIES["models_full.json"].get_record(n) for n in object_names]
-        # Get the cloth record.
-        self.cloth_record = MODEL_LIBRARIES["models_special.json"].get_record("cloth_square")
-        self.cloth_id = 0
-
-        super().__init__(port=port)
 
     def get_scene_initialization_commands(self) -> List[dict]:
         return [self.get_add_scene(scene_name="tdw_room_2018"),
@@ -102,15 +73,9 @@ class Draping(FlexDataset):
 
         return trial_commands
 
-    def get_per_frame_commands(self, frame: int, resp: List[bytes]) -> List[dict]:
+    def get_per_frame_commands(self, resp: List[bytes], frame: int) -> List[dict]:
         return [{"$type": "focus_on_object",
                  "object_id": self.cloth_id}]
-
-    def get_field_of_view(self) -> float:
-        return 65
-
-    def is_done(self, resp: List[bytes], frame: int) -> bool:
-        return frame > 150
 
 
 if __name__ == "__main__":
