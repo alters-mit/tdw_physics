@@ -7,31 +7,10 @@ from tdw.controller import Controller
 from time import sleep
 from random import choice, uniform
 from platform import system
-from typing import List, Dict, Tuple
-from pathlib import Path
-import h5py
-import json
+from tdw.flex.fluid_types import FluidTypes
+from typing import Dict, List
 
 
-class _FluidType:
-    """
-    Metadata for scene object physics. Specifies mass and friction values for objects.
-    """
-    def __init__(self,
-                 fluid_type: str,
-                 viscosity: float,
-                 adhesion: float,
-                 cohesion: float):
-        """
-        :param fluid_type: Name of the fluid type.
-        :param viscosity: The viscosity value of the fluid.
-        :param adhesion: The adhesion value of the fluid.
-        :param cohesion: The cohesion value of the fluid.
-        """
-        self.fluid_type = fluid_type
-        self.viscosity = viscosity
-        self.adhesion = adhesion
-        self.cohesion = cohesion
 
 
 """
@@ -44,9 +23,9 @@ class Submerge(TransformsDataset):
         self.model_list = [
                       #"b03_db_apps_tech_08_04",
                       #"trashbin",
-                      "trunck",
-                      "whirlpool_akzm7630ix",
-                      "satiro_sculpture",
+                      #"trunck",
+                      #"whirlpool_akzm7630ix",
+                      #"satiro_sculpture",
                       #"towel-radiator-2",
                       #"b03_folding-screen-panel-room-divider",
                       #"naughtone_pinch_stool_chair",
@@ -54,23 +33,23 @@ class Submerge(TransformsDataset):
                       #"trunk_6810-0009",
                       "suitcase",
                       #"kayak_small",
-                      "elephant_bowl",
+                      #"elephant_bowl",
                       #"trapezoidal_table",
                       #"b05_pc-computer-printer-1",
-                      "dishwasher_4",
+                      #"dishwasher_4",
                       #"chista_slice_of_teak_table",
-                      "buddah",
+                      #"buddah",
                       #"b05_elsafe_infinity_ii",
                       #"backpack",
                       #"b06_firehydrant_lod0",
-                      "b05_ticketmachine",
+                      #"b05_ticketmachine",
                       #"b05_trophy",
                       #"b05_kitchen_aid_toster",
-                      "b05_heavybag",
+                      #"b05_heavybag",
                       #"bongo_drum_hr_blend",
-                      "b03_worldglobe",
+                      #"b03_worldglobe",
                       #"ceramic_pot",
-                      "b04_kenmore_refr_70419",
+                      #"b04_kenmore_refr_70419",
                       #"b03_zebra",
                       #"b05_gibson_j-45",
                       #"b03_cow",
@@ -81,9 +60,11 @@ class Submerge(TransformsDataset):
         self.fluid_id = None
         self.pool_id = None
 
-        self.fluid_type_names = []
-        self.fluid_types: Dict[str, _FluidType] = {}
-        self.fluid_type_selection = "flex_water"
+        ft = FluidTypes()
+        self.fluid_types = ft.get_fluid_types()
+        self.fluid_type_names = ft.get_fluid_type_names()
+
+        self.fluid_type_selection = "water"
 
         self.special_lib = ModelLibrarian("models_special.json")
         self.full_lib = ModelLibrarian("models_full.json")
@@ -95,19 +76,10 @@ class Submerge(TransformsDataset):
         if system() != "Windows":
             raise Exception("Flex fluids are only supported in Windows (see Documentation/misc_frontend/flex.md)")
 
-        # Parse the data for the available fluid types.
-        fluid_type_data = json.loads(Path("fluid_types.json").read_text())
-        for o in fluid_type_data:
-            combo = _FluidType(fluid_type = o,
-                               viscosity=fluid_type_data[o]["viscosity"],
-                               adhesion=fluid_type_data[o]["adhesion"],
-                               cohesion=fluid_type_data[o]["cohesion"])
-            self.fluid_types[o] = combo
-            # create the list we will randomly select from each trial.
-            self.fluid_type_names.append(o)
+        
 
         # Randomly select a fluid type
-        #self.fluid_type_selection = choice(self.fluid_type_names)
+        #self.fluid_type_selection = choice(self.fluid_types.fluid_type_names)
 
         commands = [self.get_add_scene(scene_name="tdw_room_2018"),
                     {"$type": "set_aperture",
