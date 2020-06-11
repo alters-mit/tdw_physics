@@ -42,7 +42,9 @@ class _TableScripted(RigidbodiesDataset, ABC):
                 {"$type": "set_ambient_occlusion_intensity",
                  "intensity": 0.175},
                 {"$type": "set_ambient_occlusion_thickness_modifier",
-                 "thickness": 3.5}]
+                 "thickness": 3.5},
+                {"$type": "set_shadow_strength",
+                 "strength": 1.0}]
 
     def get_field_of_view(self) -> float:
         return 68
