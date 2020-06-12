@@ -1,0 +1,1440 @@
+{
+    "description": "Good Flex models",
+    "records": {
+        "12_01_010": {
+            "asset_bundle_sizes": {
+                "Darwin": 376646,
+                "Linux": 534638,
+                "Windows": 234429
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.001045674,
+                    "y": 0.3499843,
+                    "z": -0.1819242
+                },
+                "bottom": {
+                    "x": -0.001045674,
+                    "y": -5.960464e-08,
+                    "z": 0
+                },
+                "center": {
+                    "x": -0.001045674,
+                    "y": 0.3499843,
+                    "z": 0
+                },
+                "front": {
+                    "x": -0.001045674,
+                    "y": 0.3499843,
+                    "z": 0.1819242
+                },
+                "left": {
+                    "x": -0.3677678,
+                    "y": 0.3499843,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.3656764,
+                    "y": 0.3499843,
+                    "z": 0
+                },
+                "top": {
+                    "x": -0.001045674,
+                    "y": 0.6999686,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": -90.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "12_01_010",
+            "physics_quality": 0.9947559390122039,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "12_01_010"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/12_01_010",
+                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/12_01_010",
+                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/12_01_010"
+            },
+            "wcategory": "toilet",
+            "wnid": "n04446521"
+        },
+        "12_01_015": {
+            "asset_bundle_sizes": {
+                "Darwin": 355458,
+                "Linux": 512883,
+                "Windows": 209861
+            },
+            "bounds": {
+                "back": {
+                    "x": 0.0008765459,
+                    "y": 0.197,
+                    "z": -0.1799228
+                },
+                "bottom": {
+                    "x": 0.0008765459,
+                    "y": -2.980232e-08,
+                    "z": -2.980232e-08
+                },
+                "center": {
+                    "x": 0.0008765459,
+                    "y": 0.197,
+                    "z": -2.980232e-08
+                },
+                "front": {
+                    "x": 0.0008765459,
+                    "y": 0.197,
+                    "z": 0.1799227
+                },
+                "left": {
+                    "x": -0.2782469,
+                    "y": 0.197,
+                    "z": -2.980232e-08
+                },
+                "right": {
+                    "x": 0.28,
+                    "y": 0.197,
+                    "z": -2.980232e-08
+                },
+                "top": {
+                    "x": 0.0008765459,
+                    "y": 0.3940001,
+                    "z": -2.980232e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": -90.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "12_01_015",
+            "physics_quality": 0.9978861330699176,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "12_01_015"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/12_01_015",
+                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/12_01_015",
+                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/12_01_015"
+            },
+            "wcategory": "toilet",
+            "wnid": "n04446521"
+        },
+        "amphora_jar_vase": {
+            "asset_bundle_sizes": {
+                "Darwin": 13958460,
+                "Linux": 14086592,
+                "Windows": 14026955
+            },
+            "bounds": {
+                "back": {
+                    "x": -5.960464e-08,
+                    "y": 0.275,
+                    "z": -0.175
+                },
+                "bottom": {
+                    "x": -5.960464e-08,
+                    "y": 0,
+                    "z": -1.490116e-08
+                },
+                "center": {
+                    "x": -5.960464e-08,
+                    "y": 0.275,
+                    "z": -1.490116e-08
+                },
+                "front": {
+                    "x": -5.960464e-08,
+                    "y": 0.275,
+                    "z": 0.175
+                },
+                "left": {
+                    "x": -0.1750001,
+                    "y": 0.275,
+                    "z": -1.490116e-08
+                },
+                "right": {
+                    "x": 0.1749999,
+                    "y": 0.275,
+                    "z": -1.490116e-08
+                },
+                "top": {
+                    "x": -5.960464e-08,
+                    "y": 0.55,
+                    "z": -1.490116e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "amphora_jar_vase",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "amphora_jar_vase"
+                    ],
+                    "name": "amphora_jar_vase"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/amphora_jar_vase",
+                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/amphora_jar_vase",
+                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/amphora_jar_vase"
+            },
+            "wcategory": "vase",
+            "wnid": "n04529463"
+        },
+        "b03_bfg_silvertoown": {
+            "asset_bundle_sizes": {
+                "Darwin": 33355143,
+                "Linux": 33546791,
+                "Windows": 33215754
+            },
+            "bounds": {
+                "back": {
+                    "x": -5.960464e-08,
+                    "y": 0.3490985,
+                    "z": -0.1040622
+                },
+                "bottom": {
+                    "x": -5.960464e-08,
+                    "y": 0,
+                    "z": -1.490116e-08
+                },
+                "center": {
+                    "x": -5.960464e-08,
+                    "y": 0.3490985,
+                    "z": -1.490116e-08
+                },
+                "front": {
+                    "x": -5.960464e-08,
+                    "y": 0.3490985,
+                    "z": 0.1040621
+                },
+                "left": {
+                    "x": -0.3490926,
+                    "y": 0.3490985,
+                    "z": -1.490116e-08
+                },
+                "right": {
+                    "x": 0.3490925,
+                    "y": 0.3490985,
+                    "z": -1.490116e-08
+                },
+                "top": {
+                    "x": -5.960464e-08,
+                    "y": 0.6981971,
+                    "z": -1.490116e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "b03_bfg_silvertoown",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "Tire_BFG"
+                    ],
+                    "name": "B03_BFG_Silvertoown"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b03_bfg_silvertoown",
+                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b03_bfg_silvertoown",
+                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b03_bfg_silvertoown"
+            },
+            "wcategory": "car tire",
+            "wnid": "n02971167"
+        },
+        "b03_cylinder004": {
+            "asset_bundle_sizes": {
+                "Darwin": 22265470,
+                "Linux": 22420992,
+                "Windows": 22129817
+            },
+            "bounds": {
+                "back": {
+                    "x": -5.960464e-08,
+                    "y": 0.554074,
+                    "z": -0.2511223
+                },
+                "bottom": {
+                    "x": -5.960464e-08,
+                    "y": 0,
+                    "z": -2.980232e-08
+                },
+                "center": {
+                    "x": -5.960464e-08,
+                    "y": 0.554074,
+                    "z": -2.980232e-08
+                },
+                "front": {
+                    "x": -5.960464e-08,
+                    "y": 0.554074,
+                    "z": 0.2511222
+                },
+                "left": {
+                    "x": -0.258057,
+                    "y": 0.554074,
+                    "z": -2.980232e-08
+                },
+                "right": {
+                    "x": 0.2580569,
+                    "y": 0.554074,
+                    "z": -2.980232e-08
+                },
+                "top": {
+                    "x": -5.960464e-08,
+                    "y": 1.108148,
+                    "z": -2.980232e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "b03_cylinder004",
+            "physics_quality": -1,
+            "scale_factor": 0.8099999,
+            "substructure": [
+                {
+                    "materials": [
+                        "default1"
+                    ],
+                    "name": "B03_Cylinder004"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b03_cylinder004",
+                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b03_cylinder004",
+                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b03_cylinder004"
+            },
+            "wcategory": "fire hydrant",
+            "wnid": "n03346898"
+        },
+        "b03_worldglobe": {
+            "asset_bundle_sizes": {
+                "Darwin": 25153652,
+                "Linux": 25324069,
+                "Windows": 25016163
+            },
+            "bounds": {
+                "back": {
+                    "x": -2.980232e-08,
+                    "y": 0.2032102,
+                    "z": -0.1478112
+                },
+                "bottom": {
+                    "x": -2.980232e-08,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": -2.980232e-08,
+                    "y": 0.2032102,
+                    "z": 0
+                },
+                "front": {
+                    "x": -2.980232e-08,
+                    "y": 0.2032102,
+                    "z": 0.1478112
+                },
+                "left": {
+                    "x": -0.1607104,
+                    "y": 0.2032102,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.1607103,
+                    "y": 0.2032102,
+                    "z": 0
+                },
+                "top": {
+                    "x": -2.980232e-08,
+                    "y": 0.4064204,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "b03_worldglobe",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "worldGlobe"
+                    ],
+                    "name": "B03_worldGlobe"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b03_worldglobe",
+                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b03_worldglobe",
+                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b03_worldglobe"
+            },
+            "wcategory": "globe",
+            "wnid": "n03440512"
+        },
+        "b04_bowl_smooth": {
+            "asset_bundle_sizes": {
+                "Darwin": 3346424,
+                "Linux": 3514198,
+                "Windows": 3852818
+            },
+            "bounds": {
+                "back": {
+                    "x": -1.490116e-08,
+                    "y": 0.04086444,
+                    "z": -0.1200827
+                },
+                "bottom": {
+                    "x": -1.490116e-08,
+                    "y": -7.450581e-09,
+                    "z": 0
+                },
+                "center": {
+                    "x": -1.490116e-08,
+                    "y": 0.04086444,
+                    "z": 0
+                },
+                "front": {
+                    "x": -1.490116e-08,
+                    "y": 0.04086445,
+                    "z": 0.1200827
+                },
+                "left": {
+                    "x": -0.1200827,
+                    "y": 0.04086444,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.1200827,
+                    "y": 0.04086444,
+                    "z": 0
+                },
+                "top": {
+                    "x": -1.490116e-08,
+                    "y": 0.08172889,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "b04_bowl_smooth",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_beech_honey",
+                        "wood_beech_honey"
+                    ],
+                    "name": "B04_Bowl_smooth"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b04_bowl_smooth",
+                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b04_bowl_smooth",
+                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b04_bowl_smooth"
+            },
+            "wcategory": "bowl (previously dish)",
+            "wnid": "n03206908"
+        },
+        "b05_elsafe_infinity_ii": {
+            "asset_bundle_sizes": {
+                "Darwin": 7048634,
+                "Linux": 7239571,
+                "Windows": 6928824
+            },
+            "bounds": {
+                "back": {
+                    "x": -1.490116e-08,
+                    "y": 0.1001245,
+                    "z": -0.2091942
+                },
+                "bottom": {
+                    "x": -1.490116e-08,
+                    "y": -2.980232e-08,
+                    "z": 0
+                },
+                "center": {
+                    "x": -1.490116e-08,
+                    "y": 0.1001245,
+                    "z": 0
+                },
+                "front": {
+                    "x": -1.490116e-08,
+                    "y": 0.1001245,
+                    "z": 0.2091942
+                },
+                "left": {
+                    "x": -0.2146233,
+                    "y": 0.1001245,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.2146233,
+                    "y": 0.1001245,
+                    "z": 0
+                },
+                "top": {
+                    "x": -1.490116e-08,
+                    "y": 0.200249,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "b05_elsafe_infinity_ii",
+            "physics_quality": 0.999841716781933,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque",
+                        "Buttons",
+                        "Safe_plastic_black"
+                    ],
+                    "name": "B05_Elsafe_Infinity_II"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b05_elsafe_infinity_ii",
+                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b05_elsafe_infinity_ii",
+                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b05_elsafe_infinity_ii"
+            },
+            "wcategory": "safe",
+            "wnid": "n04125021"
+        },
+        "b05_trophy": {
+            "asset_bundle_sizes": {
+                "Darwin": 1571916,
+                "Linux": 1731655,
+                "Windows": 1432043
+            },
+            "bounds": {
+                "back": {
+                    "x": -5.960464e-08,
+                    "y": 0.2718378,
+                    "z": -0.1349897
+                },
+                "bottom": {
+                    "x": -5.960464e-08,
+                    "y": 0,
+                    "z": -1.490116e-08
+                },
+                "center": {
+                    "x": -5.960464e-08,
+                    "y": 0.2718378,
+                    "z": -1.490116e-08
+                },
+                "front": {
+                    "x": -5.960464e-08,
+                    "y": 0.2718378,
+                    "z": 0.1349897
+                },
+                "left": {
+                    "x": -0.1754568,
+                    "y": 0.2718378,
+                    "z": -1.490116e-08
+                },
+                "right": {
+                    "x": 0.1754567,
+                    "y": 0.2718378,
+                    "z": -1.490116e-08
+                },
+                "top": {
+                    "x": -5.960464e-08,
+                    "y": 0.5436756,
+                    "z": -1.490116e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "b05_trophy",
+            "physics_quality": 0.9316182218865952,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "B05_Trophy"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b05_trophy",
+                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b05_trophy",
+                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b05_trophy"
+            },
+            "wcategory": "trophy",
+            "wnid": "n04487996"
+        },
+        "backpack": {
+            "asset_bundle_sizes": {
+                "Darwin": 14355419,
+                "Linux": 14478556,
+                "Windows": 14274336
+            },
+            "bounds": {
+                "back": {
+                    "x": -2.980232e-08,
+                    "y": 0.2136495,
+                    "z": -0.1606115
+                },
+                "bottom": {
+                    "x": -2.980232e-08,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": -2.980232e-08,
+                    "y": 0.2136495,
+                    "z": 0
+                },
+                "front": {
+                    "x": -2.980232e-08,
+                    "y": 0.2136495,
+                    "z": 0.1606115
+                },
+                "left": {
+                    "x": -0.168293,
+                    "y": 0.2136495,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.168293,
+                    "y": 0.2136495,
+                    "z": 0
+                },
+                "top": {
+                    "x": -2.980232e-08,
+                    "y": 0.427299,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "backpack",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "Backpack"
+                    ],
+                    "name": "Backpack"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/backpack",
+                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/backpack",
+                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/backpack"
+            },
+            "wcategory": "backpack",
+            "wnid": "n02772753"
+        },
+        "bongo_drum_hr_blend": {
+            "asset_bundle_sizes": {
+                "Darwin": 9842202,
+                "Linux": 9997556,
+                "Windows": 9714165
+            },
+            "bounds": {
+                "back": {
+                    "x": -5.960464e-08,
+                    "y": 0.2,
+                    "z": -0.1115
+                },
+                "bottom": {
+                    "x": -5.960464e-08,
+                    "y": 0,
+                    "z": -1.490116e-08
+                },
+                "center": {
+                    "x": -5.960464e-08,
+                    "y": 0.2,
+                    "z": -1.490116e-08
+                },
+                "front": {
+                    "x": -5.960464e-08,
+                    "y": 0.2,
+                    "z": 0.1115
+                },
+                "left": {
+                    "x": -0.1120001,
+                    "y": 0.2,
+                    "z": -1.490116e-08
+                },
+                "right": {
+                    "x": 0.1119999,
+                    "y": 0.2,
+                    "z": -1.490116e-08
+                },
+                "top": {
+                    "x": -5.960464e-08,
+                    "y": 0.4,
+                    "z": -1.490116e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "bongo_drum_hr_blend",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "bongo_drum_hr"
+                    ],
+                    "name": "bongo_drum_hr_blend"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/bongo_drum_hr_blend",
+                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/bongo_drum_hr_blend",
+                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/bongo_drum_hr_blend"
+            },
+            "wcategory": "drum (drumkit?)",
+            "wnid": "n03249569"
+        },
+        "chista_slice_of_teak_table": {
+            "asset_bundle_sizes": {
+                "Darwin": 3577563,
+                "Linux": 3805737,
+                "Windows": 3426066
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.1999877,
+                    "z": -0.2
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": -2.980232e-08,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.1999877,
+                    "z": 0
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.1999877,
+                    "z": 0.2
+                },
+                "left": {
+                    "x": -0.2131578,
+                    "y": 0.1999877,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.2131578,
+                    "y": 0.1999877,
+                    "z": 0
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.3999754,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "chista_slice_of_teak_table",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_american_cherry"
+                    ],
+                    "name": "chista_slice_of_teak_table"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/chista_slice_of_teak_table",
+                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/chista_slice_of_teak_table",
+                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/chista_slice_of_teak_table"
+            },
+            "wcategory": "table",
+            "wnid": "n04379243"
+        },
+        "elephant_bowl": {
+            "asset_bundle_sizes": {
+                "Darwin": 1712033,
+                "Linux": 1941026,
+                "Windows": 1553838
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.2518426,
+                    "z": -0.2562177
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.2518426,
+                    "z": 0
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.2518426,
+                    "z": 0.2562177
+                },
+                "left": {
+                    "x": -0.2565,
+                    "y": 0.2518426,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.2565,
+                    "y": 0.2518426,
+                    "z": 0
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.5036852,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "elephant_bowl",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "marble_white_less_tile"
+                    ],
+                    "name": "elephant_bowl"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/elephant_bowl",
+                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/elephant_bowl",
+                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/elephant_bowl"
+            },
+            "wcategory": "bowl (previously dish)",
+            "wnid": "n03206908"
+        },
+        "linbrazil_diz_armchair": {
+            "asset_bundle_sizes": {
+                "Darwin": 3931709,
+                "Linux": 4160722,
+                "Windows": 3773532
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.3471963,
+                    "z": -0.4567915
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.3471963,
+                    "z": 0
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.3471963,
+                    "z": 0.4567915
+                },
+                "left": {
+                    "x": -0.3810638,
+                    "y": 0.3471963,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.3810638,
+                    "y": 0.3471963,
+                    "z": 0
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.6943927,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "linbrazil_diz_armchair",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_american_cherry"
+                    ],
+                    "name": "linbrazil_diz_armchair"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/linbrazil_diz_armchair",
+                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/linbrazil_diz_armchair",
+                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/linbrazil_diz_armchair"
+            },
+            "wcategory": "chair",
+            "wnid": "n03001627"
+        },
+        "microwave": {
+            "asset_bundle_sizes": {
+                "Darwin": 475833,
+                "Linux": 754969,
+                "Windows": 280259
+            },
+            "bounds": {
+                "back": {
+                    "x": -0.02057832,
+                    "y": 0.1553493,
+                    "z": -0.2068492
+                },
+                "bottom": {
+                    "x": -0.02057832,
+                    "y": 0,
+                    "z": -0.071022
+                },
+                "center": {
+                    "x": -0.02057832,
+                    "y": 0.1553493,
+                    "z": -0.071022
+                },
+                "front": {
+                    "x": -0.02057832,
+                    "y": 0.1553493,
+                    "z": 0.06480518
+                },
+                "left": {
+                    "x": -0.2729224,
+                    "y": 0.1553493,
+                    "z": -0.071022
+                },
+                "right": {
+                    "x": 0.2317657,
+                    "y": 0.1553493,
+                    "z": -0.071022
+                },
+                "top": {
+                    "x": -0.02057832,
+                    "y": 0.3106987,
+                    "z": -0.071022
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "microwave",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "chrome2",
+                        "chrome",
+                        "plastic_vinyl_glossy_orange",
+                        "Glass"
+                    ],
+                    "name": "microwave"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/microwave",
+                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/microwave",
+                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/microwave"
+            },
+            "wcategory": "microwave, microwave oven",
+            "wnid": "n03761084"
+        },
+        "naughtone_pinch_stool_chair": {
+            "asset_bundle_sizes": {
+                "Darwin": 5000735,
+                "Linux": 5229238,
+                "Windows": 4841595
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.2555757,
+                    "z": -0.2977313
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.2555757,
+                    "z": 0
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.2555757,
+                    "z": 0.2977313
+                },
+                "left": {
+                    "x": -0.1780393,
+                    "y": 0.2555757,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.1780393,
+                    "y": 0.2555757,
+                    "z": 0
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.5111515,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "naughtone_pinch_stool_chair",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "jersey_printed_stripes"
+                    ],
+                    "name": "naughtone_pinch_stool_chair"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/naughtone_pinch_stool_chair",
+                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/naughtone_pinch_stool_chair",
+                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/naughtone_pinch_stool_chair"
+            },
+            "wcategory": "chair",
+            "wnid": "n03001627"
+        },
+        "suitcase": {
+            "asset_bundle_sizes": {
+                "Darwin": 10606099,
+                "Linux": 11004855,
+                "Windows": 10319453
+            },
+            "bounds": {
+                "back": {
+                    "x": -8.940697e-08,
+                    "y": 0.339879,
+                    "z": -0.1374891
+                },
+                "bottom": {
+                    "x": -8.940697e-08,
+                    "y": 0,
+                    "z": -2.980232e-08
+                },
+                "center": {
+                    "x": -8.940697e-08,
+                    "y": 0.339879,
+                    "z": -2.980232e-08
+                },
+                "front": {
+                    "x": -8.940697e-08,
+                    "y": 0.339879,
+                    "z": 0.1374891
+                },
+                "left": {
+                    "x": -0.4498811,
+                    "y": 0.339879,
+                    "z": -2.980232e-08
+                },
+                "right": {
+                    "x": 0.449881,
+                    "y": 0.339879,
+                    "z": -2.980232e-08
+                },
+                "top": {
+                    "x": -8.940697e-08,
+                    "y": 0.679758,
+                    "z": -2.980232e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "suitcase",
+            "physics_quality": 0.939529660153978,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "Leather_Plain",
+                        "Leather_Plain",
+                        "Brushed_Gold"
+                    ],
+                    "name": "suitcase"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/suitcase",
+                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/suitcase",
+                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/suitcase"
+            },
+            "wcategory": "suitcase",
+            "wnid": "n02776843"
+        },
+        "towel-radiator-2": {
+            "asset_bundle_sizes": {
+                "Darwin": 242075,
+                "Linux": 281625,
+                "Windows": 210751
+            },
+            "bounds": {
+                "back": {
+                    "x": -8.940697e-08,
+                    "y": 0.625,
+                    "z": -0.0315
+                },
+                "bottom": {
+                    "x": -8.940697e-08,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": -8.940697e-08,
+                    "y": 0.625,
+                    "z": 0
+                },
+                "front": {
+                    "x": -8.940697e-08,
+                    "y": 0.625,
+                    "z": 0.0315
+                },
+                "left": {
+                    "x": -0.3000002,
+                    "y": 0.625,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.3,
+                    "y": 0.625,
+                    "z": 0
+                },
+                "top": {
+                    "x": -8.940697e-08,
+                    "y": 1.25,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "towel-radiator-2",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "chrome"
+                    ],
+                    "name": "TOWEL-RADIATOR-2"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/towel-radiator-2",
+                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/towel-radiator-2",
+                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/towel-radiator-2"
+            },
+            "wcategory": "radiator",
+            "wnid": "n04041069"
+        },
+        "trapezoidal_table": {
+            "asset_bundle_sizes": {
+                "Darwin": 3880673,
+                "Linux": 4100940,
+                "Windows": 3715124
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.1791968,
+                    "z": -0.3690141
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.1791968,
+                    "z": 0
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.1791968,
+                    "z": 0.3690141
+                },
+                "left": {
+                    "x": -0.6156889,
+                    "y": 0.1791968,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.6156889,
+                    "y": 0.1791968,
+                    "z": 0
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.3583935,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "trapezoidal_table",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "wood_american_cherry"
+                    ],
+                    "name": "trapezoidal_table"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/trapezoidal_table",
+                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/trapezoidal_table",
+                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/trapezoidal_table"
+            },
+            "wcategory": "table",
+            "wnid": "n04379243"
+        },
+        "whirlpool_akzm7630ix": {
+            "asset_bundle_sizes": {
+                "Darwin": 8977698,
+                "Linux": 9383297,
+                "Windows": 8657798
+            },
+            "bounds": {
+                "back": {
+                    "x": -5.960464e-08,
+                    "y": 0.2794334,
+                    "z": -0.3035972
+                },
+                "bottom": {
+                    "x": -5.960464e-08,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": -5.960464e-08,
+                    "y": 0.2794334,
+                    "z": 0
+                },
+                "front": {
+                    "x": -5.960464e-08,
+                    "y": 0.2794334,
+                    "z": 0.3035972
+                },
+                "left": {
+                    "x": -0.2975001,
+                    "y": 0.2794334,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.2975,
+                    "y": 0.2794334,
+                    "z": 0
+                },
+                "top": {
+                    "x": -5.960464e-08,
+                    "y": 0.5588669,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 180.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "whirlpool_akzm7630ix",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque",
+                        "Material_135",
+                        "Material_13",
+                        "chrome2",
+                        "Material_62",
+                        "SolidTiles_Transparent",
+                        "Material_156",
+                        "Material_161"
+                    ],
+                    "name": "Whirlpool_AKZM7630IX"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/whirlpool_akzm7630ix",
+                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/whirlpool_akzm7630ix",
+                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/whirlpool_akzm7630ix"
+            },
+            "wcategory": "gas cooker",
+            "wnid": "n03425595"
+        }
+    }
+}
