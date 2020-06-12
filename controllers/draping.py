@@ -64,8 +64,10 @@ class Draping(FlexDataset):
     def get_trial_initialization_commands(self) -> List[dict]:
         """
         Randomly select an object and orientation, and drape it using a given set of cloth parameters.
-
         """
+
+        super().get_trial_initialization_commands()
+
         # Position and aim avatar.
         trial_commands = [{"$type": "teleport_avatar_to",
                            "position": {"x": 2.0, "y": 1, "z": 1}},

@@ -1,23 +1,19 @@
-from tdw_physics.transforms_dataset import TransformsDataset
-from tdw_physics.rigidbodies_dataset import PHYSICS_INFO
-from tdw.tdw_utils import TDWUtils
+from tdw_physics.flex_dataset import FlexDataset
 from tdw.librarian import ModelLibrarian
-from tdw_physics.util import MODEL_LIBRARIES, get_args
+from tdw_physics.util import get_args
+from tdw_physics.rigidbodies_dataset import PHYSICS_INFO
 from tdw.controller import Controller
-from time import sleep
 from random import choice, uniform
 from platform import system
 from tdw.flex.fluid_types import FluidTypes
-from typing import Dict, List
+from typing import List
 
 
-
-
-"""
-Create a fluid "container" with the NVIDIA Flex physics engine. Run several trials, dropping ball objects of increasing mass into the fluid.
-"""
-
-class Submerge(TransformsDataset):
+class Submerge(FlexDataset):
+    """
+    Create a fluid "container" with the NVIDIA Flex physics engine.
+    Run several trials, dropping ball objects of increasing mass into the fluid.
+    """
 
     def __init__(self):
         self.model_list = [
@@ -54,17 +50,18 @@ class Submerge(TransformsDataset):
                       "b05_gibson_j-45",
                       "b03_cow",
                       "b03_sheep",
-                      "b04_stringer"
-                     ]
+                      "b04_stringer"]
 
-        self.fluid_id = None
-        self.pool_id = None
+        # Cache the record for the receptacle.
+        self.receptacle_record = ModelLibrarian("models_special.json").get_record("fluid_receptacle1x1")
+        # Cache the fluid types.
+        self.ft = FluidTypes()
 
-        self.special_lib = ModelLibrarian("models_special.json")
         self.full_lib = ModelLibrarian("models_full.json")
 
-        super().__init__()
+        self.pool_id = None
 
+        super().__init__()
 
     def get_scene_initialization_commands(self) -> List[dict]:
         if system() != "Windows":
@@ -81,38 +78,34 @@ class Submerge(TransformsDataset):
                      "intensity": 0.175},
                     {"$type": "set_ambient_occlusion_thickness_modifier",
                      "thickness": 3.5}]
- 
+
         return commands
 
-
     def get_trial_initialization_commands(self) -> List[dict]:
+        super().get_trial_initialization_commands()
+
         trial_commands = []
+        if self.pool_id is not None:
+            trial_commands.append({"$type": "destroy_flex_container",
+                                   "id": 0})
 
         # Load a pool container for the fluid.
         self.pool_id = Controller.get_unique_id()
-        record = self.special_lib.get_record("fluid_receptacle1x1")
-        trial_commands.append(self.add_transforms_object(record=record, 
-                                                   position={"x": 0, "y": 0, "z": 0},
-                                                   rotation={"x": 0, "y": 0, "z": 0},
-                                                   o_id=self.pool_id))
-        trial_commands.extend([{"$type": "scale_object", 
-                                "id": self.pool_id, 
-                                "scale_factor": {"x": 1.5, "y": 2.5, "z":1.5}}, 
-                               {"$type": "set_kinematic_state", 
-                                "id": self.pool_id, 
-                                "is_kinematic": True, 
+        self.non_flex_objects.append(self.pool_id)
+        trial_commands.append(self.add_transforms_object(record=self.receptacle_record,
+                                                         position={"x": 0, "y": 0, "z": 0},
+                                                         rotation={"x": 0, "y": 0, "z": 0},
+                                                         o_id=self.pool_id))
+        trial_commands.extend([{"$type": "scale_object",
+                                "id": self.pool_id,
+                                "scale_factor": {"x": 1.5, "y": 2.5, "z": 1.5}},
+                               {"$type": "set_kinematic_state",
+                                "id": self.pool_id,
+                                "is_kinematic": True,
                                 "use_gravity": False}])
 
-
-        # Destroy the previous fluid object, if is has been assigned.
-        if self.fluid_id != None:
-            trial_commands.extend([{"$type": "destroy_flex_object", "id": self.fluid_id},
-                                   {"$type": "destroy_flex_container", "id": 0}])
-
-        ft = FluidTypes()
-
         # Randomly select a fluid type
-        fluid_type_selection = choice(ft.fluid_type_names)
+        fluid_type_selection = choice(self.ft.fluid_type_names)
 
         # Create the container, set up for fluids.
         # Slow down physics so the water can settle without splashing out of the container.
@@ -121,98 +114,69 @@ class Submerge(TransformsDataset):
                                 "static_friction": 0.1,
                                 "dynamic_friction": 0.1,
                                 "particle_friction": 0.1,
-                                "viscocity": ft.fluid_types[fluid_type_selection].viscosity,
-                                "adhesion": ft.fluid_types[fluid_type_selection].adhesion,
-                                "cohesion": ft.fluid_types[fluid_type_selection].cohesion,
+                                "viscocity": self.ft.fluid_types[fluid_type_selection].viscosity,
+                                "adhesion": self.ft.fluid_types[fluid_type_selection].adhesion,
+                                "cohesion": self.ft.fluid_types[fluid_type_selection].cohesion,
                                 "radius": 0.1,
                                 "fluid_rest": 0.05,
                                 "damping": 0.01,
                                 "substep_count": 5,
                                 "iteration_count": 8,
                                 "buoyancy": 1.0},
-                               {"$type": "set_time_step", 
-                                "time_step": 0.005}
-                        ])
-            
+                               {"$type": "set_time_step",
+                                "time_step": 0.005}])
+
+        # Recreate fluid.
+        # Add the fluid actor, using the FluidPrimitive. Allow 500 frames for the fluid to settle before continuing.
+        fluid_id = Controller.get_unique_id()
+        trial_commands.extend(self.add_fluid_object(position={"x": 0, "y": 1.0, "z": 0},
+                                                    rotation={"x": 0, "y": 0, "z": 0},
+                                                    o_id=fluid_id,
+                                                    fluid_type=fluid_type_selection))
+
+        trial_commands.append({"$type": "set_time_step",
+                               "time_step": 0.03})
+
         # Select an object at random.
         model = choice(self.model_list)
         model_record = self.full_lib.get_record(model)
-
-        # Recreate fluid.
-        trial_commands.extend(self.create_fluid(fluid_type_selection))
+        info = PHYSICS_INFO[model]
 
         # Randomly select an object, and randomly orient it.
-        # Set the object to kinematic.
         # Set the solid actor and assign the container.
-        # Reset physics time-step to a more normal value.
-        info = PHYSICS_INFO[model] 
         o_id = Controller.get_unique_id()
-        trial_commands.extend([self.add_transforms_object(record=model_record, 
-                                                       position={"x": 0, "y": 2, "z": 0},
-                                                       rotation={"x": uniform(-45.0, 45.0), "y": uniform(-45.0, 45.0), "z": uniform(-45.0, 45.0)},
-                                                       o_id=o_id)])
-        scale_val = uniform(0.25, 0.5)
-        trial_commands.extend([{"$type": "scale_object", 
-                                "id": o_id, 
-                                "scale_factor": {"x": 0.5, "y": 0.5, "z": 0.5}}, 
-                                {"$type": "set_kinematic_state", "id": o_id},
-                                {"$type": "set_flex_solid_actor",
-                                 "id": o_id,
-                                 "mass_scale": info.mass,
-                                 "particle_spacing": 0.05},
-                                {"$type": "assign_flex_container",
-                                 "id": o_id,
-                                 "container_id": 0},
-                                {"$type": "set_time_step", 
-                                 "time_step": 0.03}])
-
+        trial_commands.extend(self.add_solid_object(record=model_record,
+                                                    position={"x": 0, "y": 2, "z": 0},
+                                                    rotation={"x": uniform(-45.0, 45.0),
+                                                              "y": uniform(-45.0, 45.0),
+                                                              "z": uniform(-45.0, 45.0)},
+                                                    o_id=o_id,
+                                                    scale={"x": 0.5, "y": 0.5, "z": 0.5},
+                                                    mass_scale=info.mass,
+                                                    particle_spacing=0.05))
+        # Reset physics time-step to a more normal value.
         # Position and aim avatar.
-        trial_commands.extend([{"$type": "teleport_avatar_to",
+        trial_commands.extend([{"$type": "set_kinematic_state",
+                               "id": o_id},
+                               {"$type": "teleport_avatar_to",
                                 "position": {"x": -2.675, "y": 1.375, "z": 0}},
                                {"$type": "look_at",
                                 "object_id": self.pool_id,
                                 "use_centroid": True}])
-        
+
         return trial_commands
-
-
-    def create_fluid(self, fluid_type_selection: str) -> List[dict]:
-        # Add the fluid actor, using the FluidPrimitive. Allow 500 frames 
-        #  for the fluid to settle before continuing.
-        fluid_id = Controller.get_unique_id()
-        # Cache the ID so we can destroy it at the start of each trial.
-        self.fluid_id = fluid_id
-        command = [{"$type": "load_flex_fluid_from_resources", 
-                          "id": fluid_id, 
-                          "orientation": {"x": 0, "y": 0, "z": 0}, 
-                          "position": {"x": 0, "y": 1.0, "z": 0}},
-                         {"$type": "create_flex_fluid_object",
-                          "id": fluid_id,
-                          "mass_scale": 1.0,
-                          "particle_spacing": 0.05},
-                         {"$type": "assign_flex_container",
-                           "id": fluid_id,
-                           "container_id": 0, 
-                           "fluid_container": True,
-                           "fluid_type": fluid_type_selection},
-                         {"$type": "step_physics", "frames": 500}]
-
-        return command
-
 
     def get_per_frame_commands(self, frame: int, resp: List[bytes]) -> List[dict]:
         return [{"$type": "focus_on_object",
                  "object_id": self.pool_id}]
 
-
     def get_field_of_view(self) -> float:
         return 35
-
 
     def is_done(self, resp: List[bytes], frame: int) -> bool:
         return frame > 200
 
-		
+
 if __name__ == "__main__":
     args = get_args("submerging")
     Submerge().run(num=args.num, output_dir=args.dir, temp_path=args.temp, width=args.width, height=args.height)
