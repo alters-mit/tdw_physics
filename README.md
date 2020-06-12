@@ -584,6 +584,10 @@ static/    # Data that doesn't change per frame.
 ........object_id
 ........mass_scale
 ........(etc.)
+....fluid_actors/ # Flex fluid object parameters.
+........object_id
+........mass_scale
+........(etc.)
 frames/    # Per-frame data.
 ....0000/    # The frame number.
 ........images/    # Each image pass.
