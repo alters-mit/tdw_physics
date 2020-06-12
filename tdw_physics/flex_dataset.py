@@ -308,7 +308,7 @@ class FlexDataset(TransformsDataset, ABC):
 
         if o_id is None:
             o_id = self.get_unique_id()
-        self.object_ids = np.append(self.object_i)
+        self.object_ids = np.append(self.object_ids, o_id)
 
         return [{"$type": "load_flex_fluid_from_resources",
                  "id": o_id,
