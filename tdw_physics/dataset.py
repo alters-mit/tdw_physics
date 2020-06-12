@@ -142,9 +142,8 @@ class Dataset(Controller, ABC):
 
         # Cleanup.
         commands = []
-        cmd_name = self._get_destroy_object_command_name()
         for o_id in self.object_ids:
-            commands.append({"$type": cmd_name,
+            commands.append({"$type": self._get_destroy_object_command_name(o_id),
                              "id": int(o_id)})
         self.communicate(commands)
         # Close the file.
@@ -238,9 +237,10 @@ class Dataset(Controller, ABC):
 
         raise Exception()
 
-    @staticmethod
-    def _get_destroy_object_command_name() -> str:
+    def _get_destroy_object_command_name(self, o_id: int) -> str:
         """
+        :param o_id: The object ID.
+
         :return: The name of the command used to destroy an object.
         """
 

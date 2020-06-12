@@ -80,6 +80,8 @@ class TransformsDataset(Dataset, ABC):
                                                    "rot": tr.get_rotation(i)}})
                 # Add the Transforms data.
                 for o_id, i in zip(self.object_ids, range(num_objects)):
+                    if o_id not in tr_dict:
+                        continue
                     positions[i] = tr_dict[o_id]["pos"]
                     forwards[i] = tr_dict[o_id]["for"]
                     rotations[i] = tr_dict[o_id]["rot"]
