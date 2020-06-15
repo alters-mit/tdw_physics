@@ -1,5 +1,7 @@
 import numpy as np
 import random
+from pathlib import Path
+from json import loads
 from typing import List, Dict, Tuple
 from tdw.tdw_utils import TDWUtils
 from tdw.librarian import ModelLibrarian
@@ -9,7 +11,7 @@ from tdw_physics.util import get_args
 
 class Squishing(FlexDataset):
     """
-    "Squish" Flex soft-body objects. All objects are Flex primitives. Each trial is one of the following scenarios:
+    "Squish" Flex cloth-body objects. All objects are Flex primitives. Each trial is one of the following scenarios:
 
     1. An object is dropped on the floor.
     2. An object is dropped onto another object.
@@ -22,10 +24,15 @@ class Squishing(FlexDataset):
         self.model_librarian = ModelLibrarian("models_flex.json")
 
         # A list of functions that will return commands to initialize a trial.
-        self.scenarios = [self.drop_onto_floor, self.drop_onto_object, self.push_into_wall, self.push_into_other]
+        self.scenarios = [self.drop_onto_floor, self.drop_onto_object, self.throw_into_wall, self.push_into_other]
 
         # Size of the room bounds (used for placing objects near walls).
         self.env_bounds = {"x": 4, "y": 0, "z": 2}
+
+        # Cached pressure parameters per model.
+        self.pressures = loads(Path("squish_pressures.json").read_text())
+        # Only use records in the pressures dictionary.
+        self.records = [r for r in self.model_librarian.records if r.name in self.pressures]
 
     def get_scene_initialization_commands(self) -> List[dict]:
         return [self.get_add_scene(scene_name="box_room_2018"),
@@ -40,13 +47,17 @@ class Squishing(FlexDataset):
                 {"$type": "set_shadow_strength",
                  "strength": 1.0},
                 {"$type": "create_flex_container",
-                 "collision_distance": 0.001,
-                 "static_friction": 1.0,
-                 "dynamic_friction": 1.0,
-                 "iteration_count": 12,
-                 "substep_count": 12,
-                 "radius": 0.1875,
+                 "collision_distance": 0.075,
+                 "static_friction": 0.1,
+                 "dynamic_friction": 0.1,
+                 "particle_friction": 0.1,
+                 "iteration_count": 5,
+                 "substep_count": 2,
+                 "radius": 0.225,
                  "damping": 0,
+                 "solid_rest": 0.15,
+                 "fluid_rest": 0.1425,
+                 "surface_tension": 0.01,
                  "drag": 0}]
 
     def get_trial_initialization_commands(self) -> List[dict]:
@@ -79,7 +90,7 @@ class Squishing(FlexDataset):
 
         # Add a second object on the floor.
         second_object_commands, s_id = self._get_squishable(position={"x": o_pos["x"] + random.uniform(-0.125, 0.125),
-                                                                      "y": 0,
+                                                                      "y": 0.1,
                                                                       "z": o_pos["z"] + random.uniform(-0.125, 0.125)},
                                                             rotation={"x": 0,
                                                                       "y": random.uniform(0, 360),
@@ -87,7 +98,7 @@ class Squishing(FlexDataset):
         commands.extend(second_object_commands)
         return commands
 
-    def push_into_wall(self) -> List[dict]:
+    def throw_into_wall(self) -> List[dict]:
         """
         :return: A list of commands to push an object into a wall.
         """
@@ -117,18 +128,18 @@ class Squishing(FlexDataset):
         tz += random.uniform(-0.125, 0.125)
 
         # Set the y values above the floor so that the object is "thrown" rather than "shoved"
-        p0 = {"x": x, "y": random.uniform(0.4, 0.6), "z": z}
+        p0 = {"x": x, "y": 0, "z": z}
         p1 = {"x": tx, "y": random.uniform(0.4, 0.6), "z": tz}
 
         # Push the object.
-        commands = self._push(position=p0, target=p1, force_mag=random.uniform(6000, 7000))
+        commands = self._push(position=p0, target=p1, force_mag=random.uniform(2000, 3000))
 
         # Set the avatar.
-        commands.extend(self._set_avatar(a_pos=self.get_random_avatar_position(radius_min=-0.125,
-                                                                               radius_max=0.125,
+        commands.extend(self._set_avatar(a_pos=self.get_random_avatar_position(radius_min=0.1,
+                                                                               radius_max=0.5,
                                                                                y_min=1,
                                                                                y_max=1.5,
-                                                                               center=p0),
+                                                                               center=TDWUtils.VECTOR3_ZERO),
                                          cam_aim=p1))
         return commands
 
@@ -151,22 +162,21 @@ class Squishing(FlexDataset):
         p1 = TDWUtils.array_to_vector3(p1)
         p1["y"] = 0.1
         # Get commands to create the first object and push it.
-        commands = self._push(position=p0, target=p1, force_mag=random.uniform(4000, 6000))
+        commands = self._push(position=p0, target=p1, force_mag=random.uniform(1000, 2000))
         # Add commands for the second object.
         second_object_commands, s_id = self._get_squishable(position=p1,
                                                             rotation={"x": 0,
                                                                       "y": random.uniform(0, 360),
-                                                                      "z": 0},
-                                                            mass=random.uniform(50, 100))
+                                                                      "z": 0})
         commands.extend(second_object_commands)
 
         # Set the avatar.
         # Get the midpoint between the objects and use this to place the avatar.
         p_med = TDWUtils.array_to_vector3(np.array([(p0["x"] + p1["x"]) / 2, 0, (p0["z"] + p1["z"]) / 2]))
-        commands.extend(self._set_avatar(a_pos=self.get_random_avatar_position(radius_min=1.5,
-                                                                               radius_max=1.8,
+        commands.extend(self._set_avatar(a_pos=self.get_random_avatar_position(radius_min=1.8,
+                                                                               radius_max=2.3,
                                                                                y_min=1,
-                                                                               y_max=1.5,
+                                                                               y_max=1.75,
                                                                                center=p_med),
                                          cam_aim=p1))
         return commands
@@ -201,18 +211,18 @@ class Squishing(FlexDataset):
         """
 
         # Add the object.
-        o_pos = {"x": random.uniform(-0.5, 0.5),
+        o_pos = {"x": random.uniform(-0.2, 0.2),
                  "y": random.uniform(1.5, 3.5),
-                 "z": random.uniform(-0.5, 0.5)}
+                 "z": random.uniform(-0.2, 0.2)}
         commands, soft_id = self._get_squishable(position=o_pos,
                                                  rotation={"x": random.uniform(0, 360),
                                                            "y": random.uniform(0, 360),
                                                            "z": random.uniform(0, 360)})
         # Teleport to the avatar to a random position using o_pos as a centerpoint.
-        commands.extend(self._set_avatar(a_pos=self.get_random_avatar_position(radius_min=1.5,
-                                                                               radius_max=1.8,
-                                                                               y_min=1,
-                                                                               y_max=1.5,
+        commands.extend(self._set_avatar(a_pos=self.get_random_avatar_position(radius_min=1.8,
+                                                                               radius_max=2.3,
+                                                                               y_min=1.5,
+                                                                               y_max=2,
                                                                                center={"x": o_pos["x"],
                                                                                        "y": 0,
                                                                                        "z": o_pos["z"]}),
@@ -225,35 +235,30 @@ class Squishing(FlexDataset):
                          "id": soft_id})
         return commands, o_pos
 
-    def _get_squishable(self, position: Dict[str, float], rotation: [str, float], mass: float = None) -> \
+    def _get_squishable(self, position: Dict[str, float], rotation: [str, float]) -> \
             Tuple[List[dict], int]:
         """
         Get a "squishable" soft-body object. The object is always a random Flex primitive with a random color.
 
         :param position: The initial position of the object.
         :param rotation: The initial rotation of the object.
-        :param mass: The mass of the object. If None, set a random mass.
 
         :return: A list of commands to create the object, and the object ID.
         """
 
-        if mass is None:
-            mass = random.uniform(1, 4)
-
         commands = []
         soft_id = self.get_unique_id()
-        s = random.uniform(0.4, 0.6)
         # Add the soft-body (squishable) object.
-        commands.extend(self.add_soft_object(record=random.choice(self.model_librarian.records),
-                                             o_id=soft_id,
-                                             position=position,
-                                             rotation=rotation,
-                                             scale={"x": s, "y": s, "z": s},
-                                             particle_spacing=0.0625,
-                                             cluster_stiffness=random.uniform(0.5, 0.9),
-                                             link_stiffness=random.uniform(0.5, 0.9),
-                                             cluster_radius=random.uniform(0.05, 0.05),
-                                             mass_scale=mass))
+        record = random.choice(self.records)
+        pressures = self.pressures[record.name]
+        commands.extend(self.add_cloth_object(record=record,
+                                              o_id=soft_id,
+                                              position=position,
+                                              rotation=rotation,
+                                              scale={"x": 1, "y": 1, "z": 1},
+                                              stretch_stiffness=1,
+                                              bend_stiffness=1,
+                                              pressure=random.uniform(pressures[0], pressures[1])))
         commands.append({"$type": "set_color",
                          "color": {"r": random.random(), "g": random.random(), "b": random.random(), "a": 1.0},
                          "id": soft_id})
