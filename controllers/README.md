@@ -29,4 +29,4 @@ These arguments are common for every controller.
 | Containment     | A small object is contained and rattles around in a larger object, such as a bowl. The small object has random physics values. The bowl has random force vectors. | `containment.py`                                             |                      |
 | Linking         | *Multiple objects are connected, e.g. by chain links, and can only move a little relative to each other* | WIP                                                          |                      |
 | Squishing       | *Squishy objects deform and are restored to original shape depending on applied forces (e.g. squished when something else is on top of them or when they impact a barrier)* | WIP                                                          |                      |
-| Submerging      | *Objects sink or float in fluid*                             | WIP                                                          |                      |
+| Submerging      | Objects sink or float in different types of fluids.          | `submerging.py`                                              | `FlexDataset`        |
