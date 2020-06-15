@@ -1,3 +1,5 @@
+from abc import abstractmethod
+import numpy as np
 from typing import Dict, List, Optional, Tuple
 import h5py
 from abc import ABC
@@ -64,6 +66,16 @@ class _ClothActor(_Actor):
         self.pressure = pressure
 
 
+class _FluidActor(_Actor):
+    """
+    Static data for a Flex Fluid Actor.
+    """
+
+    def __init__(self, o_id: int, mass_scale: float, particle_spacing: float):
+        super().__init__(o_id, mass_scale)
+        self.particle_spacing = particle_spacing
+
+
 class FlexDataset(TransformsDataset, ABC):
     """
     A dataset for Flex physics.
@@ -76,6 +88,10 @@ class FlexDataset(TransformsDataset, ABC):
         self._solid_actors: List[_SolidActor] = []
         self._soft_actors: List[_SoftActor] = []
         self._cloth_actors: List[_ClothActor] = []
+        self._fluid_actors: List[_FluidActor] = []
+
+        # List of IDs of non-Flex objects (required for correctly destroying them).
+        self.non_flex_objects: List[int] = []
 
     def _write_static_data(self, static_group: h5py.Group) -> None:
         super()._write_static_data(static_group)
@@ -88,8 +104,8 @@ class FlexDataset(TransformsDataset, ABC):
             container_group.create_dataset(key, data=[self._flex_container_command[key]])
 
         # Flatten the actor data and write it.
-        for actors, group_name in zip([self._solid_actors, self._soft_actors, self._cloth_actors],
-                                      ["solid_actors", "soft_actors", "cloth_actors"]):
+        for actors, group_name in zip([self._solid_actors, self._soft_actors, self._cloth_actors, self._fluid_actors],
+                                      ["solid_actors", "soft_actors", "cloth_actors", "fluid_actors"]):
             actor_data = dict()
             for actor in actors:
                 for key in actor.__dict__:
@@ -115,6 +131,8 @@ class FlexDataset(TransformsDataset, ABC):
                                                     "vel": f.get_velocities(i)}})
                 # Add the Flex data.
                 for o_id in self.object_ids:
+                    if o_id not in flex_dict:
+                        continue
                     particles_group.create_dataset(str(o_id), data=flex_dict[o_id]["par"])
                     velocities_group.create_dataset(str(o_id), data=flex_dict[o_id]["vel"])
         return frame, objs, tr, done
@@ -270,12 +288,62 @@ class FlexDataset(TransformsDataset, ABC):
                  "container_id": 0,
                  "id": o_id}]
 
+    def add_fluid_object(self, position: Dict[str, float], rotation: Dict[str, float], fluid_type: str,
+                         mass_scale: float = 1, particle_spacing: float = 0.05, o_id: int = None) -> List[dict]:
+        """
+        Add a Flex Cloth Actor object and cache static data. See Command API for more Flex parameter info.
+
+        :param position: The initial position of the object.
+        :param rotation: The initial rotation of the object.
+        :param fluid_type: The name of the fluid type.
+        :param mass_scale:
+        :param particle_spacing:
+        :param o_id: The object ID. If None, a random ID is created.
+
+        :return: `[load_flex_fluid_from_resources, create_flex_fluid_object, assign_flex_container, step_physics]`
+        """
+
+        # Cache the static data.
+        self._fluid_actors.append(_FluidActor(o_id=o_id, mass_scale=mass_scale, particle_spacing=particle_spacing))
+
+        if o_id is None:
+            o_id = self.get_unique_id()
+        self.object_ids = np.append(self.object_ids, o_id)
+
+        return [{"$type": "load_flex_fluid_from_resources",
+                 "id": o_id,
+                 "orientation": rotation,
+                 "position": position},
+                {"$type": "create_flex_fluid_object",
+                 "id": o_id,
+                 "mass_scale": mass_scale,
+                 "particle_spacing": particle_spacing},
+                {"$type": "assign_flex_container",
+                 "id": o_id,
+                 "container_id": 0,
+                 "fluid_container": True,
+                 "fluid_type": fluid_type},
+                {"$type": "step_physics",
+                 "frames": 500}]
+
+    @abstractmethod
+    def get_trial_initialization_commands(self) -> List[dict]:
+        self._solid_actors.clear()
+        self._soft_actors.clear()
+        self._fluid_actors.clear()
+        self._cloth_actors.clear()
+        self.non_flex_objects.clear()
+
+        return []
+
     def _get_send_data_commands(self) -> List[dict]:
         commands = super()._get_send_data_commands()
         commands.append({"$type": "send_flex_particles",
                          "frequency": "always"})
         return commands
 
-    @staticmethod
-    def _get_destroy_object_command_name() -> str:
-        return "destroy_flex_object"
+    def _get_destroy_object_command_name(self, o_id: int) -> str:
+        if o_id in self.non_flex_objects:
+            return "destroy_object"
+        else:
+            return "destroy_flex_object"

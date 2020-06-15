@@ -61,6 +61,7 @@ class Squishing(FlexDataset):
                  "drag": 0}]
 
     def get_trial_initialization_commands(self) -> List[dict]:
+        super().get_trial_initialization_commands()
         # Select a random scenario.
         return random.choice(self.scenarios)()
 

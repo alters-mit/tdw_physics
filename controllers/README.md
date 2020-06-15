@@ -12,7 +12,7 @@ These arguments are common for every controller.
 | `--width`  | `int` | 256                                                          | Screen width in pixels.              |
 | `--height` | `int` | 256                                                          | Screen height in pixels.             |
 
-## List of controllers
+## Controllers
 
 | Scenario        | Description                                                  | Script                                                       | Type                 |
 | --------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | -------------------- |
@@ -26,7 +26,7 @@ These arguments are common for every controller.
 | Stability       | A stack of 4-7 objects is created. The objects are all simple shapes with random colors. The stack is built according to a "stability" algorithm; some algorithms yield more balanced stacks than others. The stack falls down, or doesn't. *(See comments in controller)* | `stability.py`                                               | `RigidbodiesDataset` |
 | Draping/Folding | A cloth falls; 80% of the time onto another object. The cloth has random physics values. | `draping.py`                                                 | `FlexDataset`        |
 | Dragging        | A rigid object is dragged or moved by pulling on a cloth under it. The cloth and the object have random physics values. The cloth is pulled in by a random force vector. | `dragging.py`                                                | `FlexDataset`        |
-| Containment     | A small object is contained and rattles around in a larger object, such as a bowl. The small object has random physics values. The bowl has random force vectors. | `containment.py`                                             |                      |
+| Containment     | A small object is contained and rattles around in a larger object, such as a bowl. The small object has random physics values. The bowl has random force vectors. | `containment.py`                                             | `RigidbodiesDataset` |
 | Linking         | *Multiple objects are connected, e.g. by chain links, and can only move a little relative to each other* | WIP                                                          |                      |
-| Squishing       | *Squishy objects deform and are restored to original shape depending on applied forces (e.g. squished when something else is on top of them or when they impact a barrier)* | WIP                                                          |                      |
-| Submerging      | *Objects sink or float in fluid*                             | WIP                                                          |                      |
+| Squishing       | Squishy objects deform and are restored to original shape depending on applied forces (e.g. squished when something else is on top of them or when they impact a barrier). Objects are given random "pressure" values. | `squishing.py`                                               | `FlexDataset`        |
+| Submerging      | Objects sink or float in different types of fluids.          | `submerging.py`                                              | `FlexDataset`        |

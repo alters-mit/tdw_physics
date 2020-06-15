@@ -514,6 +514,53 @@ class MyDataset(FlexDataset):
 | `pressure`          | `float`            | 0       |                                                              |
 | `mass_scale`        | `float`            | 1       |                                                              |
 
+#### `def get_fluid_object()`
+
+_Return:_ A list of commands: `[load_flex_fluid_from_resources, create_flex_fluid_object, assign_flex_container, step_physics]`
+
+```python
+from tdw.librarian import ModelLibrarian
+from tdw_physics.flex_dataset import FlexDataset
+
+class MyDataset(FlexDataset):
+    def get_trial_initialization_commands(self) -> List[dict]:
+        commands = []
+        
+        # Your code here.
+        
+        # Cache the pool ID to destroy it correctly.
+        pool_id = Controller.get_unique_id()
+        self.non_flex_objects.append(self.pool_id)
+        
+        # Add the pool.
+        lib = ModelLibrarian("models_special.json")
+        receptacle_record = lib.get_record("fluid_receptacle1x1")
+        commands.append(self.add_transforms_object(record=self.receptacle_record,
+                                                         position={"x": 0, "y": 0, "z": 0},
+                                                         rotation={"x": 0, "y": 0, "z": 0},
+                                                         o_id=self.pool_id))
+        
+        # Add a container here.
+        
+        # Add the fluid.
+        fluid_id = Controller.get_unique_id()
+        commands.extend(self.add_fluid_object(position={"x": 0, "y": 1.0, "z": 0},
+                                              rotation={"x": 0, "y": 0, "z": 0},
+                                              o_id=fluid_id,
+                                              fluid_type="water"))
+```
+
+| Parameter          | Type               | Default | Description                                                  |
+| ------------------ | ------------------ | ------- | ------------------------------------------------------------ |
+| `record`           | `ModelRecord`      |         | The model record.                                            |
+| `position`         | `Dict[str, float`] |         | The initial position of the object.                          |
+| `rotation`         | `Dict[str, float]` |         | The initial rotation of the object, in Euler angles.         |
+| `scale`            | `Dict[str, float]` | `None`  | The object scale factor. If None, the scale is (1, 1, 1).    |
+| `o_id`             | `Optional[int]`    | `None`  | The unique ID of the object. If None, a random ID is generated. |
+| `particle_spacing` | `float`            | 0.05    |                                                              |
+| `mass_scale`       | `float`            | 1       |                                                              |
+| `fluid_type`       | `str`              |         | The name of the fluid type.                                  |
+
 ### .hdf5 file structure
 
 ```
@@ -534,6 +581,10 @@ static/    # Data that doesn't change per frame.
 ........mass_scale
 ........(etc.)
 ....cloth_actors/ # Flex cloth object parameters.
+........object_id
+........mass_scale
+........(etc.)
+....fluid_actors/ # Flex fluid object parameters.
 ........object_id
 ........mass_scale
 ........(etc.)
