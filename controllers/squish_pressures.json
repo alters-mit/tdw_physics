@@ -1,12 +1,12 @@
 {
-  "cone": [0.7, 1.4],
+  "cone": [1, 1.4],
   "cube": [0.4, 0.7],
   "cylinder": [0.7, 1],
   "octahedron": [1, 1.4],
-  "pentagon": [0.5, 1.4],
+  "pentagon": [0.7, 1.4],
   "pipe": [0.7, 1.4],
-  "platonic": [0.5, 1],
-  "pyramid": [0.4, 1],
+  "platonic": [0.6, 1],
+  "pyramid": [0.7, 1],
   "sphere": [0.7, 1.4],
   "torus": [0.8, 1],
   "triangular_prism": [0.7, 1]
