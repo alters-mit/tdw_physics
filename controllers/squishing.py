@@ -282,10 +282,10 @@ class Squishing(FlexDataset):
                  "focus_distance": TDWUtils.get_distance(a_pos, cam_aim)},
                 {"$type": "rotate_sensor_container_by",
                  "axis": "pitch",
-                 "angle": random.uniform(-5, 5)},
+                 "angle": random.uniform(-3, 3)},
                 {"$type": "rotate_sensor_container_by",
                  "axis": "yaw",
-                 "angle": random.uniform(-5, 5)}]
+                 "angle": random.uniform(-3, 3)}]
 
 
 if __name__ == "__main__":
