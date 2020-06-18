@@ -1,0 +1,10 @@
+{
+  "cube": [0.4, 0.8],
+  "octahedron": [0.8, 1.4],
+  "pentagon": [0.8, 1.4],
+  "platonic": [0.8, 1],
+  "pyramid": [0.7, 1],
+  "sphere": [0.8, 1.4],
+  "torus": [1, 1.4],
+  "triangular_prism": [0.8, 1]
+}
