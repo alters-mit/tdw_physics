@@ -16,6 +16,10 @@ These classes create a generic structure for generating physics datasets using T
 
 See the `controllers/` directory for controllers that use `tdw_physics` as well as [documentation](controllers/README.md). See below for the output .hdf5 file structure.
 
+## Changelog
+
+See [changelog](changelog.md).
+
 ## Usage
 
 tdw_physics provides abstract Controller classes. To write your own physics dataset controller, you should create a superclass of the appropriate controller.

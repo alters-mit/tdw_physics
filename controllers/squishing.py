@@ -14,7 +14,7 @@ class Squishing(FlexDataset):
     "Squish" Flex cloth-body objects. All objects are Flex primitives. Each trial is one of the following scenarios:
 
     1. An object is dropped on the floor.
-    2. An object is dropped onto another object.
+    2. An solid object is dropped onto a squishable object.
     3. An object is thrown at a wall.
     4. An object is pushed along the floor into another object.
     """
@@ -79,7 +79,16 @@ class Squishing(FlexDataset):
         :return: A list of commands to drop a single object onto the floor.
         """
 
-        commands, o_pos = self._drop()
+        # Add the object.
+        o_pos = {"x": random.uniform(-0.2, 0.2),
+                 "y": random.uniform(1.5, 3.5),
+                 "z": random.uniform(-0.2, 0.2)}
+        commands, soft_id = self._get_squishable(position=o_pos,
+                                                 rotation={"x": random.uniform(0, 360),
+                                                           "y": random.uniform(0, 360),
+                                                           "z": random.uniform(0, 360)})
+        commands.extend(self._get_drop_camera(o_pos))
+        commands.append(self._get_drop_force(soft_id))
         return commands
 
     def drop_onto_object(self) -> List[dict]:
@@ -87,7 +96,28 @@ class Squishing(FlexDataset):
         :return: A list of commands to drop one object onto another.
         """
 
-        commands, o_pos = self._drop()
+        # Add a solid object.
+        o_pos = {"x": random.uniform(-0.2, 0.2),
+                 "y": random.uniform(1.5, 3.5),
+                 "z": random.uniform(-0.2, 0.2)}
+        solid_id = self.get_unique_id()
+        # Add the soft-body (squishable) object.
+        solid_record = random.choice(self.records)
+        commands = self.add_solid_object(record=solid_record,
+                                         o_id=solid_id,
+                                         position=o_pos,
+                                         rotation={"x": random.uniform(0, 360),
+                                                   "y": random.uniform(0, 360),
+                                                   "z": random.uniform(0, 360)},
+                                         mass_scale=random.uniform(4, 8))
+
+        # Set the color.
+        # Add a small downward force.
+        commands.append({"$type": "set_color",
+                         "color": {"r": random.random(), "g": random.random(), "b": random.random(), "a": 1.0},
+                         "id": solid_id})
+        commands.append(self._get_drop_force(solid_id))
+        commands.extend(self._get_drop_camera(o_pos))
 
         # Add a second object on the floor.
         second_object_commands, s_id = self._get_squishable(position={"x": o_pos["x"] + random.uniform(-0.125, 0.125),
@@ -182,6 +212,40 @@ class Squishing(FlexDataset):
                                          cam_aim=p1))
         return commands
 
+    def _get_drop_camera(self, o_pos: Dict[str, float]) -> List[dict]:
+        """
+        :param o_pos: The position of the object being dropped.
+
+        :return: A list of commands to set the position of a camera when dropping an object onto the floor.
+        """
+
+        # Teleport to the avatar to a random position using o_pos as a centerpoint.
+        return self._set_avatar(a_pos=self.get_random_avatar_position(radius_min=1.8,
+                                                                      radius_max=2.3,
+                                                                      y_min=1.5,
+                                                                      y_max=2,
+                                                                      center={"x": o_pos["x"],
+                                                                              "y": 0,
+                                                                              "z": o_pos["z"]}),
+                                cam_aim={"x": 0, "y": 0.125, "z": 0})
+
+    @staticmethod
+    def _get_drop_force(o_id: int) -> dict:
+        """
+        Get a command for applying a small force to an object being dropped on the floor.
+
+        :param o_id: The object ID.
+
+        :return: An apply_force_to_flex_object command.
+        """
+
+        # Add a small downward force.
+        return {"$type": "apply_force_to_flex_object",
+                "force": {"x": random.uniform(-100, 100),
+                          "y": random.uniform(0, -500),
+                          "z": random.uniform(-100, 100)},
+                "id": o_id}
+
     def _push(self, position: Dict[str, float], target: Dict[str, float], force_mag: float) -> List[dict]:
         """
         :param position: The initial position.
@@ -205,36 +269,6 @@ class Squishing(FlexDataset):
                          "id": soft_id})
 
         return commands
-
-    def _drop(self) -> Tuple[List[dict], Dict[str, float]]:
-        """
-        :return: A list of commands to drop the object, and the object's initial position.
-        """
-
-        # Add the object.
-        o_pos = {"x": random.uniform(-0.2, 0.2),
-                 "y": random.uniform(1.5, 3.5),
-                 "z": random.uniform(-0.2, 0.2)}
-        commands, soft_id = self._get_squishable(position=o_pos,
-                                                 rotation={"x": random.uniform(0, 360),
-                                                           "y": random.uniform(0, 360),
-                                                           "z": random.uniform(0, 360)})
-        # Teleport to the avatar to a random position using o_pos as a centerpoint.
-        commands.extend(self._set_avatar(a_pos=self.get_random_avatar_position(radius_min=1.8,
-                                                                               radius_max=2.3,
-                                                                               y_min=1.5,
-                                                                               y_max=2,
-                                                                               center={"x": o_pos["x"],
-                                                                                       "y": 0,
-                                                                                       "z": o_pos["z"]}),
-                                         cam_aim={"x": 0, "y": 0.125, "z": 0}))
-        # Add a small downward force.
-        commands.append({"$type": "apply_force_to_flex_object",
-                         "force": {"x": random.uniform(-100, 100),
-                                   "y": random.uniform(0, -500),
-                                   "z": random.uniform(-100, 100)},
-                         "id": soft_id})
-        return commands, o_pos
 
     def _get_squishable(self, position: Dict[str, float], rotation: [str, float]) -> \
             Tuple[List[dict], int]:
