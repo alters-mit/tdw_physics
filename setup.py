@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='tdw_physics',
-    version="0.1",
+    version="0.1.1",
     description='Generic structure to create physics datasets with TDW.',
     long_description="Required Python scripts for TDW.",
     url='https://github.com/alters-mit/tdw_physics',
