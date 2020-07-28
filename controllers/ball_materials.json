@@ -5,981 +5,981 @@
             "name": "alien_rock_coral_formation",
             "type": "Stone",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/alien_rock_coral_formation",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/alien_rock_coral_formation",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/alien_rock_coral_formation"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/alien_rock_coral_formation",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/alien_rock_coral_formation",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/alien_rock_coral_formation"
             }
         },
         "alien_soil_acid_puddles": {
             "name": "alien_soil_acid_puddles",
             "type": "Organic",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/alien_soil_acid_puddles",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/alien_soil_acid_puddles",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/alien_soil_acid_puddles"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/alien_soil_acid_puddles",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/alien_soil_acid_puddles",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/alien_soil_acid_puddles"
             }
         },
         "aluminium_brushed": {
             "name": "aluminium_brushed",
             "type": "Metal",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/aluminium_brushed",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/aluminium_brushed",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/aluminium_brushed"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/aluminium_brushed",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/aluminium_brushed",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/aluminium_brushed"
             }
         },
         "aluminium_clean": {
             "name": "aluminium_clean",
             "type": "Metal",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/aluminium_clean",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/aluminium_clean",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/aluminium_clean"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/aluminium_clean",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/aluminium_clean",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/aluminium_clean"
             }
         },
         "aluminium_foil": {
             "name": "aluminium_foil",
             "type": "Metal",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/aluminium_foil",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/aluminium_foil",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/aluminium_foil"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/aluminium_foil",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/aluminium_foil",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/aluminium_foil"
             }
         },
         "antique_bronze_darkened": {
             "name": "antique_bronze_darkened",
             "type": "Metal",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/antique_bronze_darkened",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/antique_bronze_darkened",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/antique_bronze_darkened"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/antique_bronze_darkened",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/antique_bronze_darkened",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/antique_bronze_darkened"
             }
         },
         "bull_leather_large_worn": {
             "name": "bull_leather_large_worn",
             "type": "Leather",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/bull_leather_large_worn",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/bull_leather_large_worn",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/bull_leather_large_worn"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/bull_leather_large_worn",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/bull_leather_large_worn",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/bull_leather_large_worn"
             }
         },
         "bull_leather_medium_grain": {
             "name": "bull_leather_medium_grain",
             "type": "Leather",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/bull_leather_medium_grain",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/bull_leather_medium_grain",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/bull_leather_medium_grain"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/bull_leather_medium_grain",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/bull_leather_medium_grain",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/bull_leather_medium_grain"
             }
         },
         "bull_leather_medium_worn": {
             "name": "bull_leather_medium_worn",
             "type": "Leather",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/bull_leather_medium_worn",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/bull_leather_medium_worn",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/bull_leather_medium_worn"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/bull_leather_medium_worn",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/bull_leather_medium_worn",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/bull_leather_medium_worn"
             }
         },
         "car_metallic_fabric_cover_crumpled": {
             "name": "car_metallic_fabric_cover_crumpled",
             "type": "Metal",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/car_metallic_fabric_cover_crumpled",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/car_metallic_fabric_cover_crumpled",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/car_metallic_fabric_cover_crumpled"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/car_metallic_fabric_cover_crumpled",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/car_metallic_fabric_cover_crumpled",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/car_metallic_fabric_cover_crumpled"
             }
         },
         "car_synthetic_net": {
             "name": "car_synthetic_net",
             "type": "Metal",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/car_synthetic_net",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/car_synthetic_net",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/car_synthetic_net"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/car_synthetic_net",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/car_synthetic_net",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/car_synthetic_net"
             }
         },
         "chrome2": {
             "name": "chrome2",
             "type": "Metal",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/chrome2",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/chrome2",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/chrome2"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/chrome2",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/chrome2",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/chrome2"
             }
         },
         "chrome_v_shiny": {
             "name": "chrome_v_shiny",
             "type": "Metal",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/chrome_v_shiny",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/chrome_v_shiny",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/chrome_v_shiny"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/chrome_v_shiny",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/chrome_v_shiny",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/chrome_v_shiny"
             }
         },
         "concrete": {
             "name": "concrete",
             "type": "Concrete",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/concrete",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/concrete",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/concrete"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/concrete",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/concrete",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/concrete"
             }
         },
         "concrete_raw_eroded": {
             "name": "concrete_raw_eroded",
             "type": "Concrete",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/concrete_raw_eroded",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/concrete_raw_eroded",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/concrete_raw_eroded"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/concrete_raw_eroded",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/concrete_raw_eroded",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/concrete_raw_eroded"
             }
         },
         "copper_brushed": {
             "name": "copper_brushed",
             "type": "Metal",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/copper_brushed",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/copper_brushed",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/copper_brushed"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/copper_brushed",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/copper_brushed",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/copper_brushed"
             }
         },
         "cotton_canvas_washed_out": {
             "name": "cotton_canvas_washed_out",
             "type": "Fabric",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/cotton_canvas_washed_out",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/cotton_canvas_washed_out",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/cotton_canvas_washed_out"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/cotton_canvas_washed_out",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/cotton_canvas_washed_out",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/cotton_canvas_washed_out"
             }
         },
         "cotton_check_black": {
             "name": "cotton_check_black",
             "type": "Fabric",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/cotton_check_black",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/cotton_check_black",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/cotton_check_black"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/cotton_check_black",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/cotton_check_black",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/cotton_check_black"
             }
         },
         "cotton_fabric_printed": {
             "name": "cotton_fabric_printed",
             "type": "Fabric",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/cotton_fabric_printed",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/cotton_fabric_printed",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/cotton_fabric_printed"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/cotton_fabric_printed",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/cotton_fabric_printed",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/cotton_fabric_printed"
             }
         },
         "cotton_hot_orange": {
             "name": "cotton_hot_orange",
             "type": "Fabric",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/cotton_hot_orange",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/cotton_hot_orange",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/cotton_hot_orange"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/cotton_hot_orange",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/cotton_hot_orange",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/cotton_hot_orange"
             }
         },
         "cotton_linen_woven_shorn_brush": {
             "name": "cotton_linen_woven_shorn_brush",
             "type": "Fabric",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/cotton_linen_woven_shorn_brush",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/cotton_linen_woven_shorn_brush",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/cotton_linen_woven_shorn_brush"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/cotton_linen_woven_shorn_brush",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/cotton_linen_woven_shorn_brush",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/cotton_linen_woven_shorn_brush"
             }
         },
         "cotton_mercerised_grey": {
             "name": "cotton_mercerised_grey",
             "type": "Fabric",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/cotton_mercerised_grey",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/cotton_mercerised_grey",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/cotton_mercerised_grey"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/cotton_mercerised_grey",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/cotton_mercerised_grey",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/cotton_mercerised_grey"
             }
         },
         "cotton_natural_rough": {
             "name": "cotton_natural_rough",
             "type": "Fabric",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/cotton_natural_rough",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/cotton_natural_rough",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/cotton_natural_rough"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/cotton_natural_rough",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/cotton_natural_rough",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/cotton_natural_rough"
             }
         },
         "dmd_metallic_fine": {
             "name": "dmd_metallic_fine",
             "type": "Plastic",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/dmd_metallic_fine",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/dmd_metallic_fine",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/dmd_metallic_fine"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/dmd_metallic_fine",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/dmd_metallic_fine",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/dmd_metallic_fine"
             }
         },
         "dmls_cobalt_chrome_rough": {
             "name": "dmls_cobalt_chrome_rough",
             "type": "Plastic",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/dmls_cobalt_chrome_rough",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/dmls_cobalt_chrome_rough",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/dmls_cobalt_chrome_rough"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/dmls_cobalt_chrome_rough",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/dmls_cobalt_chrome_rough",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/dmls_cobalt_chrome_rough"
             }
         },
         "dmls_silver_sanded": {
             "name": "dmls_silver_sanded",
             "type": "Plastic",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/dmls_silver_sanded",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/dmls_silver_sanded",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/dmls_silver_sanded"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/dmls_silver_sanded",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/dmls_silver_sanded",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/dmls_silver_sanded"
             }
         },
         "fabric_carpet_grey": {
             "name": "fabric_carpet_grey",
             "type": "Fabric",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/fabric_carpet_grey",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/fabric_carpet_grey",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/fabric_carpet_grey"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/fabric_carpet_grey",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/fabric_carpet_grey",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/fabric_carpet_grey"
             }
         },
         "fabric_felt": {
             "name": "fabric_felt",
             "type": "Fabric",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/fabric_felt",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/fabric_felt",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/fabric_felt"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/fabric_felt",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/fabric_felt",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/fabric_felt"
             }
         },
         "fabric_vinyl_heavy": {
             "name": "fabric_vinyl_heavy",
             "type": "Fabric",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/fabric_vinyl_heavy",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/fabric_vinyl_heavy",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/fabric_vinyl_heavy"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/fabric_vinyl_heavy",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/fabric_vinyl_heavy",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/fabric_vinyl_heavy"
             }
         },
         "glass_clear": {
             "name": "glass_clear",
             "type": "Glass",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/glass_clear",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/glass_clear",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/glass_clear"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/glass_clear",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/glass_clear",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/glass_clear"
             }
         },
         "gold_clean": {
             "name": "gold_clean",
             "type": "Metal",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/gold_clean",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/gold_clean",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/gold_clean"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/gold_clean",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/gold_clean",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/gold_clean"
             }
         },
         "gold_leaf_fine": {
             "name": "gold_leaf_fine",
             "type": "Metal",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/gold_leaf_fine",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/gold_leaf_fine",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/gold_leaf_fine"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/gold_leaf_fine",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/gold_leaf_fine",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/gold_leaf_fine"
             }
         },
         "iron_anvil_rusty": {
             "name": "iron_anvil_rusty",
             "type": "Metal",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/iron_anvil_rusty",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/iron_anvil_rusty",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/iron_anvil_rusty"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/iron_anvil_rusty",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/iron_anvil_rusty",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/iron_anvil_rusty"
             }
         },
         "iron_bumped": {
             "name": "iron_bumped",
             "type": "Metal",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/iron_bumped",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/iron_bumped",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/iron_bumped"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/iron_bumped",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/iron_bumped",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/iron_bumped"
             }
         },
         "iron_rusty": {
             "name": "iron_rusty",
             "type": "Metal",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/iron_rusty",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/iron_rusty",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/iron_rusty"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/iron_rusty",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/iron_rusty",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/iron_rusty"
             }
         },
         "kevlar_plain_weave": {
             "name": "kevlar_plain_weave",
             "type": "Fabric",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/kevlar_plain_weave",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/kevlar_plain_weave",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/kevlar_plain_weave"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/kevlar_plain_weave",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/kevlar_plain_weave",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/kevlar_plain_weave"
             }
         },
         "lamb_leather": {
             "name": "lamb_leather",
             "type": "Leather",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/lamb_leather",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/lamb_leather",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/lamb_leather"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/lamb_leather",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/lamb_leather",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/lamb_leather"
             }
         },
         "leather_bull": {
             "name": "leather_bull",
             "type": "Leather",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/leather_bull",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/leather_bull",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/leather_bull"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/leather_bull",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/leather_bull",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/leather_bull"
             }
         },
         "leather_fine_grain": {
             "name": "leather_fine_grain",
             "type": "Leather",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/leather_fine_grain",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/leather_fine_grain",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/leather_fine_grain"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/leather_fine_grain",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/leather_fine_grain",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/leather_fine_grain"
             }
         },
         "leather_fine_grain_pebbled": {
             "name": "leather_fine_grain_pebbled",
             "type": "Leather",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/leather_fine_grain_pebbled",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/leather_fine_grain_pebbled",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/leather_fine_grain_pebbled"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/leather_fine_grain_pebbled",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/leather_fine_grain_pebbled",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/leather_fine_grain_pebbled"
             }
         },
         "leather_pebbled": {
             "name": "leather_pebbled",
             "type": "Leather",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/leather_pebbled",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/leather_pebbled",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/leather_pebbled"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/leather_pebbled",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/leather_pebbled",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/leather_pebbled"
             }
         },
         "linen_burlap_irregular": {
             "name": "linen_burlap_irregular",
             "type": "Fabric",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/linen_burlap_irregular",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/linen_burlap_irregular",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/linen_burlap_irregular"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/linen_burlap_irregular",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/linen_burlap_irregular",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/linen_burlap_irregular"
             }
         },
         "linen_viscose_classic_pattern": {
             "name": "linen_viscose_classic_pattern",
             "type": "Fabric",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/linen_viscose_classic_pattern",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/linen_viscose_classic_pattern",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/linen_viscose_classic_pattern"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/linen_viscose_classic_pattern",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/linen_viscose_classic_pattern",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/linen_viscose_classic_pattern"
             }
         },
         "linen_viscose_woven_cloth": {
             "name": "linen_viscose_woven_cloth",
             "type": "Fabric",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/linen_viscose_woven_cloth",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/linen_viscose_woven_cloth",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/linen_viscose_woven_cloth"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/linen_viscose_woven_cloth",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/linen_viscose_woven_cloth",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/linen_viscose_woven_cloth"
             }
         },
         "linen_woven": {
             "name": "linen_woven",
             "type": "Fabric",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/linen_woven",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/linen_woven",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/linen_woven"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/linen_woven",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/linen_woven",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/linen_woven"
             }
         },
         "marble_anemone_grey": {
             "name": "marble_anemone_grey",
             "type": "Stone",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/marble_anemone_grey",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/marble_anemone_grey",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/marble_anemone_grey"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/marble_anemone_grey",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/marble_anemone_grey",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/marble_anemone_grey"
             }
         },
         "marble_crema_valencia": {
             "name": "marble_crema_valencia",
             "type": "Stone",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/marble_crema_valencia",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/marble_crema_valencia",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/marble_crema_valencia"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/marble_crema_valencia",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/marble_crema_valencia",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/marble_crema_valencia"
             }
         },
         "marble_green": {
             "name": "marble_green",
             "type": "Stone",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/marble_green",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/marble_green",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/marble_green"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/marble_green",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/marble_green",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/marble_green"
             }
         },
         "marble_griotte": {
             "name": "marble_griotte",
             "type": "Stone",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/marble_griotte",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/marble_griotte",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/marble_griotte"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/marble_griotte",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/marble_griotte",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/marble_griotte"
             }
         },
         "metal_brushed_copper": {
             "name": "metal_brushed_copper",
             "type": "Metal",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/metal_brushed_copper",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/metal_brushed_copper",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/metal_brushed_copper"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/metal_brushed_copper",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/metal_brushed_copper",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/metal_brushed_copper"
             }
         },
         "metal_cast": {
             "name": "metal_cast",
             "type": "Metal",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/metal_cast",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/metal_cast",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/metal_cast"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/metal_cast",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/metal_cast",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/metal_cast"
             }
         },
         "metal_grater": {
             "name": "metal_grater",
             "type": "Metal",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/metal_grater",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/metal_grater",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/metal_grater"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/metal_grater",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/metal_grater",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/metal_grater"
             }
         },
         "metal_iron_damaged": {
             "name": "metal_iron_damaged",
             "type": "Metal",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/metal_iron_damaged",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/metal_iron_damaged",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/metal_iron_damaged"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/metal_iron_damaged",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/metal_iron_damaged",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/metal_iron_damaged"
             }
         },
         "metal_molten_drop_3d_print": {
             "name": "metal_molten_drop_3d_print",
             "type": "Metal",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/metal_molten_drop_3d_print",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/metal_molten_drop_3d_print",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/metal_molten_drop_3d_print"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/metal_molten_drop_3d_print",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/metal_molten_drop_3d_print",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/metal_molten_drop_3d_print"
             }
         },
         "metal_round_mesh_layered": {
             "name": "metal_round_mesh_layered",
             "type": "Metal",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/metal_round_mesh_layered",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/metal_round_mesh_layered",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/metal_round_mesh_layered"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/metal_round_mesh_layered",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/metal_round_mesh_layered",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/metal_round_mesh_layered"
             }
         },
         "metal_sandblasted": {
             "name": "metal_sandblasted",
             "type": "Metal",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/metal_sandblasted",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/metal_sandblasted",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/metal_sandblasted"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/metal_sandblasted",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/metal_sandblasted",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/metal_sandblasted"
             }
         },
         "metal_steel_galvanized_spangle": {
             "name": "metal_steel_galvanized_spangle",
             "type": "Metal",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/metal_steel_galvanized_spangle",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/metal_steel_galvanized_spangle",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/metal_steel_galvanized_spangle"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/metal_steel_galvanized_spangle",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/metal_steel_galvanized_spangle",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/metal_steel_galvanized_spangle"
             }
         },
         "military_camouflage": {
             "name": "military_camouflage",
             "type": "Fabric",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/military_camouflage",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/military_camouflage",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/military_camouflage"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/military_camouflage",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/military_camouflage",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/military_camouflage"
             }
         },
         "nappa_leather_pill_quilt": {
             "name": "nappa_leather_pill_quilt",
             "type": "Leather",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/nappa_leather_pill_quilt",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/nappa_leather_pill_quilt",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/nappa_leather_pill_quilt"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/nappa_leather_pill_quilt",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/nappa_leather_pill_quilt",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/nappa_leather_pill_quilt"
             }
         },
         "nappa_leather_switch_quilt": {
             "name": "nappa_leather_switch_quilt",
             "type": "Leather",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/nappa_leather_switch_quilt",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/nappa_leather_switch_quilt",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/nappa_leather_switch_quilt"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/nappa_leather_switch_quilt",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/nappa_leather_switch_quilt",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/nappa_leather_switch_quilt"
             }
         },
         "nappa_leather_worn": {
             "name": "nappa_leather_worn",
             "type": "Leather",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/nappa_leather_worn",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/nappa_leather_worn",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/nappa_leather_worn"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/nappa_leather_worn",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/nappa_leather_worn",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/nappa_leather_worn"
             }
         },
         "plaster_facade_grey": {
             "name": "plaster_facade_grey",
             "type": "Stone",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/plaster_facade_grey",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/plaster_facade_grey",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/plaster_facade_grey"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/plaster_facade_grey",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/plaster_facade_grey",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/plaster_facade_grey"
             }
         },
         "plastic_diamond_grid_grain": {
             "name": "plastic_diamond_grid_grain",
             "type": "Plastic",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/plastic_diamond_grid_grain",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/plastic_diamond_grid_grain",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/plastic_diamond_grid_grain"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/plastic_diamond_grid_grain",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/plastic_diamond_grid_grain",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/plastic_diamond_grid_grain"
             }
         },
         "plastic_dot_recessed_grain": {
             "name": "plastic_dot_recessed_grain",
             "type": "Plastic",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/plastic_dot_recessed_grain",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/plastic_dot_recessed_grain",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/plastic_dot_recessed_grain"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/plastic_dot_recessed_grain",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/plastic_dot_recessed_grain",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/plastic_dot_recessed_grain"
             }
         },
         "plastic_grain": {
             "name": "plastic_grain",
             "type": "Plastic",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/plastic_grain",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/plastic_grain",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/plastic_grain"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/plastic_grain",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/plastic_grain",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/plastic_grain"
             }
         },
         "plastic_stripes": {
             "name": "plastic_stripes",
             "type": "Plastic",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/plastic_stripes",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/plastic_stripes",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/plastic_stripes"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/plastic_stripes",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/plastic_stripes",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/plastic_stripes"
             }
         },
         "plastic_vinyl_glossy_blue": {
             "name": "plastic_vinyl_glossy_blue",
             "type": "Plastic",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/plastic_vinyl_glossy_blue",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/plastic_vinyl_glossy_blue",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/plastic_vinyl_glossy_blue"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/plastic_vinyl_glossy_blue",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/plastic_vinyl_glossy_blue",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/plastic_vinyl_glossy_blue"
             }
         },
         "plastic_vinyl_glossy_gray": {
             "name": "plastic_vinyl_glossy_gray",
             "type": "Plastic",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/plastic_vinyl_glossy_gray",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/plastic_vinyl_glossy_gray",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/plastic_vinyl_glossy_gray"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/plastic_vinyl_glossy_gray",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/plastic_vinyl_glossy_gray",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/plastic_vinyl_glossy_gray"
             }
         },
         "plastic_vinyl_glossy_green": {
-            "name": "plastic_vinyl_glossy_green5666",
+            "name": "plastic_vinyl_glossy_green",
             "type": "Plastic",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/plastic_vinyl_glossy_green",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/plastic_vinyl_glossy_green",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/plastic_vinyl_glossy_green"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/plastic_vinyl_glossy_green",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/plastic_vinyl_glossy_green",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/plastic_vinyl_glossy_green"
             }
         },
         "plastic_vinyl_glossy_light_gray": {
             "name": "plastic_vinyl_glossy_light_gray",
             "type": "Plastic",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/plastic_vinyl_glossy_light_gray",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/plastic_vinyl_glossy_light_gray",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/plastic_vinyl_glossy_light_gray"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/plastic_vinyl_glossy_light_gray",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/plastic_vinyl_glossy_light_gray",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/plastic_vinyl_glossy_light_gray"
             }
         },
         "plastic_vinyl_glossy_orange": {
             "name": "plastic_vinyl_glossy_orange",
             "type": "Plastic",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/plastic_vinyl_glossy_orange",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/plastic_vinyl_glossy_orange",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/plastic_vinyl_glossy_orange"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/plastic_vinyl_glossy_orange",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/plastic_vinyl_glossy_orange",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/plastic_vinyl_glossy_orange"
             }
         },
         "plastic_vinyl_glossy_red": {
             "name": "plastic_vinyl_glossy_red",
             "type": "Plastic",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/plastic_vinyl_glossy_red",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/plastic_vinyl_glossy_red",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/plastic_vinyl_glossy_red"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/plastic_vinyl_glossy_red",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/plastic_vinyl_glossy_red",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/plastic_vinyl_glossy_red"
             }
         },
         "plastic_vinyl_glossy_white": {
             "name": "plastic_vinyl_glossy_white",
             "type": "Plastic",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/plastic_vinyl_glossy_white",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/plastic_vinyl_glossy_white",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/plastic_vinyl_glossy_white"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/plastic_vinyl_glossy_white",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/plastic_vinyl_glossy_white",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/plastic_vinyl_glossy_white"
             }
         },
         "plastic_vinyl_glossy_yellow": {
             "name": "plastic_vinyl_glossy_yellow",
             "type": "Plastic",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/plastic_vinyl_glossy_yellow",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/plastic_vinyl_glossy_yellow",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/plastic_vinyl_glossy_yellow"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/plastic_vinyl_glossy_yellow",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/plastic_vinyl_glossy_yellow",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/plastic_vinyl_glossy_yellow"
             }
         },
         "plastic_weave": {
             "name": "plastic_weave",
             "type": "Plastic",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/plastic_weave",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/plastic_weave",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/plastic_weave"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/plastic_weave",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/plastic_weave",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/plastic_weave"
             }
         },
         "polyester_acrylic_nylon_canvas_thick_yarn": {
             "name": "polyester_acrylic_nylon_canvas_thick_yarn",
             "type": "Fabric",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/polyester_acrylic_nylon_canvas_thick_yarn",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/polyester_acrylic_nylon_canvas_thick_yarn",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/polyester_acrylic_nylon_canvas_thick_yarn"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/polyester_acrylic_nylon_canvas_thick_yarn",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/polyester_acrylic_nylon_canvas_thick_yarn",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/polyester_acrylic_nylon_canvas_thick_yarn"
             }
         },
         "polyester_check_interlock_pattern": {
             "name": "polyester_check_interlock_pattern",
             "type": "Fabric",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/polyester_check_interlock_pattern",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/polyester_check_interlock_pattern",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/polyester_check_interlock_pattern"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/polyester_check_interlock_pattern",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/polyester_check_interlock_pattern",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/polyester_check_interlock_pattern"
             }
         },
         "polyester_fabric_charmeuse": {
             "name": "polyester_fabric_charmeuse",
             "type": "Fabric",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/polyester_fabric_charmeuse",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/polyester_fabric_charmeuse",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/polyester_fabric_charmeuse"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/polyester_fabric_charmeuse",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/polyester_fabric_charmeuse",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/polyester_fabric_charmeuse"
             }
         },
         "polyester_hexagon_pattern_knit": {
             "name": "polyester_hexagon_pattern_knit",
             "type": "Fabric",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/polyester_hexagon_pattern_knit",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/polyester_hexagon_pattern_knit",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/polyester_hexagon_pattern_knit"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/polyester_hexagon_pattern_knit",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/polyester_hexagon_pattern_knit",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/polyester_hexagon_pattern_knit"
             }
         },
         "polyester_honeycomb_mesh_back": {
             "name": "polyester_honeycomb_mesh_back",
             "type": "Fabric",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/polyester_honeycomb_mesh_back",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/polyester_honeycomb_mesh_back",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/polyester_honeycomb_mesh_back"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/polyester_honeycomb_mesh_back",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/polyester_honeycomb_mesh_back",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/polyester_honeycomb_mesh_back"
             }
         },
         "polyester_lycra_hydrosoft_weave": {
             "name": "polyester_lycra_hydrosoft_weave",
             "type": "Fabric",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/polyester_lycra_hydrosoft_weave",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/polyester_lycra_hydrosoft_weave",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/polyester_lycra_hydrosoft_weave"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/polyester_lycra_hydrosoft_weave",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/polyester_lycra_hydrosoft_weave",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/polyester_lycra_hydrosoft_weave"
             }
         },
         "polyester_softshell_brushed": {
             "name": "polyester_softshell_brushed",
             "type": "Fabric",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/polyester_softshell_brushed",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/polyester_softshell_brushed",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/polyester_softshell_brushed"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/polyester_softshell_brushed",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/polyester_softshell_brushed",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/polyester_softshell_brushed"
             }
         },
         "porous_stone_mesh_concretion": {
             "name": "porous_stone_mesh_concretion",
             "type": "Stone",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/porous_stone_mesh_concretion",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/porous_stone_mesh_concretion",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/porous_stone_mesh_concretion"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/porous_stone_mesh_concretion",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/porous_stone_mesh_concretion",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/porous_stone_mesh_concretion"
             }
         },
         "printed_cotton_rough": {
             "name": "printed_cotton_rough",
             "type": "Fabric",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/printed_cotton_rough",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/printed_cotton_rough",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/printed_cotton_rough"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/printed_cotton_rough",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/printed_cotton_rough",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/printed_cotton_rough"
             }
         },
         "printed_cotton_shirt": {
             "name": "printed_cotton_shirt",
             "type": "Fabric",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/printed_cotton_shirt",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/printed_cotton_shirt",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/printed_cotton_shirt"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/printed_cotton_shirt",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/printed_cotton_shirt",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/printed_cotton_shirt"
             }
         },
         "rainbow_anodized_metal": {
             "name": "rainbow_anodized_metal",
             "type": "Metal",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/rainbow_anodized_metal",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/rainbow_anodized_metal",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/rainbow_anodized_metal"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/rainbow_anodized_metal",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/rainbow_anodized_metal",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/rainbow_anodized_metal"
             }
         },
         "roughcast_troweled": {
             "name": "roughcast_troweled",
             "type": "Concrete",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/roughcast_troweled",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/roughcast_troweled",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/roughcast_troweled"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/roughcast_troweled",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/roughcast_troweled",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/roughcast_troweled"
             }
         },
         "rusty_metal": {
             "name": "rusty_metal",
             "type": "Metal",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/rusty_metal",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/rusty_metal",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/rusty_metal"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/rusty_metal",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/rusty_metal",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/rusty_metal"
             }
         },
         "slate_raw": {
             "name": "slate_raw",
             "type": "Stone",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/slate_raw",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/slate_raw",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/slate_raw"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/slate_raw",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/slate_raw",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/slate_raw"
             }
         },
         "slate_rockery": {
             "name": "slate_rockery",
             "type": "Stone",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/slate_rockery",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/slate_rockery",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/slate_rockery"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/slate_rockery",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/slate_rockery",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/slate_rockery"
             }
         },
         "sls_titanium": {
             "name": "sls_titanium",
             "type": "Plastic",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/sls_titanium",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/sls_titanium",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/sls_titanium"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/sls_titanium",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/sls_titanium",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/sls_titanium"
             }
         },
         "sls_titanium_honeycomb_pattern": {
             "name": "sls_titanium_honeycomb_pattern",
             "type": "Plastic",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/sls_titanium_honeycomb_pattern",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/sls_titanium_honeycomb_pattern",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/sls_titanium_honeycomb_pattern"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/sls_titanium_honeycomb_pattern",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/sls_titanium_honeycomb_pattern",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/sls_titanium_honeycomb_pattern"
             }
         },
         "sls_titanium_square_pattern": {
             "name": "sls_titanium_square_pattern",
             "type": "Plastic",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/sls_titanium_square_pattern",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/sls_titanium_square_pattern",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/sls_titanium_square_pattern"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/sls_titanium_square_pattern",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/sls_titanium_square_pattern",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/sls_titanium_square_pattern"
             }
         },
         "spandex_printed_fabric": {
             "name": "spandex_printed_fabric",
             "type": "Fabric",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/spandex_printed_fabric",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/spandex_printed_fabric",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/spandex_printed_fabric"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/spandex_printed_fabric",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/spandex_printed_fabric",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/spandex_printed_fabric"
             }
         },
         "square_padded_wall": {
             "name": "square_padded_wall",
             "type": "Stone",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/square_padded_wall",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/square_padded_wall",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/square_padded_wall"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/square_padded_wall",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/square_padded_wall",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/square_padded_wall"
             }
         },
         "stone_cellular_concretion": {
             "name": "stone_cellular_concretion",
             "type": "Stone",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/stone_cellular_concretion",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/stone_cellular_concretion",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/stone_cellular_concretion"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/stone_cellular_concretion",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/stone_cellular_concretion",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/stone_cellular_concretion"
             }
         },
         "stone_mountain_grey": {
             "name": "stone_mountain_grey",
             "type": "Stone",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/stone_mountain_grey",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/stone_mountain_grey",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/stone_mountain_grey"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/stone_mountain_grey",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/stone_mountain_grey",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/stone_mountain_grey"
             }
         },
         "synthetic_boldweave_ball": {
             "name": "synthetic_boldweave_ball",
             "type": "Fabric",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/synthetic_boldweave_ball",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/synthetic_boldweave_ball",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/synthetic_boldweave_ball"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/synthetic_boldweave_ball",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/synthetic_boldweave_ball",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/synthetic_boldweave_ball"
             }
         },
         "synthetic_fabric_knit": {
             "name": "synthetic_fabric_knit",
             "type": "Fabric",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/synthetic_fabric_knit",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/synthetic_fabric_knit",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/synthetic_fabric_knit"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/synthetic_fabric_knit",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/synthetic_fabric_knit",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/synthetic_fabric_knit"
             }
         },
         "synthetic_flipflop_topstitch_diamond": {
             "name": "synthetic_flipflop_topstitch_diamond",
             "type": "Fabric",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/synthetic_flipflop_topstitch_diamond",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/synthetic_flipflop_topstitch_diamond",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/synthetic_flipflop_topstitch_diamond"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/synthetic_flipflop_topstitch_diamond",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/synthetic_flipflop_topstitch_diamond",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/synthetic_flipflop_topstitch_diamond"
             }
         },
         "synthetic_quilted": {
             "name": "synthetic_quilted",
             "type": "Fabric",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/synthetic_quilted",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/synthetic_quilted",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/synthetic_quilted"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/synthetic_quilted",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/synthetic_quilted",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/synthetic_quilted"
             }
         },
         "taurillon_leather_medium_worn": {
             "name": "taurillon_leather_medium_worn",
             "type": "Leather",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/taurillon_leather_medium_worn",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/taurillon_leather_medium_worn",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/taurillon_leather_medium_worn"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/taurillon_leather_medium_worn",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/taurillon_leather_medium_worn",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/taurillon_leather_medium_worn"
             }
         },
         "thin_bamboo_blinds": {
             "name": "thin_bamboo_blinds",
             "type": "Wood",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/thin_bamboo_blinds",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/thin_bamboo_blinds",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/thin_bamboo_blinds"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/thin_bamboo_blinds",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/thin_bamboo_blinds",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/thin_bamboo_blinds"
             }
         },
         "tiles_hexagon_bees_dirty": {
             "name": "tiles_hexagon_bees_dirty",
             "type": "Ceramic",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/tiles_hexagon_bees_dirty",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/tiles_hexagon_bees_dirty",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/tiles_hexagon_bees_dirty"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/tiles_hexagon_bees_dirty",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/tiles_hexagon_bees_dirty",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/tiles_hexagon_bees_dirty"
             }
         },
         "travertine_persian_vein": {
             "name": "travertine_persian_vein",
             "type": "Stone",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/travertine_persian_vein",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/travertine_persian_vein",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/travertine_persian_vein"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/travertine_persian_vein",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/travertine_persian_vein",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/travertine_persian_vein"
             }
         },
         "wicker_weave": {
             "name": "wicker_weave",
             "type": "Wood",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/wicker_weave",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/wicker_weave",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/wicker_weave"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/wicker_weave",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/wicker_weave",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/wicker_weave"
             }
         },
         "wood_american_cherry": {
             "name": "wood_american_cherry",
             "type": "Wood",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/wood_american_cherry",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/wood_american_cherry",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/wood_american_cherry"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/wood_american_cherry",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/wood_american_cherry",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/wood_american_cherry"
             }
         },
         "wood_beech_honey": {
             "name": "wood_beech_honey",
             "type": "Wood",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/wood_beech_honey",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/wood_beech_honey",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/wood_beech_honey"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/wood_beech_honey",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/wood_beech_honey",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/wood_beech_honey"
             }
         },
         "wool_tartan_multicolored": {
             "name": "wool_tartan_multicolored",
             "type": "Fabric",
             "urls": {
-                "Darwin": "http://s3.amazonaws.com/tdw_test_dev/materials/osx/med/wool_tartan_multicolored",
-                "Linux": "http://s3.amazonaws.com/tdw_test_dev/materials/linux/med/wool_tartan_multicolored",
-                "Windows": "http://s3.amazonaws.com/tdw_test_dev/materials/windows/med/wool_tartan_multicolored"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/materials_med/osx/pre-2019.2/wool_tartan_multicolored",
+                "Linux": "https://tdw-public.s3.amazonaws.com/materials_med/linux/pre-2019.2/wool_tartan_multicolored",
+                "Windows": "https://tdw-public.s3.amazonaws.com/materials_med/windows/pre-2019.2/wool_tartan_multicolored"
             }
         }
     }

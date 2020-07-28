@@ -29,3 +29,21 @@ These arguments are common for every controller.
 | Containment     | A small object is contained and rattles around in a larger object, such as a bowl. The small object has random physics values. The bowl has random force vectors. | `containment.py`                                             | `RigidbodiesDataset` |
 | Squishing       | Squishy objects deform and are restored to original shape depending on applied forces (e.g. squished when something else is on top of them or when they impact a barrier). Objects are given random "pressure" values. | `squishing.py`                                               | `FlexDataset`        |
 | Submerging      | Objects sink or float in different types of fluids.          | `submerging.py`                                              | `FlexDataset`        |
+
+## Requirements
+
+|                 | [Flex-compatible system](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/flex.md) | [Full model library](https://github.com/threedworld-mit/tdw/blob/master/Documentation/misc_frontend/models_full.md) |
+| --------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Toy Collisions  |                                                              | ✓                                                            |
+| Occlusion       |                                                              | ✓                                                            |
+| Permanence      |                                                              | ✓                                                            |
+| Shadows         |                                                              | ✓                                                            |
+| Falling         |                                                              | ✓                                                            |
+| Sliding/Rolling |                                                              | ✓                                                            |
+| Bouncing        |                                                              | ✓                                                            |
+| Stability       |                                                              |                                                              |
+| Draping/Folding | ✓                                                            | ✓                                                            |
+| Dragging        | ✓                                                            | ✓                                                            |
+| Containment     |                                                              | ✓                                                            |
+| Squishing       | ✓                                                            |                                                              |
+| Submerging      | ✓ (Windows only)                                             | ✓                                                            |

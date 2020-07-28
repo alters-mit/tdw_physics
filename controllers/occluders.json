@@ -95,9 +95,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/021_vray",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/021_vray",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/021_vray"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/021_vray",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/021_vray",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/021_vray"
             },
             "wcategory": "desktop computer",
             "wnid": "n03180011"
@@ -190,9 +190,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/022_vray_fix",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/022_vray_fix",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/022_vray_fix"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/022_vray_fix",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/022_vray_fix",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/022_vray_fix"
             },
             "wcategory": "desktop computer",
             "wnid": "n03180011"
@@ -273,9 +273,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/102_pepsi_can_12_fl_oz_vray",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/102_pepsi_can_12_fl_oz_vray",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/102_pepsi_can_12_fl_oz_vray"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/102_pepsi_can_12_fl_oz_vray",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/102_pepsi_can_12_fl_oz_vray",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/102_pepsi_can_12_fl_oz_vray"
             },
             "wcategory": "soda can",
             "wnid": "n04255586"
@@ -356,9 +356,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/104_sprite_can_12_fl_oz_vray",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/104_sprite_can_12_fl_oz_vray",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/104_sprite_can_12_fl_oz_vray"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/104_sprite_can_12_fl_oz_vray",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/104_sprite_can_12_fl_oz_vray",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/104_sprite_can_12_fl_oz_vray"
             },
             "wcategory": "soda can",
             "wnid": "n04255586"
@@ -430,9 +430,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/appliance-ge-profile-microwave",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/appliance-ge-profile-microwave",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/appliance-ge-profile-microwave"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/appliance-ge-profile-microwave",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/appliance-ge-profile-microwave",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/appliance-ge-profile-microwave"
             },
             "wcategory": "microwave, microwave oven",
             "wnid": "n03761084"
@@ -502,9 +502,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/appliance-ge-profile-microwave3",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/appliance-ge-profile-microwave3",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/appliance-ge-profile-microwave3"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/appliance-ge-profile-microwave3",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/appliance-ge-profile-microwave3",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/appliance-ge-profile-microwave3"
             },
             "wcategory": "microwave, microwave oven",
             "wnid": "n03761084"
@@ -574,9 +574,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/aquostv",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/aquostv",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/aquostv"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/aquostv",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/aquostv",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/aquostv"
             },
             "wcategory": "television set",
             "wnid": "n04405907"
@@ -645,9 +645,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b03_12_01_016",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b03_12_01_016",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b03_12_01_016"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b03_12_01_016",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b03_12_01_016",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b03_12_01_016"
             },
             "wcategory": "toilet",
             "wnid": "n04446521"
@@ -722,9 +722,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b03_202435_3d-model",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b03_202435_3d-model",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b03_202435_3d-model"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b03_202435_3d-model",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b03_202435_3d-model",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b03_202435_3d-model"
             },
             "wcategory": "trunk",
             "wnid": "n04491769"
@@ -796,9 +796,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b03_210822_layer0_001",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b03_210822_layer0_001",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b03_210822_layer0_001"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b03_210822_layer0_001",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b03_210822_layer0_001",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b03_210822_layer0_001"
             },
             "wcategory": "trunk",
             "wnid": "n04491769"
@@ -1281,9 +1281,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b03_ka90ivi20r_2013__vray",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b03_ka90ivi20r_2013__vray",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b03_ka90ivi20r_2013__vray"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b03_ka90ivi20r_2013__vray",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b03_ka90ivi20r_2013__vray",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b03_ka90ivi20r_2013__vray"
             },
             "wcategory": "refrigerator",
             "wnid": "n04070727"
@@ -1376,9 +1376,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b04_bottle_20ml",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b04_bottle_20ml",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b04_bottle_20ml"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b04_bottle_20ml",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b04_bottle_20ml",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b04_bottle_20ml"
             },
             "wcategory": "bottle",
             "wnid": "n02876657"
@@ -1454,9 +1454,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b04_can",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b04_can",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b04_can"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b04_can",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b04_can",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b04_can"
             },
             "wcategory": "soda can",
             "wnid": "n04255586"
@@ -1549,9 +1549,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b04_honey_jar_max_2014",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b04_honey_jar_max_2014",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b04_honey_jar_max_2014"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b04_honey_jar_max_2014",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b04_honey_jar_max_2014",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b04_honey_jar_max_2014"
             },
             "wcategory": "jar",
             "wnid": "n03593526"
@@ -1620,9 +1620,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b04_lighter",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b04_lighter",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b04_lighter"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b04_lighter",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b04_lighter",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b04_lighter"
             },
             "wcategory": "lighter",
             "wnid": "n03031422"
@@ -1691,9 +1691,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b04_retro_radio",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b04_retro_radio",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b04_retro_radio"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b04_retro_radio",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b04_retro_radio",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b04_retro_radio"
             },
             "wcategory": "radio",
             "wnid": "n04043733"
@@ -1763,9 +1763,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b05_bic-lighter",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b05_bic-lighter",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b05_bic-lighter"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b05_bic-lighter",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b05_bic-lighter",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b05_bic-lighter"
             },
             "wcategory": "lighter",
             "wnid": "n03031422"
@@ -1949,9 +1949,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b05_max2013vray_oven_by_whirlpool_akzm8910ixl",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b05_max2013vray_oven_by_whirlpool_akzm8910ixl",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b05_max2013vray_oven_by_whirlpool_akzm8910ixl"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b05_max2013vray_oven_by_whirlpool_akzm8910ixl",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b05_max2013vray_oven_by_whirlpool_akzm8910ixl",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b05_max2013vray_oven_by_whirlpool_akzm8910ixl"
             },
             "wcategory": "gas cooker",
             "wnid": "n03425595"
@@ -2086,9 +2086,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b05_safe",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b05_safe",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b05_safe"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b05_safe",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b05_safe",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b05_safe"
             },
             "wcategory": "safe",
             "wnid": "n04125021"
@@ -4461,9 +4461,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b05_safety_deposit_box",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b05_safety_deposit_box",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b05_safety_deposit_box"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b05_safety_deposit_box",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b05_safety_deposit_box",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b05_safety_deposit_box"
             },
             "wcategory": "safe",
             "wnid": "n04125021"
@@ -4551,9 +4551,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b05_whirlpool_microwave_wmc30516as_v-ray",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b05_whirlpool_microwave_wmc30516as_v-ray",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b05_whirlpool_microwave_wmc30516as_v-ray"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b05_whirlpool_microwave_wmc30516as_v-ray",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b05_whirlpool_microwave_wmc30516as_v-ray",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b05_whirlpool_microwave_wmc30516as_v-ray"
             },
             "wcategory": "microwave, microwave oven",
             "wnid": "n03761084"
@@ -4640,9 +4640,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/bank_safe_-_200",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/bank_safe_-_200",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/bank_safe_-_200"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/bank_safe_-_200",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/bank_safe_-_200",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/bank_safe_-_200"
             },
             "wcategory": "safe",
             "wnid": "n04125021"
@@ -4723,9 +4723,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/blue_satchal",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/blue_satchal",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/blue_satchal"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/blue_satchal",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/blue_satchal",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/blue_satchal"
             },
             "wcategory": "luggage",
             "wnid": "n02773838"
@@ -4795,9 +4795,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/can_pepsi",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/can_pepsi",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/can_pepsi"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/can_pepsi",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/can_pepsi",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/can_pepsi"
             },
             "wcategory": "soda can",
             "wnid": "n04255586"
@@ -4896,9 +4896,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/cgaxis_models_23_08_vray",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/cgaxis_models_23_08_vray",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/cgaxis_models_23_08_vray"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/cgaxis_models_23_08_vray",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/cgaxis_models_23_08_vray",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/cgaxis_models_23_08_vray"
             },
             "wcategory": "book",
             "wnid": "n02870526"
@@ -4985,9 +4985,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/cgaxis_models_61_17_vray",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/cgaxis_models_61_17_vray",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/cgaxis_models_61_17_vray"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/cgaxis_models_61_17_vray",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/cgaxis_models_61_17_vray",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/cgaxis_models_61_17_vray"
             },
             "wcategory": "coffee grinder",
             "wnid": "n03063485"
@@ -5056,9 +5056,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/chista_slice_of_teak_table",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/chista_slice_of_teak_table",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/chista_slice_of_teak_table"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/chista_slice_of_teak_table",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/chista_slice_of_teak_table",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/chista_slice_of_teak_table"
             },
             "wcategory": "table",
             "wnid": "n04379243"
@@ -5151,9 +5151,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/coca-cola_can_001",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/coca-cola_can_001",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/coca-cola_can_001"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/coca-cola_can_001",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/coca-cola_can_001",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/coca-cola_can_001"
             },
             "wcategory": "soda can",
             "wnid": "n04255586"
@@ -5226,9 +5226,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/coffee_0023",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/coffee_0023",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/coffee_0023"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/coffee_0023",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/coffee_0023",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/coffee_0023"
             },
             "wcategory": "coffee maker",
             "wnid": "n03963338"
@@ -5300,9 +5300,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/coffee_005_13",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/coffee_005_13",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/coffee_005_13"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/coffee_005_13",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/coffee_005_13",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/coffee_005_13"
             },
             "wcategory": "coffee maker",
             "wnid": "n03963338"
@@ -5371,9 +5371,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/dishwasher_4",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/dishwasher_4",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/dishwasher_4"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/dishwasher_4",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/dishwasher_4",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/dishwasher_4"
             },
             "wcategory": "dishwasher",
             "wnid": "n03207941"
@@ -5460,9 +5460,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/duffle_bag",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/duffle_bag",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/duffle_bag"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/duffle_bag",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/duffle_bag",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/duffle_bag"
             },
             "wcategory": "luggage",
             "wnid": "n02773838"
@@ -5531,9 +5531,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/elephant_bowl",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/elephant_bowl",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/elephant_bowl"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/elephant_bowl",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/elephant_bowl",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/elephant_bowl"
             },
             "wcategory": "bowl (previously dish)",
             "wnid": "n03206908"
@@ -5614,9 +5614,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/fanta_orange_can_12_fl_oz_vray",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/fanta_orange_can_12_fl_oz_vray",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/fanta_orange_can_12_fl_oz_vray"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/fanta_orange_can_12_fl_oz_vray",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/fanta_orange_can_12_fl_oz_vray",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/fanta_orange_can_12_fl_oz_vray"
             },
             "wcategory": "soda can",
             "wnid": "n04255586"
@@ -5685,9 +5685,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/fridge_box",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/fridge_box",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/fridge_box"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/fridge_box",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/fridge_box",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/fridge_box"
             },
             "wcategory": "box",
             "wnid": "n02883344"
@@ -5756,9 +5756,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/fridge_box_2",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/fridge_box_2",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/fridge_box_2"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/fridge_box_2",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/fridge_box_2",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/fridge_box_2"
             },
             "wcategory": "box",
             "wnid": "n02883344"
@@ -5831,9 +5831,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/fridge_large",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/fridge_large",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/fridge_large"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/fridge_large",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/fridge_large",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/fridge_large"
             },
             "wcategory": "refrigerator",
             "wnid": "n04070727"
@@ -5902,9 +5902,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/half_circle_wood_block",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/half_circle_wood_block",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/half_circle_wood_block"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/half_circle_wood_block",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/half_circle_wood_block",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/half_circle_wood_block"
             },
             "wcategory": "toy",
             "wnid": "n04461879"
@@ -5973,9 +5973,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/jug02",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/jug02",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/jug02"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/jug02",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/jug02",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/jug02"
             },
             "wcategory": "jug",
             "wnid": "n03603722"
@@ -6044,9 +6044,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/jug04",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/jug04",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/jug04"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/jug04",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/jug04",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/jug04"
             },
             "wcategory": "jug",
             "wnid": "n03603722"
@@ -6115,9 +6115,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/jug05",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/jug05",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/jug05"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/jug05",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/jug05",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/jug05"
             },
             "wcategory": "jug",
             "wnid": "n03603722"
@@ -6198,9 +6198,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/kids_luggage_1",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/kids_luggage_1",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/kids_luggage_1"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/kids_luggage_1",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/kids_luggage_1",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/kids_luggage_1"
             },
             "wcategory": "luggage",
             "wnid": "n02773838"
@@ -6281,9 +6281,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/kids_luggage_2",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/kids_luggage_2",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/kids_luggage_2"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/kids_luggage_2",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/kids_luggage_2",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/kids_luggage_2"
             },
             "wcategory": "luggage",
             "wnid": "n02773838"
@@ -6513,9 +6513,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/lg_v30_2012__vray",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/lg_v30_2012__vray",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/lg_v30_2012__vray"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/lg_v30_2012__vray",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/lg_v30_2012__vray",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/lg_v30_2012__vray"
             },
             "wcategory": "ipod",
             "wnid": "n03584254"
@@ -6590,9 +6590,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/metal_briefcase",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/metal_briefcase",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/metal_briefcase"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/metal_briefcase",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/metal_briefcase",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/metal_briefcase"
             },
             "wcategory": "luggage",
             "wnid": "n02773838"
@@ -6664,9 +6664,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/microwave",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/microwave",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/microwave"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/microwave",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/microwave",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/microwave"
             },
             "wcategory": "microwave, microwave oven",
             "wnid": "n03761084"
@@ -6735,9 +6735,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/naughtone_pinch_stool_chair",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/naughtone_pinch_stool_chair",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/naughtone_pinch_stool_chair"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/naughtone_pinch_stool_chair",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/naughtone_pinch_stool_chair",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/naughtone_pinch_stool_chair"
             },
             "wcategory": "chair",
             "wnid": "n03001627"
@@ -6806,9 +6806,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/pentagon_wood_block",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/pentagon_wood_block",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/pentagon_wood_block"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/pentagon_wood_block",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/pentagon_wood_block",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/pentagon_wood_block"
             },
             "wcategory": "toy",
             "wnid": "n04461879"
@@ -6877,9 +6877,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/pillow01",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/pillow01",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/pillow01"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/pillow01",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/pillow01",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/pillow01"
             },
             "wcategory": "throw pillow",
             "wnid": "n04430364"
@@ -6948,9 +6948,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/pillow02",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/pillow02",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/pillow02"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/pillow02",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/pillow02",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/pillow02"
             },
             "wcategory": "throw pillow",
             "wnid": "n04430364"
@@ -7019,9 +7019,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/pillow04",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/pillow04",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/pillow04"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/pillow04",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/pillow04",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/pillow04"
             },
             "wcategory": "throw pillow",
             "wnid": "n04430364"
@@ -7090,9 +7090,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/rectangle_wood_block",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/rectangle_wood_block",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/rectangle_wood_block"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/rectangle_wood_block",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/rectangle_wood_block",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/rectangle_wood_block"
             },
             "wcategory": "toy",
             "wnid": "n04461879"
@@ -7162,9 +7162,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/refridgerator_slim",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/refridgerator_slim",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/refridgerator_slim"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/refridgerator_slim",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/refridgerator_slim",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/refridgerator_slim"
             },
             "wcategory": "refrigerator",
             "wnid": "n04070727"
@@ -7251,9 +7251,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/rocket_diagram_large",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/rocket_diagram_large",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/rocket_diagram_large"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/rocket_diagram_large",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/rocket_diagram_large",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/rocket_diagram_large"
             },
             "wcategory": "picture",
             "wnid": "n03876519"
@@ -7324,9 +7324,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/salt",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/salt",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/salt"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/salt",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/salt",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/salt"
             },
             "wcategory": "salt",
             "wnid": "n05717342"
@@ -7419,9 +7419,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/schweppes_can_001",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/schweppes_can_001",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/schweppes_can_001"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/schweppes_can_001",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/schweppes_can_001",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/schweppes_can_001"
             },
             "wcategory": "soda can",
             "wnid": "n04255586"
@@ -7490,9 +7490,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/square_wood_block",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/square_wood_block",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/square_wood_block"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/square_wood_block",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/square_wood_block",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/square_wood_block"
             },
             "wcategory": "toy",
             "wnid": "n04461879"
@@ -7561,9 +7561,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/star_wood_block",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/star_wood_block",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/star_wood_block"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/star_wood_block",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/star_wood_block",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/star_wood_block"
             },
             "wcategory": "toy",
             "wnid": "n04461879"
@@ -7632,9 +7632,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/tv_box",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/tv_box",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/tv_box"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/tv_box",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/tv_box",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/tv_box"
             },
             "wcategory": "box",
             "wnid": "n02883344"
@@ -7703,9 +7703,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/vacuum_box",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/vacuum_box",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/vacuum_box"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/vacuum_box",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/vacuum_box",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/vacuum_box"
             },
             "wcategory": "box",
             "wnid": "n02883344"
@@ -7775,9 +7775,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/vm_v2_024",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/vm_v2_024",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/vm_v2_024"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/vm_v2_024",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/vm_v2_024",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/vm_v2_024"
             },
             "wcategory": "suitcase",
             "wnid": "n02776843"
@@ -7894,9 +7894,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/vray_032",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/vray_032",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/vray_032"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/vray_032",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/vray_032",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/vray_032"
             },
             "wcategory": "dishwasher",
             "wnid": "n03207941"
@@ -8099,9 +8099,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/vraymax2013_oven_akzm6610ixl_by_whirlpool",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/vraymax2013_oven_akzm6610ixl_by_whirlpool",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/vraymax2013_oven_akzm6610ixl_by_whirlpool"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/vraymax2013_oven_akzm6610ixl_by_whirlpool",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/vraymax2013_oven_akzm6610ixl_by_whirlpool",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/vraymax2013_oven_akzm6610ixl_by_whirlpool"
             },
             "wcategory": "gas cooker",
             "wnid": "n03425595"
@@ -8170,9 +8170,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/washingmachine_box",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/washingmachine_box",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/washingmachine_box"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/washingmachine_box",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/washingmachine_box",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/washingmachine_box"
             },
             "wcategory": "box",
             "wnid": "n02883344"

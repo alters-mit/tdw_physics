@@ -5,12 +5,15 @@ These classes create a generic structure for generating physics datasets using T
 1. Simplify the process of writing many similar controllers.
 2. Ensure uniform output data organization across similar controllers.
 
+## Requirements
+
+- [TDW](https://github.com/threedworld-mit/tdw) (See requirements for graphics rendering)
+- Some controllers in this repo have additional requirements. Read [this](controllers/README.md#Requirements) for a more detailed list.
+
 ## Installation
 
-1. Clone the TDWBase repo and download the latest build.
-2. Clone this repo.
-3. `cd path/to/tdw_physics`
-4. `pip3 install -e .` (This installs the `tdw_physics` module).
+1. `cd path/to/tdw_physics`
+2. `pip3 install -e .` (This installs the `tdw_physics` module).
 
 ## Controllers
 
