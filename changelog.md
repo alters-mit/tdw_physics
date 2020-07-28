@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.2.0
+
+- Updated documentation for TDW public release.
+  - Expanded system requirements section.
+- Updated URLs custom model libraries to TDW v1.6 URLs.
+
 ## v0.1.1
 
 ### Controllers
