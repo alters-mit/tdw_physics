@@ -65,9 +65,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/10965_box01",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/10965_box01",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/10965_box01"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/10965_box01",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/10965_box01",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/10965_box01"
             },
             "wcategory": "sheep",
             "wnid": "n02411705"
@@ -136,9 +136,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/19403_cow",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/19403_cow",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/19403_cow"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/19403_cow",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/19403_cow",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/19403_cow"
             },
             "wcategory": "cow",
             "wnid": "n01887787"
@@ -207,9 +207,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/3dscan_man_002",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/3dscan_man_002",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/3dscan_man_002"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/3dscan_man_002",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/3dscan_man_002",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/3dscan_man_002"
             },
             "wcategory": "person",
             "wnid": "n00007846"
@@ -278,9 +278,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/703464_elephant",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/703464_elephant",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/703464_elephant"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/703464_elephant",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/703464_elephant",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/703464_elephant"
             },
             "wcategory": "elephant",
             "wnid": "n02503517"
@@ -350,9 +350,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/735737_zebra",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/735737_zebra",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/735737_zebra"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/735737_zebra",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/735737_zebra",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/735737_zebra"
             },
             "wcategory": "zebra",
             "wnid": "n02391049"
@@ -421,9 +421,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/839104_rat",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/839104_rat",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/839104_rat"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/839104_rat",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/839104_rat",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/839104_rat"
             },
             "wcategory": "rodent",
             "wnid": "n02329401"
@@ -492,9 +492,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/885557_horse",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/885557_horse",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/885557_horse"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/885557_horse",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/885557_horse",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/885557_horse"
             },
             "wcategory": "horse",
             "wnid": "n02374451"
@@ -563,9 +563,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/885577_spider",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/885577_spider",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/885577_spider"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/885577_spider",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/885577_spider",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/885577_spider"
             },
             "wcategory": "spider",
             "wnid": "n01772222"
@@ -634,9 +634,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/886673_duck",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/886673_duck",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/886673_duck"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/886673_duck",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/886673_duck",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/886673_duck"
             },
             "wcategory": "goose / duck",
             "wnid": "n01845477"
@@ -706,9 +706,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b03_745118_bear",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b03_745118_bear",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b03_745118_bear"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b03_745118_bear",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b03_745118_bear",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b03_745118_bear"
             },
             "wcategory": "bear",
             "wnid": "n02131653"
@@ -789,9 +789,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b03_852100_giraffe",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b03_852100_giraffe",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b03_852100_giraffe"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b03_852100_giraffe",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b03_852100_giraffe",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b03_852100_giraffe"
             },
             "wcategory": "giraffe",
             "wnid": "n02439033"
@@ -860,9 +860,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b03_base",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b03_base",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b03_base"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b03_base",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b03_base",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b03_base"
             },
             "wcategory": "alligator",
             "wnid": "n01696633"
@@ -931,9 +931,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b03_boat_fishing_02_null_11",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b03_boat_fishing_02_null_11",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b03_boat_fishing_02_null_11"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b03_boat_fishing_02_null_11",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b03_boat_fishing_02_null_11",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b03_boat_fishing_02_null_11"
             },
             "wcategory": "boat",
             "wnid": "n02858304"
@@ -1002,9 +1002,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b03_box01",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b03_box01",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b03_box01"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b03_box01",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b03_box01",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b03_box01"
             },
             "wcategory": "sheep",
             "wnid": "n02411705"
@@ -1073,9 +1073,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b03_caiman",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b03_caiman",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b03_caiman"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b03_caiman",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b03_caiman",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b03_caiman"
             },
             "wcategory": "alligator",
             "wnid": "n01696633"
@@ -1144,9 +1144,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b03_calf",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b03_calf",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b03_calf"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b03_calf",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b03_calf",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b03_calf"
             },
             "wcategory": "cow",
             "wnid": "n01887787"
@@ -1221,9 +1221,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b03_canoe_01_(2013_default)",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b03_canoe_01_(2013_default)",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b03_canoe_01_(2013_default)"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b03_canoe_01_(2013_default)",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b03_canoe_01_(2013_default)",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b03_canoe_01_(2013_default)"
             },
             "wcategory": "canoe",
             "wnid": "n02951358"
@@ -1298,9 +1298,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b03_cat3smooth",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b03_cat3smooth",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b03_cat3smooth"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b03_cat3smooth",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b03_cat3smooth",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b03_cat3smooth"
             },
             "wcategory": "cat",
             "wnid": "n02121620"
@@ -1369,9 +1369,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b03_cat_mesh",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b03_cat_mesh",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b03_cat_mesh"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b03_cat_mesh",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b03_cat_mesh",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b03_cat_mesh"
             },
             "wcategory": "cat",
             "wnid": "n02121620"
@@ -1440,9 +1440,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b03_cockroach_mesh",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b03_cockroach_mesh",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b03_cockroach_mesh"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b03_cockroach_mesh",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b03_cockroach_mesh",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b03_cockroach_mesh"
             },
             "wcategory": "beetle",
             "wnid": "n02164464"
@@ -1511,9 +1511,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b03_cow",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b03_cow",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b03_cow"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b03_cow",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b03_cow",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b03_cow"
             },
             "wcategory": "cow",
             "wnid": "n01887787"
@@ -1582,9 +1582,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b03_cuvier_beaked_whale",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b03_cuvier_beaked_whale",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b03_cuvier_beaked_whale"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b03_cuvier_beaked_whale",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b03_cuvier_beaked_whale",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b03_cuvier_beaked_whale"
             },
             "wcategory": "whale",
             "wnid": "n02062744"
@@ -1653,9 +1653,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b03_elephant",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b03_elephant",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b03_elephant"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b03_elephant",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b03_elephant",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b03_elephant"
             },
             "wcategory": "elephant",
             "wnid": "n02503517"
@@ -1726,9 +1726,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b03_elpheyel",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b03_elpheyel",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b03_elpheyel"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b03_elpheyel",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b03_elpheyel",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b03_elpheyel"
             },
             "wcategory": "elephant",
             "wnid": "n02503517"
@@ -3489,9 +3489,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b03_eurocopter-vray",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b03_eurocopter-vray",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b03_eurocopter-vray"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b03_eurocopter-vray",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b03_eurocopter-vray",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b03_eurocopter-vray"
             },
             "wcategory": "helicopter",
             "wnid": "n03512147"
@@ -3561,9 +3561,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b03_giraffe_mesh",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b03_giraffe_mesh",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b03_giraffe_mesh"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b03_giraffe_mesh",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b03_giraffe_mesh",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b03_giraffe_mesh"
             },
             "wcategory": "giraffe",
             "wnid": "n02439033"
@@ -3770,9 +3770,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b03_golf_cart",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b03_golf_cart",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b03_golf_cart"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b03_golf_cart",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b03_golf_cart",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b03_golf_cart"
             },
             "wcategory": "golf cart",
             "wnid": "n03445924"
@@ -3979,9 +3979,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b03_golf_cart_vray",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b03_golf_cart_vray",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b03_golf_cart_vray"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b03_golf_cart_vray",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b03_golf_cart_vray",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b03_golf_cart_vray"
             },
             "wcategory": "golf cart",
             "wnid": "n03445924"
@@ -4050,9 +4050,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b03_gs_mug",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b03_gs_mug",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b03_gs_mug"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b03_gs_mug",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b03_gs_mug",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b03_gs_mug"
             },
             "wcategory": "cup",
             "wnid": "n03147509"
@@ -4121,9 +4121,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b03_horse",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b03_horse",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b03_horse"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b03_horse",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b03_horse",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b03_horse"
             },
             "wcategory": "horse",
             "wnid": "n02374451"
@@ -4198,9 +4198,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b03_kayak01",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b03_kayak01",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b03_kayak01"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b03_kayak01",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b03_kayak01",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b03_kayak01"
             },
             "wcategory": "canoe",
             "wnid": "n02951358"
@@ -4269,9 +4269,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b03_killerwhale",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b03_killerwhale",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b03_killerwhale"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b03_killerwhale",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b03_killerwhale",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b03_killerwhale"
             },
             "wcategory": "whale",
             "wnid": "n02062744"
@@ -4352,9 +4352,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b03_low_poly_realistic_crocodile_max",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b03_low_poly_realistic_crocodile_max",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b03_low_poly_realistic_crocodile_max"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b03_low_poly_realistic_crocodile_max",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b03_low_poly_realistic_crocodile_max",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b03_low_poly_realistic_crocodile_max"
             },
             "wcategory": "alligator",
             "wnid": "n01696633"
@@ -4435,9 +4435,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b03_low_poly_realistic_tortoise_max",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b03_low_poly_realistic_tortoise_max",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b03_low_poly_realistic_tortoise_max"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b03_low_poly_realistic_tortoise_max",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b03_low_poly_realistic_tortoise_max",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b03_low_poly_realistic_tortoise_max"
             },
             "wcategory": "turtle",
             "wnid": "n01662784"
@@ -4512,9 +4512,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b03_motorboat_speedboat",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b03_motorboat_speedboat",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b03_motorboat_speedboat"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b03_motorboat_speedboat",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b03_motorboat_speedboat",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b03_motorboat_speedboat"
             },
             "wcategory": "speedboat",
             "wnid": "n04273569"
@@ -4583,9 +4583,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b03_objline01",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b03_objline01",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b03_objline01"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b03_objline01",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b03_objline01",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b03_objline01"
             },
             "wcategory": "fish",
             "wnid": "n02512053"
@@ -4690,9 +4690,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b03_realistic_muscular_horse_max",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b03_realistic_muscular_horse_max",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b03_realistic_muscular_horse_max"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b03_realistic_muscular_horse_max",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b03_realistic_muscular_horse_max",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b03_realistic_muscular_horse_max"
             },
             "wcategory": "horse",
             "wnid": "n02374451"
@@ -4767,9 +4767,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b03_realistic_pigeon_max",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b03_realistic_pigeon_max",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b03_realistic_pigeon_max"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b03_realistic_pigeon_max",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b03_realistic_pigeon_max",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b03_realistic_pigeon_max"
             },
             "wcategory": "bird",
             "wnid": "n01503061"
@@ -4838,9 +4838,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b03_scarab_beetle",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b03_scarab_beetle",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b03_scarab_beetle"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b03_scarab_beetle",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b03_scarab_beetle",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b03_scarab_beetle"
             },
             "wcategory": "beetle",
             "wnid": "n02164464"
@@ -4909,9 +4909,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b03_sparrow",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b03_sparrow",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b03_sparrow"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b03_sparrow",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b03_sparrow",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b03_sparrow"
             },
             "wcategory": "bird",
             "wnid": "n01503061"
@@ -4980,9 +4980,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b03_spider",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b03_spider",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b03_spider"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b03_spider",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b03_spider",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b03_spider"
             },
             "wcategory": "spider",
             "wnid": "n01772222"
@@ -5051,9 +5051,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b03_turtle",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b03_turtle",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b03_turtle"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b03_turtle",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b03_turtle",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b03_turtle"
             },
             "wcategory": "turtle",
             "wnid": "n01662784"
@@ -5122,9 +5122,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b03_zebra",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b03_zebra",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b03_zebra"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b03_zebra",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b03_zebra",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b03_zebra"
             },
             "wcategory": "zebra",
             "wnid": "n02391049"
@@ -5193,9 +5193,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b03_zebra_body",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b03_zebra_body",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b03_zebra_body"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b03_zebra_body",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b03_zebra_body",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b03_zebra_body"
             },
             "wcategory": "zebra",
             "wnid": "n02391049"
@@ -5276,9 +5276,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b03_zebra_max",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b03_zebra_max",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b03_zebra_max"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b03_zebra_max",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b03_zebra_max",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b03_zebra_max"
             },
             "wcategory": "zebra",
             "wnid": "n02391049"
@@ -5347,9 +5347,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b04_beetle_woodcutter_001",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b04_beetle_woodcutter_001",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b04_beetle_woodcutter_001"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b04_beetle_woodcutter_001",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b04_beetle_woodcutter_001",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b04_beetle_woodcutter_001"
             },
             "wcategory": "beetle",
             "wnid": "n02164464"
@@ -5419,9 +5419,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b04_blackspider",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b04_blackspider",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b04_blackspider"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b04_blackspider",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b04_blackspider",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b04_blackspider"
             },
             "wcategory": "spider",
             "wnid": "n01772222"
@@ -5494,9 +5494,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b04_boat_2",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b04_boat_2",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b04_boat_2"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b04_boat_2",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b04_boat_2",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b04_boat_2"
             },
             "wcategory": "speedboat",
             "wnid": "n04273569"
@@ -5570,9 +5570,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b04_car",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b04_car",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b04_car"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b04_car",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b04_car",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b04_car"
             },
             "wcategory": "golf cart",
             "wnid": "n03445924"
@@ -5641,9 +5641,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b04_car32",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b04_car32",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b04_car32"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b04_car32",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b04_car32",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b04_car32"
             },
             "wcategory": "bus",
             "wnid": "n02924116"
@@ -5712,9 +5712,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b04_cat",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b04_cat",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b04_cat"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b04_cat",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b04_cat",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b04_cat"
             },
             "wcategory": "cat",
             "wnid": "n02121620"
@@ -5783,9 +5783,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b04_clownfish",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b04_clownfish",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b04_clownfish"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b04_clownfish",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b04_clownfish",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b04_clownfish"
             },
             "wcategory": "fish",
             "wnid": "n02512053"
@@ -5855,9 +5855,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b04_cow",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b04_cow",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b04_cow"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b04_cow",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b04_cow",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b04_cow"
             },
             "wcategory": "cow",
             "wnid": "n01887787"
@@ -5927,9 +5927,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b04_crab",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b04_crab",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b04_crab"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b04_crab",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b04_crab",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b04_crab"
             },
             "wcategory": "crustacean",
             "wnid": "n01974773"
@@ -6004,9 +6004,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b04_cup_nijniy_novgorod_gamma1.0_2013__vray",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b04_cup_nijniy_novgorod_gamma1.0_2013__vray",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b04_cup_nijniy_novgorod_gamma1.0_2013__vray"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b04_cup_nijniy_novgorod_gamma1.0_2013__vray",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b04_cup_nijniy_novgorod_gamma1.0_2013__vray",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b04_cup_nijniy_novgorod_gamma1.0_2013__vray"
             },
             "wcategory": "cup",
             "wnid": "n03147509"
@@ -6075,9 +6075,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b04_duck",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b04_duck",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b04_duck"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b04_duck",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b04_duck",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b04_duck"
             },
             "wcategory": "goose / duck",
             "wnid": "n01845477"
@@ -6484,9 +6484,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b04_dump",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b04_dump",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b04_dump"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b04_dump",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b04_dump",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b04_dump"
             },
             "wcategory": "truck",
             "wnid": "n04490091"
@@ -6555,9 +6555,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b04_elephant",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b04_elephant",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b04_elephant"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b04_elephant",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b04_elephant",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b04_elephant"
             },
             "wcategory": "elephant",
             "wnid": "n02503517"
@@ -6626,9 +6626,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b04_giraffe",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b04_giraffe",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b04_giraffe"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b04_giraffe",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b04_giraffe",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b04_giraffe"
             },
             "wcategory": "giraffe",
             "wnid": "n02439033"
@@ -6703,9 +6703,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b04_giraffegozdisplaced",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b04_giraffegozdisplaced",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b04_giraffegozdisplaced"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b04_giraffegozdisplaced",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b04_giraffegozdisplaced",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b04_giraffegozdisplaced"
             },
             "wcategory": "giraffe",
             "wnid": "n02439033"
@@ -6774,9 +6774,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b04_giraffelp",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b04_giraffelp",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b04_giraffelp"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b04_giraffelp",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b04_giraffelp",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b04_giraffelp"
             },
             "wcategory": "giraffe",
             "wnid": "n02439033"
@@ -8687,9 +8687,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b04_golf_car2012",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b04_golf_car2012",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b04_golf_car2012"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b04_golf_car2012",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b04_golf_car2012",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b04_golf_car2012"
             },
             "wcategory": "golf cart",
             "wnid": "n03445924"
@@ -8770,9 +8770,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b04_grizzlybear",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b04_grizzlybear",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b04_grizzlybear"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b04_grizzlybear",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b04_grizzlybear",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b04_grizzlybear"
             },
             "wcategory": "bear",
             "wnid": "n02131653"
@@ -8856,9 +8856,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b04_helicopter",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b04_helicopter",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b04_helicopter"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b04_helicopter",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b04_helicopter",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b04_helicopter"
             },
             "wcategory": "helicopter",
             "wnid": "n03512147"
@@ -9091,9 +9091,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b04_helicopter_new",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b04_helicopter_new",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b04_helicopter_new"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b04_helicopter_new",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b04_helicopter_new",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b04_helicopter_new"
             },
             "wcategory": "helicopter",
             "wnid": "n03512147"
@@ -9162,9 +9162,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b04_horse_body_mesh",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b04_horse_body_mesh",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b04_horse_body_mesh"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b04_horse_body_mesh",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b04_horse_body_mesh",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b04_horse_body_mesh"
             },
             "wcategory": "horse",
             "wnid": "n02374451"
@@ -9233,9 +9233,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b04_humming",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b04_humming",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b04_humming"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b04_humming",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b04_humming",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b04_humming"
             },
             "wcategory": "bird",
             "wnid": "n01503061"
@@ -9304,9 +9304,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b04_humpback_whale_exp1_0",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b04_humpback_whale_exp1_0",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b04_humpback_whale_exp1_0"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b04_humpback_whale_exp1_0",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b04_humpback_whale_exp1_0",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b04_humpback_whale_exp1_0"
             },
             "wcategory": "whale",
             "wnid": "n02062744"
@@ -9512,9 +9512,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b04_longboard_skateboard_max2013",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b04_longboard_skateboard_max2013",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b04_longboard_skateboard_max2013"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b04_longboard_skateboard_max2013",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b04_longboard_skateboard_max2013",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b04_longboard_skateboard_max2013"
             },
             "wcategory": "skateboard",
             "wnid": "n04225987"
@@ -9583,9 +9583,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b04_m",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b04_m",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b04_m"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b04_m",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b04_m",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b04_m"
             },
             "wcategory": "beetle",
             "wnid": "n02164464"
@@ -10848,9 +10848,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b04_must_2012_max",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b04_must_2012_max",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b04_must_2012_max"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b04_must_2012_max",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b04_must_2012_max",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b04_must_2012_max"
             },
             "wcategory": "airplane",
             "wnid": "n02691156"
@@ -10919,9 +10919,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b04_pigeon",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b04_pigeon",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b04_pigeon"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b04_pigeon",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b04_pigeon",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b04_pigeon"
             },
             "wcategory": "bird",
             "wnid": "n01503061"
@@ -10990,9 +10990,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b04_rat",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b04_rat",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b04_rat"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b04_rat",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b04_rat",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b04_rat"
             },
             "wcategory": "rodent",
             "wnid": "n02329401"
@@ -11337,9 +11337,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b04_scania_render_scene",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b04_scania_render_scene",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b04_scania_render_scene"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b04_scania_render_scene",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b04_scania_render_scene",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b04_scania_render_scene"
             },
             "wcategory": "truck",
             "wnid": "n04490091"
@@ -11756,9 +11756,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b04_ship_new",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b04_ship_new",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b04_ship_new"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b04_ship_new",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b04_ship_new",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b04_ship_new"
             },
             "wcategory": "boat",
             "wnid": "n02858304"
@@ -11828,9 +11828,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b04_spider",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b04_spider",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b04_spider"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b04_spider",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b04_spider",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b04_spider"
             },
             "wcategory": "spider",
             "wnid": "n01772222"
@@ -11905,9 +11905,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b04_tea_cup",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b04_tea_cup",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b04_tea_cup"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b04_tea_cup",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b04_tea_cup",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b04_tea_cup"
             },
             "wcategory": "cup",
             "wnid": "n03147509"
@@ -12115,9 +12115,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b04_wolf_spider",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b04_wolf_spider",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b04_wolf_spider"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b04_wolf_spider",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b04_wolf_spider",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b04_wolf_spider"
             },
             "wcategory": "spider",
             "wnid": "n01772222"
@@ -13843,9 +13843,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b04_yacht",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b04_yacht",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b04_yacht"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b04_yacht",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b04_yacht",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b04_yacht"
             },
             "wcategory": "boat",
             "wnid": "n02858304"
@@ -13936,9 +13936,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b05_ambulance_truck",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b05_ambulance_truck",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b05_ambulance_truck"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b05_ambulance_truck",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b05_ambulance_truck",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b05_ambulance_truck"
             },
             "wcategory": "truck",
             "wnid": "n04490091"
@@ -14121,9 +14121,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b05_audi_newest",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b05_audi_newest",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b05_audi_newest"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b05_audi_newest",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b05_audi_newest",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b05_audi_newest"
             },
             "wcategory": "car",
             "wnid": "n02958343"
@@ -14204,9 +14204,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b05_bearanimated02",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b05_bearanimated02",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b05_bearanimated02"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b05_bearanimated02",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b05_bearanimated02",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b05_bearanimated02"
             },
             "wcategory": "bear",
             "wnid": "n02131653"
@@ -14293,9 +14293,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b05_black_cat_2010",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b05_black_cat_2010",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b05_black_cat_2010"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b05_black_cat_2010",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b05_black_cat_2010",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b05_black_cat_2010"
             },
             "wcategory": "cat",
             "wnid": "n02121620"
@@ -14364,9 +14364,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b05_ca_hoi",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b05_ca_hoi",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b05_ca_hoi"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b05_ca_hoi",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b05_ca_hoi",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b05_ca_hoi"
             },
             "wcategory": "fish",
             "wnid": "n02512053"
@@ -14531,9 +14531,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b05_chevrolet_camaro_3ds_max_2010_v-ray",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b05_chevrolet_camaro_3ds_max_2010_v-ray",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b05_chevrolet_camaro_3ds_max_2010_v-ray"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b05_chevrolet_camaro_3ds_max_2010_v-ray",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b05_chevrolet_camaro_3ds_max_2010_v-ray",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b05_chevrolet_camaro_3ds_max_2010_v-ray"
             },
             "wcategory": "car",
             "wnid": "n02958343"
@@ -14603,9 +14603,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b05_dayan",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b05_dayan",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b05_dayan"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b05_dayan",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b05_dayan",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b05_dayan"
             },
             "wcategory": "goose / duck",
             "wnid": "n01845477"
@@ -14675,9 +14675,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b05_duck_rest_pose",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b05_duck_rest_pose",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b05_duck_rest_pose"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b05_duck_rest_pose",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b05_duck_rest_pose",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b05_duck_rest_pose"
             },
             "wcategory": "goose / duck",
             "wnid": "n01845477"
@@ -14746,9 +14746,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b05_figure_9_node",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b05_figure_9_node",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b05_figure_9_node"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b05_figure_9_node",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b05_figure_9_node",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b05_figure_9_node"
             },
             "wcategory": "rodent",
             "wnid": "n02329401"
@@ -14817,9 +14817,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b05_forklift",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b05_forklift",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b05_forklift"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b05_forklift",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b05_forklift",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b05_forklift"
             },
             "wcategory": "forklift",
             "wnid": "n03384352"
@@ -15896,9 +15896,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b05_golf_cart_max",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b05_golf_cart_max",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b05_golf_cart_max"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b05_golf_cart_max",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b05_golf_cart_max",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b05_golf_cart_max"
             },
             "wcategory": "golf cart",
             "wnid": "n03445924"
@@ -15967,9 +15967,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b05_grizzly",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b05_grizzly",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b05_grizzly"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b05_grizzly",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b05_grizzly",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b05_grizzly"
             },
             "wcategory": "bear",
             "wnid": "n02131653"
@@ -20346,9 +20346,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b05_model_sell",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b05_model_sell",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b05_model_sell"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b05_model_sell",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b05_model_sell",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b05_model_sell"
             },
             "wcategory": "car",
             "wnid": "n02958343"
@@ -20568,9 +20568,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b05_rat",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b05_rat",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b05_rat"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b05_rat",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b05_rat",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b05_rat"
             },
             "wcategory": "rodent",
             "wnid": "n02329401"
@@ -20663,9 +20663,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b05_rat_alutaroma",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b05_rat_alutaroma",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b05_rat_alutaroma"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b05_rat_alutaroma",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b05_rat_alutaroma",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b05_rat_alutaroma"
             },
             "wcategory": "rodent",
             "wnid": "n02329401"
@@ -20742,9 +20742,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b05_rbeetle_mesh2",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b05_rbeetle_mesh2",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b05_rbeetle_mesh2"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b05_rbeetle_mesh2",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b05_rbeetle_mesh2",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b05_rbeetle_mesh2"
             },
             "wcategory": "beetle",
             "wnid": "n02164464"
@@ -20903,9 +20903,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b05_saab99_newest",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b05_saab99_newest",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b05_saab99_newest"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b05_saab99_newest",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b05_saab99_newest",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b05_saab99_newest"
             },
             "wcategory": "car",
             "wnid": "n02958343"
@@ -21854,9 +21854,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b05_schoolbus-vray",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b05_schoolbus-vray",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b05_schoolbus-vray"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b05_schoolbus-vray",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b05_schoolbus-vray",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b05_schoolbus-vray"
             },
             "wcategory": "bus",
             "wnid": "n02924116"
@@ -22063,9 +22063,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b05_skateboard",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b05_skateboard",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b05_skateboard"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b05_skateboard",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b05_skateboard",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b05_skateboard"
             },
             "wcategory": "skateboard",
             "wnid": "n04225987"
@@ -22134,9 +22134,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b05_spider",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b05_spider",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b05_spider"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b05_spider",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b05_spider",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b05_spider"
             },
             "wcategory": "spider",
             "wnid": "n01772222"
@@ -22319,9 +22319,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b05_unicorn",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b05_unicorn",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b05_unicorn"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b05_unicorn",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b05_unicorn",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b05_unicorn"
             },
             "wcategory": "horse",
             "wnid": "n02374451"
@@ -22396,9 +22396,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b05_vm_v7_031",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b05_vm_v7_031",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b05_vm_v7_031"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b05_vm_v7_031",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b05_vm_v7_031",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b05_vm_v7_031"
             },
             "wcategory": "airplane",
             "wnid": "n02691156"
@@ -22467,9 +22467,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b05_wg",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b05_wg",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b05_wg"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b05_wg",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b05_wg",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b05_wg"
             },
             "wcategory": "turtle",
             "wnid": "n01662784"
@@ -22538,9 +22538,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b05_whale_bowhead",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b05_whale_bowhead",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b05_whale_bowhead"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b05_whale_bowhead",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b05_whale_bowhead",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b05_whale_bowhead"
             },
             "wcategory": "whale",
             "wnid": "n02062744"
@@ -22736,9 +22736,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b06_boatnew",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b06_boatnew",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b06_boatnew"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b06_boatnew",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b06_boatnew",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b06_boatnew"
             },
             "wcategory": "speedboat",
             "wnid": "n04273569"
@@ -22809,9 +22809,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b06_box01",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b06_box01",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b06_box01"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b06_box01",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b06_box01",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b06_box01"
             },
             "wcategory": "sheep",
             "wnid": "n02411705"
@@ -22951,9 +22951,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b06_bus_new",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b06_bus_new",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b06_bus_new"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b06_bus_new",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b06_bus_new",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b06_bus_new"
             },
             "wcategory": "bus",
             "wnid": "n02924116"
@@ -23025,9 +23025,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b06_cat_1",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b06_cat_1",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b06_cat_1"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b06_cat_1",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b06_cat_1",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b06_cat_1"
             },
             "wcategory": "cat",
             "wnid": "n02121620"
@@ -23432,9 +23432,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b06_dump",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b06_dump",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b06_dump"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b06_dump",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b06_dump",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b06_dump"
             },
             "wcategory": "truck",
             "wnid": "n04490091"
@@ -23623,9 +23623,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b06_forkliftnew",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b06_forkliftnew",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b06_forkliftnew"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b06_forkliftnew",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b06_forkliftnew",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b06_forkliftnew"
             },
             "wcategory": "forklift",
             "wnid": "n03384352"
@@ -23948,9 +23948,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b06_poezd_metro_vagon_3",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b06_poezd_metro_vagon_3",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b06_poezd_metro_vagon_3"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b06_poezd_metro_vagon_3",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b06_poezd_metro_vagon_3",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b06_poezd_metro_vagon_3"
             },
             "wcategory": "train",
             "wnid": "n04468005"
@@ -24102,9 +24102,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b06_tender_body_001",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b06_tender_body_001",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b06_tender_body_001"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b06_tender_body_001",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b06_tender_body_001",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b06_tender_body_001"
             },
             "wcategory": "train",
             "wnid": "n04468005"
@@ -26837,9 +26837,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/b_747_max_fix",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/b_747_max_fix",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/b_747_max_fix"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/b_747_max_fix",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/b_747_max_fix",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/b_747_max_fix"
             },
             "wcategory": "airplane",
             "wnid": "n02691156"
@@ -26908,9 +26908,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/basset_hound",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/basset_hound",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/basset_hound"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/basset_hound",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/basset_hound",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/basset_hound"
             },
             "wcategory": "dog",
             "wnid": "n02084071"
@@ -26979,9 +26979,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/bee",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/bee",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/bee"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/bee",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/bee",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/bee"
             },
             "wcategory": "bee",
             "wnid": "n02206856"
@@ -27212,9 +27212,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/boat-kayak",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/boat-kayak",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/boat-kayak"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/boat-kayak",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/boat-kayak",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/boat-kayak"
             },
             "wcategory": "canoe",
             "wnid": "n02951358"
@@ -27691,9 +27691,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/boat_01_max_2010",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/boat_01_max_2010",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/boat_01_max_2010"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/boat_01_max_2010",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/boat_01_max_2010",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/boat_01_max_2010"
             },
             "wcategory": "boat",
             "wnid": "n02858304"
@@ -28182,9 +28182,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/busd2",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/busd2",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/busd2"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/busd2",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/busd2",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/busd2"
             },
             "wcategory": "bus",
             "wnid": "n02924116"
@@ -28361,9 +28361,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/canoe",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/canoe",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/canoe"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/canoe",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/canoe",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/canoe"
             },
             "wcategory": "canoe",
             "wnid": "n02951358"
@@ -28474,9 +28474,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/cgaxis_models_40_20_vray",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/cgaxis_models_40_20_vray",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/cgaxis_models_40_20_vray"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/cgaxis_models_40_20_vray",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/cgaxis_models_40_20_vray",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/cgaxis_models_40_20_vray"
             },
             "wcategory": "helicopter",
             "wnid": "n03512147"
@@ -28569,9 +28569,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/cgaxis_models_88_07_vray",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/cgaxis_models_88_07_vray",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/cgaxis_models_88_07_vray"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/cgaxis_models_88_07_vray",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/cgaxis_models_88_07_vray",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/cgaxis_models_88_07_vray"
             },
             "wcategory": "canoe",
             "wnid": "n02951358"
@@ -28640,9 +28640,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/coffeecup004",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/coffeecup004",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/coffeecup004"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/coffeecup004",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/coffeecup004",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/coffeecup004"
             },
             "wcategory": "cup",
             "wnid": "n03147509"
@@ -28711,9 +28711,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/coffeecup004_fix",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/coffeecup004_fix",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/coffeecup004_fix"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/coffeecup004_fix",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/coffeecup004_fix",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/coffeecup004_fix"
             },
             "wcategory": "cup",
             "wnid": "n03147509"
@@ -28788,9 +28788,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/coffeeteacup001_max2011_vray",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/coffeeteacup001_max2011_vray",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/coffeeteacup001_max2011_vray"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/coffeeteacup001_max2011_vray",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/coffeeteacup001_max2011_vray",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/coffeeteacup001_max2011_vray"
             },
             "wcategory": "cup",
             "wnid": "n03147509"
@@ -28865,9 +28865,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/cup",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/cup",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/cup"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/cup",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/cup",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/cup"
             },
             "wcategory": "cup",
             "wnid": "n03147509"
@@ -29698,9 +29698,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/dean-vray",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/dean-vray",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/dean-vray"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/dean-vray",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/dean-vray",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/dean-vray"
             },
             "wcategory": "boat",
             "wnid": "n02858304"
@@ -29769,9 +29769,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/duck_mesh",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/duck_mesh",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/duck_mesh"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/duck_mesh",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/duck_mesh",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/duck_mesh"
             },
             "wcategory": "goose / duck",
             "wnid": "n01845477"
@@ -31331,9 +31331,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/forklift",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/forklift",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/forklift"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/forklift",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/forklift",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/forklift"
             },
             "wcategory": "forklift",
             "wnid": "n03384352"
@@ -31403,9 +31403,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/giraffe_mesh",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/giraffe_mesh",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/giraffe_mesh"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/giraffe_mesh",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/giraffe_mesh",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/giraffe_mesh"
             },
             "wcategory": "giraffe",
             "wnid": "n02439033"
@@ -31702,9 +31702,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx/golf_car",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux/golf_car",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows/golf_car"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2017//golf_car",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2017//golf_car",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2017//golf_car"
             },
             "wcategory": "golf cart",
             "wnid": "n03445924"
@@ -31911,9 +31911,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/golf_cart",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/golf_cart",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/golf_cart"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/golf_cart",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/golf_cart",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/golf_cart"
             },
             "wcategory": "golf cart",
             "wnid": "n03445924"
@@ -32061,9 +32061,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/golf_cart_max",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/golf_cart_max",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/golf_cart_max"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/golf_cart_max",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/golf_cart_max",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/golf_cart_max"
             },
             "wcategory": "golf cart",
             "wnid": "n03445924"
@@ -32132,9 +32132,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/h-shape_wood_block",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/h-shape_wood_block",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/h-shape_wood_block"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/h-shape_wood_block",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/h-shape_wood_block",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/h-shape_wood_block"
             },
             "wcategory": "toy",
             "wnid": "n04461879"
@@ -32203,9 +32203,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/half_circle_wood_block",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/half_circle_wood_block",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/half_circle_wood_block"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/half_circle_wood_block",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/half_circle_wood_block",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/half_circle_wood_block"
             },
             "wcategory": "toy",
             "wnid": "n04461879"
@@ -32274,9 +32274,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/heart",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/heart",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/heart"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/heart",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/heart",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/heart"
             },
             "wcategory": "toy",
             "wnid": "n04461879"
@@ -32345,9 +32345,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/hexagonal_toy",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/hexagonal_toy",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/hexagonal_toy"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/hexagonal_toy",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/hexagonal_toy",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/hexagonal_toy"
             },
             "wcategory": "toy",
             "wnid": "n04461879"
@@ -32416,9 +32416,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/l-shape_wood_block",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/l-shape_wood_block",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/l-shape_wood_block"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/l-shape_wood_block",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/l-shape_wood_block",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/l-shape_wood_block"
             },
             "wcategory": "toy",
             "wnid": "n04461879"
@@ -32487,9 +32487,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/mesh_1350",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/mesh_1350",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/mesh_1350"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/mesh_1350",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/mesh_1350",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/mesh_1350"
             },
             "wcategory": "alligator",
             "wnid": "n01696633"
@@ -32606,9 +32606,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/motor_boat",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/motor_boat",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/motor_boat"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/motor_boat",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/motor_boat",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/motor_boat"
             },
             "wcategory": "speedboat",
             "wnid": "n04273569"
@@ -32677,9 +32677,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/mouflon",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/mouflon",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/mouflon"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/mouflon",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/mouflon",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/mouflon"
             },
             "wcategory": "sheep",
             "wnid": "n02411705"
@@ -32754,9 +32754,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/mug",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/mug",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/mug"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/mug",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/mug",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/mug"
             },
             "wcategory": "cup",
             "wnid": "n03147509"
@@ -32825,9 +32825,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/pentagon_wood_block",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/pentagon_wood_block",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/pentagon_wood_block"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/pentagon_wood_block",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/pentagon_wood_block",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/pentagon_wood_block"
             },
             "wcategory": "toy",
             "wnid": "n04461879"
@@ -32896,9 +32896,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/polysurface63",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/polysurface63",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/polysurface63"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/polysurface63",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/polysurface63",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/polysurface63"
             },
             "wcategory": "bird",
             "wnid": "n01503061"
@@ -32967,9 +32967,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/polysurface7",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/polysurface7",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/polysurface7"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/polysurface7",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/polysurface7",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/polysurface7"
             },
             "wcategory": "whale",
             "wnid": "n02062744"
@@ -33038,9 +33038,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/rectangle_wood_block",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/rectangle_wood_block",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/rectangle_wood_block"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/rectangle_wood_block",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/rectangle_wood_block",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/rectangle_wood_block"
             },
             "wcategory": "toy",
             "wnid": "n04461879"
@@ -33109,9 +33109,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/rh1",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/rh1",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/rh1"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/rh1",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/rh1",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/rh1"
             },
             "wcategory": "toy",
             "wnid": "n04461879"
@@ -33180,9 +33180,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/rh10",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/rh10",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/rh10"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/rh10",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/rh10",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/rh10"
             },
             "wcategory": "toy",
             "wnid": "n04461879"
@@ -33251,9 +33251,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/rh18",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/rh18",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/rh18"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/rh18",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/rh18",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/rh18"
             },
             "wcategory": "toy",
             "wnid": "n04461879"
@@ -33322,9 +33322,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/shark",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/shark",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/shark"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/shark",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/shark",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/shark"
             },
             "wcategory": "toy",
             "wnid": "n04461879"
@@ -33393,9 +33393,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/shark001",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/shark001",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/shark001"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/shark001",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/shark001",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/shark001"
             },
             "wcategory": "fish",
             "wnid": "n02512053"
@@ -33476,9 +33476,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/skateboard_1",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/skateboard_1",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/skateboard_1"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/skateboard_1",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/skateboard_1",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/skateboard_1"
             },
             "wcategory": "skateboard",
             "wnid": "n04225987"
@@ -33559,9 +33559,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/skateboard_2",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/skateboard_2",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/skateboard_2"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/skateboard_2",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/skateboard_2",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/skateboard_2"
             },
             "wcategory": "skateboard",
             "wnid": "n04225987"
@@ -33642,9 +33642,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/skateboard_3",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/skateboard_3",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/skateboard_3"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/skateboard_3",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/skateboard_3",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/skateboard_3"
             },
             "wcategory": "skateboard",
             "wnid": "n04225987"
@@ -33725,9 +33725,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/skateboard_4",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/skateboard_4",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/skateboard_4"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/skateboard_4",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/skateboard_4",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/skateboard_4"
             },
             "wcategory": "skateboard",
             "wnid": "n04225987"
@@ -33808,9 +33808,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/skateboard_5",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/skateboard_5",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/skateboard_5"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/skateboard_5",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/skateboard_5",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/skateboard_5"
             },
             "wcategory": "skateboard",
             "wnid": "n04225987"
@@ -33879,9 +33879,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/square_wood_block",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/square_wood_block",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/square_wood_block"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/square_wood_block",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/square_wood_block",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/square_wood_block"
             },
             "wcategory": "toy",
             "wnid": "n04461879"
@@ -33950,9 +33950,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/star_wood_block",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/star_wood_block",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/star_wood_block"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/star_wood_block",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/star_wood_block",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/star_wood_block"
             },
             "wcategory": "toy",
             "wnid": "n04461879"
@@ -34021,9 +34021,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/t-shape_wood_block",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/t-shape_wood_block",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/t-shape_wood_block"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/t-shape_wood_block",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/t-shape_wood_block",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/t-shape_wood_block"
             },
             "wcategory": "toy",
             "wnid": "n04461879"
@@ -34093,9 +34093,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/tarap167",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/tarap167",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/tarap167"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/tarap167",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/tarap167",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/tarap167"
             },
             "wcategory": "spider",
             "wnid": "n01772222"
@@ -34164,9 +34164,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/whale_fix",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/whale_fix",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/whale_fix"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/whale_fix",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/whale_fix",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/whale_fix"
             },
             "wcategory": "whale",
             "wnid": "n02062744"
@@ -34235,9 +34235,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/zenblocks",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/zenblocks",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/zenblocks"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/zenblocks",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/zenblocks",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/zenblocks"
             },
             "wcategory": "toy",
             "wnid": "n04461879"
@@ -34306,9 +34306,9 @@
                 }
             ],
             "urls": {
-                "Darwin": "https://s3.amazonaws.com/tdw_test_dev/models/osx_2018/zhaochaxie_mode",
-                "Linux": "https://s3.amazonaws.com/tdw_test_dev/models/linux_2018/zhaochaxie_mode",
-                "Windows": "https://s3.amazonaws.com/tdw_test_dev/models/windows_2018/zhaochaxie_mode"
+                "Darwin": "https://tdw-private.s3.amazonaws.com/models/osx/2018-2019.1/zhaochaxie_mode",
+                "Linux": "https://tdw-private.s3.amazonaws.com/models/linux/2018-2019.1/zhaochaxie_mode",
+                "Windows": "https://tdw-private.s3.amazonaws.com/models/windows/2018-2019.1/zhaochaxie_mode"
             },
             "wcategory": "crustacean",
             "wnid": "n01974773"
