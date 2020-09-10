@@ -16,14 +16,13 @@ class Dataset(Controller, ABC):
     1. Create a dataset .hdf5 file.
     2. Send commands to initialize the scene.
     3. Run a series of trials. Per trial, do the following:
-        1. Create a `TrialWriter` object to write data to the .hdf5 file.
-        2. Get commands to initialize the trial. Write "static" data (which doesn't change between trials).
-        3. Run the trial until it is "done" (defined by output from the writer). Write per-frame data to disk,.
-        4. Clean up the scene and start a new trial.
+        1. Get commands to initialize the trial. Write "static" data (which doesn't change between trials).
+        2. Run the trial until it is "done" (defined by output from the writer). Write per-frame data to disk,.
+        3. Clean up the scene and start a new trial.
     """
 
-    def __init__(self, port: int = 1071):
-        super().__init__(port=port)
+    def __init__(self, port: int = 1071, launch_build: bool = True):
+        super().__init__(port=port, launch_build=launch_build)
 
         # IDs of the objects in the current trial.
         self.object_ids = np.empty(dtype=int, shape=0)

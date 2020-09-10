@@ -11,3 +11,7 @@
 ### Controllers
 
 - `squishing.py`: In trials in which one object is dropped onto another, the "dropped" object is a solid object instead of a squishy cloth object.
+
+## v0.1.2
+
+- Added optional `launch_build` parameter to each controller constructor.
