@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.2.1
+
+- Removed some code made redundant by TDW v1.7
+
 ## v0.2.0
 
 - Updated documentation for TDW public release.
