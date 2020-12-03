@@ -3,6 +3,7 @@
 ## v0.2.1
 
 - Removed some code made redundant by TDW v1.7
+- Fixed: Controllers automatically launch the build (which doesn't work on headless servers).
 
 ## v0.2.0
 
