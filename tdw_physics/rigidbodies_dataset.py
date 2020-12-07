@@ -63,8 +63,8 @@ class RigidbodiesDataset(TransformsDataset, ABC):
     A dataset for Rigidbody (PhysX) physics.
     """
 
-    def __init__(self, port: int = 1071, launch_build: bool = True):
-        super().__init__(port=port, launch_build=launch_build)
+    def __init__(self, port: int = 1071):
+        super().__init__(port=port)
 
         # Static physics data.
         self.masses = np.empty(dtype=np.float32, shape=0)
@@ -120,10 +120,7 @@ class RigidbodiesDataset(TransformsDataset, ABC):
                  "id": o_id,
                  "dynamic_friction": dynamic_friction,
                  "static_friction": static_friction,
-                 "bounciness": bounciness},
-                {"$type": "set_object_collision_detection_mode",
-                 "id": o_id,
-                 "mode": "continuous_dynamic"}]
+                 "bounciness": bounciness}]
 
     def add_physics_object_default(self, name: str, position: Dict[str, float], rotation: Dict[str, float],
                                    o_id: Optional[int] = None) -> List[dict]:
