@@ -81,8 +81,8 @@ class FlexDataset(TransformsDataset, ABC):
     A dataset for Flex physics.
     """
 
-    def __init__(self, port: int = 1071, launch_build: bool = True):
-        super().__init__(port=port, launch_build=launch_build)
+    def __init__(self, port: int = 1071):
+        super().__init__(port=port)
 
         self._flex_container_command: dict = {}
         self._solid_actors: List[_SolidActor] = []

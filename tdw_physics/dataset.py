@@ -21,8 +21,8 @@ class Dataset(Controller, ABC):
         3. Clean up the scene and start a new trial.
     """
 
-    def __init__(self, port: int = 1071, launch_build: bool = True):
-        super().__init__(port=port, launch_build=launch_build)
+    def __init__(self, port: int = 1071):
+        super().__init__(port=port, launch_build=False)
 
         # IDs of the objects in the current trial.
         self.object_ids = np.empty(dtype=int, shape=0)

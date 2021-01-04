@@ -11,14 +11,14 @@ class ClothDataset(FlexDataset, ABC):
     A dataset that includes a Flex cloth object.
     """
 
-    def __init__(self, port: int = 1071, launch_build: bool = True):
+    def __init__(self, port: int = 1071):
         # Load the objects.
         self.object_records = ModelLibrarian(str(Path("flex.json").resolve())).records
         # Get the cloth record.
         self.cloth_record = MODEL_LIBRARIES["models_special.json"].get_record("cloth_square")
         self.cloth_id = 0
 
-        super().__init__(port=port, launch_build=launch_build)
+        super().__init__(port=port)
 
     def get_field_of_view(self) -> float:
         return 65
