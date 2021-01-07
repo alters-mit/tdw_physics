@@ -27,6 +27,9 @@ class Dataset(Controller, ABC):
         # IDs of the objects in the current trial.
         self.object_ids = np.empty(dtype=int, shape=0)
 
+    def clear_static_data(self) -> None:
+        self.object_ids = np.empty(dtype=int, shape=0)
+
     def run(self, num: int, output_dir: str, temp_path: str, width: int, height: int) -> None:
         """
         Create the dataset.
@@ -104,8 +107,8 @@ class Dataset(Controller, ABC):
         :param trial_num: The number of the current trial.
         """
 
-        # Clear the object IDs.
-        self.object_ids = np.empty(dtype=int, shape=0)
+        # Clear the object IDs and other static data
+        self.clear_static_data()
 
         # Create the .hdf5 file.
         f = h5py.File(str(temp_path.resolve()), "a")

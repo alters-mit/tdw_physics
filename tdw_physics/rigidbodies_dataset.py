@@ -75,6 +75,14 @@ class RigidbodiesDataset(TransformsDataset, ABC):
         # The physics info of each object instance. Useful for referencing in a controller, but not written to disk.
         self.physics_info: Dict[int, PhysicsInfo] = {}
 
+    def clear_static_data(self) -> None:
+        super().clear_static_data()
+
+        self.masses = np.empty(dtype=np.float32, shape=0)
+        self.static_frictions = np.empty(dtype=np.float32, shape=0)
+        self.dynamic_frictions = np.empty(dtype=np.float32, shape=0)
+        self.bouncinesses = np.empty(dtype=np.float32, shape=0)
+
     def add_physics_object(self, record: ModelRecord, position: Dict[str, float], rotation: Dict[str, float],
                            mass: float, dynamic_friction: float, static_friction: float, bounciness: float,
                            o_id: Optional[int] = None) -> List[dict]:

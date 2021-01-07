@@ -1,4 +1,5 @@
 import h5py
+import numpy as np
 from enum import Enum
 import random
 from typing import List, Dict, Tuple
@@ -7,7 +8,6 @@ from tdw.tdw_utils import TDWUtils
 from tdw.librarian import ModelRecord
 from tdw_physics.rigidbodies_dataset import RigidbodiesDataset
 from tdw_physics.util import MODEL_LIBRARIES, get_args
-
 
 class _StackType(Enum):
     """
@@ -58,6 +58,15 @@ class Stability(RigidbodiesDataset):
         self._stack_type: _StackType = _StackType.stable
 
         super().__init__(port=port)
+
+        ## object colors
+        self.colors = np.empty(dtype=np.float32, shape=3)
+
+    def clear_static_data(self) -> None:
+        super().clear_static_data()
+
+        ## object colors
+        self.colors = np.empty(dtype=np.float32, shape=3)
 
     def get_field_of_view(self) -> float:
         return 55
@@ -157,6 +166,12 @@ class Stability(RigidbodiesDataset):
     def get_per_frame_commands(self, resp: List[bytes], frame: int) -> List[dict]:
         return []
 
+    def _write_static_data(self, static_group: h5py.Group) -> None:
+        super()._write_static_data(static_group)
+
+        ## color of primitive objects
+        static_group.create_dataset("color", data=self.colors)
+
     def _write_frame(self, frames_grp: h5py.Group, resp: List[bytes], frame_num: int) -> \
             Tuple[h5py.Group, h5py.Group, dict, bool]:
         frame, objs, tr, sleeping = super()._write_frame(frames_grp=frames_grp, resp=resp, frame_num=frame_num)
@@ -179,6 +194,11 @@ class Stability(RigidbodiesDataset):
 
         o_id = self.get_unique_id()
 
+        # Set a random color.
+        rgb = np.array([random.random(), random.random(), random.random()])
+        self.colors = np.append(self.colors, rgb)
+        print("object %s color: %s" % (o_id, rgb))
+
         # Add the object with random physics values.
         commands = []
         commands.extend(self.add_physics_object(record=record,
@@ -193,10 +213,10 @@ class Stability(RigidbodiesDataset):
                                                 static_friction=random.uniform(0, 0.9),
                                                 bounciness=random.uniform(0, 1),
                                                 o_id=o_id))
-        # Set a random color.
+
         # Scale the object.
         commands.extend([{"$type": "set_color",
-                          "color": {"r": random.random(), "g": random.random(), "b": random.random(), "a": 1.0},
+                          "color": {"r": rgb[0], "g": rgb[1], "b": rgb[2], "a": 1.0},
                           "id": o_id},
                          {"$type": "scale_object",
                           "id": o_id,
