@@ -56,11 +56,13 @@ def get_args(dataset_dir: str):
     :return: Parsed command-line arguments common to all controllers.
     """
 
-    from argparse import ArgumentParser
-    parser = ArgumentParser()
+    import argparse
+    parser = argparse.ArgumentParser()
     parser.add_argument("--dir", type=str, default=f"D:/{dataset_dir}", help="Root output directory.")
     parser.add_argument("--num", type=int, default=3000, help="The number of trials in the dataset.")
     parser.add_argument("--temp", type=str, default="D:/temp.hdf5", help="Temp path for incomplete files.")
     parser.add_argument("--width", type=int, default=256, help="Screen width in pixels.")
     parser.add_argument("--height", type=int, default=256, help="Screen width in pixels.")
+    parser.add_argument("--seed", type=int, default=0, help="Random seed with which to initialize scenario")
+    parser.add_argument("--random", type=int, default=1, help="Whether to set trials randomly")
     return parser.parse_args()

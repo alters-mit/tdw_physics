@@ -206,4 +206,8 @@ class Stability(RigidbodiesDataset):
 
 if __name__ == "__main__":
     args = get_args("stability")
+    ## if using random trials
+    if not bool(args.random):
+        print("seed", args.seed)
+        random.seed(args.seed)
     Stability().run(num=args.num, output_dir=args.dir, temp_path=args.temp, width=args.width, height=args.height)

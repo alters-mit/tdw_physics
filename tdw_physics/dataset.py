@@ -22,7 +22,7 @@ class Dataset(Controller, ABC):
     """
 
     def __init__(self, port: int = 1071):
-        super().__init__(port=port, launch_build=False)
+        super().__init__(port=port, launch_build=True)
 
         # IDs of the objects in the current trial.
         self.object_ids = np.empty(dtype=int, shape=0)
