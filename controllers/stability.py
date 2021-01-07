@@ -60,13 +60,13 @@ class Stability(RigidbodiesDataset):
         super().__init__(port=port)
 
         ## object colors
-        self.colors = np.empty(dtype=np.float32, shape=3)
+        self.colors = np.empty(dtype=np.float32, shape=(0,3))
 
     def clear_static_data(self) -> None:
         super().clear_static_data()
 
         ## object colors
-        self.colors = np.empty(dtype=np.float32, shape=3)
+        self.colors = np.empty(dtype=np.float32, shape=(0,3))
 
     def get_field_of_view(self) -> float:
         return 55
@@ -196,7 +196,7 @@ class Stability(RigidbodiesDataset):
 
         # Set a random color.
         rgb = np.array([random.random(), random.random(), random.random()])
-        self.colors = np.append(self.colors, rgb)
+        self.colors = np.concatenate([self.colors, rgb.reshape((1,3))], axis=0)
         print("object %s color: %s" % (o_id, rgb))
 
         # Add the object with random physics values.
