@@ -59,14 +59,16 @@ class Stability(RigidbodiesDataset):
 
         super().__init__(port=port)
 
-        ## object colors
+        ## object colors and scales
         self.colors = np.empty(dtype=np.float32, shape=(0,3))
+        self.scales = np.empty(dtype=np.float32, shape=0)
 
     def clear_static_data(self) -> None:
         super().clear_static_data()
 
-        ## object colors
+        ## object colors and scales
         self.colors = np.empty(dtype=np.float32, shape=(0,3))
+        self.scales = np.empty(dtype=np.float32, shape=0)
 
     def get_field_of_view(self) -> float:
         return 55
@@ -169,8 +171,9 @@ class Stability(RigidbodiesDataset):
     def _write_static_data(self, static_group: h5py.Group) -> None:
         super()._write_static_data(static_group)
 
-        ## color of primitive objects
+        ## color and scales of primitive objects
         static_group.create_dataset("color", data=self.colors)
+        static_group.create_dataset("scale", data=self.scales)
 
     def _write_frame(self, frames_grp: h5py.Group, resp: List[bytes], frame_num: int) -> \
             Tuple[h5py.Group, h5py.Group, dict, bool]:
@@ -194,10 +197,12 @@ class Stability(RigidbodiesDataset):
 
         o_id = self.get_unique_id()
 
+        # Add a record of the scale.
+        self.scales = np.append(self.scales, scale)
+
         # Set a random color.
         rgb = np.array([random.random(), random.random(), random.random()])
         self.colors = np.concatenate([self.colors, rgb.reshape((1,3))], axis=0)
-        print("object %s color: %s" % (o_id, rgb))
 
         # Add the object with random physics values.
         commands = []
