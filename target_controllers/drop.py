@@ -20,7 +20,7 @@ class _StackType(Enum):
     unstable = 4
 
 
-class Stability(RigidbodiesDataset):
+class Drop(RigidbodiesDataset):
     """
     Create a stack of primitives of varying stabilities.
     The controller will randomly pick one of four stability options per-trial:
@@ -54,18 +54,13 @@ class Stability(RigidbodiesDataset):
                                                          _StackType.base_stable: BASE_STABLE,
                                                          _StackType.unstable: UNSTABLE}
 
-    def __init__(self, port: int = 1071, num_viewpoints=1, viewpoint=0, **kwargs):
+    def __init__(self, port: int = 1071, **kwargs):
         self._stack_type: _StackType = _StackType.stable
         self._drop_types = MODEL_LIBRARIES["models_flex.json"].records
+
         super().__init__(port=port, **kwargs)
 
-        ## object colors and scales
-        self.colors = np.empty(dtype=np.float32, shape=(0,3))
-        self.scales = np.empty(dtype=np.float32, shape=0)
-
-        ## possible viewpoints
-        self.num_viewpoints = num_viewpoints
-        self.viewpoint = viewpoint
+        self.clear_static_data()
 
     def clear_static_data(self) -> None:
         super().clear_static_data()
@@ -73,6 +68,8 @@ class Stability(RigidbodiesDataset):
         ## object colors and scales
         self.colors = np.empty(dtype=np.float32, shape=(0,3))
         self.scales = np.empty(dtype=np.float32, shape=0)
+        self.heights = np.empty(dtype=np.float32, shape=0)
+        self.target_type = self.drop_type = None
 
     def get_field_of_view(self) -> float:
         return 55
@@ -88,75 +85,37 @@ class Stability(RigidbodiesDataset):
                 {"$type": "set_ambient_occlusion_thickness_modifier",
                  "thickness": 3.5}]
 
+    def random_color(self):
+        return [random.random(), random.random(), random.random()]
+
     def get_trial_initialization_commands(self) -> List[dict]:
         commands = []
-        # Get a random stack type.
-        self._stack_type = random.choice([st for st in _StackType])
-        num_objects = random.randint(4, 7)
 
-        maybe_stable = WeightedCollection(_StackType)
-        maybe_stable.add_many({_StackType.stable: 4,
-                               _StackType.maybe_stable: 4,
-                               _StackType.base_stable: 1,
-                               _StackType.unstable: 1})
-        y = 0
-        for i in range(num_objects):
-            # Choose the next object based on the target stability of the stack.
-            if self._stack_type == _StackType.stable:
-                # Every object expect the top is "stable".
-                if i < num_objects - 1:
-                    record = random.choice(self.STABLE)
-                # Pick something with a stable bottom for the top of the stack.
-                else:
-                    records = random.choice([self.STABLE, self.MAYBE_STABLE, self.BASE_STABLE])
-                    record = random.choice(records)
-            elif self._stack_type == _StackType.maybe_stable:
-                # Get an object that is *likely* to be "stable".
-                if i < num_objects - 1:
-                    records = self.STABLE_LISTS[maybe_stable.get()]
-                    record = random.choice(records)
-                # The top object can be anything.
-                else:
-                    records = random.choice([self.STABLE, self.MAYBE_STABLE, self.BASE_STABLE, self.UNSTABLE])
-                    record = random.choice(records)
-            elif self._stack_type == _StackType.base_stable:
-                # Every object except the top *might* be "stable".
-                if i < num_objects - 1:
-                    records = random.choice([self.STABLE, self.MAYBE_STABLE])
-                    record = random.choice(records)
-                # The top object can be anything stable.
-                else:
-                    records = random.choice([self.STABLE, self.MAYBE_STABLE, self.BASE_STABLE])
-                    record = random.choice(records)
-            elif self._stack_type == _StackType.unstable:
-                # The record can be anything.
-                records = random.choice([self.STABLE, self.MAYBE_STABLE, self.BASE_STABLE, self.UNSTABLE])
-                record = random.choice(records)
-            else:
-                raise Exception(f"Not defined: {self._stack_type}")
+        # Choose a stationary target object.
+        target_obj = random.choice(self._drop_types)
+        self.target_type = target_obj.name
 
-            # Add the object.
-            scale = random.uniform(0.2, 0.23)
-            commands.extend(self._add_object_to_stack(record=record, y=y, scale=scale))
-            # Increment the starting y positional coordinate by the previous object's height.
-            y += record.bounds['top']['y'] * scale
+        # Place it.
+        commands.extend(self._place_target_object(target_obj))
+
+        # Choose a drop object.
+        drop_obj = random.choice(self._drop_types)
+        self.drop_type = drop_obj.name
+
+        # Drop it.
+        commands.extend(self._drop_object(drop_obj))
+        drop_height = drop_obj.bounds['top']['y']
 
         # Teleport the avatar to a reasonable position based on the height of the stack.
         # Look at the center of the stack, then jostle the camera rotation a bit.
         # Apply a slight force to the base object.
-        a_poses = [self.get_random_avatar_position(radius_min=y,
-                                                radius_max=1.3 * y,
-                                                y_min=y / 4,
-                                                y_max=y / 3,
+        a_pos = self.get_random_avatar_position(radius_min=drop_height,
+                                                radius_max=1.3 * drop_height,
+                                                y_min=drop_height / 4,
+                                                y_max=drop_height / 3,
                                                 center=TDWUtils.VECTOR3_ZERO)
-                   for i in range(self.num_viewpoints)]
-        a_pos = a_poses[self.viewpoint]
-        # a_pos = self.get_random_avatar_position(radius_min=y,
-        #                                         radius_max=1.3 * y,
-        #                                         y_min=y / 4,
-        #                                         y_max=y / 3,
-        #                                         center=TDWUtils.VECTOR3_ZERO)
-        cam_aim = {"x": 0, "y": y * 0.5, "z": 0}
+
+        cam_aim = {"x": 0, "y": drop_height * 0.5, "z": 0}
         commands.extend([{"$type": "teleport_avatar_to",
                           "position": a_pos},
                          {"$type": "look_at_position",
@@ -185,6 +144,9 @@ class Stability(RigidbodiesDataset):
         ## color and scales of primitive objects
         static_group.create_dataset("color", data=self.colors)
         static_group.create_dataset("scale", data=self.scales)
+        static_group.create_dataset("height", data=self.heights)
+        static_group.create_dataset("target_type", data=self.target_type)
+        static_group.create_dataset("drop_type", data=self.drop_type)
 
     def _write_frame(self, frames_grp: h5py.Group, resp: List[bytes], frame_num: int) -> \
             Tuple[h5py.Group, h5py.Group, dict, bool]:
@@ -193,7 +155,111 @@ class Stability(RigidbodiesDataset):
         return frame, objs, tr, sleeping and frame_num < 300
 
     def is_done(self, resp: List[bytes], frame: int) -> bool:
-        return frame > 500
+        return frame > 300
+
+    def _place_target_object(self, record: ModelRecord) -> List[dict]:
+        """
+        Place a primitive object at the room center.
+        """
+
+        # update data
+        o_id = self.get_unique_id()
+        scale = random.uniform(0.2, 0.3)
+        rgb = np.array(self.random_color())
+
+        self.scales = np.append(self.scales, scale)
+        self.colors = np.concatenate([self.colors, rgb.reshape((1,3))], axis=0)
+
+        # add the object
+        commands = []
+        commands.extend(
+            self.add_physics_object(
+                record=record,
+                position={
+                    "x": 0.,
+                    "y": 0.,
+                    "z": 0.
+                },
+                rotation={
+                    "x": 0,
+                    "y": random.uniform(0, 360),
+                    "z": 0
+                },
+                mass=random.uniform(2,7),
+                dynamic_friction=random.uniform(0, 0.9),
+                static_friction=random.uniform(0, 0.9),
+                bounciness=random.uniform(0, 1),
+                o_id=o_id))
+
+
+        # Scale the object and set its color.
+        commands.extend([
+            {"$type": "set_color",
+             "color": {"r": rgb[0], "g": rgb[1], "b": rgb[2], "a": 1.},
+             "id": o_id},
+            {"$type": "scale_object",
+             "scale_factor": {p: scale for p in ["x", "y", "z"]},
+             "id": o_id}])
+
+        return commands
+
+
+    # def _drop_object(self, record: ModelRecord, height: float, scale: float, color: List[float]) -> List[dict]:
+    def _drop_object(self, record: ModelRecord) -> List[dict]:
+        """
+        Position a primitive object at some height and drop it.
+
+        :param record: The object model record.
+        :param height: The initial height from which to drop the object.
+        :param scale: The scale of the object.
+
+        :return: A list of commands to add the object to the simulation.
+        """
+
+        o_id = self.get_unique_id()
+
+        # Set its properties
+        scale = random.uniform(0.2, 0.3)
+        rgb = np.array(self.random_color())
+        height = random.uniform(0.5, 1.5)
+
+        # Add a record of the object scale, height, and color.
+        self.heights = np.append(self.heights, height)
+        self.scales = np.append(self.scales, scale)
+        self.colors = np.concatenate([self.colors, rgb.reshape((1,3))], axis=0)
+
+        # Add the object with random physics values.
+        commands = []
+        commands.extend(
+            self.add_physics_object(
+                record=record,
+                position={
+                    "x": random.uniform(-0.02, 0.02),
+                    "y": height,
+                    "z": random.uniform(-0.02, 0.02)
+                },
+                rotation={
+                    "x": 0,
+                    "y": random.uniform(0, 360),
+                    "z": 0
+                },
+                mass=random.uniform(2,7),
+                dynamic_friction=random.uniform(0, 0.9),
+                static_friction=random.uniform(0, 0.9),
+                bounciness=random.uniform(0, 1),
+                o_id=o_id))
+
+
+        # Scale the object and set its color.
+        commands.extend([
+            {"$type": "set_color",
+             "color": {"r": rgb[0], "g": rgb[1], "b": rgb[2], "a": 1.},
+             "id": o_id},
+            {"$type": "scale_object",
+             "scale_factor": {p: scale for p in ["x", "y", "z"]},
+             "id": o_id}])
+
+        return commands
 
     def _add_object_to_stack(self, record: ModelRecord, y: float, scale: float) -> List[dict]:
         """
@@ -241,6 +307,10 @@ class Stability(RigidbodiesDataset):
 
 
 if __name__ == "__main__":
-    args = get_args("stability")
-    Stability(randomize=args.random, seed=args.seed, num_viewpoints=args.num_views, viewpoint=args.viewpoint).run(
-        num=args.num, output_dir=args.dir, temp_path=args.temp, width=args.width, height=args.height)
+    print('models', [r.name for r in MODEL_LIBRARIES['models_flex.json'].records])
+    args = get_args("drop")
+    DC = Drop(randomize=args.random, seed=args.seed, launch_build=True)
+    if bool(args.run):
+        DC.run(num=args.num, output_dir=args.dir, temp_path=args.temp, width=args.width, height=args.height)
+    else:
+        DC.communicate({"$type": "terminate"})

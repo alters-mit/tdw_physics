@@ -67,4 +67,5 @@ def get_args(dataset_dir: str):
     parser.add_argument("--random", type=int, default=1, help="Whether to set trials randomly")
     parser.add_argument("--num_views", type=int, default=1, help="How many possible viewpoints to render trial from")
     parser.add_argument("--viewpoint", type=int, default=0, help="which viewpoint to render from")
+    parser.add_argument("--run", type=int, default=1, help="run the simulation or not")
     return parser.parse_args()
