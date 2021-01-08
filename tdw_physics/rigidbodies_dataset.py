@@ -63,8 +63,8 @@ class RigidbodiesDataset(TransformsDataset, ABC):
     A dataset for Rigidbody (PhysX) physics.
     """
 
-    def __init__(self, port: int = 1071):
-        super().__init__(port=port)
+    def __init__(self, port: int = 1071, **kwargs):
+        super().__init__(port=port, **kwargs)
 
         # Static physics data.
         self.masses = np.empty(dtype=np.float32, shape=0)

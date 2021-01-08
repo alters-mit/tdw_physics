@@ -21,11 +21,16 @@ class Dataset(Controller, ABC):
         3. Clean up the scene and start a new trial.
     """
 
-    def __init__(self, port: int = 1071):
+    def __init__(self, port: int = 1071, randomize: int=1, seed: int=0):
         super().__init__(port=port, launch_build=True)
 
         # IDs of the objects in the current trial.
         self.object_ids = np.empty(dtype=int, shape=0)
+
+        # set random state
+        if not bool(randomize):
+            print("seed", seed)
+            random.seed(seed)
 
     def clear_static_data(self) -> None:
         self.object_ids = np.empty(dtype=int, shape=0)
@@ -127,6 +132,7 @@ class Dataset(Controller, ABC):
         self._write_static_data(static_group)
 
         # Send the commands and start the trial.
+        print("commands", commands, len(commands))
         resp = self.communicate(commands)
         frame = 0
 
@@ -141,6 +147,7 @@ class Dataset(Controller, ABC):
             resp = self.communicate(self.get_per_frame_commands(resp, frame))
             frame_grp, objs_grp, tr_dict, done = self._write_frame(frames_grp=frames_grp, resp=resp, frame_num=frame)
             done = done or self.is_done(resp, frame)
+            print("frame, done", frame, done)
 
         # Cleanup.
         commands = []
@@ -148,6 +155,7 @@ class Dataset(Controller, ABC):
             commands.append({"$type": self._get_destroy_object_command_name(o_id),
                              "id": int(o_id)})
         self.communicate(commands)
+
         # Close the file.
         f.close()
         # Move the file.
