@@ -54,7 +54,7 @@ class Stability(RigidbodiesDataset):
                                                          _StackType.base_stable: BASE_STABLE,
                                                          _StackType.unstable: UNSTABLE}
 
-    def __init__(self, port: int = 1071):
+    def __init__(self, port: int = 1071, num_viewpoints=1, viewpoint=0):
         self._stack_type: _StackType = _StackType.stable
 
         super().__init__(port=port)
@@ -62,6 +62,10 @@ class Stability(RigidbodiesDataset):
         ## object colors and scales
         self.colors = np.empty(dtype=np.float32, shape=(0,3))
         self.scales = np.empty(dtype=np.float32, shape=0)
+
+        ## possible viewpoints
+        self.num_viewpoints = num_viewpoints
+        self.viewpoint = viewpoint
 
     def clear_static_data(self) -> None:
         super().clear_static_data()
@@ -140,11 +144,18 @@ class Stability(RigidbodiesDataset):
         # Teleport the avatar to a reasonable position based on the height of the stack.
         # Look at the center of the stack, then jostle the camera rotation a bit.
         # Apply a slight force to the base object.
-        a_pos = self.get_random_avatar_position(radius_min=y,
+        a_poses = [self.get_random_avatar_position(radius_min=y,
                                                 radius_max=1.3 * y,
                                                 y_min=y / 4,
                                                 y_max=y / 3,
                                                 center=TDWUtils.VECTOR3_ZERO)
+                   for i in range(self.num_viewpoints)]
+        a_pos = a_poses[self.viewpoint]
+        # a_pos = self.get_random_avatar_position(radius_min=y,
+        #                                         radius_max=1.3 * y,
+        #                                         y_min=y / 4,
+        #                                         y_max=y / 3,
+        #                                         center=TDWUtils.VECTOR3_ZERO)
         cam_aim = {"x": 0, "y": y * 0.5, "z": 0}
         commands.extend([{"$type": "teleport_avatar_to",
                           "position": a_pos},
@@ -235,4 +246,5 @@ if __name__ == "__main__":
     if not bool(args.random):
         print("seed", args.seed)
         random.seed(args.seed)
-    Stability().run(num=args.num, output_dir=args.dir, temp_path=args.temp, width=args.width, height=args.height)
+    Stability(num_viewpoints=args.num_views, viewpoint=args.viewpoint).run(
+        num=args.num, output_dir=args.dir, temp_path=args.temp, width=args.width, height=args.height)
