@@ -22,41 +22,14 @@ class _StackType(Enum):
 
 class Drop(RigidbodiesDataset):
     """
-    Create a stack of primitives of varying stabilities.
-    The controller will randomly pick one of four stability options per-trial:
-
-    1. Stable: The controller will try to choose objects that are "stable" (can support objects above and below).
-       The top object can be a maybe-stable or base-stable object (objects with a flat bottom face, e.g. a cone).
-    2. Maybe Stable: The controller will prefer "stable" objects but will sometimes add less-stable objects.
-    3. Base Stable: The controller will add stable, maybe-stable, or base-stable objects.
-    4. Unstable: The controller will randomly select objects regardless of stability.
+    Drop a random Flex primitive object on another random Flex primitive object
     """
 
-    # The objects are reliably stable.
-    STABLE: List[ModelRecord] = []
-    # These objects are only sometimes stable.
-    MAYBE_STABLE: List[ModelRecord] = []
-    # These objects only stable at their base.
-    BASE_STABLE: List[ModelRecord] = []
-    # These objects are generally unstable.
-    UNSTABLE: List[ModelRecord] = []
-    for record in MODEL_LIBRARIES["models_flex.json"].records:
-        if record.name in ["cube", "cylinder", "pentagon"]:
-            STABLE.append(record)
-        elif record.name in ["bowl", "pipe", "torus"]:
-            MAYBE_STABLE.append(record)
-        elif record.name in ["cone", "pyramid", "triangular_prism"]:
-            BASE_STABLE.append(record)
-        else:
-            UNSTABLE.append(record)
-    STABLE_LISTS: Dict[_StackType, List[ModelRecord]] = {_StackType.stable: STABLE,
-                                                         _StackType.maybe_stable: MAYBE_STABLE,
-                                                         _StackType.base_stable: BASE_STABLE,
-                                                         _StackType.unstable: UNSTABLE}
-
-    def __init__(self, port: int = 1071, **kwargs):
-        self._stack_type: _StackType = _StackType.stable
+    def __init__(self, port: int = 1071, height_range=[0.5, 1.5], drop_jitter=0.02, target_color=None, **kwargs):
         self._drop_types = MODEL_LIBRARIES["models_flex.json"].records
+        self.height_range = height_range
+        self.drop_jitter = drop_jitter
+        self.target_color = target_color
 
         super().__init__(port=port, **kwargs)
 
@@ -87,6 +60,18 @@ class Drop(RigidbodiesDataset):
 
     def random_color(self):
         return [random.random(), random.random(), random.random()]
+
+    def random_primitive(self, object_types: List[ModelRecord], scale: List[float] = [0.2, 0.3], color: List[float] = None) -> dict:
+        obj_record = random.choice(object_types)
+        obj_data = {
+            "id": self.get_unique_id(),
+            "scale": random.uniform(scale[0], scale[1]),
+            "color": np.array(color or self.random_color()),
+            "name": obj_record.name
+        }
+        self.scales = np.append(self.scales, obj_data["scale"])
+        self.colors = np.concatenate([self.colors, obj_data["color"].reshape((1,3))], axis=0)
+        return obj_record, obj_data
 
     def get_trial_initialization_commands(self) -> List[dict]:
         commands = []
@@ -221,7 +206,7 @@ class Drop(RigidbodiesDataset):
         # Set its properties
         scale = random.uniform(0.2, 0.3)
         rgb = np.array(self.random_color())
-        height = random.uniform(0.5, 1.5)
+        height = random.uniform(self.height_range[0], self.height_range[1])
 
         # Add a record of the object scale, height, and color.
         self.heights = np.append(self.heights, height)
@@ -234,9 +219,9 @@ class Drop(RigidbodiesDataset):
             self.add_physics_object(
                 record=record,
                 position={
-                    "x": random.uniform(-0.02, 0.02),
+                    "x": random.uniform(-self.drop_jitter, self.drop_jitter),
                     "y": height,
-                    "z": random.uniform(-0.02, 0.02)
+                    "z": random.uniform(-self.drop_jitter, self.drop_jitter)
                 },
                 rotation={
                     "x": 0,
@@ -261,55 +246,10 @@ class Drop(RigidbodiesDataset):
 
         return commands
 
-    def _add_object_to_stack(self, record: ModelRecord, y: float, scale: float) -> List[dict]:
-        """
-        Add a primitive to the stack. Assign random physics values and colors.
-
-        :param record: The model record.
-        :param y: The object's y positional coordinate.
-        :param scale: The object's scale.
-
-        :return: A list of commands to add the object.
-        """
-
-        o_id = self.get_unique_id()
-
-        # Add a record of the scale.
-        self.scales = np.append(self.scales, scale)
-
-        # Set a random color.
-        rgb = np.array([random.random(), random.random(), random.random()])
-        self.colors = np.concatenate([self.colors, rgb.reshape((1,3))], axis=0)
-
-        # Add the object with random physics values.
-        commands = []
-        commands.extend(self.add_physics_object(record=record,
-                                                position={"x": random.uniform(-0.02, 0.02),
-                                                          "y": y,
-                                                          "z": random.uniform(-0.02, 0.02)},
-                                                rotation={"x": 0,
-                                                          "y": random.uniform(0, 360),
-                                                          "z": 0},
-                                                mass=random.uniform(2, 7),
-                                                dynamic_friction=random.uniform(0, 0.9),
-                                                static_friction=random.uniform(0, 0.9),
-                                                bounciness=random.uniform(0, 1),
-                                                o_id=o_id))
-
-        # Scale the object.
-        commands.extend([{"$type": "set_color",
-                          "color": {"r": rgb[0], "g": rgb[1], "b": rgb[2], "a": 1.0},
-                          "id": o_id},
-                         {"$type": "scale_object",
-                          "id": o_id,
-                          "scale_factor": {"x": scale, "y": scale, "z": scale}}])
-        return commands
-
-
 if __name__ == "__main__":
     print('models', [r.name for r in MODEL_LIBRARIES['models_flex.json'].records])
     args = get_args("drop")
-    DC = Drop(randomize=args.random, seed=args.seed, launch_build=True)
+    DC = Drop(randomize=args.random, seed=args.seed, drop_jitter=0.1)
     if bool(args.run):
         DC.run(num=args.num, output_dir=args.dir, temp_path=args.temp, width=args.width, height=args.height)
     else:
