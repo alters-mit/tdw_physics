@@ -19,22 +19,34 @@ def get_args(dataset_dir: str):
     common = get_parser(dataset_dir, get_help=False)
     parser = ArgumentParser(parents=[common])
 
-    parser.add_argument("--drop", type=str, default=MODEL_NAMES[0], help="comma-separated list of possible drop objects")
-    parser.add_argument("--target", type=str, default=MODEL_NAMES[-1], help="comma-separated list of possible target objects")
+    parser.add_argument("--drop", type=str, default=None, help="comma-separated list of possible drop objects")
+    parser.add_argument("--target", type=str, default=None, help="comma-separated list of possible target objects")
     parser.add_argument("--ymin", type=float, default=0.75, help="min height to drop object from")
     parser.add_argument("--ymax", type=float, default=1.25, help="max height to drop object from")
     parser.add_argument("--jitter", type=float, default=0.1, help="amount to jitter initial drop object horizontal position across trials")
+    parser.add_argument("--color", type=str, default=None, help="comma-separated R,G,B values for the target object color. Defaults to random.")
 
     args = parser.parse_args()
-    drop_list = args.drop.split(',')
-    assert all([d in MODEL_NAMES for d in drop_list]), \
-        "All drop object names must be elements of %s" % MODEL_NAMES
-    args.drop = drop_list
+    if args.drop is not None:
+        drop_list = args.drop.split(',')
+        assert all([d in MODEL_NAMES for d in drop_list]), \
+            "All drop object names must be elements of %s" % MODEL_NAMES
+        args.drop = drop_list
+    else:
+        args.drop = MODEL_NAMES
 
-    targ_list = args.target.split(',')
-    assert all([t in MODEL_NAMES for t in targ_list]), \
-        "All target object names must be elements of %s" % MODEL_NAMES
-    args.target = targ_list
+    if args.target is not None:
+        targ_list = args.target.split(',')
+        assert all([t in MODEL_NAMES for t in targ_list]), \
+            "All target object names must be elements of %s" % MODEL_NAMES
+        args.target = targ_list
+    else:
+        args.target = MODEL_NAMES
+
+    if args.color is not None:
+        rgb = [float(c) for c in args.color.split(',')]
+        assert len(rgb) == 3, rgb
+        args.color = rgb
 
     return args
 
@@ -44,12 +56,12 @@ class Drop(RigidbodiesDataset):
     """
 
     def __init__(self, port: int = 1071, drop_objects=MODEL_NAMES, target_objects=MODEL_NAMES, height_range=[0.5, 1.5], drop_jitter=0.02, target_color=None, **kwargs):
-        # self._drop_types = MODEL_LIBRARIES["models_flex.json"].records
 
         ## allowable object types
         self._drop_types = [r for r in MODEL_LIBRARIES["models_flex.json"].records if r.name in drop_objects]
         self._target_types = [r for r in MODEL_LIBRARIES["models_flex.json"].records if r.name in target_objects]
 
+        ## object properties
         self.height_range = height_range
         self.drop_jitter = drop_jitter
         self.target_color = target_color
@@ -99,31 +111,22 @@ class Drop(RigidbodiesDataset):
     def get_trial_initialization_commands(self) -> List[dict]:
         commands = []
 
-        # Choose a stationary target object.
-        target_obj = random.choice(self._target_types)
-        self.target_type = target_obj.name
+        # Choose and place a target object.
+        commands.extend(self._place_target_object())
 
-        # Place it.
-        commands.extend(self._place_target_object(target_obj))
-
-        # Choose a drop object.
-        drop_obj = random.choice(self._drop_types)
-        self.drop_type = drop_obj.name
-
-        # Drop it.
-        commands.extend(self._drop_object(drop_obj))
-        drop_height = drop_obj.bounds['top']['y']
+        # Choose and drop an object.
+        commands.extend(self._drop_object())
 
         # Teleport the avatar to a reasonable position based on the height of the stack.
         # Look at the center of the stack, then jostle the camera rotation a bit.
         # Apply a slight force to the base object.
-        a_pos = self.get_random_avatar_position(radius_min=drop_height,
-                                                radius_max=1.3 * drop_height,
-                                                y_min=drop_height / 4,
-                                                y_max=drop_height / 3,
+        a_pos = self.get_random_avatar_position(radius_min=self.drop_height,
+                                                radius_max=1.3 * self.drop_height,
+                                                y_min=self.drop_height / 4,
+                                                y_max=self.drop_height / 3,
                                                 center=TDWUtils.VECTOR3_ZERO)
 
-        cam_aim = {"x": 0, "y": drop_height * 0.5, "z": 0}
+        cam_aim = {"x": 0, "y": self.drop_height * 0.5, "z": 0}
         commands.extend([{"$type": "teleport_avatar_to",
                           "position": a_pos},
                          {"$type": "look_at_position",
@@ -165,18 +168,15 @@ class Drop(RigidbodiesDataset):
     def is_done(self, resp: List[bytes], frame: int) -> bool:
         return frame > 300
 
-    def _place_target_object(self, record: ModelRecord) -> List[dict]:
+    def _place_target_object(self) -> List[dict]:
         """
         Place a primitive object at the room center.
         """
 
-        # update data
-        o_id = self.get_unique_id()
-        scale = random.uniform(0.2, 0.3)
-        rgb = np.array(self.random_color())
-
-        self.scales = np.append(self.scales, scale)
-        self.colors = np.concatenate([self.colors, rgb.reshape((1,3))], axis=0)
+        # create a target object
+        record, data = self.random_primitive(self._target_types, color=self.target_color)
+        o_id, scale, rgb = [data[k] for k in ["id", "scale", "color"]]
+        self.target_type = data["name"]
 
         # add the object
         commands = []
@@ -213,7 +213,7 @@ class Drop(RigidbodiesDataset):
 
 
     # def _drop_object(self, record: ModelRecord, height: float, scale: float, color: List[float]) -> List[dict]:
-    def _drop_object(self, record: ModelRecord) -> List[dict]:
+    def _drop_object(self) -> List[dict]:
         """
         Position a primitive object at some height and drop it.
 
@@ -224,17 +224,14 @@ class Drop(RigidbodiesDataset):
         :return: A list of commands to add the object to the simulation.
         """
 
-        o_id = self.get_unique_id()
+        # Create an object to drop.
+        record, data = self.random_primitive(self._drop_types)
+        o_id, scale, rgb = [data[k] for k in ["id", "scale", "color"]]
+        self.drop_type = data["name"]
 
-        # Set its properties
-        scale = random.uniform(0.2, 0.3)
-        rgb = np.array(self.random_color())
+        # Choose the drop height.
         height = random.uniform(self.height_range[0], self.height_range[1])
-
-        # Add a record of the object scale, height, and color.
         self.heights = np.append(self.heights, height)
-        self.scales = np.append(self.scales, scale)
-        self.colors = np.concatenate([self.colors, rgb.reshape((1,3))], axis=0)
 
         # Add the object with random physics values.
         commands = []
@@ -257,6 +254,8 @@ class Drop(RigidbodiesDataset):
                 bounciness=random.uniform(0, 1),
                 o_id=o_id))
 
+        # Set the drop height
+        self.drop_height = record.bounds["top"]["y"]
 
         # Scale the object and set its color.
         commands.extend([
@@ -273,7 +272,7 @@ if __name__ == "__main__":
 
 
     args = get_args("drop")
-    print("models", MODEL_NAMES)
+    print("all object types", MODEL_NAMES)
     print("drop objects", args.drop)
     print("target objects", args.target)
 
@@ -282,7 +281,8 @@ if __name__ == "__main__":
         height_range=[args.ymin, args.ymax],
         drop_jitter=args.jitter,
         drop_objects=args.drop,
-        target_objects=args.target
+        target_objects=args.target,
+        target_color=args.color
     )
     if bool(args.run):
         DC.run(num=args.num, output_dir=args.dir, temp_path=args.temp, width=args.width, height=args.height)
