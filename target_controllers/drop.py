@@ -247,8 +247,17 @@ class Drop(RigidbodiesDataset):
         return commands
 
 if __name__ == "__main__":
-    print('models', [r.name for r in MODEL_LIBRARIES['models_flex.json'].records])
-    args = get_args("drop")
+    MODEL_NAMES = [r.name for r in MODEL_LIBRARIES['models_flex.json'].records]
+    print("models", MODEL_NAMES)
+    from argparse import ArgumentParser
+    # args = get_args("drop")
+    common_parser = get_args("drop", return_parser=True)
+    parser = ArgumentParser(parents=[common_parser])
+    parser.add_argument("--drop", type=str, default=MODEL_NAMES[0], help="comma-separated list of possible drop objects")
+    args = parser.parse_args()
+
+    print("drop object", args.drop)
+
     DC = Drop(randomize=args.random, seed=args.seed, drop_jitter=0.1)
     if bool(args.run):
         DC.run(num=args.num, output_dir=args.dir, temp_path=args.temp, width=args.width, height=args.height)

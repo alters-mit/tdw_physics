@@ -49,7 +49,7 @@ def get_object_look_at(o_id: int, pos: Dict[str, float], noise: float = 0) -> Li
     return commands
 
 
-def get_args(dataset_dir: str):
+def get_args(dataset_dir: str, return_parser=False):
     """
     :param dataset_dir: The default name of the dataset.
 
@@ -57,7 +57,7 @@ def get_args(dataset_dir: str):
     """
 
     import argparse
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(add_help=(not return_parser))
     parser.add_argument("--dir", type=str, default=f"D:/{dataset_dir}", help="Root output directory.")
     parser.add_argument("--num", type=int, default=3, help="The number of trials in the dataset.")
     parser.add_argument("--temp", type=str, default="D:/temp.hdf5", help="Temp path for incomplete files.")
@@ -68,4 +68,4 @@ def get_args(dataset_dir: str):
     parser.add_argument("--num_views", type=int, default=1, help="How many possible viewpoints to render trial from")
     parser.add_argument("--viewpoint", type=int, default=0, help="which viewpoint to render from")
     parser.add_argument("--run", type=int, default=1, help="run the simulation or not")
-    return parser.parse_args()
+    return parser.parse_args() if not return_parser else parser
