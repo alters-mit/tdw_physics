@@ -7,26 +7,49 @@ from weighted_collection import WeightedCollection
 from tdw.tdw_utils import TDWUtils
 from tdw.librarian import ModelRecord
 from tdw_physics.rigidbodies_dataset import RigidbodiesDataset
-from tdw_physics.util import MODEL_LIBRARIES, get_args
+from tdw_physics.util import MODEL_LIBRARIES, get_parser
+from argparse import ArgumentParser
 
-class _StackType(Enum):
+MODEL_NAMES = [r.name for r in MODEL_LIBRARIES['models_flex.json'].records]
+
+def get_args(dataset_dir: str):
     """
-    The stability type.
+    Combine Drop-specific arguments with controller-common arguments
     """
+    common = get_parser(dataset_dir, get_help=False)
+    parser = ArgumentParser(parents=[common])
 
-    stable = 1
-    maybe_stable = 2
-    base_stable = 3
-    unstable = 4
+    parser.add_argument("--drop", type=str, default=MODEL_NAMES[0], help="comma-separated list of possible drop objects")
+    parser.add_argument("--target", type=str, default=MODEL_NAMES[-1], help="comma-separated list of possible target objects")
+    parser.add_argument("--ymin", type=float, default=0.75, help="min height to drop object from")
+    parser.add_argument("--ymax", type=float, default=1.25, help="max height to drop object from")
+    parser.add_argument("--jitter", type=float, default=0.1, help="amount to jitter initial drop object horizontal position across trials")
 
+    args = parser.parse_args()
+    drop_list = args.drop.split(',')
+    assert all([d in MODEL_NAMES for d in drop_list]), \
+        "All drop object names must be elements of %s" % MODEL_NAMES
+    args.drop = drop_list
+
+    targ_list = args.target.split(',')
+    assert all([t in MODEL_NAMES for t in targ_list]), \
+        "All target object names must be elements of %s" % MODEL_NAMES
+    args.target = targ_list
+
+    return args
 
 class Drop(RigidbodiesDataset):
     """
     Drop a random Flex primitive object on another random Flex primitive object
     """
 
-    def __init__(self, port: int = 1071, height_range=[0.5, 1.5], drop_jitter=0.02, target_color=None, **kwargs):
-        self._drop_types = MODEL_LIBRARIES["models_flex.json"].records
+    def __init__(self, port: int = 1071, drop_objects=MODEL_NAMES, target_objects=MODEL_NAMES, height_range=[0.5, 1.5], drop_jitter=0.02, target_color=None, **kwargs):
+        # self._drop_types = MODEL_LIBRARIES["models_flex.json"].records
+
+        ## allowable object types
+        self._drop_types = [r for r in MODEL_LIBRARIES["models_flex.json"].records if r.name in drop_objects]
+        self._target_types = [r for r in MODEL_LIBRARIES["models_flex.json"].records if r.name in target_objects]
+
         self.height_range = height_range
         self.drop_jitter = drop_jitter
         self.target_color = target_color
@@ -77,7 +100,7 @@ class Drop(RigidbodiesDataset):
         commands = []
 
         # Choose a stationary target object.
-        target_obj = random.choice(self._drop_types)
+        target_obj = random.choice(self._target_types)
         self.target_type = target_obj.name
 
         # Place it.
@@ -247,18 +270,20 @@ class Drop(RigidbodiesDataset):
         return commands
 
 if __name__ == "__main__":
-    MODEL_NAMES = [r.name for r in MODEL_LIBRARIES['models_flex.json'].records]
+
+
+    args = get_args("drop")
     print("models", MODEL_NAMES)
-    from argparse import ArgumentParser
-    # args = get_args("drop")
-    common_parser = get_args("drop", return_parser=True)
-    parser = ArgumentParser(parents=[common_parser])
-    parser.add_argument("--drop", type=str, default=MODEL_NAMES[0], help="comma-separated list of possible drop objects")
-    args = parser.parse_args()
+    print("drop objects", args.drop)
+    print("target objects", args.target)
 
-    print("drop object", args.drop)
-
-    DC = Drop(randomize=args.random, seed=args.seed, drop_jitter=0.1)
+    DC = Drop(
+        randomize=args.random, seed=args.seed,
+        height_range=[args.ymin, args.ymax],
+        drop_jitter=args.jitter,
+        drop_objects=args.drop,
+        target_objects=args.target
+    )
     if bool(args.run):
         DC.run(num=args.num, output_dir=args.dir, temp_path=args.temp, width=args.width, height=args.height)
     else:
