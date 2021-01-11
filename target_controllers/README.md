@@ -16,4 +16,4 @@ These arguments are common for every controller.
 
 | Scenario        | Description                                                  | Script                                                       | Type                 |
 | --------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | -------------------- |
-| Drop  | Three randomly "toys" are created with random physics values. A force of randomized magnitude is applied to one toy, aimed at another. | `toy_collisions.py`
+| Drop  | A primitive Flex object is dropped onto a target object. | `drop.py` | `RigidBodiesDataset` |

@@ -23,9 +23,9 @@ def get_args(dataset_dir: str):
     parser.add_argument("--target", type=str, default=None, help="comma-separated list of possible target objects")
     parser.add_argument("--ymin", type=float, default=0.75, help="min height to drop object from")
     parser.add_argument("--ymax", type=float, default=1.25, help="max height to drop object from")
-    parser.add_argument("--jitter", type=float, default=0.1, help="amount to jitter initial drop object horizontal position across trials")
+    parser.add_argument("--jitter", type=float, default=0.2, help="amount to jitter initial drop object horizontal position across trials")
     parser.add_argument("--color", type=str, default=None, help="comma-separated R,G,B values for the target object color. Defaults to random.")
-    parser.add_argument("--camera_distance", type=float, default=1.0, help="radial distance from camera to drop/target object pair")
+    parser.add_argument("--camera_distance", type=float, default=1.25, help="radial distance from camera to drop/target object pair")
 
     args = parser.parse_args()
     if args.drop is not None:

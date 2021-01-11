@@ -56,7 +56,7 @@ class Stability(RigidbodiesDataset):
 
     def __init__(self, port: int = 1071, num_viewpoints=1, viewpoint=0, **kwargs):
         self._stack_type: _StackType = _StackType.stable
-        self._drop_types = MODEL_LIBRARIES["models_flex.json"].records
+
         super().__init__(port=port, **kwargs)
 
         ## object colors and scales
