@@ -67,10 +67,7 @@ class RigidbodiesDataset(TransformsDataset, ABC):
         super().__init__(port=port, **kwargs)
 
         # Static physics data.
-        self.masses = np.empty(dtype=np.float32, shape=0)
-        self.static_frictions = np.empty(dtype=np.float32, shape=0)
-        self.dynamic_frictions = np.empty(dtype=np.float32, shape=0)
-        self.bouncinesses = np.empty(dtype=np.float32, shape=0)
+        self.clear_static_data()
 
         # The physics info of each object instance. Useful for referencing in a controller, but not written to disk.
         self.physics_info: Dict[int, PhysicsInfo] = {}
@@ -82,6 +79,21 @@ class RigidbodiesDataset(TransformsDataset, ABC):
         self.static_frictions = np.empty(dtype=np.float32, shape=0)
         self.dynamic_frictions = np.empty(dtype=np.float32, shape=0)
         self.bouncinesses = np.empty(dtype=np.float32, shape=0)
+
+    def random_color(self):
+        return [random.random(), random.random(), random.random()]
+
+    def random_primitive(self, object_types: List[ModelRecord], scale: List[float] = [0.2, 0.3], color: List[float] = None) -> dict:
+        obj_record = random.choice(object_types)
+        obj_data = {
+            "id": self.get_unique_id(),
+            "scale": random.uniform(scale[0], scale[1]),
+            "color": np.array(color or self.random_color()),
+            "name": obj_record.name
+        }
+        self.scales = np.append(self.scales, obj_data["scale"])
+        self.colors = np.concatenate([self.colors, obj_data["color"].reshape((1,3))], axis=0)
+        return obj_record, obj_data
 
     def add_physics_object(self, record: ModelRecord, position: Dict[str, float], rotation: Dict[str, float],
                            mass: float, dynamic_friction: float, static_friction: float, bounciness: float,

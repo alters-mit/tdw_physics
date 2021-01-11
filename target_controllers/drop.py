@@ -25,6 +25,7 @@ def get_args(dataset_dir: str):
     parser.add_argument("--ymax", type=float, default=1.25, help="max height to drop object from")
     parser.add_argument("--jitter", type=float, default=0.1, help="amount to jitter initial drop object horizontal position across trials")
     parser.add_argument("--color", type=str, default=None, help="comma-separated R,G,B values for the target object color. Defaults to random.")
+    parser.add_argument("--camera_distance", type=float, default=1.0, help="radial distance from camera to drop/target object pair")
 
     args = parser.parse_args()
     if args.drop is not None:
@@ -55,7 +56,7 @@ class Drop(RigidbodiesDataset):
     Drop a random Flex primitive object on another random Flex primitive object
     """
 
-    def __init__(self, port: int = 1071, drop_objects=MODEL_NAMES, target_objects=MODEL_NAMES, height_range=[0.5, 1.5], drop_jitter=0.02, target_color=None, **kwargs):
+    def __init__(self, port: int = 1071, drop_objects=MODEL_NAMES, target_objects=MODEL_NAMES, height_range=[0.5, 1.5], drop_jitter=0.02, target_color=None, camera_radius=1.0, **kwargs):
 
         ## allowable object types
         self._drop_types = [r for r in MODEL_LIBRARIES["models_flex.json"].records if r.name in drop_objects]
@@ -65,6 +66,9 @@ class Drop(RigidbodiesDataset):
         self.height_range = height_range
         self.drop_jitter = drop_jitter
         self.target_color = target_color
+
+        ## camera properties
+        self.camera_radius = camera_radius
 
         super().__init__(port=port, **kwargs)
 
@@ -85,28 +89,13 @@ class Drop(RigidbodiesDataset):
     def get_scene_initialization_commands(self) -> List[dict]:
         return [self.get_add_scene(scene_name="box_room_2018"),
                 {"$type": "set_aperture",
-                 "aperture": 4.8},
+                 "aperture": 8.0},
                 {"$type": "set_post_exposure",
                  "post_exposure": 0.4},
                 {"$type": "set_ambient_occlusion_intensity",
                  "intensity": 0.175},
                 {"$type": "set_ambient_occlusion_thickness_modifier",
                  "thickness": 3.5}]
-
-    def random_color(self):
-        return [random.random(), random.random(), random.random()]
-
-    def random_primitive(self, object_types: List[ModelRecord], scale: List[float] = [0.2, 0.3], color: List[float] = None) -> dict:
-        obj_record = random.choice(object_types)
-        obj_data = {
-            "id": self.get_unique_id(),
-            "scale": random.uniform(scale[0], scale[1]),
-            "color": np.array(color or self.random_color()),
-            "name": obj_record.name
-        }
-        self.scales = np.append(self.scales, obj_data["scale"])
-        self.colors = np.concatenate([self.colors, obj_data["color"].reshape((1,3))], axis=0)
-        return obj_record, obj_data
 
     def get_trial_initialization_commands(self) -> List[dict]:
         commands = []
@@ -117,33 +106,22 @@ class Drop(RigidbodiesDataset):
         # Choose and drop an object.
         commands.extend(self._drop_object())
 
-        # Teleport the avatar to a reasonable position based on the height of the stack.
-        # Look at the center of the stack, then jostle the camera rotation a bit.
-        # Apply a slight force to the base object.
-        a_pos = self.get_random_avatar_position(radius_min=self.drop_height,
-                                                radius_max=1.3 * self.drop_height,
-                                                y_min=self.drop_height / 4,
-                                                y_max=self.drop_height / 3,
+        # Teleport the avatar to a reasonable position based on the drop height.
+        a_pos = self.get_random_avatar_position(radius_min=self.camera_radius,
+                                                radius_max=self.camera_radius,
+                                                y_min=self.drop_height / 3.,
+                                                y_max=self.drop_height / 1.5,
                                                 center=TDWUtils.VECTOR3_ZERO)
 
         cam_aim = {"x": 0, "y": self.drop_height * 0.5, "z": 0}
-        commands.extend([{"$type": "teleport_avatar_to",
-                          "position": a_pos},
-                         {"$type": "look_at_position",
-                          "position": cam_aim},
-                         {"$type": "set_focus_distance",
-                          "focus_distance": TDWUtils.get_distance(a_pos, cam_aim)},
-                         {"$type": "rotate_sensor_container_by",
-                          "axis": "pitch",
-                          "angle": random.uniform(-5, 5)},
-                         {"$type": "rotate_sensor_container_by",
-                          "axis": "yaw",
-                          "angle": random.uniform(-5, 5)},
-                         {"$type": "apply_force_to_object",
-                          "force": {"x": random.uniform(-0.05, 0.05),
-                                    "y": 0,
-                                    "z": random.uniform(-0.05, 0.05)},
-                          "id": int(self.object_ids[0])}])
+        commands.extend([
+            {"$type": "teleport_avatar_to",
+             "position": a_pos},
+            {"$type": "look_at_position",
+             "position": cam_aim},
+            {"$type": "set_focus_distance",
+             "focus_distance": TDWUtils.get_distance(a_pos, cam_aim)}
+        ])
         return commands
 
     def get_per_frame_commands(self, resp: List[bytes], frame: int) -> List[dict]:
@@ -232,6 +210,7 @@ class Drop(RigidbodiesDataset):
         # Choose the drop height.
         height = random.uniform(self.height_range[0], self.height_range[1])
         self.heights = np.append(self.heights, height)
+        self.drop_height = height
 
         # Add the object with random physics values.
         commands = []
@@ -253,9 +232,6 @@ class Drop(RigidbodiesDataset):
                 static_friction=random.uniform(0, 0.9),
                 bounciness=random.uniform(0, 1),
                 o_id=o_id))
-
-        # Set the drop height
-        self.drop_height = record.bounds["top"]["y"]
 
         # Scale the object and set its color.
         commands.extend([
@@ -282,7 +258,8 @@ if __name__ == "__main__":
         drop_jitter=args.jitter,
         drop_objects=args.drop,
         target_objects=args.target,
-        target_color=args.color
+        target_color=args.color,
+        camera_radius=args.camera_distance
     )
     if bool(args.run):
         DC.run(num=args.num, output_dir=args.dir, temp_path=args.temp, width=args.width, height=args.height)
