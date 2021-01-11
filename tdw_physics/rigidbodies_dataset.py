@@ -63,7 +63,7 @@ class RigidbodiesDataset(TransformsDataset, ABC):
     A dataset for Rigidbody (PhysX) physics.
     """
 
-    def __init__(self, port: int = 1071, **kwargs):
+    def __init__(self, port: int = 1071, monochrome: bool = False, **kwargs):
         super().__init__(port=port, **kwargs)
 
         # Static physics data.
@@ -71,6 +71,9 @@ class RigidbodiesDataset(TransformsDataset, ABC):
 
         # The physics info of each object instance. Useful for referencing in a controller, but not written to disk.
         self.physics_info: Dict[int, PhysicsInfo] = {}
+
+        # Whether the objects will be set to the same color
+        self.monochrome = monochrome
 
     def clear_static_data(self) -> None:
         super().clear_static_data()
@@ -88,7 +91,7 @@ class RigidbodiesDataset(TransformsDataset, ABC):
         obj_data = {
             "id": self.get_unique_id(),
             "scale": random.uniform(scale[0], scale[1]),
-            "color": np.array(color or self.random_color()),
+            "color": np.array(color if color is not None else self.random_color()),
             "name": obj_record.name
         }
         self.scales = np.append(self.scales, obj_data["scale"])

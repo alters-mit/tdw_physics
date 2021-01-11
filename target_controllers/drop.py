@@ -23,11 +23,17 @@ def get_args(dataset_dir: str):
     parser.add_argument("--target", type=str, default=None, help="comma-separated list of possible target objects")
     parser.add_argument("--ymin", type=float, default=0.75, help="min height to drop object from")
     parser.add_argument("--ymax", type=float, default=1.25, help="max height to drop object from")
+    parser.add_argument("--smin", type=float, default=0.2, help="min scale of target and drop objects")
+    parser.add_argument("--smax", type=float, default=0.3, help="max scale of target and drop objects")
     parser.add_argument("--jitter", type=float, default=0.2, help="amount to jitter initial drop object horizontal position across trials")
     parser.add_argument("--color", type=str, default=None, help="comma-separated R,G,B values for the target object color. Defaults to random.")
     parser.add_argument("--camera_distance", type=float, default=1.25, help="radial distance from camera to drop/target object pair")
 
     args = parser.parse_args()
+
+    # whether to set all objects same color
+    args.monochrome = bool(args.monochrome)
+
     if args.drop is not None:
         drop_list = args.drop.split(',')
         assert all([d in MODEL_NAMES for d in drop_list]), \
@@ -56,7 +62,7 @@ class Drop(RigidbodiesDataset):
     Drop a random Flex primitive object on another random Flex primitive object
     """
 
-    def __init__(self, port: int = 1071, drop_objects=MODEL_NAMES, target_objects=MODEL_NAMES, height_range=[0.5, 1.5], drop_jitter=0.02, target_color=None, camera_radius=1.0, **kwargs):
+    def __init__(self, port: int = 1071, drop_objects=MODEL_NAMES, target_objects=MODEL_NAMES, height_range=[0.5, 1.5], scale_range=[0.2, 0.3], drop_jitter=0.02, target_color=None, camera_radius=1.0, **kwargs):
 
         ## allowable object types
         self._drop_types = [r for r in MODEL_LIBRARIES["models_flex.json"].records if r.name in drop_objects]
@@ -64,6 +70,7 @@ class Drop(RigidbodiesDataset):
 
         ## object properties
         self.height_range = height_range
+        self.scale_range = scale_range
         self.drop_jitter = drop_jitter
         self.target_color = target_color
 
@@ -152,9 +159,10 @@ class Drop(RigidbodiesDataset):
         """
 
         # create a target object
-        record, data = self.random_primitive(self._target_types, color=self.target_color)
+        record, data = self.random_primitive(self._target_types, scale=self.scale_range, color=self.target_color)
         o_id, scale, rgb = [data[k] for k in ["id", "scale", "color"]]
         self.target_type = data["name"]
+        self.object_color = rgb if self.monochrome else None
 
         # add the object
         commands = []
@@ -203,7 +211,7 @@ class Drop(RigidbodiesDataset):
         """
 
         # Create an object to drop.
-        record, data = self.random_primitive(self._drop_types)
+        record, data = self.random_primitive(self._drop_types, scale=self.scale_range, color=self.object_color)
         o_id, scale, rgb = [data[k] for k in ["id", "scale", "color"]]
         self.drop_type = data["name"]
 
@@ -255,11 +263,13 @@ if __name__ == "__main__":
     DC = Drop(
         randomize=args.random, seed=args.seed,
         height_range=[args.ymin, args.ymax],
+        scale_range=[args.smin, args.smax],
         drop_jitter=args.jitter,
         drop_objects=args.drop,
         target_objects=args.target,
         target_color=args.color,
-        camera_radius=args.camera_distance
+        camera_radius=args.camera_distance,
+        monochrome=args.monochrome
     )
     if bool(args.run):
         DC.run(num=args.num, output_dir=args.dir, temp_path=args.temp, width=args.width, height=args.height)
