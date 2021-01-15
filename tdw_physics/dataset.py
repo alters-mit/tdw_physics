@@ -25,7 +25,7 @@ class Dataset(Controller, ABC):
         super().__init__(port=port, check_version=check_version, launch_build=launch_build)
 
         # IDs of the objects in the current trial.
-        self.object_ids = np.empty(dtype=int, shape=0)
+        self.clear_static_data()
 
         # set random state
         if not bool(randomize):

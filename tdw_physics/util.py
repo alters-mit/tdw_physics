@@ -1,5 +1,6 @@
 from typing import Dict, List
 import random
+import numpy as np
 from tdw.librarian import ModelLibrarian
 from tdw.tdw_utils import TDWUtils
 
@@ -8,6 +9,15 @@ from tdw.tdw_utils import TDWUtils
 MODEL_LIBRARIES: Dict[str, ModelLibrarian] = {}
 for filename in ModelLibrarian.get_library_filenames():
     MODEL_LIBRARIES.update({filename: ModelLibrarian(filename)})
+
+def xyz_to_arr(xyz : dict):
+    arr = np.array(
+        [xyz[k] for k in ["x","y","z"]], dtype=np.float32)
+    return arr
+
+def arr_to_xyz(arr : np.ndarray):
+    xyz = {k:arr[i] for i,k in enumerate(["x","y","z"])}
+    return xyz
 
 
 def get_move_along_direction(pos: Dict[str, float], target: Dict[str, float], d: float, noise: float = 0) -> \

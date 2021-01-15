@@ -66,9 +66,6 @@ class RigidbodiesDataset(TransformsDataset, ABC):
     def __init__(self, port: int = 1071, monochrome: bool = False, **kwargs):
         super().__init__(port=port, **kwargs)
 
-        # Static physics data.
-        self.clear_static_data()
-
         # The physics info of each object instance. Useful for referencing in a controller, but not written to disk.
         self.physics_info: Dict[int, PhysicsInfo] = {}
 
@@ -82,6 +79,17 @@ class RigidbodiesDataset(TransformsDataset, ABC):
         self.static_frictions = np.empty(dtype=np.float32, shape=0)
         self.dynamic_frictions = np.empty(dtype=np.float32, shape=0)
         self.bouncinesses = np.empty(dtype=np.float32, shape=0)
+        self.colors = np.empty(dtype=np.float32, shape=(0,3))
+        self.scales = np.empty(dtype=np.float32, shape=0)
+
+    def _xyz_to_arr(self, xyz : dict):
+        arr = np.array(
+            [xyz[k] for k in ["x","y","z"]], dtype=np.float32)
+        return arr
+
+    def _arr_to_xyz(self, arr : np.ndarray):
+        xyz = {k:arr[i] for i,k in enumerate(["x","y","z"])}
+        return xyz
 
     def random_color(self):
         return [random.random(), random.random(), random.random()]
@@ -218,10 +226,15 @@ class RigidbodiesDataset(TransformsDataset, ABC):
     def _write_static_data(self, static_group: h5py.Group) -> None:
         super()._write_static_data(static_group)
 
+        ## physical
         static_group.create_dataset("mass", data=self.masses)
         static_group.create_dataset("static_friction", data=self.static_frictions)
         static_group.create_dataset("dynamic_friction", data=self.dynamic_frictions)
         static_group.create_dataset("bounciness", data=self.bouncinesses)
+
+        ## size and color
+        static_group.create_dataset("color", data=self.colors)
+        static_group.create_dataset("scale", data=self.scales)
 
     def _write_frame(self, frames_grp: h5py.Group, resp: List[bytes], frame_num: int) -> \
             Tuple[h5py.Group, h5py.Group, dict, bool]:

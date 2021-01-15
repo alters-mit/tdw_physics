@@ -8,7 +8,7 @@ from weighted_collection import WeightedCollection
 from tdw.tdw_utils import TDWUtils
 from tdw.librarian import ModelRecord
 from tdw_physics.rigidbodies_dataset import RigidbodiesDataset
-from tdw_physics.util import MODEL_LIBRARIES, get_parser
+from tdw_physics.util import MODEL_LIBRARIES, get_parser, xyz_to_arr
 
 
 MODEL_NAMES = [r.name for r in MODEL_LIBRARIES['models_flex.json'].records]
@@ -20,7 +20,7 @@ def get_args(dataset_dir: str):
     common = get_parser(dataset_dir, get_help=False)
     parser = ArgumentParser(parents=[common])
 
-    parser.add_argument("--drop", 
+    parser.add_argument("--drop",
                         type=str,
                         default=None,
                         help="comma-separated list of possible drop objects")
@@ -133,11 +133,10 @@ class Drop(RigidbodiesDataset):
     def clear_static_data(self) -> None:
         super().clear_static_data()
 
-        ## object colors and scales
-        self.colors = np.empty(dtype=np.float32, shape=(0,3))
-        self.scales = np.empty(dtype=np.float32, shape=0)
+        ## scenario-specific metadata: object types and drop position
         self.heights = np.empty(dtype=np.float32, shape=0)
         self.target_type = self.drop_type = None
+        self.drop_position = self.drop_rotation = None
 
     def get_field_of_view(self) -> float:
         return 55
@@ -187,12 +186,10 @@ class Drop(RigidbodiesDataset):
         super()._write_static_data(static_group)
 
         ## color and scales of primitive objects
-        static_group.create_dataset("color", data=self.colors)
-        static_group.create_dataset("scale", data=self.scales)
-        static_group.create_dataset("height", data=self.heights)
         static_group.create_dataset("target_type", data=self.target_type)
         static_group.create_dataset("drop_type", data=self.drop_type)
-        raise NotImplementedError("add drop jitter")
+        static_group.create_dataset("drop_position", data=xyz_to_arr(self.drop_position))
+        static_group.create_dataset("drop_rotation", data=xyz_to_arr(self.drop_rotation))
 
     def _write_frame(self,
                      frames_grp: h5py.Group,
@@ -254,9 +251,6 @@ class Drop(RigidbodiesDataset):
 
         return commands
 
-
-    # def _drop_object(self, record: ModelRecord, height: float, 
-    #                  scale: float, color: List[float]) -> List[dict]:
     def _drop_object(self) -> List[dict]:
         """
         Position a primitive object at some height and drop it.
@@ -276,26 +270,28 @@ class Drop(RigidbodiesDataset):
         o_id, scale, rgb = [data[k] for k in ["id", "scale", "color"]]
         self.drop_type = data["name"]
 
-        # Choose the drop height.
+        # Choose the drop position and pose.
         height = random.uniform(self.height_range[0], self.height_range[1])
         self.heights = np.append(self.heights, height)
         self.drop_height = height
+        self.drop_position = {
+            "x": random.uniform(-self.drop_jitter, self.drop_jitter),
+            "y": height,
+            "z": random.uniform(-self.drop_jitter, self.drop_jitter)
+        }
+        self.drop_rotation = {
+            "x": 0,
+            "y": random.uniform(0,360),
+            "z": 0
+        }
 
         # Add the object with random physics values.
         commands = []
         commands.extend(
             self.add_physics_object(
                 record=record,
-                position={
-                    "x": random.uniform(-self.drop_jitter, self.drop_jitter),
-                    "y": height,
-                    "z": random.uniform(-self.drop_jitter, self.drop_jitter)
-                },
-                rotation={
-                    "x": 0,
-                    "y": random.uniform(0, 360),
-                    "z": 0
-                },
+                position=self.drop_position,
+                rotation=self.drop_rotation,
                 mass=random.uniform(2,7),
                 dynamic_friction=random.uniform(0, 0.9),
                 static_friction=random.uniform(0, 0.9),
