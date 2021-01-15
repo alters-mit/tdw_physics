@@ -29,7 +29,6 @@ class Dataset(Controller, ABC):
 
         # set random state
         if not bool(randomize):
-            print("seed", seed)
             random.seed(seed)
 
     def clear_static_data(self) -> None:
@@ -180,9 +179,11 @@ class Dataset(Controller, ABC):
         a_x = center["x"] + a_r
         a_z = center["z"] + a_r
         theta = np.radians(random.uniform(angle_min, angle_max))
-        a_x = np.cos(theta) * (a_x - center["x"]) - np.sin(theta) * (a_z - center["z"]) + center["x"]
         a_y = random.uniform(y_min, y_max)
-        a_z = np.sin(theta) * (a_x - center["x"]) + np.cos(theta) * (a_z - center["z"]) + center["z"]
+        a_x_new = np.cos(theta) * (a_x - center["x"]) - np.sin(theta) * (a_z - center["z"]) + center["x"]
+        a_z_new = np.sin(theta) * (a_x - center["x"]) + np.cos(theta) * (a_z - center["z"]) + center["z"]
+        a_x = a_x_new
+        a_z = a_z_new
 
         return {"x": a_x, "y": a_y, "z": a_z}
 

@@ -8,7 +8,7 @@ from weighted_collection import WeightedCollection
 from tdw.tdw_utils import TDWUtils
 from tdw.librarian import ModelRecord
 from tdw_physics.rigidbodies_dataset import RigidbodiesDataset
-from tdw_physics.util import MODEL_LIBRARIES, get_parser, xyz_to_arr
+from tdw_physics.util import MODEL_LIBRARIES, get_parser, xyz_to_arr, arr_to_xyz
 
 
 MODEL_NAMES = [r.name for r in MODEL_LIBRARIES['models_flex.json'].records]
@@ -126,9 +126,8 @@ class Drop(RigidbodiesDataset):
         self.camera_min_height = camera_min_height
         self.camera_max_height = camera_max_height
 
+        ## initializes static data and RNG
         super().__init__(port=port, **kwargs)
-
-        self.clear_static_data()
 
     def clear_static_data(self) -> None:
         super().clear_static_data()
