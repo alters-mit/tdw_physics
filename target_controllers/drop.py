@@ -1,3 +1,4 @@
+from argparse import ArgumentParser
 import h5py
 import numpy as np
 from enum import Enum
@@ -8,7 +9,7 @@ from tdw.tdw_utils import TDWUtils
 from tdw.librarian import ModelRecord
 from tdw_physics.rigidbodies_dataset import RigidbodiesDataset
 from tdw_physics.util import MODEL_LIBRARIES, get_parser
-from argparse import ArgumentParser
+
 
 MODEL_NAMES = [r.name for r in MODEL_LIBRARIES['models_flex.json'].records]
 
@@ -19,15 +20,50 @@ def get_args(dataset_dir: str):
     common = get_parser(dataset_dir, get_help=False)
     parser = ArgumentParser(parents=[common])
 
-    parser.add_argument("--drop", type=str, default=None, help="comma-separated list of possible drop objects")
-    parser.add_argument("--target", type=str, default=None, help="comma-separated list of possible target objects")
-    parser.add_argument("--ymin", type=float, default=0.75, help="min height to drop object from")
-    parser.add_argument("--ymax", type=float, default=1.25, help="max height to drop object from")
-    parser.add_argument("--smin", type=float, default=0.2, help="min scale of target and drop objects")
-    parser.add_argument("--smax", type=float, default=0.3, help="max scale of target and drop objects")
-    parser.add_argument("--jitter", type=float, default=0.2, help="amount to jitter initial drop object horizontal position across trials")
-    parser.add_argument("--color", type=str, default=None, help="comma-separated R,G,B values for the target object color. Defaults to random.")
-    parser.add_argument("--camera_distance", type=float, default=1.25, help="radial distance from camera to drop/target object pair")
+    parser.add_argument("--drop", 
+                        type=str,
+                        default=None,
+                        help="comma-separated list of possible drop objects")
+    parser.add_argument("--target",
+                        type=str,
+                        default=None,
+                        help="comma-separated list of possible target objects")
+    parser.add_argument("--ymin",
+                        type=float,
+                        default=0.75,
+                        help="min height to drop object from")
+    parser.add_argument("--ymax",
+                        type=float,
+                        default=1.25,
+                        help="max height to drop object from")
+    parser.add_argument("--smin",
+                        type=float,
+                        default=0.2,
+                        help="min scale of target and drop objects")
+    parser.add_argument("--smax",
+                        type=float,
+                        default=0.3,
+                        help="max scale of target and drop objects")
+    parser.add_argument("--jitter",
+                        type=float,
+                        default=0.2,
+                        help="amount to jitter initial drop object horizontal position across trials")
+    parser.add_argument("--color",
+                        type=str,
+                        default=None,
+                        help="comma-separated R,G,B values for the target object color. Defaults to random.")
+    parser.add_argument("--camera_distance",
+                        type=float,
+                        default=1.25,
+                        help="radial distance from camera to drop/target object pair")
+    parser.add_argument("--camera_min_height",
+                        type=float,
+                        default=1./3,
+                         help="min height of camera as a fraction of drop height")
+    parser.add_argument("--camera_max_height",
+                        type=float,
+                        default=2./3,
+                        help="max height of camera as a fraction of drop height")
 
     args = parser.parse_args()
 
@@ -62,7 +98,18 @@ class Drop(RigidbodiesDataset):
     Drop a random Flex primitive object on another random Flex primitive object
     """
 
-    def __init__(self, port: int = 1071, drop_objects=MODEL_NAMES, target_objects=MODEL_NAMES, height_range=[0.5, 1.5], scale_range=[0.2, 0.3], drop_jitter=0.02, target_color=None, camera_radius=1.0, **kwargs):
+    def __init__(self,
+                 port: int = 1071,
+                 drop_objects=MODEL_NAMES,
+                 target_objects=MODEL_NAMES,
+                 height_range=[0.5, 1.5],
+                 scale_range=[0.2, 0.3],
+                 drop_jitter=0.02,
+                 target_color=None,
+                 camera_radius=1.0,
+                 camera_min_height=1./3,
+                 camera_max_height=2./3,
+                 **kwargs):
 
         ## allowable object types
         self._drop_types = [r for r in MODEL_LIBRARIES["models_flex.json"].records if r.name in drop_objects]
@@ -76,6 +123,8 @@ class Drop(RigidbodiesDataset):
 
         ## camera properties
         self.camera_radius = camera_radius
+        self.camera_min_height = camera_min_height
+        self.camera_max_height = camera_max_height
 
         super().__init__(port=port, **kwargs)
 
@@ -116,8 +165,8 @@ class Drop(RigidbodiesDataset):
         # Teleport the avatar to a reasonable position based on the drop height.
         a_pos = self.get_random_avatar_position(radius_min=self.camera_radius,
                                                 radius_max=self.camera_radius,
-                                                y_min=self.drop_height / 3.,
-                                                y_max=self.drop_height / 1.5,
+                                                y_min=self.drop_height * self.camera_min_height,
+                                                y_max=self.drop_height * self.camera_max_height,
                                                 center=TDWUtils.VECTOR3_ZERO)
 
         cam_aim = {"x": 0, "y": self.drop_height * 0.5, "z": 0}
@@ -145,9 +194,14 @@ class Drop(RigidbodiesDataset):
         static_group.create_dataset("drop_type", data=self.drop_type)
         raise NotImplementedError("add drop jitter")
 
-    def _write_frame(self, frames_grp: h5py.Group, resp: List[bytes], frame_num: int) -> \
+    def _write_frame(self,
+                     frames_grp: h5py.Group,
+                     resp: List[bytes],
+                     frame_num: int) -> \
             Tuple[h5py.Group, h5py.Group, dict, bool]:
-        frame, objs, tr, sleeping = super()._write_frame(frames_grp=frames_grp, resp=resp, frame_num=frame_num)
+        frame, objs, tr, sleeping = super()._write_frame(frames_grp=frames_grp,
+                                                         resp=resp,
+                                                         frame_num=frame_num)
         # If this is a stable structure, disregard whether anything is actually moving.
         return frame, objs, tr, sleeping and frame_num < 300
 
@@ -160,7 +214,9 @@ class Drop(RigidbodiesDataset):
         """
 
         # create a target object
-        record, data = self.random_primitive(self._target_types, scale=self.scale_range, color=self.target_color)
+        record, data = self.random_primitive(self._target_types,
+                                             scale=self.scale_range,
+                                             color=self.target_color)
         o_id, scale, rgb = [data[k] for k in ["id", "scale", "color"]]
         self.target_type = data["name"]
         self.object_color = rgb if self.monochrome else None
@@ -199,7 +255,8 @@ class Drop(RigidbodiesDataset):
         return commands
 
 
-    # def _drop_object(self, record: ModelRecord, height: float, scale: float, color: List[float]) -> List[dict]:
+    # def _drop_object(self, record: ModelRecord, height: float, 
+    #                  scale: float, color: List[float]) -> List[dict]:
     def _drop_object(self) -> List[dict]:
         """
         Position a primitive object at some height and drop it.
@@ -208,11 +265,14 @@ class Drop(RigidbodiesDataset):
         :param height: The initial height from which to drop the object.
         :param scale: The scale of the object.
 
+
         :return: A list of commands to add the object to the simulation.
         """
 
         # Create an object to drop.
-        record, data = self.random_primitive(self._drop_types, scale=self.scale_range, color=self.object_color)
+        record, data = self.random_primitive(self._drop_types,
+                                             scale=self.scale_range,
+                                             color=self.object_color)
         o_id, scale, rgb = [data[k] for k in ["id", "scale", "color"]]
         self.drop_type = data["name"]
 
@@ -270,9 +330,15 @@ if __name__ == "__main__":
         target_objects=args.target,
         target_color=args.color,
         camera_radius=args.camera_distance,
+        camera_min_height=args.camera_min_height,
+        camera_max_height=args.camera_max_height,
         monochrome=args.monochrome
     )
     if bool(args.run):
-        DC.run(num=args.num, output_dir=args.dir, temp_path=args.temp, width=args.width, height=args.height)
+        DC.run(num=args.num,
+               output_dir=args.dir,
+               temp_path=args.temp,
+               width=args.width,
+               height=args.height)
     else:
         DC.communicate({"$type": "terminate"})

@@ -6,3 +6,4 @@ tdw_physics.egg-info/*
 notebooks/*.py~
 *.py#
 *.pyc
+.DS_store
