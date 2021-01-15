@@ -143,6 +143,7 @@ class Drop(RigidbodiesDataset):
         static_group.create_dataset("height", data=self.heights)
         static_group.create_dataset("target_type", data=self.target_type)
         static_group.create_dataset("drop_type", data=self.drop_type)
+        raise NotImplementedError("add drop jitter")
 
     def _write_frame(self, frames_grp: h5py.Group, resp: List[bytes], frame_num: int) -> \
             Tuple[h5py.Group, h5py.Group, dict, bool]:
