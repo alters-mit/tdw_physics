@@ -36,18 +36,30 @@ def get_args(dataset_dir: str):
                         type=float,
                         default=1.25,
                         help="max height to drop object from")
-    parser.add_argument("--smin",
+    parser.add_argument("--dsmin",
                         type=float,
                         default=0.2,
-                        help="min scale of target and drop objects")
-    parser.add_argument("--smax",
+                        help="min scale of drop objects")
+    parser.add_argument("--dsmax",
                         type=float,
                         default=0.3,
-                        help="max scale of target and drop objects")
-    parser.add_argument("--rot",
+                        help="max scale of drop objects")
+    parser.add_argument("--tsmin",
+                        type=float,
+                        default=0.2,
+                        help="min scale of target objects")
+    parser.add_argument("--tsmax",
+                        type=float,
+                        default=0.3,
+                        help="max scale of target objects")
+    parser.add_argument("--drot",
                         type=str,
                         default=None,
                         help="comma separated list of initial drop rotation values")
+    parser.add_argument("--trot",
+                        type=str,
+                        default=None,
+                        help="comma separated list of initial target rotation values")
     parser.add_argument("--jitter",
                         type=float,
                         default=0.2,
@@ -112,9 +124,11 @@ class Drop(RigidbodiesDataset):
                  drop_objects=MODEL_NAMES,
                  target_objects=MODEL_NAMES,
                  height_range=[0.5, 1.5],
-                 scale_range=[0.2, 0.3],
+                 drop_scale_range=[0.2, 0.3],
+                 target_scale_range=[0.2, 0.3],
                  drop_jitter=0.02,
                  drop_rotation=None,
+                 target_rotation=None,
                  target_color=None,
                  camera_radius=1.0,
                  camera_min_height=1./3,
@@ -127,10 +141,12 @@ class Drop(RigidbodiesDataset):
 
         ## object properties
         self.height_range = height_range
-        self.scale_range = scale_range
+        self.drop_scale_range = drop_scale_range
+        self.tafget_scale_range = target_scale_range
         self.drop_jitter = drop_jitter
         self.target_color = target_color
         self.drop_rotation = drop_rotation
+        self.target_rotation = target_rotation
         
         ## camera properties
         self.camera_radius = camera_radius
@@ -149,6 +165,7 @@ class Drop(RigidbodiesDataset):
         self.drop_type = None
         self.drop_position = None
         self.drop_rotation = None
+        ##why are scale ranges not reset here??
 
     def get_field_of_view(self) -> float:
         return 55
@@ -224,7 +241,7 @@ class Drop(RigidbodiesDataset):
 
         # create a target object
         record, data = self.random_primitive(self._target_types,
-                                             scale=self.scale_range,
+                                             scale=self.target_scale_range,
                                              color=self.target_color)
         o_id, scale, rgb = [data[k] for k in ["id", "scale", "color"]]
         self.target_type = data["name"]
@@ -232,6 +249,11 @@ class Drop(RigidbodiesDataset):
 
         # add the object
         commands = []
+        if self.target_rotation is None:
+            target_rotation = {"x": 0,
+                               "y": random.uniform(0, 360),
+                               "z": 0
+            }
         commands.extend(
             self.add_physics_object(
                 record=record,
@@ -240,11 +262,7 @@ class Drop(RigidbodiesDataset):
                     "y": 0.,
                     "z": 0.
                 },
-                rotation={
-                    "x": 0,
-                    "y": random.uniform(0, 360),
-                    "z": 0
-                },
+                rotation=target_rotation,
                 mass=random.uniform(2,7),
                 dynamic_friction=random.uniform(0, 0.9),
                 static_friction=random.uniform(0, 0.9),
@@ -277,7 +295,7 @@ class Drop(RigidbodiesDataset):
 
         # Create an object to drop.
         record, data = self.random_primitive(self._drop_types,
-                                             scale=self.scale_range,
+                                             scale=self.drop_scale_range,
                                              color=self.object_color)
         o_id, scale, rgb = [data[k] for k in ["id", "scale", "color"]]
         self.drop_type = data["name"]
@@ -333,11 +351,13 @@ if __name__ == "__main__":
         randomize=args.random,
         seed=args.seed,
         height_range=[args.ymin, args.ymax],
-        scale_range=[args.smin, args.smax],
+        drop_scale_range=[args.dsmin, args.dsmax],
         drop_jitter=args.jitter,
-        drop_rotation=args.rot,
+        drop_rotation=args.drot,
         drop_objects=args.drop,
         target_objects=args.target,
+        target_scale_range=[args.tsmin, args.tsmax],
+        target_rotation=args.trot,
         target_color=args.color,
         camera_radius=args.camera_distance,
         camera_min_height=args.camera_min_height,

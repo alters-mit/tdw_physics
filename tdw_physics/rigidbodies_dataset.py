@@ -94,7 +94,10 @@ class RigidbodiesDataset(TransformsDataset, ABC):
     def random_color(self):
         return [random.random(), random.random(), random.random()]
 
-    def random_primitive(self, object_types: List[ModelRecord], scale: List[float] = [0.2, 0.3], color: List[float] = None) -> dict:
+    def random_primitive(self,
+                         object_types: List[ModelRecord],
+                         scale: List[float] = [0.2, 0.3],
+                         color: List[float] = None) -> dict:
         obj_record = random.choice(object_types)
         obj_data = {
             "id": self.get_unique_id(),
