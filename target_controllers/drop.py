@@ -44,6 +44,10 @@ def get_args(dataset_dir: str):
                         type=float,
                         default=0.3,
                         help="max scale of target and drop objects")
+    parser.add_argument("--rot",
+                        type=str,
+                        default=None,
+                        help="comma separated list of initial drop rotation values")
     parser.add_argument("--jitter",
                         type=float,
                         default=0.2,
@@ -69,6 +73,11 @@ def get_args(dataset_dir: str):
 
     # whether to set all objects same color
     args.monochrome = bool(args.monochrome)
+
+    if args.rot is not None:
+        rot = list(map(float, args.rot.split(',')))
+        assert len(rot) == 3, rot
+        args.rot = rot
 
     if args.drop is not None:
         drop_list = args.drop.split(',')
@@ -105,6 +114,7 @@ class Drop(RigidbodiesDataset):
                  height_range=[0.5, 1.5],
                  scale_range=[0.2, 0.3],
                  drop_jitter=0.02,
+                 drop_rotation=None,
                  target_color=None,
                  camera_radius=1.0,
                  camera_min_height=1./3,
@@ -120,7 +130,8 @@ class Drop(RigidbodiesDataset):
         self.scale_range = scale_range
         self.drop_jitter = drop_jitter
         self.target_color = target_color
-
+        self.drop_rotation = drop_rotation
+        
         ## camera properties
         self.camera_radius = camera_radius
         self.camera_min_height = camera_min_height
@@ -134,8 +145,10 @@ class Drop(RigidbodiesDataset):
 
         ## scenario-specific metadata: object types and drop position
         self.heights = np.empty(dtype=np.float32, shape=0)
-        self.target_type = self.drop_type = None
-        self.drop_position = self.drop_rotation = None
+        self.target_type = None
+        self.drop_type = None
+        self.drop_position = None
+        self.drop_rotation = None
 
     def get_field_of_view(self) -> float:
         return 55
@@ -278,11 +291,12 @@ class Drop(RigidbodiesDataset):
             "y": height,
             "z": random.uniform(-self.drop_jitter, self.drop_jitter)
         }
-        self.drop_rotation = {
-            "x": 0,
-            "y": random.uniform(0,360),
-            "z": 0
-        }
+        #XXX TODO: more flexible API for specifying initial rotation
+        if self.drop_rotation is None:
+            self.drop_rotation = {"x": 0,  #should this also be random??
+                                  "y": random.uniform(0,360),
+                                  "z": 0   #also random??
+            }
 
         # Add the object with random physics values.
         commands = []
@@ -310,17 +324,18 @@ class Drop(RigidbodiesDataset):
 
 if __name__ == "__main__":
 
-
     args = get_args("drop")
     print("all object types", MODEL_NAMES)
     print("drop objects", args.drop)
     print("target objects", args.target)
 
     DC = Drop(
-        randomize=args.random, seed=args.seed,
+        randomize=args.random,
+        seed=args.seed,
         height_range=[args.ymin, args.ymax],
         scale_range=[args.smin, args.smax],
         drop_jitter=args.jitter,
+        drop_rotation=args.rot,
         drop_objects=args.drop,
         target_objects=args.target,
         target_color=args.color,
