@@ -160,6 +160,8 @@ class Drop(RigidbodiesDataset):
         
         ## camera properties
         self.camera_radius = camera_radius
+        self.camera_min_angle = camera_min_angle
+        self.camera_max_angle = camera_max_angle
         self.camera_min_height = camera_min_height
         self.camera_max_height = camera_max_height
 
@@ -264,9 +266,9 @@ class Drop(RigidbodiesDataset):
         # add the object
         commands = []
         if self.target_rotation is None:
-            target_rotation = {"x": 0,
-                               "y": random.uniform(0, 360),
-                               "z": 0
+            self.target_rotation = {"x": 0,
+                                    "y": random.uniform(0, 360),
+                                    "z": 0
             }
         commands.extend(
             self.add_physics_object(
@@ -276,7 +278,7 @@ class Drop(RigidbodiesDataset):
                     "y": 0.,
                     "z": 0.
                 },
-                rotation=target_rotation,
+                rotation=self.target_rotation,
                 mass=random.uniform(2,7),
                 dynamic_friction=random.uniform(0, 0.9),
                 static_friction=random.uniform(0, 0.9),

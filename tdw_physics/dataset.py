@@ -119,9 +119,7 @@ class Dataset(Controller, ABC):
     def trial(self,
               filepath: Path,
               temp_path: Path,
-              trial_num: int,
-              width: int,
-              height: int) -> None:
+              trial_num: int) -> None:
         """
         Run a trial. Write static and per-frame data to disk until the trial is done.
 
