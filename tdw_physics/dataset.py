@@ -21,8 +21,15 @@ class Dataset(Controller, ABC):
         3. Clean up the scene and start a new trial.
     """
 
-    def __init__(self, port: int = 1071, check_version: bool=False, launch_build: bool=True, randomize: int=1, seed: int=0):
-        super().__init__(port=port, check_version=check_version, launch_build=launch_build)
+    def __init__(self,
+                 port: int = 1071,
+                 check_version: bool=False,
+                 launch_build: bool=True,
+                 randomize: int=1,
+                 seed: int=0):
+        super().__init__(port=port,
+                         check_version=check_version,
+                         launch_build=launch_build)
 
         # IDs of the objects in the current trial.
         self.clear_static_data()
@@ -34,7 +41,12 @@ class Dataset(Controller, ABC):
     def clear_static_data(self) -> None:
         self.object_ids = np.empty(dtype=int, shape=0)
 
-    def run(self, num: int, output_dir: str, temp_path: str, width: int, height: int) -> None:
+    def run(self,
+            num: int,
+            output_dir: str,
+            temp_path: str,
+            width: int,
+            height: int) -> None:
         """
         Create the dataset.
 
@@ -97,12 +109,19 @@ class Dataset(Controller, ABC):
             filepath = output_dir.joinpath(TDWUtils.zero_padding(i, 4) + ".hdf5")
             if not filepath.exists():
                 # Do the trial.
-                self.trial(filepath=filepath, temp_path=temp_path, trial_num=i)
+                self.trial(filepath=filepath,
+                           temp_path=temp_path,
+                           trial_num=i)
             pbar.update(1)
         pbar.close()
         self.communicate({"$type": "terminate"})
 
-    def trial(self, filepath: Path, temp_path: Path, trial_num: int) -> None:
+    def trial(self,
+              filepath: Path,
+              temp_path: Path,
+              trial_num: int,
+              width: int,
+              height: int) -> None:
         """
         Run a trial. Write static and per-frame data to disk until the trial is done.
 
