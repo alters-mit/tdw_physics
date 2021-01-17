@@ -1,5 +1,8 @@
 from argparse import ArgumentParser
 import h5py
+import json
+import copy
+import importlib
 import numpy as np
 from enum import Enum
 import random
@@ -12,6 +15,25 @@ from tdw_physics.util import MODEL_LIBRARIES, get_parser, xyz_to_arr, arr_to_xyz
 
 
 MODEL_NAMES = [r.name for r in MODEL_LIBRARIES['models_flex.json'].records]
+
+
+def handle_rot_args(rot):
+    if rot is not None:
+        rot = json.loads(rot)
+        if 'class' in rot:
+            data = rot['data']
+            modname, classname = rot['class']
+            mod = importlib.import_module(modname)
+            klass = get_attr(mod, classname)
+            rot = klass(data)
+            assert hasattr(rot, 'sample')
+            assert callable(rot.sample)
+        else:
+            assert "x" in rot
+            assert "y" in rot
+            assert "z" in rot
+    return rot
+
 
 def get_args(dataset_dir: str):
     """
@@ -94,10 +116,8 @@ def get_args(dataset_dir: str):
     # whether to set all objects same color
     args.monochrome = bool(args.monochrome)
 
-    if args.rot is not None:
-        rot = list(map(float, args.rot.split(',')))
-        assert len(rot) == 3, rot
-        args.rot = rot
+    args.drot = handle_rot_args(args.drot)
+    args.trot = handle_rot_args(args.trot)
 
     if args.drop is not None:
         drop_list = args.drop.split(',')
@@ -135,8 +155,8 @@ class Drop(RigidbodiesDataset):
                  drop_scale_range=[0.2, 0.3],
                  target_scale_range=[0.2, 0.3],
                  drop_jitter=0.02,
-                 drop_rotation=None,
-                 target_rotation=None,
+                 drop_rotation_range=None,
+                 target_rotation_range=None,
                  target_color=None,
                  camera_radius=1.0,
                  camera_min_angle=0,
@@ -145,18 +165,21 @@ class Drop(RigidbodiesDataset):
                  camera_max_height=2./3,
                  **kwargs):
 
+        ## initializes static data and RNG
+        super().__init__(port=port, **kwargs)
+       
         ## allowable object types
         self._drop_types = [r for r in MODEL_LIBRARIES["models_flex.json"].records if r.name in drop_objects]
         self._target_types = [r for r in MODEL_LIBRARIES["models_flex.json"].records if r.name in target_objects]
 
-        ## object properties
+        ## object generation properties
         self.height_range = height_range
         self.drop_scale_range = drop_scale_range
         self.target_scale_range = target_scale_range
         self.drop_jitter = drop_jitter
         self.target_color = target_color
-        self.drop_rotation = drop_rotation
-        self.target_rotation = target_rotation
+        self.drop_rotation_range = drop_rotation_range
+        self.target_rotation_range = target_rotation_range
         
         ## camera properties
         self.camera_radius = camera_radius
@@ -164,9 +187,6 @@ class Drop(RigidbodiesDataset):
         self.camera_max_angle = camera_max_angle
         self.camera_min_height = camera_min_height
         self.camera_max_height = camera_max_height
-
-        ## initializes static data and RNG
-        super().__init__(port=port, **kwargs)
 
     def clear_static_data(self) -> None:
         super().clear_static_data()
@@ -178,7 +198,6 @@ class Drop(RigidbodiesDataset):
         self.drop_position = None
         self.drop_rotation = None
         self.target_rotation = None
-        ##why are scale ranges not reset here??
 
     def get_field_of_view(self) -> float:
         return 55
@@ -250,6 +269,17 @@ class Drop(RigidbodiesDataset):
     def is_done(self, resp: List[bytes], frame: int) -> bool:
         return frame > 300
 
+    def get_rotation(self, rot_range):
+        if rot_range is None:
+            return {"x": 0,
+                    "y": random.uniform(0, 360),
+                    "z": 0}
+        else:
+            if hasattr(rot_range, 'sample'):
+                return rot_range.sample()
+            else:
+                return copy.deepcopy(rot_range)
+
     def _place_target_object(self) -> List[dict]:
         """
         Place a primitive object at the room center.
@@ -266,10 +296,8 @@ class Drop(RigidbodiesDataset):
         # add the object
         commands = []
         if self.target_rotation is None:
-            self.target_rotation = {"x": 0,
-                                    "y": random.uniform(0, 360),
-                                    "z": 0
-            }
+            self.target_rotation = self.get_rotation(self.target_rotation_range)
+
         commands.extend(
             self.add_physics_object(
                 record=record,
@@ -325,12 +353,9 @@ class Drop(RigidbodiesDataset):
             "y": height,
             "z": random.uniform(-self.drop_jitter, self.drop_jitter)
         }
-        #XXX TODO: more flexible API for specifying initial rotation
+
         if self.drop_rotation is None:
-            self.drop_rotation = {"x": 0,  #should this also be random??
-                                  "y": random.uniform(0,360),
-                                  "z": 0   #also random??
-            }
+            self.drop_rotation = self.get_rotation(self.drop_rotation_range)
 
         # Add the object with random physics values.
         commands = []
@@ -369,11 +394,11 @@ if __name__ == "__main__":
         height_range=[args.ymin, args.ymax],
         drop_scale_range=[args.dsmin, args.dsmax],
         drop_jitter=args.jitter,
-        drop_rotation=args.drot,
+        drop_rotation_range=args.drot,
         drop_objects=args.drop,
         target_objects=args.target,
         target_scale_range=[args.tsmin, args.tsmax],
-        target_rotation=args.trot,
+        target_rotation_range=args.trot,
         target_color=args.color,
         camera_radius=args.camera_distance,
         camera_min_angle=args.camera_min_angle,

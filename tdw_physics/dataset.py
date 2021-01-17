@@ -31,7 +31,6 @@ class Dataset(Controller, ABC):
                          check_version=check_version,
                          launch_build=launch_build)
 
-        # IDs of the objects in the current trial.
         self.clear_static_data()
 
         # set random state
@@ -41,33 +40,9 @@ class Dataset(Controller, ABC):
     def clear_static_data(self) -> None:
         self.object_ids = np.empty(dtype=int, shape=0)
 
-    def run(self,
-            num: int,
-            output_dir: str,
-            temp_path: str,
-            width: int,
-            height: int) -> None:
-        """
-        Create the dataset.
-
-        :param num: The number of trials in the dataset.
-        :param output_dir: The root output directory.
-        :param temp_path: Temporary path to a file being written.
-        :param width: Screen width in pixels.
-        :param height: Screen height in pixels.
-        """
-
-        pbar = tqdm(total=num)
-        output_dir = Path(output_dir)
-        if not output_dir.exists():
-            output_dir.mkdir(parents=True)
-        temp_path = Path(temp_path)
-        if not temp_path.parent.exists():
-            temp_path.parent.mkdir(parents=True)
-        # Remove an incomplete temp path.
-        if temp_path.exists():
-            temp_path.unlink()
-
+    def get_initialization_commands(self,
+                                    width: int,
+                                    height: int) -> None:
         # Global commands for all physics datasets.
         commands = [{"$type": "set_screen_size",
                      "width": width,
@@ -94,17 +69,53 @@ class Dataset(Controller, ABC):
                           "field_of_view": self.get_field_of_view()},
                          {"$type": "send_images",
                           "frequency": "always"}])
+        return commands
 
+    def run(self,
+            num: int,
+            output_dir: str,
+            temp_path: str,
+            width: int,
+            height: int) -> None:
+        """
+        Create the dataset.
+
+        :param num: The number of trials in the dataset.
+        :param output_dir: The root output directory.
+        :param temp_path: Temporary path to a file being written.
+        :param width: Screen width in pixels.
+        :param height: Screen height in pixels.
+        """
+
+        initialization_commands = self.get_initialization_commands()
+        # Initialize the scene.
+        self.communicate(initialization_commands)
+        self.trial_loop(num, output_dir, temp_path)
+        self.communicate({"$type": "terminate"})
+
+    def trial_loop(self,
+                   num: int,
+                   output_dir: str,
+                   temp_path: str) -> None:
+
+        output_dir = Path(output_dir)
+        if not output_dir.exists():
+            output_dir.mkdir(parents=True)
+        temp_path = Path(temp_path)
+        if not temp_path.parent.exists():
+            temp_path.parent.mkdir(parents=True)
+        # Remove an incomplete temp path.
+        if temp_path.exists():
+            temp_path.unlink()
+
+        pbar = tqdm(total=num)
         # Skip trials that aren't on the disk, and presumably have been uploaded; jump to the highest number.
         exists_up_to = 0
         for f in output_dir.glob("*.hdf5"):
             if int(f.stem) > exists_up_to:
                 exists_up_to = int(f.stem)
+
         pbar.update(exists_up_to)
-
-        # Initialize the scene.
-        self.communicate(commands)
-
         for i in range(exists_up_to, num):
             filepath = output_dir.joinpath(TDWUtils.zero_padding(i, 4) + ".hdf5")
             if not filepath.exists():
@@ -114,7 +125,6 @@ class Dataset(Controller, ABC):
                            trial_num=i)
             pbar.update(1)
         pbar.close()
-        self.communicate({"$type": "terminate"})
 
     def trial(self,
               filepath: Path,

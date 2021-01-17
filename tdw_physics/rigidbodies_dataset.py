@@ -18,7 +18,11 @@ class PhysicsInfo:
     Physics info for an object.
     """
 
-    def __init__(self, record: ModelRecord, mass: float, dynamic_friction: float, static_friction: float,
+    def __init__(self,
+                 record: ModelRecord,
+                 mass: float,
+                 dynamic_friction: float,
+                 static_friction: float,
                  bounciness: float):
         """
         :param record: The model's metadata record.
@@ -66,11 +70,11 @@ class RigidbodiesDataset(TransformsDataset, ABC):
     def __init__(self, port: int = 1071, monochrome: bool = False, **kwargs):
         super().__init__(port=port, **kwargs)
 
-        # The physics info of each object instance. Useful for referencing in a controller, but not written to disk.
         self.physics_info: Dict[int, PhysicsInfo] = {}
 
         # Whether the objects will be set to the same color
         self.monochrome = monochrome
+
 
     def clear_static_data(self) -> None:
         super().clear_static_data()
