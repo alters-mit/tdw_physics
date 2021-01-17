@@ -72,6 +72,14 @@ def get_args(dataset_dir: str):
                         type=float,
                         default=1.25,
                         help="radial distance from camera to drop/target object pair")
+    parser.add_argument("--camera_min_angle",
+                        type=float,
+                        default=0,
+                        help="minimum angle of camera rotation around centerpoint")
+    parser.add_argument("--camera_max_angle",
+                        type=float,
+                        default=0,
+                        help="maximum angle of camera rotation around centerpoint")
     parser.add_argument("--camera_min_height",
                         type=float,
                         default=1./3,
@@ -131,6 +139,8 @@ class Drop(RigidbodiesDataset):
                  target_rotation=None,
                  target_color=None,
                  camera_radius=1.0,
+                 camera_min_angle=0,
+                 camera_max_angle=360,
                  camera_min_height=1./3,
                  camera_max_height=2./3,
                  **kwargs):
@@ -142,7 +152,7 @@ class Drop(RigidbodiesDataset):
         ## object properties
         self.height_range = height_range
         self.drop_scale_range = drop_scale_range
-        self.tafget_scale_range = target_scale_range
+        self.target_scale_range = target_scale_range
         self.drop_jitter = drop_jitter
         self.target_color = target_color
         self.drop_rotation = drop_rotation
@@ -165,6 +175,7 @@ class Drop(RigidbodiesDataset):
         self.drop_type = None
         self.drop_position = None
         self.drop_rotation = None
+        self.target_rotation = None
         ##why are scale ranges not reset here??
 
     def get_field_of_view(self) -> float:
@@ -193,6 +204,8 @@ class Drop(RigidbodiesDataset):
         # Teleport the avatar to a reasonable position based on the drop height.
         a_pos = self.get_random_avatar_position(radius_min=self.camera_radius,
                                                 radius_max=self.camera_radius,
+                                                angle_min=self.camera_min_angle,
+                                                angle_max=self.camera_max_angle,
                                                 y_min=self.drop_height * self.camera_min_height,
                                                 y_max=self.drop_height * self.camera_max_height,
                                                 center=TDWUtils.VECTOR3_ZERO)
@@ -219,6 +232,7 @@ class Drop(RigidbodiesDataset):
         static_group.create_dataset("drop_type", data=self.drop_type)
         static_group.create_dataset("drop_position", data=xyz_to_arr(self.drop_position))
         static_group.create_dataset("drop_rotation", data=xyz_to_arr(self.drop_rotation))
+        static_group.create_dataset("target_rotation", data=xyz_to_arr(self.target_rotation))
 
     def _write_frame(self,
                      frames_grp: h5py.Group,
@@ -360,6 +374,8 @@ if __name__ == "__main__":
         target_rotation=args.trot,
         target_color=args.color,
         camera_radius=args.camera_distance,
+        camera_min_angle=args.camera_min_angle,
+        camera_max_angle=args.camera_max_angle,
         camera_min_height=args.camera_min_height,
         camera_max_height=args.camera_max_height,
         monochrome=args.monochrome

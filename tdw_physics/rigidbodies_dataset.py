@@ -235,7 +235,7 @@ class RigidbodiesDataset(TransformsDataset, ABC):
         static_group.create_dataset("dynamic_friction", data=self.dynamic_frictions)
         static_group.create_dataset("bounciness", data=self.bouncinesses)
 
-        ## size and color
+        ## size and colors
         static_group.create_dataset("color", data=self.colors)
         static_group.create_dataset("scale", data=self.scales)
 

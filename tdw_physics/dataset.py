@@ -179,8 +179,12 @@ class Dataset(Controller, ABC):
         temp_path.replace(filepath)
 
     @staticmethod
-    def get_random_avatar_position(radius_min: float, radius_max: float, y_min: float, y_max: float,
-                                   center: Dict[str, float], angle_min: float = 0,
+    def get_random_avatar_position(radius_min: float,
+                                   radius_max: float,
+                                   y_min: float,
+                                   y_max: float,
+                                   center: Dict[str, float],
+                                   angle_min: float = 0,
                                    angle_max: float = 360) -> Dict[str, float]:
         """
         :param radius_min: The minimum distance from the center.
