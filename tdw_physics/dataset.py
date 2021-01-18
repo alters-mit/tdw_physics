@@ -120,6 +120,7 @@ class Dataset(Controller, ABC):
             filepath = output_dir.joinpath(TDWUtils.zero_padding(i, 4) + ".hdf5")
             if not filepath.exists():
                 # Do the trial.
+                print('trial %d' % i)
                 self.trial(filepath=filepath,
                            temp_path=temp_path,
                            trial_num=i)
@@ -168,6 +169,7 @@ class Dataset(Controller, ABC):
 
         # Continue the trial. Send commands, and parse output data.
         while not done:
+            print('frame %d' % frame)
             frame += 1
             resp = self.communicate(self.get_per_frame_commands(resp, frame))
             frame_grp, objs_grp, tr_dict, done = self._write_frame(frames_grp=frames_grp, resp=resp, frame_num=frame)
