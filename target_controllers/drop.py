@@ -35,6 +35,28 @@ def handle_rot_args(rot):
     return rot
 
 
+def handle_scale_args(scl):
+    if scl is not None:
+        scl = json.loads(scl)
+        if 'class' in scl:
+            data = scl['data']
+            modname, classname = scl['class']
+            mod = importlib.import_module(modname)
+            klass = get_attr(mod, classname)
+            scl = klass(data)
+            assert hasattr(scl, 'sample')
+            assert callable(scl.sample)
+        elif hasattr(scl, 'keys'):
+            assert "x" in scl, scl
+            assert "y" in scl, scl
+            assert "z" in scl, scl
+        elif hasattr(scl, '__len__'):
+            assert len(scl) == 2, scl
+        else:
+            scl + 0.0 
+    return scl
+
+
 def get_args(dataset_dir: str):
     """
     Combine Drop-specific arguments with controller-common arguments
@@ -58,22 +80,14 @@ def get_args(dataset_dir: str):
                         type=float,
                         default=1.25,
                         help="max height to drop object from")
-    parser.add_argument("--dsmin",
-                        type=float,
-                        default=0.2,
-                        help="min scale of drop objects")
-    parser.add_argument("--dsmax",
-                        type=float,
-                        default=0.3,
-                        help="max scale of drop objects")
-    parser.add_argument("--tsmin",
-                        type=float,
-                        default=0.2,
-                        help="min scale of target objects")
-    parser.add_argument("--tsmax",
-                        type=float,
-                        default=0.3,
-                        help="max scale of target objects")
+    parser.add_argument("--dscale",
+                        type=str,
+                        default="[0.2,0.3]",
+                        help="scale of drop objects")
+    parser.add_argument("--tscale",
+                        type=str,
+                        default="[0.2,0.3]",
+                        help="scale of target objects")
     parser.add_argument("--drot",
                         type=str,
                         default=None,
@@ -115,6 +129,9 @@ def get_args(dataset_dir: str):
 
     # whether to set all objects same color
     args.monochrome = bool(args.monochrome)
+
+    args.dscale = handle_scale_args(args.dscale)
+    args.tscale = handle_scale_args(args.tscale)
 
     args.drot = handle_rot_args(args.drot)
     args.trot = handle_rot_args(args.trot)
@@ -169,8 +186,8 @@ class Drop(RigidbodiesDataset):
         super().__init__(port=port, **kwargs)
        
         ## allowable object types
-        self._drop_types = [r for r in MODEL_LIBRARIES["models_flex.json"].records if r.name in drop_objects]
-        self._target_types = [r for r in MODEL_LIBRARIES["models_flex.json"].records if r.name in target_objects]
+        self.set_drop_types(drop_objects)
+        self.set_target_types(target_objects)
 
         ## object generation properties
         self.height_range = height_range
@@ -188,6 +205,19 @@ class Drop(RigidbodiesDataset):
         self.camera_min_height = camera_min_height
         self.camera_max_height = camera_max_height
 
+    def get_types(self, objlist):
+        recs = MODEL_LIBRARIES["models_flex.json"].records
+        tlist = [r for r in recs if r.name in objlist]
+        return tlist
+
+    def set_drop_types(self, olist):
+        tlist = self.get_types(olist)
+        self._drop_types = tlist
+
+    def set_target_types(self, olist):
+        tlist = self.get_types(olist)
+        self._target_types = tlist
+ 
     def clear_static_data(self) -> None:
         super().clear_static_data()
 
@@ -320,7 +350,7 @@ class Drop(RigidbodiesDataset):
              "color": {"r": rgb[0], "g": rgb[1], "b": rgb[2], "a": 1.},
              "id": o_id},
             {"$type": "scale_object",
-             "scale_factor": {p: scale for p in ["x", "y", "z"]},
+             "scale_factor": scale,
              "id": o_id}])
 
         return commands
@@ -376,7 +406,7 @@ class Drop(RigidbodiesDataset):
              "color": {"r": rgb[0], "g": rgb[1], "b": rgb[2], "a": 1.},
              "id": o_id},
             {"$type": "scale_object",
-             "scale_factor": {p: scale for p in ["x", "y", "z"]},
+             "scale_factor": scale,
              "id": o_id}])
 
         return commands
@@ -392,12 +422,12 @@ if __name__ == "__main__":
         randomize=args.random,
         seed=args.seed,
         height_range=[args.ymin, args.ymax],
-        drop_scale_range=[args.dsmin, args.dsmax],
+        drop_scale_range=args.dscale,
         drop_jitter=args.jitter,
         drop_rotation_range=args.drot,
         drop_objects=args.drop,
         target_objects=args.target,
-        target_scale_range=[args.tsmin, args.tsmax],
+        target_scale_range=args.tscale,
         target_rotation_range=args.trot,
         target_color=args.color,
         camera_radius=args.camera_distance,

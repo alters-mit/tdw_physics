@@ -62,6 +62,14 @@ def _get_default_physics_info() -> Dict[str, PhysicsInfo]:
 PHYSICS_INFO: Dict[str, PhysicsInfo] = _get_default_physics_info()
 
 
+def get_scale_range(scl):
+    if hasattr(scl, '__len__'):
+        return scl[0], scl[1]
+    else:
+        scl + 0.0
+        return scl, scl
+
+
 class RigidbodiesDataset(TransformsDataset, ABC):
     """
     A dataset for Rigidbody (PhysX) physics.
@@ -84,7 +92,7 @@ class RigidbodiesDataset(TransformsDataset, ABC):
         self.dynamic_frictions = np.empty(dtype=np.float32, shape=0)
         self.bouncinesses = np.empty(dtype=np.float32, shape=0)
         self.colors = np.empty(dtype=np.float32, shape=(0,3))
-        self.scales = np.empty(dtype=np.float32, shape=0)
+        self.scales = []
 
     def _xyz_to_arr(self, xyz : dict):
         arr = np.array(
@@ -103,13 +111,33 @@ class RigidbodiesDataset(TransformsDataset, ABC):
                          scale: List[float] = [0.2, 0.3],
                          color: List[float] = None) -> dict:
         obj_record = random.choice(object_types)
+        if hasattr(scale, 'sample'):
+            s = scale.sample()
+        elif hasattr(scale, 'keys'):
+            sx0, sx1 = get_scale_range(scale["x"])
+            sx = random.uniform(sx0, sx1)
+            sy0, sy1 = get_scale_range(scale["y"])
+            sy = random.uniform(sy0, sy1)
+            sz0, sz1 = get_scale_range(scale["z"])
+            sz = random.uniform(sz0, sz1)
+            s = {"x": sx, "y": sy, "z": sz}
+        elif hasattr(scale, '__len__'):
+            s0 = random.uniform(scale[0], scale[1])
+            s = {"x": s0, "y": s0, "z": s0}
+        else:
+            scale + 0.0
+            s = {"x": scale, "y": scale, "z": scale}
+        assert hasattr(s, 'keys'), s
+        assert 'x' in s, s
+        assert 'y' in s, s
+        assert 'z' in s, s
         obj_data = {
             "id": self.get_unique_id(),
-            "scale": random.uniform(scale[0], scale[1]),
+            "scale": s,
             "color": np.array(color if color is not None else self.random_color()),
             "name": obj_record.name
         }
-        self.scales = np.append(self.scales, obj_data["scale"])
+        self.scales.append(obj_data["scale"])
         self.colors = np.concatenate([self.colors, obj_data["color"].reshape((1,3))], axis=0)
         return obj_record, obj_data
 
@@ -241,7 +269,9 @@ class RigidbodiesDataset(TransformsDataset, ABC):
 
         ## size and colors
         static_group.create_dataset("color", data=self.colors)
-        static_group.create_dataset("scale", data=self.scales)
+        static_group.create_dataset("scale_x", data=[_s["x"] for _s in self.scales])
+        static_group.create_dataset("scale_y", data=[_s["y"] for _s in self.scales])
+        static_group.create_dataset("scale_z", data=[_s["z"] for _s in self.scales])
 
     def _write_frame(self, frames_grp: h5py.Group, resp: List[bytes], frame_num: int) -> \
             Tuple[h5py.Group, h5py.Group, dict, bool]:
