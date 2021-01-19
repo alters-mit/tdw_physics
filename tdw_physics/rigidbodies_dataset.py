@@ -13,6 +13,27 @@ from tdw_physics.transforms_dataset import TransformsDataset
 from tdw_physics.util import MODEL_LIBRARIES
 
 
+def handle_random_transform_args(args):
+    if args is not None:
+        args = json.loads(args)
+        if 'class' in args:
+            data = args['data']
+            modname, classname = args['class']
+            mod = importlib.import_module(modname)
+            klass = get_attr(mod, classname)
+            args = klass(data)
+            assert callable(args)
+        elif hasattr(args, 'keys'):
+            assert "x" in args, args
+            assert "y" in args, args
+            assert "z" in args, args
+        elif hasattr(args, '__len__'):
+            assert len(args) == 2, args
+        else:
+            args + 0.0
+    return args
+
+
 class PhysicsInfo:
     """
     Physics info for an object.
@@ -62,12 +83,36 @@ def _get_default_physics_info() -> Dict[str, PhysicsInfo]:
 PHYSICS_INFO: Dict[str, PhysicsInfo] = _get_default_physics_info()
 
 
-def get_scale_range(scl):
+def get_range(scl):
     if hasattr(scl, '__len__'):
         return scl[0], scl[1]
     else:
         scl + 0.0
         return scl, scl
+
+
+def get_random_xyz_transform(generator):
+    if callable(generator):
+        s = generator()
+    elif hasattr(generator, 'keys'):
+        sx0, sx1 = get_range(generator["x"])
+        sx = random.uniform(sx0, sx1)
+        sy0, sy1 = get_range(generator["y"])
+        sy = random.uniform(sy0, sy1)
+        sz0, sz1 = get_range(generator["z"])
+        sz = random.uniform(sz0, sz1)
+        s = {"x": sx, "y": sy, "z": sz}
+    elif hasattr(generator, '__len__'):
+        s0 = random.uniform(generator[0], generator[1])
+        s = {"x": s0, "y": s0, "z": s0}
+    else:
+        generator + 0.0
+        s = {"x": generator, "y": generator, "z": generator}
+    assert hasattr(s, 'keys'), s
+    assert 'x' in s, s
+    assert 'y' in s, s
+    assert 'z' in s, s
+    return s
 
 
 class RigidbodiesDataset(TransformsDataset, ABC):
@@ -106,31 +151,15 @@ class RigidbodiesDataset(TransformsDataset, ABC):
     def random_color(self):
         return [random.random(), random.random(), random.random()]
 
+    def get_random_scale_transform(self, scale):
+        return get_random_xyz_transform(scale)
+
     def random_primitive(self,
                          object_types: List[ModelRecord],
                          scale: List[float] = [0.2, 0.3],
                          color: List[float] = None) -> dict:
         obj_record = random.choice(object_types)
-        if hasattr(scale, 'sample'):
-            s = scale.sample()
-        elif hasattr(scale, 'keys'):
-            sx0, sx1 = get_scale_range(scale["x"])
-            sx = random.uniform(sx0, sx1)
-            sy0, sy1 = get_scale_range(scale["y"])
-            sy = random.uniform(sy0, sy1)
-            sz0, sz1 = get_scale_range(scale["z"])
-            sz = random.uniform(sz0, sz1)
-            s = {"x": sx, "y": sy, "z": sz}
-        elif hasattr(scale, '__len__'):
-            s0 = random.uniform(scale[0], scale[1])
-            s = {"x": s0, "y": s0, "z": s0}
-        else:
-            scale + 0.0
-            s = {"x": scale, "y": scale, "z": scale}
-        assert hasattr(s, 'keys'), s
-        assert 'x' in s, s
-        assert 'y' in s, s
-        assert 'z' in s, s
+        s = self.get_random_scale_transform(scale)
         obj_data = {
             "id": self.get_unique_id(),
             "scale": s,

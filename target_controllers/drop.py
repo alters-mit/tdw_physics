@@ -10,51 +10,13 @@ from typing import List, Dict, Tuple
 from weighted_collection import WeightedCollection
 from tdw.tdw_utils import TDWUtils
 from tdw.librarian import ModelRecord
-from tdw_physics.rigidbodies_dataset import RigidbodiesDataset
+from tdw_physics.rigidbodies_dataset import (RigidbodiesDataset, 
+                                             get_random_xyz_transform,
+                                             handle_random_transform_args)
 from tdw_physics.util import MODEL_LIBRARIES, get_parser, xyz_to_arr, arr_to_xyz
 
 
 MODEL_NAMES = [r.name for r in MODEL_LIBRARIES['models_flex.json'].records]
-
-
-def handle_rot_args(rot):
-    if rot is not None:
-        rot = json.loads(rot)
-        if 'class' in rot:
-            data = rot['data']
-            modname, classname = rot['class']
-            mod = importlib.import_module(modname)
-            klass = get_attr(mod, classname)
-            rot = klass(data)
-            assert hasattr(rot, 'sample')
-            assert callable(rot.sample)
-        else:
-            assert "x" in rot
-            assert "y" in rot
-            assert "z" in rot
-    return rot
-
-
-def handle_scale_args(scl):
-    if scl is not None:
-        scl = json.loads(scl)
-        if 'class' in scl:
-            data = scl['data']
-            modname, classname = scl['class']
-            mod = importlib.import_module(modname)
-            klass = get_attr(mod, classname)
-            scl = klass(data)
-            assert hasattr(scl, 'sample')
-            assert callable(scl.sample)
-        elif hasattr(scl, 'keys'):
-            assert "x" in scl, scl
-            assert "y" in scl, scl
-            assert "z" in scl, scl
-        elif hasattr(scl, '__len__'):
-            assert len(scl) == 2, scl
-        else:
-            scl + 0.0 
-    return scl
 
 
 def get_args(dataset_dir: str):
@@ -130,11 +92,11 @@ def get_args(dataset_dir: str):
     # whether to set all objects same color
     args.monochrome = bool(args.monochrome)
 
-    args.dscale = handle_scale_args(args.dscale)
-    args.tscale = handle_scale_args(args.tscale)
+    args.dscale = handle_random_transform_args(args.dscale)
+    args.tscale = handle_random_transform_args(args.tscale)
 
-    args.drot = handle_rot_args(args.drot)
-    args.trot = handle_rot_args(args.trot)
+    args.drot = handle_random_transform_args(args.drot)
+    args.trot = handle_random_transform_args(args.trot)
 
     if args.drop is not None:
         drop_list = args.drop.split(',')
@@ -158,6 +120,7 @@ def get_args(dataset_dir: str):
         args.color = rgb
 
     return args
+
 
 class Drop(RigidbodiesDataset):
     """
@@ -305,10 +268,7 @@ class Drop(RigidbodiesDataset):
                     "y": random.uniform(0, 360),
                     "z": 0}
         else:
-            if hasattr(rot_range, 'sample'):
-                return rot_range.sample()
-            else:
-                return copy.deepcopy(rot_range)
+            return get_random_xyz_transform(rot_range)
 
     def _place_target_object(self) -> List[dict]:
         """
@@ -316,6 +276,9 @@ class Drop(RigidbodiesDataset):
         """
 
         # create a target object
+        # XXX TODO: Why is scaling part of random primitives 
+        # but rotation and translation are not? 
+        # Consider integrating!
         record, data = self.random_primitive(self._target_types,
                                              scale=self.target_scale_range,
                                              color=self.target_color)
