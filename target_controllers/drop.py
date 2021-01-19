@@ -213,7 +213,7 @@ class Drop(RigidbodiesDataset):
         commands.extend(self._place_target_object())
 
         # Choose and drop an object.
-        commands.extend(self._drop_object())
+        commands.extend(self._place_drop_object())
 
         # Teleport the avatar to a reasonable position based on the drop height.
         a_pos = self.get_random_avatar_position(radius_min=self.camera_radius,
@@ -318,7 +318,7 @@ class Drop(RigidbodiesDataset):
 
         return commands
 
-    def _drop_object(self) -> List[dict]:
+    def _place_drop_object(self) -> List[dict]:
         """
         Position a primitive object at some height and drop it.
 
