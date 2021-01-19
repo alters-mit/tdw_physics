@@ -10,7 +10,7 @@ from typing import List, Dict, Tuple
 from weighted_collection import WeightedCollection
 from tdw.tdw_utils import TDWUtils
 from tdw.librarian import ModelRecord
-from tdw_physics.rigidbodies_dataset import (RigidbodiesDataset, 
+from tdw_physics.rigidbodies_dataset import (RigidbodiesDataset,
                                              get_random_xyz_transform,
                                              handle_random_transform_args)
 from tdw_physics.util import MODEL_LIBRARIES, get_parser, xyz_to_arr, arr_to_xyz
@@ -147,7 +147,7 @@ class Drop(RigidbodiesDataset):
 
         ## initializes static data and RNG
         super().__init__(port=port, **kwargs)
-       
+
         ## allowable object types
         self.set_drop_types(drop_objects)
         self.set_target_types(target_objects)
@@ -160,7 +160,7 @@ class Drop(RigidbodiesDataset):
         self.target_color = target_color
         self.drop_rotation_range = drop_rotation_range
         self.target_rotation_range = target_rotation_range
-        
+
         ## camera properties
         self.camera_radius = camera_radius
         self.camera_min_angle = camera_min_angle
@@ -180,7 +180,7 @@ class Drop(RigidbodiesDataset):
     def set_target_types(self, olist):
         tlist = self.get_types(olist)
         self._target_types = tlist
- 
+
     def clear_static_data(self) -> None:
         super().clear_static_data()
 
@@ -276,8 +276,8 @@ class Drop(RigidbodiesDataset):
         """
 
         # create a target object
-        # XXX TODO: Why is scaling part of random primitives 
-        # but rotation and translation are not? 
+        # XXX TODO: Why is scaling part of random primitives
+        # but rotation and translation are not?
         # Consider integrating!
         record, data = self.random_primitive(self._target_types,
                                              scale=self.target_scale_range,
@@ -400,6 +400,7 @@ if __name__ == "__main__":
         camera_max_height=args.camera_max_height,
         monochrome=args.monochrome
     )
+
     if bool(args.run):
         DC.run(num=args.num,
                output_dir=args.dir,

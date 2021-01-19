@@ -87,7 +87,7 @@ class Dataset(Controller, ABC):
         :param height: Screen height in pixels.
         """
 
-        initialization_commands = self.get_initialization_commands()
+        initialization_commands = self.get_initialization_commands(width=width, height=height)
         # Initialize the scene.
         self.communicate(initialization_commands)
         self.trial_loop(num, output_dir, temp_path)
