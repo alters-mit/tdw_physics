@@ -62,6 +62,10 @@ def get_args(dataset_dir: str):
                         type=str,
                         default="[-30,30]",
                         help="range of angles in xz plane to apply push force")
+    parser.add_argument("--foffset",
+                        type=str,
+                        default="0.0,0.75,0.0",
+                        help="offset from probe centroid from which to apply force, relative to probe scale")
     parser.add_argument("--fjitter",
                         type=float,
                         default=0.0,
@@ -113,6 +117,7 @@ def get_args(dataset_dir: str):
     # the push force scale and direction
     args.fscale = handle_random_transform_args(args.fscale)
     args.frot = handle_random_transform_args(args.frot)
+    args.foffset = handle_random_transform_args(args.foffset)
 
     if args.target is not None:
         targ_list = args.target.split(',')
@@ -155,6 +160,7 @@ class Dominoes(RigidbodiesDataset):
                  collision_axis_length=1.,
                  force_scale_range=[0.,8.],
                  force_angle_range=[-60,60],
+                 force_offset=arr_to_xyz([0.,0.5,0.]),
                  force_offset_jitter=0.1,
                  camera_radius=1.0,
                  camera_min_angle=0,
@@ -181,6 +187,7 @@ class Dominoes(RigidbodiesDataset):
         self.collision_axis_length = collision_axis_length
         self.force_scale_range = force_scale_range
         self.force_angle_range = force_angle_range
+        self.force_offset = force_offset
         self.force_offset_jitter = force_offset_jitter
 
         ## camera properties
@@ -408,8 +415,11 @@ class Dominoes(RigidbodiesDataset):
             scale_range=pmass * np.array(self.force_scale_range),
             angle_range=self.force_angle_range)
         self.push_position = {
-            k:v+random.uniform(-self.force_offset_jitter, self.force_offset_jitter)
+            k:v+self.force_offset[k]*self.scales[-1][k]
             for k,v in self.probe_initial_position.items()}
+        self.push_position = {
+            k:v+random.uniform(-self.force_offset_jitter, self.force_offset_jitter)
+            for k,v in self.push_position.items()}
         push = {
             "$type": "apply_force_at_position",
             "force": self.push_force,
@@ -549,6 +559,7 @@ if __name__ == "__main__":
         collision_axis_length=args.collision_axis_length,
         force_scale_range=args.fscale,
         force_angle_range=args.frot,
+        force_offset=args.foffset,
         force_offset_jitter=args.fjitter,
         spacing_jitter=args.spacing_jitter,
         middle_rotation_range=args.mrot,
