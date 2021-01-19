@@ -10,13 +10,16 @@ from tdw.output_data import OutputData, Rigidbodies, Collision, EnvironmentColli
 from tdw.librarian import ModelRecord
 from tdw.tdw_utils import TDWUtils
 from tdw_physics.transforms_dataset import TransformsDataset
-from tdw_physics.util import MODEL_LIBRARIES
+from tdw_physics.util import MODEL_LIBRARIES, str_to_xyz
 
 
 def handle_random_transform_args(args):
     if args is not None:
-        args = json.loads(args)
-        print("args", args)
+        try:
+            args = json.loads(args)
+        except:
+            args = str_to_xyz(args)
+
         if 'class' in args:
             data = args['data']
             modname, classname = args['class']
@@ -28,10 +31,6 @@ def handle_random_transform_args(args):
             assert "x" in args, args
             assert "y" in args, args
             assert "z" in args, args
-        elif isinstance(args, str):
-            xyz = args.split(',')
-            assert len(xyz) == 3, (args, xyz)
-            args = {"x":xyz[0], "y":xyz[1], "z":xyz[2]}
         elif hasattr(args, '__len__'):
             assert len(args) == 2, args
         else:

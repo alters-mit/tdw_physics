@@ -13,7 +13,7 @@ from tdw.librarian import ModelRecord
 from tdw_physics.rigidbodies_dataset import (RigidbodiesDataset,
                                              get_random_xyz_transform,
                                              handle_random_transform_args)
-from tdw_physics.util import MODEL_LIBRARIES, get_parser, xyz_to_arr, arr_to_xyz
+from tdw_physics.util import MODEL_LIBRARIES, get_parser, xyz_to_arr, arr_to_xyz, str_to_xyz
 
 
 MODEL_NAMES = [r.name for r in MODEL_LIBRARIES['models_flex.json'].records]
@@ -30,15 +30,22 @@ def get_args(dataset_dir: str):
                         type=str,
                         default="cube",
                         help="comma-separated list of possible target objects")
+    parser.add_argument("--probe",
+                        type=str,
+                        default="sphere",
+                        help="comma-separated list of possible target objects")
     parser.add_argument("--tscale",
                         type=str,
-                        # default="0.1,0.5,0.25",
-                        default="[0.2,0.3]",
+                        default="0.1,0.5,0.25",
                         help="scale of target objects")
     parser.add_argument("--trot",
                         type=str,
                         default="0.,0.,0.",
                         help="comma separated list of initial target rotation values")
+    parser.add_argument("--pscale",
+                        type=str,
+                        default="0.2,0.2,0.2",
+                        help="scale of probe objects")
     parser.add_argument("--color",
                         type=str,
                         default=None,
@@ -73,6 +80,8 @@ def get_args(dataset_dir: str):
     args.tscale = handle_random_transform_args(args.tscale)
     args.trot = handle_random_transform_args(args.trot)
 
+    args.pscale = handle_random_transform_args(args.pscale)
+
     if args.target is not None:
         targ_list = args.target.split(',')
         assert all([t in MODEL_NAMES for t in targ_list]), \
@@ -80,6 +89,15 @@ def get_args(dataset_dir: str):
         args.target = targ_list
     else:
         args.target = MODEL_NAMES
+
+    if args.probe is not None:
+        probe_list = args.probe.split(',')
+        assert all([t in MODEL_NAMES for t in probe_list]), \
+            "All target object names must be elements of %s" % MODEL_NAMES
+        args.probe = probe_list
+    else:
+        args.probe = MODEL_NAMES
+
 
     if args.color is not None:
         rgb = [float(c) for c in args.color.split(',')]
@@ -96,10 +114,10 @@ class Dominoes(RigidbodiesDataset):
 
     def __init__(self,
                  port: int = 1071,
-                 drop_objects=MODEL_NAMES,
+                 probe_objects=MODEL_NAMES,
                  target_objects=MODEL_NAMES,
                  height_range=[0.5, 1.5],
-                 drop_scale_range=[0.2, 0.3],
+                 probe_scale_range=[0.2, 0.3],
                  target_scale_range=[0.2, 0.3],
                  drop_jitter=0.02,
                  drop_rotation_range=None,
@@ -116,17 +134,15 @@ class Dominoes(RigidbodiesDataset):
         super().__init__(port=port, **kwargs)
 
         ## allowable object types
-        self.set_drop_types(drop_objects)
+        self.set_probe_types(probe_objects)
         self.set_target_types(target_objects)
 
         ## object generation properties
-        self.height_range = height_range
-        self.drop_scale_range = drop_scale_range
         self.target_scale_range = target_scale_range
-        self.drop_jitter = drop_jitter
         self.target_color = target_color
-        self.drop_rotation_range = drop_rotation_range
         self.target_rotation_range = target_rotation_range
+
+        self.probe_scale_range = probe_scale_range
 
         ## camera properties
         self.camera_radius = camera_radius
@@ -140,9 +156,9 @@ class Dominoes(RigidbodiesDataset):
         tlist = [r for r in recs if r.name in objlist]
         return tlist
 
-    def set_drop_types(self, olist):
+    def set_probe_types(self, olist):
         tlist = self.get_types(olist)
-        self._drop_types = tlist
+        self._probe_types = tlist
 
     def set_target_types(self, olist):
         tlist = self.get_types(olist)
@@ -152,12 +168,11 @@ class Dominoes(RigidbodiesDataset):
         super().clear_static_data()
 
         ## scenario-specific metadata: object types and drop position
-        self.heights = np.empty(dtype=np.float32, shape=0)
         self.target_type = None
-        self.drop_type = None
-        self.drop_position = None
-        self.drop_rotation = None
         self.target_rotation = None
+
+        self.probe_type = None
+        self.probe_push = None
 
     def get_field_of_view(self) -> float:
         return 55
@@ -179,19 +194,19 @@ class Dominoes(RigidbodiesDataset):
         # Choose and place a target object.
         commands.extend(self._place_target_object())
 
-        # Choose and drop an object.
-        commands.extend(self._place_drop_object())
+        # Choose, place, and push a probe object.
+        commands.extend(self._place_and_push_probe_object())
 
         # Teleport the avatar to a reasonable position based on the drop height.
         a_pos = self.get_random_avatar_position(radius_min=self.camera_radius,
                                                 radius_max=self.camera_radius,
                                                 angle_min=self.camera_min_angle,
                                                 angle_max=self.camera_max_angle,
-                                                y_min=self.drop_height * self.camera_min_height,
-                                                y_max=self.drop_height * self.camera_max_height,
+                                                y_min=self.camera_min_height,
+                                                y_max=self.camera_max_height,
                                                 center=TDWUtils.VECTOR3_ZERO)
 
-        cam_aim = {"x": 0, "y": self.drop_height * 0.5, "z": 0}
+        cam_aim = {"x": 0, "y": 0.5, "z": 0}
         commands.extend([
             {"$type": "teleport_avatar_to",
              "position": a_pos},
@@ -210,10 +225,8 @@ class Dominoes(RigidbodiesDataset):
 
         ## color and scales of primitive objects
         static_group.create_dataset("target_type", data=self.target_type)
-        static_group.create_dataset("drop_type", data=self.drop_type)
-        static_group.create_dataset("drop_position", data=xyz_to_arr(self.drop_position))
-        static_group.create_dataset("drop_rotation", data=xyz_to_arr(self.drop_rotation))
         static_group.create_dataset("target_rotation", data=xyz_to_arr(self.target_rotation))
+        static_group.create_dataset("probe_type", data=self.probe_type)
 
     def _write_frame(self,
                      frames_grp: h5py.Group,
@@ -248,9 +261,9 @@ class Dominoes(RigidbodiesDataset):
         # Consider integrating!
         record, data = self.random_primitive(self._target_types,
                                              scale=self.target_scale_range,
-                                             # scale={"x":0.1, "y": 0.5, "z": 0.25},
                                              color=self.target_color)
         o_id, scale, rgb = [data[k] for k in ["id", "scale", "color"]]
+        self.target = record
         self.target_type = data["name"]
         self.object_color = rgb if self.monochrome else None
 
@@ -263,7 +276,7 @@ class Dominoes(RigidbodiesDataset):
             self.add_physics_object(
                 record=record,
                 position={
-                    "x": 0.25,
+                    "x": 0.5,
                     "y": 0.,
                     "z": 0.
                 },
@@ -273,7 +286,6 @@ class Dominoes(RigidbodiesDataset):
                 static_friction=random.uniform(0, 0.9),
                 bounciness=random.uniform(0, 1),
                 o_id=o_id))
-
 
         # Scale the object and set its color.
         commands.extend([
@@ -285,6 +297,61 @@ class Dominoes(RigidbodiesDataset):
              "id": o_id}])
 
         return commands
+
+    def _place_and_push_probe_object(self) -> List[dict]:
+        record, data = self.random_primitive(self._probe_types,
+                                             scale=self.probe_scale_range,
+                                             color=self.object_color)
+        o_id, scale, rgb = [data[k] for k in ["id", "scale", "color"]]
+        self.probe = record
+        self.probe_type = data["name"]
+
+        print("target", self.target.bounds)
+
+        # Add the object with random physics values
+        commands = []
+
+        ### TODO: better sampling of random physics values
+        pmass = random.uniform(2,7)
+        commands.extend(
+            self.add_physics_object(
+                record=record,
+                position={
+                    "x": -0.5,
+                    "y": 0.,
+                    "z": 0.
+                },
+                rotation=TDWUtils.VECTOR3_ZERO,
+                mass=pmass,
+                dynamic_friction=random.uniform(0, 0.9),
+                static_friction=random.uniform(0, 0.9),
+                bounciness=random.uniform(0, 1),
+                o_id=o_id))
+
+        # Scale the object and set its color.
+        commands.extend([
+            {"$type": "set_color",
+             "color": {"r": rgb[0], "g": rgb[1], "b": rgb[2], "a": 1.},
+             "id": o_id},
+            {"$type": "scale_object",
+             "scale_factor": scale,
+             "id": o_id}])
+
+        # Apply a force to the probe object
+        force_scale = random.uniform(0., 7.5)
+        push = {
+            "$type": "apply_force_to_object",
+            "force": {
+                "x": force_scale * pmass,
+                "y": 0.,
+                "z": random.uniform(-7.5,7.5)
+            },
+            "id": int(o_id)
+        }
+        commands.append(push)
+
+        return commands
+
 
     def _place_drop_object(self) -> List[dict]:
         """
@@ -347,13 +414,16 @@ if __name__ == "__main__":
     args = get_args("dominoes")
     print("all object types", MODEL_NAMES)
     print("target objects", args.target)
+    print("probe objects", args.probe)
 
     DomC = Dominoes(
         randomize=args.random,
         seed=args.seed,
         target_objects=args.target,
+        probe_objects=args.probe,
         target_scale_range=args.tscale,
         target_rotation_range=args.trot,
+        probe_scale_range=args.pscale,
         target_color=args.color,
         camera_radius=args.camera_distance,
         camera_min_angle=args.camera_min_angle,
