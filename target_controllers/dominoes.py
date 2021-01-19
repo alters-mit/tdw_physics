@@ -26,6 +26,10 @@ def get_args(dataset_dir: str):
     common = get_parser(dataset_dir, get_help=False)
     parser = ArgumentParser(parents=[common])
 
+    parser.add_argument("--num_middle_objects",
+                        type=int,
+                        default=0,
+                        help="The number of middle objects to place")
     parser.add_argument("--target",
                         type=str,
                         default="cube",
@@ -50,6 +54,10 @@ def get_args(dataset_dir: str):
                         type=str,
                         default=None,
                         help="comma-separated R,G,B values for the target object color. Defaults to random.")
+    parser.add_argument("--collision_axis_length",
+                        type=float,
+                        default=1.,
+                        help="Length of spacing between probe and target objects at initialization.")
     parser.add_argument("--camera_distance",
                         type=float,
                         default=1.25,
@@ -116,13 +124,11 @@ class Dominoes(RigidbodiesDataset):
                  port: int = 1071,
                  probe_objects=MODEL_NAMES,
                  target_objects=MODEL_NAMES,
-                 height_range=[0.5, 1.5],
                  probe_scale_range=[0.2, 0.3],
                  target_scale_range=[0.2, 0.3],
-                 drop_jitter=0.02,
-                 drop_rotation_range=None,
                  target_rotation_range=None,
                  target_color=None,
+                 collision_axis_length=1.,
                  camera_radius=1.0,
                  camera_min_angle=0,
                  camera_max_angle=360,
@@ -143,6 +149,9 @@ class Dominoes(RigidbodiesDataset):
         self.target_rotation_range = target_rotation_range
 
         self.probe_scale_range = probe_scale_range
+
+        ## Scenario config properties
+        self.collision_axis_length = collision_axis_length
 
         ## camera properties
         self.camera_radius = camera_radius
@@ -197,6 +206,9 @@ class Dominoes(RigidbodiesDataset):
         # Choose, place, and push a probe object.
         commands.extend(self._place_and_push_probe_object())
 
+        # Build the intermediate structure that captures some aspect of "intuitive physics."
+        commands.extend(self._build_intermediate_structure())
+
         # Teleport the avatar to a reasonable position based on the drop height.
         a_pos = self.get_random_avatar_position(radius_min=self.camera_radius,
                                                 radius_max=self.camera_radius,
@@ -240,7 +252,7 @@ class Dominoes(RigidbodiesDataset):
         return frame, objs, tr, sleeping and frame_num < 300
 
     def is_done(self, resp: List[bytes], frame: int) -> bool:
-        return frame > 300
+        return frame > 200
 
     def get_rotation(self, rot_range):
         if rot_range is None:
@@ -252,7 +264,7 @@ class Dominoes(RigidbodiesDataset):
 
     def _place_target_object(self) -> List[dict]:
         """
-        Place a primitive object at the room center.
+        Place a primitive object at one end of the collision axis.
         """
 
         # create a target object
@@ -276,7 +288,7 @@ class Dominoes(RigidbodiesDataset):
             self.add_physics_object(
                 record=record,
                 position={
-                    "x": 0.5,
+                    "x": 0.5 * self.collision_axis_length,
                     "y": 0.,
                     "z": 0.
                 },
@@ -299,6 +311,9 @@ class Dominoes(RigidbodiesDataset):
         return commands
 
     def _place_and_push_probe_object(self) -> List[dict]:
+        """
+        Place a probe object at the other end of the collision axis, then apply a force to push it.
+        """
         record, data = self.random_primitive(self._probe_types,
                                              scale=self.probe_scale_range,
                                              color=self.object_color)
@@ -317,7 +332,7 @@ class Dominoes(RigidbodiesDataset):
             self.add_physics_object(
                 record=record,
                 position={
-                    "x": -0.5,
+                    "x": -0.5 * self.collision_axis_length,
                     "y": 0.,
                     "z": 0.
                 },
@@ -352,60 +367,88 @@ class Dominoes(RigidbodiesDataset):
 
         return commands
 
-
-    def _place_drop_object(self) -> List[dict]:
+    def _build_intermediate_structure(self) -> List[dict]:
         """
-        Position a primitive object at some height and drop it.
-
-        :param record: The object model record.
-        :param height: The initial height from which to drop the object.
-        :param scale: The scale of the object.
-
-
-        :return: A list of commands to add the object to the simulation.
+        Abstract method for building a physically interesting intermediate structure between the probe and the target.
         """
-
-        # Create an object to drop.
-        record, data = self.random_primitive(self._drop_types,
-                                             scale=self.drop_scale_range,
-                                             color=self.object_color)
-        o_id, scale, rgb = [data[k] for k in ["id", "scale", "color"]]
-        self.drop_type = data["name"]
-
-        # Choose the drop position and pose.
-        height = random.uniform(self.height_range[0], self.height_range[1])
-        self.heights = np.append(self.heights, height)
-        self.drop_height = height
-        self.drop_position = {
-            "x": random.uniform(-self.drop_jitter, self.drop_jitter),
-            "y": height,
-            "z": random.uniform(-self.drop_jitter, self.drop_jitter)
-        }
-
-        if self.drop_rotation is None:
-            self.drop_rotation = self.get_rotation(self.drop_rotation_range)
-
-        # Add the object with random physics values.
         commands = []
-        # commands.extend(
-        #     self.add_physics_object(
-        #         record=record,
-        #         position=self.drop_position,
-        #         rotation=self.drop_rotation,
-        #         mass=random.uniform(2,7),
-        #         dynamic_friction=random.uniform(0, 0.9),
-        #         static_friction=random.uniform(0, 0.9),
-        #         bounciness=random.uniform(0, 1),
-        #         o_id=o_id))
+        return commands
 
-        # # Scale the object and set its color.
-        # commands.extend([
-        #     {"$type": "set_color",
-        #      "color": {"r": rgb[0], "g": rgb[1], "b": rgb[2], "a": 1.},
-        #      "id": o_id},
-        #     {"$type": "scale_object",
-        #      "scale_factor": scale,
-        #      "id": o_id}])
+class MultiDominoes(Dominoes):
+
+    def __init__(self,
+                 port: int = 1071,
+                 middle_objects=None,
+                 num_middle_objects=1,
+                 **kwargs):
+
+        super().__init__(port=port, **kwargs)
+
+        # Default to same type as target
+        self.set_middle_types(middle_objects)
+
+        # How many middle objects and their spacing
+        self.num_middle_objects = num_middle_objects
+        self.spacing = self.collision_axis_length / (self.num_middle_objects + 1.)
+
+    def set_middle_types(self, olist):
+        if olist is None:
+            self._middle_types = self._target_types
+        else:
+            tlist = self.get_types(olist)
+            self._middle_types = tlist
+
+    def clear_static_data(self) -> None:
+        super().clear_static_data()
+
+        self.middle_type = None
+
+    def _write_static_data(self, static_group: h5py.Group) -> None:
+        super()._write_static_data(static_group)
+
+        static_group.create_dataset("middle_type", data=self.middle_type)
+
+    def _build_intermediate_structure(self) -> List[dict]:
+        return self._place_middle_objects() if bool(self.num_middle_objects) else []
+
+    def _place_middle_objects(self) -> List[dict]:
+
+        offset = -0.5 * self.collision_axis_length
+
+        commands = []
+        for m in range(self.num_middle_objects):
+            offset += self.spacing
+            record, data = self.random_primitive(self._middle_types,
+                                                 scale=self.target_scale_range,
+                                                 color=self.object_color)
+            o_id, scale, rgb = [data[k] for k in ["id", "scale", "color"]]
+            self.middle_type = data["name"]
+
+            commands.extend(
+                self.add_physics_object(
+                    record=record,
+                    position={
+                        "x": offset,
+                        "y": 0.,
+                        "z": 0.
+                    },
+                    rotation=self.target_rotation,
+                    mass=random.uniform(2,7),
+                    dynamic_friction=random.uniform(0, 0.9),
+                    static_friction=random.uniform(0, 0.9),
+                    bounciness=random.uniform(0, 1),
+                    o_id=o_id))
+
+            # Scale the object and set its color.
+            commands.extend([
+                {"$type": "set_color",
+                 "color": {"r": rgb[0], "g": rgb[1], "b": rgb[2], "a": 1.},
+                 "id": o_id},
+                {"$type": "scale_object",
+                 "scale_factor": scale,
+                 "id": o_id}])
+
+            print("placed middle object %s" % str(m+1))
 
         return commands
 
@@ -416,7 +459,8 @@ if __name__ == "__main__":
     print("target objects", args.target)
     print("probe objects", args.probe)
 
-    DomC = Dominoes(
+    DomC = MultiDominoes(
+        num_middle_objects=args.num_middle_objects,
         randomize=args.random,
         seed=args.seed,
         target_objects=args.target,
@@ -425,6 +469,7 @@ if __name__ == "__main__":
         target_rotation_range=args.trot,
         probe_scale_range=args.pscale,
         target_color=args.color,
+        collision_axis_length=args.collision_axis_length,
         camera_radius=args.camera_distance,
         camera_min_angle=args.camera_min_angle,
         camera_max_angle=args.camera_max_angle,
