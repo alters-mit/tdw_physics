@@ -46,10 +46,26 @@ def get_args(dataset_dir: str):
                         type=str,
                         default="0.,0.,0.",
                         help="comma separated list of initial target rotation values")
+    parser.add_argument("--mrot",
+                        type=str,
+                        default="[-60,60]",
+                        help="comma separated list of initial middle object rotation values")
     parser.add_argument("--pscale",
                         type=str,
                         default="0.2,0.2,0.2",
                         help="scale of probe objects")
+    parser.add_argument("--fscale",
+                        type=str,
+                        default="[4.0,10.0]",
+                        help="range of scales to apply to push force")
+    parser.add_argument("--frot",
+                        type=str,
+                        default="[-30,30]",
+                        help="range of angles in xz plane to apply push force")
+    parser.add_argument("--fjitter",
+                        type=float,
+                        default=0.0,
+                        help="jitter around object centroid to apply force")
     parser.add_argument("--color",
                         type=str,
                         default=None,
@@ -68,11 +84,11 @@ def get_args(dataset_dir: str):
                         help="radial distance from camera to centerpoint")
     parser.add_argument("--camera_min_height",
                         type=float,
-                        default=1./3,
+                        default=0.25,
                          help="min height of camera as a fraction of drop height")
     parser.add_argument("--camera_max_height",
                         type=float,
-                        default=2./3,
+                        default=1.0,
                         help="max height of camera as a fraction of drop height")
     parser.add_argument("--camera_min_angle",
                         type=float,
@@ -80,7 +96,7 @@ def get_args(dataset_dir: str):
                         help="minimum angle of camera rotation around centerpoint")
     parser.add_argument("--camera_max_angle",
                         type=float,
-                        default=0,
+                        default=180,
                         help="maximum angle of camera rotation around centerpoint")
 
     args = parser.parse_args()
@@ -91,8 +107,12 @@ def get_args(dataset_dir: str):
     # scaling and rotating of objects
     args.tscale = handle_random_transform_args(args.tscale)
     args.trot = handle_random_transform_args(args.trot)
-
     args.pscale = handle_random_transform_args(args.pscale)
+    args.mrot = handle_random_transform_args(args.mrot)
+
+    # the push force scale and direction
+    args.fscale = handle_random_transform_args(args.fscale)
+    args.frot = handle_random_transform_args(args.frot)
 
     if args.target is not None:
         targ_list = args.target.split(',')
@@ -133,6 +153,9 @@ class Dominoes(RigidbodiesDataset):
                  target_rotation_range=None,
                  target_color=None,
                  collision_axis_length=1.,
+                 force_scale_range=[0.,8.],
+                 force_angle_range=[-60,60],
+                 force_offset_jitter=0.1,
                  camera_radius=1.0,
                  camera_min_angle=0,
                  camera_max_angle=360,
@@ -156,6 +179,9 @@ class Dominoes(RigidbodiesDataset):
 
         ## Scenario config properties
         self.collision_axis_length = collision_axis_length
+        self.force_scale_range = force_scale_range
+        self.force_angle_range = force_angle_range
+        self.force_offset_jitter = force_offset_jitter
 
         ## camera properties
         self.camera_radius = camera_radius
@@ -185,7 +211,8 @@ class Dominoes(RigidbodiesDataset):
         self.target_rotation = None
 
         self.probe_type = None
-        self.probe_push = None
+        self.push_force = None
+        self.push_position = None
 
     def get_field_of_view(self) -> float:
         return 55
@@ -243,6 +270,8 @@ class Dominoes(RigidbodiesDataset):
         static_group.create_dataset("target_type", data=self.target_type)
         static_group.create_dataset("target_rotation", data=xyz_to_arr(self.target_rotation))
         static_group.create_dataset("probe_type", data=self.probe_type)
+        static_group.create_dataset("push_force", data=xyz_to_arr(self.push_force))
+        static_group.create_dataset("push_position", data=xyz_to_arr(self.push_position))
 
     def _write_frame(self,
                      frames_grp: h5py.Group,
@@ -262,9 +291,28 @@ class Dominoes(RigidbodiesDataset):
         if rot_range is None:
             return {"x": 0,
                     "y": random.uniform(0, 360),
-                    "z": 0}
+                    "z": 0.}
         else:
             return get_random_xyz_transform(rot_range)
+
+    def get_y_rotation(self, rot_range):
+        if rot_range is None:
+            return self.get_rotation(rot_range)
+        else:
+            return {"x": 0.,
+                    "y": random.uniform(rot_range[0], rot_range[1]),
+                    "z": 0.}
+
+    def get_push_force(self, scale_range, angle_range):
+        # rotate a unit vector initially pointing in positive-x direction
+        theta = np.radians(random.uniform(angle_range[0], angle_range[1]))
+        push = np.array([np.cos(theta), 0., np.sin(theta)])
+
+        # scale it
+        push *= random.uniform(scale_range[0], scale_range[1])
+
+        # convert to xyz
+        return arr_to_xyz(push)
 
     def _place_target_object(self) -> List[dict]:
         """
@@ -334,14 +382,11 @@ class Dominoes(RigidbodiesDataset):
 
         ### TODO: better sampling of random physics values
         pmass = random.uniform(2,7)
+        self.probe_initial_position = {"x": -0.5*self.collision_axis_length, "y": 0., "z": 0.}
         commands.extend(
             self.add_physics_object(
                 record=record,
-                position={
-                    "x": -0.5 * self.collision_axis_length,
-                    "y": 0.,
-                    "z": 0.
-                },
+                position=self.probe_initial_position,
                 rotation=TDWUtils.VECTOR3_ZERO,
                 mass=pmass,
                 dynamic_friction=random.uniform(0, 0.9),
@@ -359,14 +404,16 @@ class Dominoes(RigidbodiesDataset):
              "id": o_id}])
 
         # Apply a force to the probe object
-        force_scale = random.uniform(0., 7.5)
+        self.push_force = self.get_push_force(
+            scale_range=pmass * np.array(self.force_scale_range),
+            angle_range=self.force_angle_range)
+        self.push_position = {
+            k:v+random.uniform(-self.force_offset_jitter, self.force_offset_jitter)
+            for k,v in self.probe_initial_position.items()}
         push = {
-            "$type": "apply_force_to_object",
-            "force": {
-                "x": force_scale * pmass,
-                "y": 0.,
-                "z": random.uniform(-7.5,7.5)
-            },
+            "$type": "apply_force_at_position",
+            "force": self.push_force,
+            "position": self.push_position,
             "id": int(o_id)
         }
         commands.append(push)
@@ -387,6 +434,7 @@ class MultiDominoes(Dominoes):
                  middle_objects=None,
                  num_middle_objects=1,
                  middle_scale_range=None,
+                 middle_rotation_range=None,
                  middle_color=None,
                  spacing_jitter=0.25,
                  **kwargs):
@@ -398,6 +446,7 @@ class MultiDominoes(Dominoes):
 
         # Appearance of middle objects
         self.middle_scale_range = middle_scale_range or self.target_scale_range
+        self.middle_rotation_range = middle_rotation_range
         self.middle_color = middle_color
 
         # How many middle objects and their spacing
@@ -421,7 +470,8 @@ class MultiDominoes(Dominoes):
     def _write_static_data(self, static_group: h5py.Group) -> None:
         super()._write_static_data(static_group)
 
-        static_group.create_dataset("middle_type", data=self.middle_type)
+        if bool(self.num_middle_objects):
+            static_group.create_dataset("middle_type", data=self.middle_type)
 
     def _build_intermediate_structure(self) -> List[dict]:
         # set the middle object color
@@ -448,6 +498,7 @@ class MultiDominoes(Dominoes):
                                                  scale=self.middle_scale_range,
                                                  color=self.middle_color)
             o_id, scale, rgb = [data[k] for k in ["id", "scale", "color"]]
+            rot = self.get_y_rotation(self.middle_rotation_range)
             self.middle_type = data["name"]
 
             commands.extend(
@@ -458,7 +509,7 @@ class MultiDominoes(Dominoes):
                         "y": 0.,
                         "z": 0.
                     },
-                    rotation=self.target_rotation,
+                    rotation=rot,
                     mass=random.uniform(2,7),
                     dynamic_friction=random.uniform(0, 0.9),
                     static_friction=random.uniform(0, 0.9),
@@ -496,7 +547,11 @@ if __name__ == "__main__":
         probe_scale_range=args.pscale,
         target_color=args.color,
         collision_axis_length=args.collision_axis_length,
+        force_scale_range=args.fscale,
+        force_angle_range=args.frot,
+        force_offset_jitter=args.fjitter,
         spacing_jitter=args.spacing_jitter,
+        middle_rotation_range=args.mrot,
         ## not scenario-specific
         camera_radius=args.camera_distance,
         camera_min_angle=args.camera_min_angle,

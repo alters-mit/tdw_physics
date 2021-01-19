@@ -24,7 +24,6 @@ def arr_to_xyz(arr : np.ndarray):
     xyz = {k:arr[i] for i,k in enumerate(["x","y","z"])}
     return xyz
 
-
 def get_move_along_direction(pos: Dict[str, float], target: Dict[str, float], d: float, noise: float = 0) -> \
         Dict[str, float]:
     """

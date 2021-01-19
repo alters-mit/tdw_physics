@@ -32,7 +32,7 @@ def handle_random_transform_args(args):
             assert "y" in args, args
             assert "z" in args, args
         elif hasattr(args, '__len__'):
-            assert len(args) == 2, args
+            assert len(args) == 2, (args, len(args))
         else:
             args + 0.0
     return args
