@@ -58,6 +58,10 @@ def get_args(dataset_dir: str):
                         type=float,
                         default=1.,
                         help="Length of spacing between probe and target objects at initialization.")
+    parser.add_argument("--spacing_jitter",
+                        type=float,
+                        default=0.25,
+                        help="jitter in how to space middle objects, as a fraction of uniform spacing")
     parser.add_argument("--camera_distance",
                         type=float,
                         default=1.25,
@@ -277,7 +281,7 @@ class Dominoes(RigidbodiesDataset):
         o_id, scale, rgb = [data[k] for k in ["id", "scale", "color"]]
         self.target = record
         self.target_type = data["name"]
-        self.object_color = rgb if self.monochrome else None
+        self.probe_color = rgb if self.monochrome else None
 
         # add the object
         commands = []
@@ -316,7 +320,9 @@ class Dominoes(RigidbodiesDataset):
         """
         record, data = self.random_primitive(self._probe_types,
                                              scale=self.probe_scale_range,
-                                             color=self.object_color)
+                                             color=self.probe_color,
+                                             exclude_color=(self.target_color if not self.monochrome else None),
+                                             exclude_range=0.25)
         o_id, scale, rgb = [data[k] for k in ["id", "scale", "color"]]
         self.probe = record
         self.probe_type = data["name"]
@@ -380,6 +386,9 @@ class MultiDominoes(Dominoes):
                  port: int = 1071,
                  middle_objects=None,
                  num_middle_objects=1,
+                 middle_scale_range=None,
+                 middle_color=None,
+                 spacing_jitter=0.25,
                  **kwargs):
 
         super().__init__(port=port, **kwargs)
@@ -387,9 +396,14 @@ class MultiDominoes(Dominoes):
         # Default to same type as target
         self.set_middle_types(middle_objects)
 
+        # Appearance of middle objects
+        self.middle_scale_range = middle_scale_range or self.target_scale_range
+        self.middle_color = middle_color
+
         # How many middle objects and their spacing
         self.num_middle_objects = num_middle_objects
         self.spacing = self.collision_axis_length / (self.num_middle_objects + 1.)
+        self.spacing_jitter = spacing_jitter
 
     def set_middle_types(self, olist):
         if olist is None:
@@ -402,6 +416,7 @@ class MultiDominoes(Dominoes):
         super().clear_static_data()
 
         self.middle_type = None
+        self.middle_color = None
 
     def _write_static_data(self, static_group: h5py.Group) -> None:
         super()._write_static_data(static_group)
@@ -409,18 +424,29 @@ class MultiDominoes(Dominoes):
         static_group.create_dataset("middle_type", data=self.middle_type)
 
     def _build_intermediate_structure(self) -> List[dict]:
+        # set the middle object color
+        self.middle_color = self.middle_color or (self.probe_color if self.monochrome else self.random_color())
+
         return self._place_middle_objects() if bool(self.num_middle_objects) else []
 
     def _place_middle_objects(self) -> List[dict]:
 
         offset = -0.5 * self.collision_axis_length
+        min_offset = offset + self.scales[-1]["x"]
+        max_offset = 0.5 * self.collision_axis_length - self.scales[0]["x"]
 
         commands = []
         for m in range(self.num_middle_objects):
-            offset += self.spacing
+            offset += self.spacing * random.uniform(1.-self.spacing_jitter, 1.+self.spacing_jitter)
+            offset = np.minimum(np.maximum(offset, min_offset), max_offset)
+            if offset >= max_offset:
+                print("couldn't place middle object %s" % str(m+1))
+                break
+
+            print("middle color", self.middle_color)
             record, data = self.random_primitive(self._middle_types,
-                                                 scale=self.target_scale_range,
-                                                 color=self.object_color)
+                                                 scale=self.middle_scale_range,
+                                                 color=self.middle_color)
             o_id, scale, rgb = [data[k] for k in ["id", "scale", "color"]]
             self.middle_type = data["name"]
 
@@ -470,6 +496,8 @@ if __name__ == "__main__":
         probe_scale_range=args.pscale,
         target_color=args.color,
         collision_axis_length=args.collision_axis_length,
+        spacing_jitter=args.spacing_jitter,
+        ## not scenario-specific
         camera_radius=args.camera_distance,
         camera_min_angle=args.camera_min_angle,
         camera_max_angle=args.camera_max_angle,
