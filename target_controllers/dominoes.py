@@ -107,49 +107,50 @@ def get_args(dataset_dir: str, parse=True):
                         default=180,
                         help="maximum angle of camera rotation around centerpoint")
 
+    def postprocess(args):
+        # whether to set all objects same color
+        args.monochrome = bool(args.monochrome)
+
+        # scaling and rotating of objects
+        args.tscale = handle_random_transform_args(args.tscale)
+        args.trot = handle_random_transform_args(args.trot)
+        args.pscale = handle_random_transform_args(args.pscale)
+        args.mrot = handle_random_transform_args(args.mrot)
+
+        # the push force scale and direction
+        args.fscale = handle_random_transform_args(args.fscale)
+        args.frot = handle_random_transform_args(args.frot)
+        args.foffset = handle_random_transform_args(args.foffset)
+
+        if args.target is not None:
+            targ_list = args.target.split(',')
+            assert all([t in MODEL_NAMES for t in targ_list]), \
+                "All target object names must be elements of %s" % MODEL_NAMES
+            args.target = targ_list
+        else:
+            args.target = MODEL_NAMES
+
+        if args.probe is not None:
+            probe_list = args.probe.split(',')
+            assert all([t in MODEL_NAMES for t in probe_list]), \
+                "All target object names must be elements of %s" % MODEL_NAMES
+            args.probe = probe_list
+        else:
+            args.probe = MODEL_NAMES
+
+        if args.color is not None:
+            rgb = [float(c) for c in args.color.split(',')]
+            assert len(rgb) == 3, rgb
+            args.color = rgb
+
+        return args
+
     if not parse:
-        return parser
-
-    args = parser.parse_args()
-
-    # whether to set all objects same color
-    args.monochrome = bool(args.monochrome)
-
-    # scaling and rotating of objects
-    args.tscale = handle_random_transform_args(args.tscale)
-    args.trot = handle_random_transform_args(args.trot)
-    args.pscale = handle_random_transform_args(args.pscale)
-    args.mrot = handle_random_transform_args(args.mrot)
-
-    # the push force scale and direction
-    args.fscale = handle_random_transform_args(args.fscale)
-    args.frot = handle_random_transform_args(args.frot)
-    args.foffset = handle_random_transform_args(args.foffset)
-
-    if args.target is not None:
-        targ_list = args.target.split(',')
-        assert all([t in MODEL_NAMES for t in targ_list]), \
-            "All target object names must be elements of %s" % MODEL_NAMES
-        args.target = targ_list
+        return (parser, postprocess)
     else:
-        args.target = MODEL_NAMES
-
-    if args.probe is not None:
-        probe_list = args.probe.split(',')
-        assert all([t in MODEL_NAMES for t in probe_list]), \
-            "All target object names must be elements of %s" % MODEL_NAMES
-        args.probe = probe_list
-    else:
-        args.probe = MODEL_NAMES
-
-
-    if args.color is not None:
-        rgb = [float(c) for c in args.color.split(',')]
-        assert len(rgb) == 3, rgb
-        args.color = rgb
-
-    return args
-
+        args = parser.parse_args()
+        args = postprocess(args)
+        return args
 
 class Dominoes(RigidbodiesDataset):
     """
