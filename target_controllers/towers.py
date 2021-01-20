@@ -63,10 +63,14 @@ class Tower(MultiDominoes):
 
     def __init__(self,
                  port: int = 1071,
+                 num_blocks=3,
                  tower_cap=[],
                  **kwargs):
 
         Dominoes.__init__(self, port=port, **kwargs)
+
+        # how many blocks in tower, sans cap
+        self.num_blocks = num_blocks
 
         # whether to use a cap
         if len(tower_cap):
@@ -80,12 +84,21 @@ class Tower(MultiDominoes):
         self.cap_color = self.target_color
         return []
 
+    def _build_stack(self) -> List[dict]:
+        commands = []
+        return commands
+
+    def _add_cap(self) -> List[dict]:
+        commands = []
+        return commands
+
 if __name__ == "__main__":
 
     args = get_tower_args("towers")
 
     TC = Tower(
         # tower specific
+        num_blocks=args.num_blocks,
         tower_cap=args.tower_cap,
         # domino specific
         target_objects=args.target,
@@ -110,8 +123,7 @@ if __name__ == "__main__":
         camera_max_height=args.camera_max_height,
         monochrome=args.monochrome
     )
-    import pdb
-    pdb.set_trace()
+    print(TC.num_blocks, [r.name for r in TC._cap_types])
 
     if bool(args.run):
         TC.run(num=args.num,
