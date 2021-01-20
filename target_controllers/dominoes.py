@@ -54,6 +54,10 @@ def get_args(dataset_dir: str, parse=True):
                         type=str,
                         default="0.2,0.2,0.2",
                         help="scale of probe objects")
+    parser.add_argument("--pmass",
+                        type=str,
+                        default="[2.0,7.0]",
+                        help="scale of probe objects")
     parser.add_argument("--fscale",
                         type=str,
                         default="[4.0,10.0]",
@@ -115,6 +119,7 @@ def get_args(dataset_dir: str, parse=True):
         args.tscale = handle_random_transform_args(args.tscale)
         args.trot = handle_random_transform_args(args.trot)
         args.pscale = handle_random_transform_args(args.pscale)
+        args.pmass = handle_random_transform_args(args.pmass)
         args.mrot = handle_random_transform_args(args.mrot)
 
         # the push force scale and direction
@@ -162,6 +167,7 @@ class Dominoes(RigidbodiesDataset):
                  probe_objects=MODEL_NAMES,
                  target_objects=MODEL_NAMES,
                  probe_scale_range=[0.2, 0.3],
+                 probe_mass_range=[2.,7.],
                  target_scale_range=[0.2, 0.3],
                  target_rotation_range=None,
                  target_color=None,
@@ -192,6 +198,7 @@ class Dominoes(RigidbodiesDataset):
         self.target_rotation_range = target_rotation_range
 
         self.probe_scale_range = probe_scale_range
+        self.probe_mass_range = probe_mass_range
         self.match_probe_and_target_color = True
 
         ## Scenario config properties
@@ -230,6 +237,7 @@ class Dominoes(RigidbodiesDataset):
         self.target_rotation = None
 
         self.probe_type = None
+        self.probe_mass = None
         self.push_force = None
         self.push_position = None
 
@@ -270,6 +278,7 @@ class Dominoes(RigidbodiesDataset):
                                                 y_min=self.camera_min_height,
                                                 y_max=self.camera_max_height,
                                                 center=TDWUtils.VECTOR3_ZERO)
+        print("avatar position", a_pos)
 
         commands.extend([
             {"$type": "teleport_avatar_to",
@@ -291,6 +300,7 @@ class Dominoes(RigidbodiesDataset):
         static_group.create_dataset("target_type", data=self.target_type)
         static_group.create_dataset("target_rotation", data=xyz_to_arr(self.target_rotation))
         static_group.create_dataset("probe_type", data=self.probe_type)
+        static_group.create_dataset("probe_mass", data=self.probe_mass)
         static_group.create_dataset("push_force", data=xyz_to_arr(self.push_force))
         static_group.create_dataset("push_position", data=xyz_to_arr(self.push_position))
 
@@ -394,10 +404,11 @@ class Dominoes(RigidbodiesDataset):
         """
         Place a probe object at the other end of the collision axis, then apply a force to push it.
         """
+        exclude = not (self.monochrome and self.match_probe_and_target_color)
         record, data = self.random_primitive(self._probe_types,
                                              scale=self.probe_scale_range,
                                              color=self.probe_color,
-                                             exclude_color=(self.target_color if not self.monochrome else None),
+                                             exclude_color=(self.target_color if exclude else None),
                                              exclude_range=0.25)
         o_id, scale, rgb = [data[k] for k in ["id", "scale", "color"]]
         self.probe = record
@@ -409,14 +420,14 @@ class Dominoes(RigidbodiesDataset):
         commands = []
 
         ### TODO: better sampling of random physics values
-        pmass = random.uniform(2,7)
+        self.probe_mass = random.uniform(self.probe_mass_range[0], self.probe_mass_range[1])
         self.probe_initial_position = {"x": -0.5*self.collision_axis_length, "y": 0., "z": 0.}
         commands.extend(
             self.add_physics_object(
                 record=record,
                 position=self.probe_initial_position,
                 rotation=TDWUtils.VECTOR3_ZERO,
-                mass=pmass,
+                mass=self.probe_mass,
                 dynamic_friction=random.uniform(0, 0.9),
                 static_friction=random.uniform(0, 0.9),
                 bounciness=random.uniform(0, 1),
@@ -433,7 +444,7 @@ class Dominoes(RigidbodiesDataset):
 
         # Apply a force to the probe object
         self.push_force = self.get_push_force(
-            scale_range=pmass * np.array(self.force_scale_range),
+            scale_range=self.probe_mass * np.array(self.force_scale_range),
             angle_range=self.force_angle_range)
         self.push_position = {
             k:v+self.force_offset[k]*self.scales[-1][k]
@@ -576,6 +587,7 @@ if __name__ == "__main__":
         target_scale_range=args.tscale,
         target_rotation_range=args.trot,
         probe_scale_range=args.pscale,
+        probe_mass_range=args.pmass,
         target_color=args.color,
         collision_axis_length=args.collision_axis_length,
         force_scale_range=args.fscale,

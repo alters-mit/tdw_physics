@@ -41,16 +41,57 @@ def get_tower_args(dataset_dir: str, parse=True):
                         help="Number of rectangular blocks to build the tower base with")
     parser.add_argument("--tower_cap",
                         type=str,
-                        default=None,
+                        default="bowl",
                         help="Object types to use as a capper on the tower")
     parser.add_argument("--spacing_jitter",
                         type=float,
-                        default=0.05,
+                        default=0.1,
                         help="jitter in how to space middle objects, as a fraction of uniform spacing")
+    parser.add_argument("--mrot",
+                        type=str,
+                        default="[-45,45]",
+                        help="comma separated list of initial middle object rotation values")
+    parser.add_argument("--probe",
+                        type=str,
+                        default="sphere",
+                        help="comma-separated list of possible target objects")
+    parser.add_argument("--pmass",
+                        type=str,
+                        default="[3.0,3.0]",
+                        help="scale of probe objects")
+    parser.add_argument("--pscale",
+                        type=str,
+                        default="0.2,0.2,0.2",
+                        help="scale of probe objects")
+    parser.add_argument("--fscale",
+                        type=str,
+                        default="[4.0,15.0]",
+                        help="range of scales to apply to push force")
+    parser.add_argument("--frot",
+                        type=str,
+                        default="[-15,15]",
+                        help="range of angles in xz plane to apply push force")
+    parser.add_argument("--foffset",
+                        type=str,
+                        default="0.0,0.5,0.0",
+                        help="offset from probe centroid from which to apply force, relative to probe scale")
+    parser.add_argument("--fjitter",
+                        type=float,
+                        default=0.0,
+                        help="jitter around object centroid to apply force")
     parser.add_argument("--camera_distance",
                         type=float,
-                        default=2.0,
+                        default=2.5,
                         help="radial distance from camera to centerpoint")
+    parser.add_argument("--camera_min_angle",
+                        type=float,
+                        default=0,
+                        help="minimum angle of camera rotation around centerpoint")
+    parser.add_argument("--camera_max_angle",
+                        type=float,
+                        default=60,
+                        help="maximum angle of camera rotation around centerpoint")
+
 
     def postprocess(args):
 
@@ -142,7 +183,7 @@ class Tower(MultiDominoes):
                 exclude_color=self.target_color)
             o_id, scale, rgb = [data[k] for k in ["id", "scale", "color"]]
             block_pos = self._get_block_position(scale, height)
-            block_rot = {"x": 0., "y": 0., "z": 0.}
+            block_rot = self.get_y_rotation(self.middle_rotation_range)
             commands.extend(
                 self.add_physics_object(
                     record=record,
@@ -231,6 +272,7 @@ if __name__ == "__main__":
         target_scale_range=args.tscale,
         target_rotation_range=args.trot,
         probe_scale_range=args.pscale,
+        probe_mass_range=args.pmass,
         target_color=args.color,
         collision_axis_length=args.collision_axis_length,
         force_scale_range=args.fscale,
