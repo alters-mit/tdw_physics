@@ -292,7 +292,7 @@ class Dominoes(RigidbodiesDataset):
         return frame, objs, tr, sleeping and frame_num < 300
 
     def is_done(self, resp: List[bytes], frame: int) -> bool:
-        return frame > 200
+        return frame > 250
 
     def get_rotation(self, rot_range):
         if rot_range is None:
