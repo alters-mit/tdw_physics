@@ -281,7 +281,7 @@ class RigidbodiesDataset(TransformsDataset, ABC):
         commands.extend([{"$type": "send_collisions",
                           "enter": True,
                           "exit": False,
-                          "stay": False,
+                          "stay": True,
                           "collision_types": ["obj", "env"]},
                          {"$type": "send_rigidbodies",
                           "frequency": "always"}])
@@ -313,6 +313,7 @@ class RigidbodiesDataset(TransformsDataset, ABC):
         collision_ids = np.empty(dtype=np.int32, shape=(0, 2))
         collision_relative_velocities = np.empty(dtype=np.float32, shape=(0, 3))
         collision_contacts = np.empty(dtype=np.float32, shape=(0, 2, 3))
+        collision_states = np.empty(dtype=str, shape=(0, 1))
         # Environment Collision data.
         env_collision_ids = np.empty(dtype=np.int32, shape=(0, 1))
         env_collision_contacts = np.empty(dtype=np.float32, shape=(0, 2, 3))
@@ -336,6 +337,7 @@ class RigidbodiesDataset(TransformsDataset, ABC):
                     angular_velocities[i] = ri_dict[o_id]["ang"]
             elif r_id == "coll":
                 co = Collision(r)
+                collision_states = np.append(collision_states, co.get_state())
                 collision_ids = np.append(collision_ids, [co.get_collider_id(), co.get_collidee_id()])
                 collision_relative_velocities = np.append(collision_relative_velocities, co.get_relative_velocity())
                 for i in range(co.get_num_contacts()):
@@ -354,6 +356,7 @@ class RigidbodiesDataset(TransformsDataset, ABC):
         collisions.create_dataset("relative_velocities", data=collision_relative_velocities.reshape((-1, 3)),
                                   compression="gzip")
         collisions.create_dataset("contacts", data=collision_contacts.reshape((-1, 2, 3)), compression="gzip")
+        collisions.create_dataset("states", data=collision_states.astype('S'), compression="gzip")
         env_collisions = frame.create_group("env_collisions")
         env_collisions.create_dataset("object_ids", data=env_collision_ids, compression="gzip")
         env_collisions.create_dataset("contacts", data=env_collision_contacts.reshape((-1, 2, 3)),
