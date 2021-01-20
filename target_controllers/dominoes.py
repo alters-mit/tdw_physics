@@ -50,6 +50,10 @@ def get_args(dataset_dir: str, parse=True):
                         type=str,
                         default="[-60,60]",
                         help="comma separated list of initial middle object rotation values")
+    parser.add_argument("--mscale",
+                        type=str,
+                        default=None,
+                        help="Scale or scale range for middle objects")
     parser.add_argument("--pscale",
                         type=str,
                         default="0.2,0.2,0.2",
@@ -120,6 +124,7 @@ def get_args(dataset_dir: str, parse=True):
         args.trot = handle_random_transform_args(args.trot)
         args.pscale = handle_random_transform_args(args.pscale)
         args.pmass = handle_random_transform_args(args.pmass)
+        args.mscale = handle_random_transform_args(args.mscale)
         args.mrot = handle_random_transform_args(args.mrot)
 
         # the push force scale and direction

@@ -39,6 +39,14 @@ def get_tower_args(dataset_dir: str, parse=True):
                         type=int,
                         default=3,
                         help="Number of rectangular blocks to build the tower base with")
+    parser.add_argument("--mscale",
+                        type=str,
+                        default="[0.5,0.5]",
+                        help="Scale or scale range for rectangular blocks to sample from")
+    parser.add_argument("--mgrad",
+                        type=float,
+                        default=0.0,
+                        help="Size of block scale gradient going from top to bottom of tower")
     parser.add_argument("--tower_cap",
                         type=str,
                         default="bowl",
@@ -117,10 +125,12 @@ class Tower(MultiDominoes):
     def __init__(self,
                  port: int = 1071,
                  num_blocks=3,
+                 middle_scale_range=[0.5,0.5],
+                 middle_scale_gradient=0.0,
                  tower_cap=[],
                  **kwargs):
 
-        super().__init__(port=port, **kwargs)
+        super().__init__(port=port, middle_scale_range=middle_scale_range, **kwargs)
 
         # probe and target different colors
         self.match_probe_and_target_color = False
@@ -131,6 +141,9 @@ class Tower(MultiDominoes):
 
         # how many blocks in tower, sans cap
         self.num_blocks = num_blocks
+
+        # how to scale the blocks
+        self.middle_scale_gradient = middle_scale_gradient
 
         # whether to use a cap
         if len(tower_cap):
@@ -173,12 +186,19 @@ class Tower(MultiDominoes):
 
     def _build_stack(self) -> List[dict]:
         commands = []
-
         height = 0.
+
+        # build the block scales
+        self.block_scales = [random.uniform(self.middle_scale_range[0], self.middle_scale_range[1])
+                             for _ in range(self.num_blocks)]
+        mid = self.num_blocks / 2.0
+        self.block_scales = [s + (mid - i) * self.middle_scale_gradient for i,s in enumerate(self.block_scales)]
+
+        # place the blocks
         for m in range(self.num_blocks):
             record, data = self.random_primitive(
                 self._middle_types,
-                scale={"x":0.5, "y":0.5, "z":0.5},
+                scale=self.block_scales[m],
                 color=self.middle_color,
                 exclude_color=self.target_color)
             o_id, scale, rgb = [data[k] for k in ["id", "scale", "color"]]
@@ -189,7 +209,7 @@ class Tower(MultiDominoes):
                     record=record,
                     position=block_pos,
                     rotation=block_rot,
-                    mass=random.uniform(2,7),
+                    mass=random.uniform(4.5,4.5),
                     dynamic_friction=random.uniform(0, 0.9),
                     static_friction=random.uniform(0, 0.9),
                     bounciness=random.uniform(0, 1),
@@ -270,6 +290,8 @@ if __name__ == "__main__":
         tower_cap=args.tower_cap,
         spacing_jitter=args.spacing_jitter,
         middle_rotation_range=args.mrot,
+        middle_scale_range=args.mscale,
+        middle_scale_gradient=args.mgrad,
         # domino specific
         target_objects=args.target,
         probe_objects=args.probe,
