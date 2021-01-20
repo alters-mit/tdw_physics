@@ -373,8 +373,8 @@ class Dominoes(RigidbodiesDataset):
                 record=record,
                 position={
                     "x": 0.5 * self.collision_axis_length,
-                    "y": 0.,
-                    "z": 0.
+                    "y": 0. if not self.remove_target else 10.0,
+                    "z": 0. if not self.remove_target else 10.0
                 },
                 rotation=self.target_rotation,
                 mass=random.uniform(2,7),
@@ -389,7 +389,7 @@ class Dominoes(RigidbodiesDataset):
              "color": {"r": rgb[0], "g": rgb[1], "b": rgb[2], "a": 1.},
              "id": o_id},
             {"$type": "scale_object",
-             "scale_factor": scale,
+             "scale_factor": scale if not self.remove_target else TDWUtils.VECTOR3_ZERO,
              "id": o_id}])
 
         if self.remove_target:

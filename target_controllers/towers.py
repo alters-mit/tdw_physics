@@ -257,6 +257,9 @@ class Tower(MultiDominoes):
 
         return commands
 
+    def is_done(self, resp: List[bytes], frame: int) -> bool:
+        return frame > 350
+
 if __name__ == "__main__":
 
     args = get_tower_args("towers")
