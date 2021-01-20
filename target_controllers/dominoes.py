@@ -19,12 +19,12 @@ from tdw_physics.util import MODEL_LIBRARIES, get_parser, xyz_to_arr, arr_to_xyz
 MODEL_NAMES = [r.name for r in MODEL_LIBRARIES['models_flex.json'].records]
 
 
-def get_args(dataset_dir: str):
+def get_args(dataset_dir: str, parse=True):
     """
-    Combine Drop-specific arguments with controller-common arguments
+    Combine Domino-specific arguments with controller-common arguments
     """
     common = get_parser(dataset_dir, get_help=False)
-    parser = ArgumentParser(parents=[common])
+    parser = ArgumentParser(parents=[common], add_help=parse)
 
     parser.add_argument("--num_middle_objects",
                         type=int,
@@ -106,6 +106,9 @@ def get_args(dataset_dir: str):
                         type=float,
                         default=180,
                         help="maximum angle of camera rotation around centerpoint")
+
+    if not parse:
+        return parser
 
     args = parser.parse_args()
 
