@@ -192,6 +192,7 @@ class Dominoes(RigidbodiesDataset):
         self.target_rotation_range = target_rotation_range
 
         self.probe_scale_range = probe_scale_range
+        self.match_probe_and_target_color = True
 
         ## Scenario config properties
         self.collision_axis_length = collision_axis_length
@@ -206,6 +207,7 @@ class Dominoes(RigidbodiesDataset):
         self.camera_max_angle = camera_max_angle
         self.camera_min_height = camera_min_height
         self.camera_max_height = camera_max_height
+        self.camera_aim = {"x": 0., "y": 0.5, "z": 0.} # fixed aim
 
     def get_types(self, objlist):
         recs = MODEL_LIBRARIES["models_flex.json"].records
@@ -251,6 +253,9 @@ class Dominoes(RigidbodiesDataset):
         # Choose and place a target object.
         commands.extend(self._place_target_object())
 
+        # Set the probe color
+        self.probe_color = self.target_color if (self.monochrome and self.match_probe_and_target_color) else None
+
         # Choose, place, and push a probe object.
         commands.extend(self._place_and_push_probe_object())
 
@@ -266,14 +271,13 @@ class Dominoes(RigidbodiesDataset):
                                                 y_max=self.camera_max_height,
                                                 center=TDWUtils.VECTOR3_ZERO)
 
-        cam_aim = {"x": 0, "y": 0.5, "z": 0}
         commands.extend([
             {"$type": "teleport_avatar_to",
              "position": a_pos},
             {"$type": "look_at_position",
-             "position": cam_aim},
+             "position": self.camera_aim},
             {"$type": "set_focus_distance",
-             "focus_distance": TDWUtils.get_distance(a_pos, cam_aim)}
+             "focus_distance": TDWUtils.get_distance(a_pos, self.camera_aim)}
         ])
         return commands
 
@@ -346,7 +350,8 @@ class Dominoes(RigidbodiesDataset):
         o_id, scale, rgb = [data[k] for k in ["id", "scale", "color"]]
         self.target = record
         self.target_type = data["name"]
-        self.probe_color = rgb if self.monochrome else None
+        self.target_color = rgb
+        # self.probe_color = rgb if self.monochrome else None
 
         # add the object
         commands = []

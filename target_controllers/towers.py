@@ -43,6 +43,14 @@ def get_tower_args(dataset_dir: str, parse=True):
                         type=str,
                         default=None,
                         help="Object types to use as a capper on the tower")
+    parser.add_argument("--spacing_jitter",
+                        type=float,
+                        default=0.05,
+                        help="jitter in how to space middle objects, as a fraction of uniform spacing")
+    parser.add_argument("--camera_distance",
+                        type=float,
+                        default=2.0,
+                        help="radial distance from camera to centerpoint")
 
     def postprocess(args):
 
@@ -71,9 +79,12 @@ class Tower(MultiDominoes):
                  tower_cap=[],
                  **kwargs):
 
-        Dominoes.__init__(self, port=port, **kwargs)
+        super().__init__(port=port, **kwargs)
 
-        # block typs
+        # probe and target different colors
+        self.match_probe_and_target_color = False
+
+        # block types
         self._middle_types = self.get_types(['cube'])
         self.middle_type = "cube"
 
@@ -87,6 +98,12 @@ class Tower(MultiDominoes):
         else:
             self.use_cap = False
 
+        # scale the camera height
+        self.camera_min_height *= 0.5 * (self.num_blocks + int(self.use_cap))
+        self.camera_max_height *= 0.5 * (self.num_blocks + int(self.use_cap))
+        self.camera_aim = 0.25 * (self.num_blocks + int(self.use_cap))
+        self.camera_aim = {"x": 0., "y": self.camera_aim, "z": 0.}
+
     def clear_static_data(self) -> None:
         super().clear_static_data()
 
@@ -99,7 +116,7 @@ class Tower(MultiDominoes):
         static_group.create_dataset("use_cap", data=self.use_cap)
 
     def _build_intermediate_structure(self) -> List[dict]:
-        self.middle_color = self.probe_color if self.monochrome else None
+        self.middle_color = self.random_color(exclude=self.target_color) if self.monochrome else None
         self.cap_color = self.target_color
         commands = []
 
@@ -107,6 +124,11 @@ class Tower(MultiDominoes):
         commands.extend(self._add_cap())
 
         return commands
+
+    def _get_block_position(self, scale, y):
+        jitter = lambda: random.uniform(-self.spacing_jitter, self.spacing_jitter)
+        jx, jz = [scale["x"]*jitter(), scale["z"]*jitter()]
+        return {"x": jx, "y": y, "z": jz}
 
     def _build_stack(self) -> List[dict]:
         commands = []
@@ -119,7 +141,7 @@ class Tower(MultiDominoes):
                 color=self.middle_color,
                 exclude_color=self.target_color)
             o_id, scale, rgb = [data[k] for k in ["id", "scale", "color"]]
-            block_pos = {"x": 0., "y": height, "z": 0.}
+            block_pos = self._get_block_position(scale, height)
             block_rot = {"x": 0., "y": 0., "z": 0.}
             commands.extend(
                 self.add_physics_object(
@@ -202,6 +224,7 @@ if __name__ == "__main__":
         # tower specific
         num_blocks=args.num_blocks,
         tower_cap=args.tower_cap,
+        spacing_jitter=args.spacing_jitter,
         # domino specific
         target_objects=args.target,
         probe_objects=args.probe,
