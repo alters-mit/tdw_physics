@@ -280,7 +280,7 @@ class RigidbodiesDataset(TransformsDataset, ABC):
         commands = super()._get_send_data_commands()
         commands.extend([{"$type": "send_collisions",
                           "enter": True,
-                          "exit": False,
+                          "exit": True,
                           "stay": True,
                           "collision_types": ["obj", "env"]},
                          {"$type": "send_rigidbodies",
