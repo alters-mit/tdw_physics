@@ -45,7 +45,7 @@ def get_tower_args(dataset_dir: str, parse=True):
                         help="Object types to use as a capper on the tower")
     parser.add_argument("--spacing_jitter",
                         type=float,
-                        default=0.1,
+                        default=0.25,
                         help="jitter in how to space middle objects, as a fraction of uniform spacing")
     parser.add_argument("--mrot",
                         type=str,
@@ -57,11 +57,11 @@ def get_tower_args(dataset_dir: str, parse=True):
                         help="comma-separated list of possible target objects")
     parser.add_argument("--pmass",
                         type=str,
-                        default="[3.0,3.0]",
+                        default="[2.0,4.0]",
                         help="scale of probe objects")
     parser.add_argument("--pscale",
                         type=str,
-                        default="0.2,0.2,0.2",
+                        default="[0.2,0.4]",
                         help="scale of probe objects")
     parser.add_argument("--fscale",
                         type=str,
@@ -69,7 +69,7 @@ def get_tower_args(dataset_dir: str, parse=True):
                         help="range of scales to apply to push force")
     parser.add_argument("--frot",
                         type=str,
-                        default="[-15,15]",
+                        default="[-10,10]",
                         help="range of angles in xz plane to apply push force")
     parser.add_argument("--foffset",
                         type=str,
@@ -266,6 +266,7 @@ if __name__ == "__main__":
         num_blocks=args.num_blocks,
         tower_cap=args.tower_cap,
         spacing_jitter=args.spacing_jitter,
+        middle_rotation_range=args.mrot,
         # domino specific
         target_objects=args.target,
         probe_objects=args.probe,
