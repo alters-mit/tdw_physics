@@ -82,6 +82,10 @@ def get_args(dataset_dir: str):
                         type=float,
                         default=0.25,
                         help="jitter in how to space middle objects, as a fraction of uniform spacing")
+    parser.add_argument("--remove_target",
+                        type=int,
+                        default=0,
+                        help="Don't actually put the target object in the scene.")
     parser.add_argument("--camera_distance",
                         type=float,
                         default=1.25,
@@ -162,6 +166,7 @@ class Dominoes(RigidbodiesDataset):
                  force_angle_range=[-60,60],
                  force_offset=arr_to_xyz([0.,0.5,0.]),
                  force_offset_jitter=0.1,
+                 remove_target=False,
                  camera_radius=1.0,
                  camera_min_angle=0,
                  camera_max_angle=360,
@@ -175,6 +180,7 @@ class Dominoes(RigidbodiesDataset):
         ## allowable object types
         self.set_probe_types(probe_objects)
         self.set_target_types(target_objects)
+        self.remove_target = remove_target
 
         ## object generation properties
         self.target_scale_range = target_scale_range
@@ -366,6 +372,12 @@ class Dominoes(RigidbodiesDataset):
             {"$type": "scale_object",
              "scale_factor": scale,
              "id": o_id}])
+
+        if self.remove_target:
+            commands.append(
+                {"$type": self._get_destroy_object_command_name(o_id),
+                 "id": int(o_id)})
+            self.object_ids = self.object_ids[:-1]
 
         return commands
 
@@ -563,6 +575,7 @@ if __name__ == "__main__":
         force_offset_jitter=args.fjitter,
         spacing_jitter=args.spacing_jitter,
         middle_rotation_range=args.mrot,
+        remove_target=bool(args.remove_target),
         ## not scenario-specific
         camera_radius=args.camera_distance,
         camera_min_angle=args.camera_min_angle,
