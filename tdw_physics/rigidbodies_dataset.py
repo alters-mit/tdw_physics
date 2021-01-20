@@ -350,6 +350,7 @@ class RigidbodiesDataset(TransformsDataset, ABC):
                     angular_velocities[i] = ri_dict[o_id]["ang"]
             elif r_id == "coll":
                 co = Collision(r)
+                print("collision!", co.get_state())
                 collision_ids = np.append(collision_ids, [co.get_collider_id(), co.get_collidee_id()])
                 collision_relative_velocities = np.append(collision_relative_velocities, co.get_relative_velocity())
                 for i in range(co.get_num_contacts()):

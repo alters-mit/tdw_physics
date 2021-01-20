@@ -31,6 +31,10 @@ def get_tower_args(dataset_dir: str, parse=True):
                         type=int,
                         default=1,
                         help="Whether to remove the target object")
+    parser.add_argument("--collision_axis_length",
+                        type=float,
+                        default=3.0,
+                        help="How far to put the probe and target")
     parser.add_argument("--num_blocks",
                         type=int,
                         default=3,
@@ -69,6 +73,10 @@ class Tower(MultiDominoes):
 
         Dominoes.__init__(self, port=port, **kwargs)
 
+        # block typs
+        self._middle_types = self.get_types(['cube'])
+        self.middle_type = "cube"
+
         # how many blocks in tower, sans cap
         self.num_blocks = num_blocks
 
@@ -79,17 +87,111 @@ class Tower(MultiDominoes):
         else:
             self.use_cap = False
 
+    def clear_static_data(self) -> None:
+        super().clear_static_data()
+
+        self.cap_type = None
+
+    def _write_static_data(self, static_group: h5py.Group) -> None:
+        Dominoes._write_static_data(self, static_group)
+
+        static_group.create_dataset("cap_type", data=self.cap_type)
+        static_group.create_dataset("use_cap", data=self.use_cap)
+
     def _build_intermediate_structure(self) -> List[dict]:
-        self.tower_color = self.probe_color if self.monochrome else None
+        self.middle_color = self.probe_color if self.monochrome else None
         self.cap_color = self.target_color
-        return []
+        commands = []
+
+        commands.extend(self._build_stack())
+        commands.extend(self._add_cap())
+
+        return commands
 
     def _build_stack(self) -> List[dict]:
         commands = []
+
+        height = 0.
+        for m in range(self.num_blocks):
+            record, data = self.random_primitive(
+                self._middle_types,
+                scale={"x":0.5, "y":0.5, "z":0.5},
+                color=self.middle_color,
+                exclude_color=self.target_color)
+            o_id, scale, rgb = [data[k] for k in ["id", "scale", "color"]]
+            block_pos = {"x": 0., "y": height, "z": 0.}
+            block_rot = {"x": 0., "y": 0., "z": 0.}
+            commands.extend(
+                self.add_physics_object(
+                    record=record,
+                    position=block_pos,
+                    rotation=block_rot,
+                    mass=random.uniform(2,7),
+                    dynamic_friction=random.uniform(0, 0.9),
+                    static_friction=random.uniform(0, 0.9),
+                    bounciness=random.uniform(0, 1),
+                    o_id=o_id))
+
+            # Scale the object and set its color.
+            commands.extend([
+                {"$type": "set_color",
+                 "color": {"r": rgb[0], "g": rgb[1], "b": rgb[2], "a": 1.},
+                 "id": o_id},
+                {"$type": "scale_object",
+                 "scale_factor": scale,
+                 "id": o_id}])
+
+            print("placed middle object %s" % str(m+1))
+
+            # update height
+            height += scale["y"]
+
+        self.tower_height = height
+
         return commands
 
     def _add_cap(self) -> List[dict]:
         commands = []
+
+        record, data = self.random_primitive(
+            self._cap_types,
+            scale=[0.5,0.5],
+            color=self.target_color)
+        o_id, scale, rgb = [data[k] for k in ["id", "scale", "color"]]
+        self.cap_type = data["name"]
+
+        commands.extend(
+            self.add_physics_object(
+                record=record,
+                position={
+                    "x": 0.,
+                    "y": self.tower_height,
+                    "z": 0.
+                },
+                rotation={"x":0.,"y":0.,"z":0.},
+                mass=random.uniform(2,7),
+                dynamic_friction=random.uniform(0, 0.9),
+                static_friction=random.uniform(0, 0.9),
+                bounciness=random.uniform(0, 1),
+                o_id=o_id))
+
+        # Scale the object and set its color.
+        commands.extend([
+            {"$type": "set_color",
+             "color": {"r": rgb[0], "g": rgb[1], "b": rgb[2], "a": 1.},
+             "id": o_id},
+            {"$type": "scale_object",
+             "scale_factor": scale,
+             "id": o_id}])
+
+        if not self.use_cap:
+            commands.append(
+                {"$type": self._get_destroy_object_command_name(o_id),
+                 "id": int(o_id)})
+            self.object_ids = self.object_ids[:-1]
+        else:
+            self.tower_height += scale["y"]
+
         return commands
 
 if __name__ == "__main__":
