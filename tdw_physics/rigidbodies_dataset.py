@@ -10,12 +10,16 @@ from tdw.output_data import OutputData, Rigidbodies, Collision, EnvironmentColli
 from tdw.librarian import ModelRecord
 from tdw.tdw_utils import TDWUtils
 from tdw_physics.transforms_dataset import TransformsDataset
-from tdw_physics.util import MODEL_LIBRARIES
+from tdw_physics.util import MODEL_LIBRARIES, str_to_xyz
 
 
 def handle_random_transform_args(args):
     if args is not None:
-        args = json.loads(args)
+        try:
+            args = json.loads(args)
+        except:
+            args = str_to_xyz(args)
+
         if 'class' in args:
             data = args['data']
             modname, classname = args['class']
@@ -28,7 +32,10 @@ def handle_random_transform_args(args):
             assert "y" in args, args
             assert "z" in args, args
         elif hasattr(args, '__len__'):
-            assert len(args) == 2, args
+            if len(args) == 3:
+                args = {k:get_range(args[i]) for i,k in enumerate(["x","y","z"])}
+            else:
+                assert len(args) == 2, (args, len(args))
         else:
             args + 0.0
     return args
@@ -148,8 +155,15 @@ class RigidbodiesDataset(TransformsDataset, ABC):
         xyz = {k:arr[i] for i,k in enumerate(["x","y","z"])}
         return xyz
 
-    def random_color(self):
-        return [random.random(), random.random(), random.random()]
+    def random_color(self, exclude=None, exclude_range=0.25):
+        rgb = [random.random(), random.random(), random.random()]
+        if exclude is None:
+            return rgb
+
+        assert len(exclude) == 3, exclude
+        while all([np.abs(exclude[i] - rgb[i]) < exclude_range for i in range(3)]):
+            rgb = [random.random(), random.random(), random.random()]
+        return rgb
 
     def get_random_scale_transform(self, scale):
         return get_random_xyz_transform(scale)
@@ -157,13 +171,16 @@ class RigidbodiesDataset(TransformsDataset, ABC):
     def random_primitive(self,
                          object_types: List[ModelRecord],
                          scale: List[float] = [0.2, 0.3],
-                         color: List[float] = None) -> dict:
+                         color: List[float] = None,
+                         exclude_color: List[float] = None,
+                         exclude_range: float = 0.25
+    ) -> dict:
         obj_record = random.choice(object_types)
         s = self.get_random_scale_transform(scale)
         obj_data = {
             "id": self.get_unique_id(),
             "scale": s,
-            "color": np.array(color if color is not None else self.random_color()),
+            "color": np.array(color if color is not None else self.random_color(exclude_color, exclude_range)),
             "name": obj_record.name
         }
         self.scales.append(obj_data["scale"])

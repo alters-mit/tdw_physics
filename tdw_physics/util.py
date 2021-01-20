@@ -4,11 +4,16 @@ import numpy as np
 from tdw.librarian import ModelLibrarian
 from tdw.tdw_utils import TDWUtils
 
-
 # Every model library, sorted by name.
 MODEL_LIBRARIES: Dict[str, ModelLibrarian] = {}
 for filename in ModelLibrarian.get_library_filenames():
     MODEL_LIBRARIES.update({filename: ModelLibrarian(filename)})
+
+def str_to_xyz(s: str, to_json=False):
+    xyz = s.split(',')
+    if len(xyz) == 3:
+        s ={"x":float(xyz[0]), "y":float(xyz[1]), "z":float(xyz[2])}
+    return s
 
 def xyz_to_arr(xyz : dict):
     arr = np.array(
@@ -18,7 +23,6 @@ def xyz_to_arr(xyz : dict):
 def arr_to_xyz(arr : np.ndarray):
     xyz = {k:arr[i] for i,k in enumerate(["x","y","z"])}
     return xyz
-
 
 def get_move_along_direction(pos: Dict[str, float], target: Dict[str, float], d: float, noise: float = 0) -> \
         Dict[str, float]:
