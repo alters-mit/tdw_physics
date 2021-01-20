@@ -184,15 +184,31 @@ class Tower(MultiDominoes):
         jx, jz = [scale["x"]*jitter(), scale["z"]*jitter()]
         return {"x": jx, "y": y, "z": jz}
 
+    def _get_block_scale(self, offset) -> dict:
+        if hasattr(self.middle_scale_range, 'keys'):
+            scale = {k:random.uniform(self.middle_scale_range[k][0], self.middle_scale_range[k][1]) + offset
+                     for k in ["x","y","z"]}
+        elif hasattr(self.middle_scale_range, '__len__'):
+            scale = {k:random.uniform(self.middle_scale_range[0], self.middle_scale_range[1]) + offset
+                     for k in ["x","y","z"]}
+        else:
+            scale = {k:self.middle_scale_range + offset for k in ["x","y","z"]}
+
+        return scale
+
     def _build_stack(self) -> List[dict]:
         commands = []
         height = 0.
 
         # build the block scales
-        self.block_scales = [random.uniform(self.middle_scale_range[0], self.middle_scale_range[1])
-                             for _ in range(self.num_blocks)]
         mid = self.num_blocks / 2.0
-        self.block_scales = [s + (mid - i) * self.middle_scale_gradient for i,s in enumerate(self.block_scales)]
+        grad = self.middle_scale_gradient
+        self.block_scales = [self._get_block_scale(offset=grad*(mid-i)) for i in range(self.num_blocks)]
+
+        # self.block_scales = [random.uniform(self.middle_scale_range[0], self.middle_scale_range[1])
+        #                      for _ in range(self.num_blocks)]
+
+        # self.block_scales = [s + (mid - i) * self.middle_scale_gradient for i,s in enumerate(self.block_scales)]
 
         # place the blocks
         for m in range(self.num_blocks):

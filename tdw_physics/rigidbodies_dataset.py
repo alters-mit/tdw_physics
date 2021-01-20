@@ -32,7 +32,10 @@ def handle_random_transform_args(args):
             assert "y" in args, args
             assert "z" in args, args
         elif hasattr(args, '__len__'):
-            assert len(args) == 2, (args, len(args))
+            if len(args) == 3:
+                args = {k:get_range(args[i]) for i,k in enumerate(["x","y","z"])}
+            else:
+                assert len(args) == 2, (args, len(args))
         else:
             args + 0.0
     return args
