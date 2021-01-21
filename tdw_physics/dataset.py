@@ -1,3 +1,4 @@
+import sys, os, copy
 from typing import List, Dict, Tuple
 from abc import ABC, abstractmethod
 from pathlib import Path
@@ -26,7 +27,9 @@ class Dataset(Controller, ABC):
                  check_version: bool=False,
                  launch_build: bool=True,
                  randomize: int=1,
-                 seed: int=0):
+                 seed: int=0,
+                 save_args=True
+    ):
         super().__init__(port=port,
                          check_version=check_version,
                          launch_build=launch_build)
@@ -37,8 +40,38 @@ class Dataset(Controller, ABC):
         if not bool(randomize):
             random.seed(seed)
 
+        self.save_args = save_args
+
+
     def clear_static_data(self) -> None:
         self.object_ids = np.empty(dtype=int, shape=0)
+
+    def save_command_line_args(self, output_dir: str) -> None:
+        if not self.save_args:
+            return
+
+        # save all the args, including defaults
+        self._save_all_args(output_dir)
+
+        # save just the commandline args
+        output_dir = Path(output_dir)
+        filepath = output_dir.joinpath("commandline_args.txt")
+        if not filepath.exists():
+            with open(filepath, 'w') as f:
+                f.write('\n'.join(sys.argv[1:]))
+
+        return
+
+    def _save_all_args(self, output_dir: str) -> None:
+        writelist = []
+        for k,v in self.args_dict.items():
+            writelist.extend(["--"+str(k),str(v)])
+        output_dir = Path(output_dir)
+        filepath = output_dir.joinpath("args.txt")
+        if not filepath.exists():
+            with open(filepath, 'w') as f:
+                f.write('\n'.join(writelist))
+        return
 
     def get_initialization_commands(self,
                                     width: int,
@@ -76,7 +109,8 @@ class Dataset(Controller, ABC):
             output_dir: str,
             temp_path: str,
             width: int,
-            height: int) -> None:
+            height: int,
+            args_dict: dict={}) -> None:
         """
         Create the dataset.
 
@@ -87,10 +121,18 @@ class Dataset(Controller, ABC):
         :param height: Screen height in pixels.
         """
 
+
         initialization_commands = self.get_initialization_commands(width=width, height=height)
         # Initialize the scene.
         self.communicate(initialization_commands)
         self.trial_loop(num, output_dir, temp_path)
+
+        # Save the command line args
+        if self.save_args:
+            self.args_dict = copy.deepcopy(args_dict)
+        self.save_command_line_args(output_dir)
+
+        # Finish
         self.communicate({"$type": "terminate"})
 
     def trial_loop(self,
