@@ -223,6 +223,8 @@ class Dataset(Controller, ABC):
         for o_id in self.object_ids:
             commands.append({"$type": self._get_destroy_object_command_name(o_id),
                              "id": int(o_id)})
+        print("object ids", self.object_ids)
+        print("commands", commands)
         self.communicate(commands)
 
         # Close the file.
