@@ -15,24 +15,23 @@ from tdw_physics.util import MODEL_LIBRARIES, str_to_xyz
 
 def handle_random_transform_args(args):
     if args is not None:
-        try:
-            args = json.loads(args)
-        except:
-            args = str_to_xyz(args)
-
-        if 'class' in args:
-            data = args['data']
-            modname, classname = args['class']
-            mod = importlib.import_module(modname)
-            klass = get_attr(mod, classname)
-            args = klass(data)
-            assert callable(args)
-        elif hasattr(args, 'keys'):
-            assert "x" in args, args
-            assert "y" in args, args
-            assert "z" in args, args
+        if hasattr(args, 'keys'):
+            if 'class' in args:
+                data = args['data']
+                modname, classname = args['class']
+                mod = importlib.import_module(modname)
+                klass = get_attr(mod, classname)
+                args = klass(data)
+                assert callable(args)
+            else:
+                assert "x" in args, args
+                assert "y" in args, args
+                assert "z" in args, args
         elif hasattr(args, '__len__'):
-            assert len(args) == 2, (args, len(args))
+            if len(args) == 3:
+                args = {k:args[i] for i, k in enumerate(["x","y","z"])}
+            else:
+                assert len(args) == 2, (args, len(args))
         else:
             args + 0.0
     return args
