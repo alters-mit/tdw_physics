@@ -9,7 +9,7 @@ import random
 from typing import List, Dict, Tuple
 from weighted_collection import WeightedCollection
 from tdw.tdw_utils import TDWUtils
-from tdw.librarian import ModelRecord, MaterialLibrarian, MaterialRecord
+from tdw.librarian import ModelRecord
 from tdw_physics.rigidbodies_dataset import (RigidbodiesDataset,
                                              get_random_xyz_transform,
                                              handle_random_transform_args)
@@ -143,10 +143,6 @@ class Tower(MultiDominoes):
         # probe and target different colors
         self.match_probe_and_target_color = False
 
-        # block types
-        # self._middle_types = self.get_types(['cube'])
-        # self.middle_type = "cube"
-
         # how many blocks in tower, sans cap
         self.num_blocks = num_blocks
 
@@ -172,7 +168,7 @@ class Tower(MultiDominoes):
         self.cap_type = None
 
     def _write_static_data(self, static_group: h5py.Group) -> None:
-        Dominoes._write_static_data(self, static_group)
+        super()._write_static_data(static_group)
 
         static_group.create_dataset("cap_type", data=self.cap_type)
         static_group.create_dataset("use_cap", data=self.use_cap)
@@ -194,14 +190,16 @@ class Tower(MultiDominoes):
 
     def _get_block_scale(self, offset) -> dict:
         print("scale range", self.middle_scale_range)
-        if hasattr(self.middle_scale_range, 'keys'):
-            scale = {k:random.uniform(self.middle_scale_range[k][0], self.middle_scale_range[k][1]) + offset
-                     for k in ["x","y","z"]}
-        elif hasattr(self.middle_scale_range, '__len__'):
-            scale = {k:random.uniform(self.middle_scale_range[0], self.middle_scale_range[1]) + offset
-                     for k in ["x","y","z"]}
-        else:
-            scale = {k:self.middle_scale_range + offset for k in ["x","y","z"]}
+        scale = get_random_xyz_transform(self.middle_scale_range)
+        scale = {k:v+offset for k,v in scale.items()}
+        # if hasattr(self.middle_scale_range, 'keys'):
+        #     scale = {k:random.uniform(self.middle_scale_range[k][0], self.middle_scale_range[k][1]) + offset
+        #              for k in ["x","y","z"]}
+        # elif hasattr(self.middle_scale_range, '__len__'):
+        #     scale = {k:random.uniform(self.middle_scale_range[0], self.middle_scale_range[1]) + offset
+        #              for k in ["x","y","z"]}
+        # else:
+        #     scale = {k:self.middle_scale_range + offset for k in ["x","y","z"]}
 
         return scale
 

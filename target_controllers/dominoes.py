@@ -189,7 +189,7 @@ class Dominoes(RigidbodiesDataset):
                  collision_axis_length=1.,
                  force_scale_range=[0.,8.],
                  force_angle_range=[-60,60],
-                 force_offset=arr_to_xyz([0.,0.5,0.]),
+                 force_offset={"x":0.,"y":0.5,"z":0.0},
                  force_offset_jitter=0.1,
                  remove_target=False,
                  camera_radius=1.0,
@@ -220,7 +220,7 @@ class Dominoes(RigidbodiesDataset):
         self.collision_axis_length = collision_axis_length
         self.force_scale_range = force_scale_range
         self.force_angle_range = force_angle_range
-        self.force_offset = force_offset
+        self.force_offset = get_random_xyz_transform(force_offset)
         self.force_offset_jitter = force_offset_jitter
 
         ## camera properties
@@ -461,6 +461,7 @@ class Dominoes(RigidbodiesDataset):
         self.push_force = self.get_push_force(
             scale_range=self.probe_mass * np.array(self.force_scale_range),
             angle_range=self.force_angle_range)
+        print("pos, force, scales", self.probe_initial_position, self.force_offset, self.scales[-1])
         self.push_position = {
             k:v+self.force_offset[k]*self.scales[-1][k]
             for k,v in self.probe_initial_position.items()}
@@ -527,8 +528,7 @@ class MultiDominoes(Dominoes):
     def _write_static_data(self, static_group: h5py.Group) -> None:
         super()._write_static_data(static_group)
 
-        if bool(self.num_middle_objects):
-            static_group.create_dataset("middle_type", data=self.middle_type)
+        static_group.create_dataset("middle_type", data=self.middle_type)
 
     def _build_intermediate_structure(self) -> List[dict]:
         # set the middle object color
