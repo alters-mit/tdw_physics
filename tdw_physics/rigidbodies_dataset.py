@@ -14,6 +14,7 @@ from tdw_physics.util import MODEL_LIBRARIES, str_to_xyz
 
 
 def handle_random_transform_args(args):
+    args = json.loads(args)
     if args is not None:
         if hasattr(args, 'keys'):
             if 'class' in args:
