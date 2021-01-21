@@ -7,6 +7,7 @@ import numpy as np
 import random
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
+import shutil
 
 
 class Dataset(Controller, ABC):
@@ -186,7 +187,10 @@ class Dataset(Controller, ABC):
         # Close the file.
         f.close()
         # Move the file.
-        temp_path.replace(filepath)
+        try:
+            temp_path.replace(filepath)
+        except OSError:
+            shutil.move(temp_path, filepath)
 
     @staticmethod
     def get_random_avatar_position(radius_min: float,
