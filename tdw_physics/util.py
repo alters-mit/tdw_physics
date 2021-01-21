@@ -1,4 +1,3 @@
-from pathlib import Path
 from typing import Dict, List
 import random
 import numpy as np
@@ -9,18 +8,6 @@ from tdw.tdw_utils import TDWUtils
 MODEL_LIBRARIES: Dict[str, ModelLibrarian] = {}
 for filename in ModelLibrarian.get_library_filenames():
     MODEL_LIBRARIES.update({filename: ModelLibrarian(filename)})
-
-def save_args(args, output_dir: str):
-    adict = vars(args)
-    writelist = []
-    for k,v in adict.items():
-        writelist.extend(["--"+str(k),str(v)])
-    output_dir = Path(output_dir)
-    filepath = output_dir.joinpath("args.txt")
-    if not filepath.exists():
-        with open(filepath, 'w') as f:
-            f.write('\n'.join(writelist))
-    return
 
 def str_to_xyz(s: str, to_json=False):
     xyz = s.split(',')

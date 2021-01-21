@@ -12,6 +12,7 @@ from tdw.tdw_utils import TDWUtils
 from tdw.librarian import ModelRecord
 from tdw_physics.rigidbodies_dataset import (RigidbodiesDataset,
                                              get_random_xyz_transform,
+                                             get_range,
                                              handle_random_transform_args)
 from tdw_physics.util import MODEL_LIBRARIES, get_parser, xyz_to_arr, arr_to_xyz, str_to_xyz
 
@@ -351,7 +352,8 @@ class Dominoes(RigidbodiesDataset):
 
     def get_push_force(self, scale_range, angle_range):
         # rotate a unit vector initially pointing in positive-x direction
-        theta = np.radians(random.uniform(angle_range[0], angle_range[1]))
+        # theta = np.radians(random.uniform(angle_range[0], angle_range[1]))
+        theta = np.radians(random.uniform(*get_range(angle_range)))
         push = np.array([np.cos(theta), 0., np.sin(theta)])
 
         # scale it
