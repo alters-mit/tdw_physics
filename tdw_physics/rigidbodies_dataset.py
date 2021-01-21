@@ -32,10 +32,7 @@ def handle_random_transform_args(args):
             assert "y" in args, args
             assert "z" in args, args
         elif hasattr(args, '__len__'):
-            if len(args) == 3:
-                args = {k:get_range(args[i]) for i,k in enumerate(["x","y","z"])}
-            else:
-                assert len(args) == 2, (args, len(args))
+            assert len(args) == 2, (args, len(args))
         else:
             args + 0.0
     return args
@@ -187,8 +184,14 @@ class RigidbodiesDataset(TransformsDataset, ABC):
         self.colors = np.concatenate([self.colors, obj_data["color"].reshape((1,3))], axis=0)
         return obj_record, obj_data
 
-    def add_physics_object(self, record: ModelRecord, position: Dict[str, float], rotation: Dict[str, float],
-                           mass: float, dynamic_friction: float, static_friction: float, bounciness: float,
+    def add_physics_object(self,
+                           record: ModelRecord,
+                           position: Dict[str, float],
+                           rotation: Dict[str, float],
+                           mass: float,
+                           dynamic_friction: float,
+                           static_friction: float,
+                           bounciness: float,
                            o_id: Optional[int] = None) -> List[dict]:
         """
         Get commands to add an object and assign physics properties. Write the object's static info to the .hdf5 file.
@@ -209,7 +212,11 @@ class RigidbodiesDataset(TransformsDataset, ABC):
             o_id: int = self.get_unique_id()
 
         # Get the add_object command.
-        add_object = self.add_transforms_object(o_id=o_id, record=record, position=position, rotation=rotation)
+        add_object = self.add_transforms_object(o_id=o_id,
+                                                record=record,
+                                                position=position,
+                                                rotation=rotation
+                                                )
 
         self.masses = np.append(self.masses, mass)
         self.dynamic_frictions = np.append(self.dynamic_frictions, dynamic_friction)
@@ -234,7 +241,10 @@ class RigidbodiesDataset(TransformsDataset, ABC):
                  "static_friction": static_friction,
                  "bounciness": bounciness}]
 
-    def add_physics_object_default(self, name: str, position: Dict[str, float], rotation: Dict[str, float],
+    def add_physics_object_default(self,
+                                   name: str,
+                                   position: Dict[str, float],
+                                   rotation: Dict[str, float],
                                    o_id: Optional[int] = None) -> List[dict]:
         """
         Add an object with default physics material values.

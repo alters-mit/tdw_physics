@@ -15,7 +15,10 @@ class TransformsDataset(Dataset, ABC):
     See README for more info.
     """
 
-    def add_transforms_object(self, record: ModelRecord, position: Dict[str, float], rotation: Dict[str, float],
+    def add_transforms_object(self,
+                              record: ModelRecord,
+                              position: Dict[str, float],
+                              rotation: Dict[str, float],
                               o_id: Optional[int] = None) -> dict:
         """
         This is a wrapper for `Controller.get_add_object()` and the `add_object` command.
