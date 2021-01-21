@@ -38,6 +38,10 @@ def get_args(dataset_dir: str, parse=True):
                         type=str,
                         default="sphere",
                         help="comma-separated list of possible target objects")
+    parser.add_argument("--middle",
+                        type=str,
+                        default=None,
+                        help="comma-separated list of possible middle objects; default to same as target")
     parser.add_argument("--tscale",
                         type=str,
                         default="0.1,0.5,0.25",
@@ -147,6 +151,12 @@ def get_args(dataset_dir: str, parse=True):
             args.probe = probe_list
         else:
             args.probe = MODEL_NAMES
+
+        if args.middle is not None:
+            middle_list = args.middle.split(',')
+            assert all([t in MODEL_NAMES for t in middle_list]), \
+                "All target object names must be elements of %s" % MODEL_NAMES
+            args.middle = middle_list
 
         if args.color is not None:
             rgb = [float(c) for c in args.color.split(',')]
@@ -589,6 +599,7 @@ if __name__ == "__main__":
         seed=args.seed,
         target_objects=args.target,
         probe_objects=args.probe,
+        middle_objects=args.middle,
         target_scale_range=args.tscale,
         target_rotation_range=args.trot,
         probe_scale_range=args.pscale,

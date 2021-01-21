@@ -9,7 +9,7 @@ import random
 from typing import List, Dict, Tuple
 from weighted_collection import WeightedCollection
 from tdw.tdw_utils import TDWUtils
-from tdw.librarian import ModelRecord
+from tdw.librarian import ModelRecord, MaterialLibrarian, MaterialRecord
 from tdw_physics.rigidbodies_dataset import (RigidbodiesDataset,
                                              get_random_xyz_transform,
                                              handle_random_transform_args)
@@ -59,6 +59,10 @@ def get_tower_args(dataset_dir: str, parse=True):
                         type=str,
                         default="[-45,45]",
                         help="comma separated list of initial middle object rotation values")
+    parser.add_argument("--middle",
+                        type=str,
+                        default="cube",
+                        help="comma-separated list of possible middle objects")
     parser.add_argument("--probe",
                         type=str,
                         default="sphere",
@@ -71,6 +75,10 @@ def get_tower_args(dataset_dir: str, parse=True):
                         type=str,
                         default="[0.2,0.4]",
                         help="scale of probe objects")
+    parser.add_argument("--tscale",
+                        type=str,
+                        default="[0.5,0.5]",
+                        help="scale of target objects")
     parser.add_argument("--fscale",
                         type=str,
                         default="[4.0,15.0]",
@@ -136,8 +144,8 @@ class Tower(MultiDominoes):
         self.match_probe_and_target_color = False
 
         # block types
-        self._middle_types = self.get_types(['cube'])
-        self.middle_type = "cube"
+        # self._middle_types = self.get_types(['cube'])
+        # self.middle_type = "cube"
 
         # how many blocks in tower, sans cap
         self.num_blocks = num_blocks
@@ -185,6 +193,7 @@ class Tower(MultiDominoes):
         return {"x": jx, "y": y, "z": jz}
 
     def _get_block_scale(self, offset) -> dict:
+        print("scale range", self.middle_scale_range)
         if hasattr(self.middle_scale_range, 'keys'):
             scale = {k:random.uniform(self.middle_scale_range[k][0], self.middle_scale_range[k][1]) + offset
                      for k in ["x","y","z"]}
@@ -217,6 +226,7 @@ class Tower(MultiDominoes):
                 scale=self.block_scales[m],
                 color=self.middle_color,
                 exclude_color=self.target_color)
+            self.middle_type = data["name"]
             o_id, scale, rgb = [data[k] for k in ["id", "scale", "color"]]
             block_pos = self._get_block_position(scale, height)
             block_rot = self.get_y_rotation(self.middle_rotation_range)
@@ -243,7 +253,8 @@ class Tower(MultiDominoes):
             print("placed middle object %s" % str(m+1))
 
             # update height
-            height += scale["y"]
+            _y = record.bounds['top']['y'] if self.middle_type != 'bowl' else (record.bounds['bottom']['y'] + 0.1)
+            height += scale["y"] * _y
 
         self.tower_height = height
 
@@ -254,7 +265,7 @@ class Tower(MultiDominoes):
 
         record, data = self.random_primitive(
             self._cap_types,
-            scale=[0.5,0.5],
+            scale=self.target_scale_range,
             color=self.target_color)
         o_id, scale, rgb = [data[k] for k in ["id", "scale", "color"]]
         self.cap_type = data["name"]
@@ -268,7 +279,7 @@ class Tower(MultiDominoes):
                     "z": 0.
                 },
                 rotation={"x":0.,"y":0.,"z":0.},
-                mass=random.uniform(2,7),
+                mass=random.uniform(4.5,4.5),
                 dynamic_friction=random.uniform(0, 0.9),
                 static_friction=random.uniform(0, 0.9),
                 bounciness=random.uniform(0, 1),
@@ -311,6 +322,7 @@ if __name__ == "__main__":
         # domino specific
         target_objects=args.target,
         probe_objects=args.probe,
+        middle_objects=args.middle,
         target_scale_range=args.tscale,
         target_rotation_range=args.trot,
         probe_scale_range=args.pscale,
