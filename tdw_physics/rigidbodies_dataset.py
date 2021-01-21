@@ -20,7 +20,9 @@ def handle_random_transform_args(args):
         except:
             args = str_to_xyz(args)
 
-        if 'class' in args:
+        if isinstance(args, (int, float)):
+            args += 0.0
+        elif 'class' in args:
             data = args['data']
             modname, classname = args['class']
             mod = importlib.import_module(modname)
