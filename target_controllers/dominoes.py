@@ -59,6 +59,10 @@ def get_args(dataset_dir: str, parse=True):
                         type=str,
                         default=None,
                         help="Scale or scale range for middle objects")
+    parser.add_argument("--horizontal",
+                        type=int,
+                        default=0,
+                        help="Whether to rotate middle objects horizontally")
     parser.add_argument("--pscale",
                         type=str,
                         default="0.2,0.2,0.2",
@@ -136,6 +140,8 @@ def get_args(dataset_dir: str, parse=True):
         args.fscale = handle_random_transform_args(args.fscale)
         args.frot = handle_random_transform_args(args.frot)
         args.foffset = handle_random_transform_args(args.foffset)
+
+        args.horizontal = bool(args.horizontal)
 
         if args.target is not None:
             targ_list = args.target.split(',')
@@ -347,12 +353,11 @@ class Dominoes(RigidbodiesDataset):
             return self.get_rotation(rot_range)
         else:
             return {"x": 0.,
-                    "y": random.uniform(rot_range[0], rot_range[1]),
+                    "y": random.uniform(*get_range(rot_range)),
                     "z": 0.}
 
     def get_push_force(self, scale_range, angle_range):
         # rotate a unit vector initially pointing in positive-x direction
-        # theta = np.radians(random.uniform(angle_range[0], angle_range[1]))
         theta = np.radians(random.uniform(*get_range(angle_range)))
         push = np.array([np.cos(theta), 0., np.sin(theta)])
 
@@ -394,7 +399,7 @@ class Dominoes(RigidbodiesDataset):
                     "z": 0. if not self.remove_target else 10.0
                 },
                 rotation=self.target_rotation,
-                mass=random.uniform(2,7),
+                mass=random.uniform(2,3),
                 dynamic_friction=random.uniform(0, 0.9),
                 static_friction=random.uniform(0, 0.9),
                 bounciness=random.uniform(0, 1),
@@ -495,6 +500,7 @@ class MultiDominoes(Dominoes):
                  num_middle_objects=1,
                  middle_scale_range=None,
                  middle_rotation_range=None,
+                 horizontal=False,
                  middle_color=None,
                  spacing_jitter=0.25,
                  **kwargs):
@@ -508,6 +514,7 @@ class MultiDominoes(Dominoes):
         self.middle_scale_range = middle_scale_range or self.target_scale_range
         self.middle_rotation_range = middle_rotation_range
         self.middle_color = middle_color
+        self.horizontal = horizontal
 
         # How many middle objects and their spacing
         self.num_middle_objects = num_middle_objects
@@ -557,17 +564,19 @@ class MultiDominoes(Dominoes):
                                                  scale=self.middle_scale_range,
                                                  color=self.middle_color)
             o_id, scale, rgb = [data[k] for k in ["id", "scale", "color"]]
+            pos = arr_to_xyz([offset,0.,0.])
             rot = self.get_y_rotation(self.middle_rotation_range)
+            if self.horizontal:
+                rot["z"] = 90
+                pos["z"] -= np.sin(np.radians(rot["y"])) * scale["y"] * 0.5
+            print("horizontal", self.horizontal)
+            print("middle rotation", rot)
             self.middle_type = data["name"]
 
             commands.extend(
                 self.add_physics_object(
                     record=record,
-                    position={
-                        "x": offset,
-                        "y": 0.,
-                        "z": 0.
-                    },
+                    position=pos,
                     rotation=rot,
                     mass=random.uniform(2,7),
                     dynamic_friction=random.uniform(0, 0.9),
@@ -613,7 +622,9 @@ if __name__ == "__main__":
         force_offset=args.foffset,
         force_offset_jitter=args.fjitter,
         spacing_jitter=args.spacing_jitter,
+        middle_scale_range=args.mscale,
         middle_rotation_range=args.mrot,
+        horizontal=args.horizontal,
         remove_target=bool(args.remove_target),
         ## not scenario-specific
         camera_radius=args.camera_distance,
