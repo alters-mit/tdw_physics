@@ -349,6 +349,8 @@ if __name__ == "__main__":
                output_dir=args.dir,
                temp_path=args.temp,
                width=args.width,
-               height=args.height)
+               height=args.height,
+               args_dict=vars(args)
+        )
     else:
         TC.communicate({"$type": "terminate"})

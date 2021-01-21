@@ -13,7 +13,7 @@ from tdw.librarian import ModelRecord, MaterialLibrarian
 from tdw_physics.rigidbodies_dataset import (RigidbodiesDataset,
                                              get_random_xyz_transform,
                                              handle_random_transform_args)
-from tdw_physics.util import MODEL_LIBRARIES, get_parser, xyz_to_arr, arr_to_xyz, str_to_xyz
+from tdw_physics.util import MODEL_LIBRARIES, get_parser, xyz_to_arr, arr_to_xyz, str_to_xyz, save_args
 
 from dominoes import Dominoes, MultiDominoes, get_args
 
@@ -43,6 +43,10 @@ def get_collide_args(dataset_dir: str, parse=True):
                         type=str,
                         default="[-45,45]",
                         help="comma separated list of initial middle object rotation values")
+    parser.add_argument("--horizontal",
+                        type=int,
+                        default=1,
+                        help="whether to place the middle object horizontally (on its side)")
     parser.add_argument("--spacing_jitter",
                         type=float,
                         default=0.25,
@@ -94,6 +98,7 @@ def get_collide_args(dataset_dir: str, parse=True):
 
 
     def postprocess(args):
+        args.horizontal = bool(args.horizontal)
 
         return args
 
@@ -101,14 +106,24 @@ def get_collide_args(dataset_dir: str, parse=True):
     args = domino_postproc(args)
     args = postprocess(args)
 
+    print(vars(parser.parse_args()))
+
     return args
 
 
 if __name__ == '__main__':
 
-    c = MaterialLibrarian()
-    ms = c.get_material_types()
-    print(ms)
-    for m in ms:
-        more_ms = c.get_all_materials_of_type(m)
-        print(m, [_m.name for _m in more_ms])
+    args = get_collide_args("collide")
+    save_args(args, output_dir=args.dir)
+    # print(args)
+    # import sys
+    # print(sys.argv)
+
+
+
+    # c = MaterialLibrarian()
+    # ms = c.get_material_types()
+    # print(ms)
+    # for m in ms:
+    #     more_ms = c.get_all_materials_of_type(m)
+    #     print(m, [_m.name for _m in more_ms])
