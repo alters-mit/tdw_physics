@@ -568,7 +568,8 @@ class MultiDominoes(Dominoes):
             rot = self.get_y_rotation(self.middle_rotation_range)
             if self.horizontal:
                 rot["z"] = 90
-                pos["z"] -= np.sin(np.radians(rot["y"])) * scale["y"] * 0.5
+                pos["z"] += -np.sin(np.radians(rot["y"])) * scale["y"] * 0.5
+                pos["x"] += np.cos(np.radians(rot["y"])) * scale["y"] * 0.5
             print("horizontal", self.horizontal)
             print("middle rotation", rot)
             self.middle_type = data["name"]
