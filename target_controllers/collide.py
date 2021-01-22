@@ -13,7 +13,7 @@ from tdw.librarian import ModelRecord, MaterialLibrarian
 from tdw_physics.rigidbodies_dataset import (RigidbodiesDataset,
                                              get_random_xyz_transform,
                                              handle_random_transform_args)
-from tdw_physics.util import MODEL_LIBRARIES, get_parser, xyz_to_arr, arr_to_xyz, str_to_xyz, save_args
+from tdw_physics.util import MODEL_LIBRARIES, get_parser, xyz_to_arr, arr_to_xyz, str_to_xyz
 
 from dominoes import Dominoes, MultiDominoes, get_args
 
@@ -113,17 +113,18 @@ def get_collide_args(dataset_dir: str, parse=True):
 
 if __name__ == '__main__':
 
-    args = get_collide_args("collide")
-    save_args(args, output_dir=args.dir)
-    # print(args)
-    # import sys
-    # print(sys.argv)
-
-
+    # args = get_collide_args("collide")
 
     # c = MaterialLibrarian()
     # ms = c.get_material_types()
     # print(ms)
+    # # print([m.name for m in c.get_all_materials_of_type("Metal")])
+    # metal = [m for m in c.get_all_materials_of_type("Metal") if "steel_rusty" in m.name]
+    # print(metal[0], metal[0].name)
     # for m in ms:
     #     more_ms = c.get_all_materials_of_type(m)
     #     print(m, [_m.name for _m in more_ms])
+
+    C = MultiDominoes()
+    m = C.get_add_material("steel_rusty")
+    print(m)

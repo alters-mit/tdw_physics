@@ -9,7 +9,7 @@ import random
 from typing import List, Dict, Tuple
 from weighted_collection import WeightedCollection
 from tdw.tdw_utils import TDWUtils
-from tdw.librarian import ModelRecord
+from tdw.librarian import ModelRecord, MaterialLibrarian
 from tdw_physics.rigidbodies_dataset import (RigidbodiesDataset,
                                              get_random_xyz_transform,
                                              get_range,
@@ -413,6 +413,23 @@ class Dominoes(RigidbodiesDataset):
             {"$type": "scale_object",
              "scale_factor": scale if not self.remove_target else TDWUtils.VECTOR3_ZERO,
              "id": o_id}])
+
+        c = MaterialLibrarian()
+        ms = c.get_material_types()
+        print(ms)
+        metal = [m for m in c.get_all_materials_of_type("Metal") if "steel_rusty" in m.name]
+        print(metal[0], metal[0].name)
+        add_material = self.get_add_material(metal[0].name)
+        substruct = record.substructure
+        print("substructure", substruct)
+        set_material = []
+        for i,sub_obj in enumerate(substruct):
+            set_material.append({"$type": "set_visual_material",
+                                 "material_name": metal[0].name,
+                                 "object_name": sub_obj["name"],
+                                 "material_index": i,
+                                 "id": o_id})
+        commands += [add_material] + set_material
 
         if self.remove_target:
             commands.append(
