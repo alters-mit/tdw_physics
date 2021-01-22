@@ -405,19 +405,11 @@ class Dominoes(RigidbodiesDataset):
                 bounciness=random.uniform(0, 1),
                 o_id=o_id))
 
-        # Scale the object and set its color.
-        commands.extend([
-            {"$type": "set_color",
-             "color": {"r": rgb[0], "g": rgb[1], "b": rgb[2], "a": 1.},
-             "id": o_id},
-            {"$type": "scale_object",
-             "scale_factor": scale if not self.remove_target else TDWUtils.VECTOR3_ZERO,
-             "id": o_id}])
-
-        c = MaterialLibrarian()
+        # messing around w material
+        c = MaterialLibrarian("materials_high.json")
         ms = c.get_material_types()
         print(ms)
-        metal = [m for m in c.get_all_materials_of_type("Metal") if "steel_rusty" in m.name]
+        metal = [m for m in c.get_all_materials_of_type("Wood") if "wood_oak_white" in m.name]
         print(metal[0], metal[0].name)
         add_material = self.get_add_material(metal[0].name)
         substruct = record.substructure
@@ -430,6 +422,17 @@ class Dominoes(RigidbodiesDataset):
                                  "material_index": i,
                                  "id": o_id})
         commands += [add_material] + set_material
+
+
+        # Scale the object and set its color.
+        commands.extend([
+            {"$type": "set_color",
+             "color": {"r": rgb[0], "g": rgb[1], "b": rgb[2], "a": 1.},
+             "id": o_id},
+            {"$type": "scale_object",
+             "scale_factor": scale if not self.remove_target else TDWUtils.VECTOR3_ZERO,
+             "id": o_id}])
+
 
         if self.remove_target:
             commands.append(
