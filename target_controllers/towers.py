@@ -12,6 +12,7 @@ from tdw.tdw_utils import TDWUtils
 from tdw.librarian import ModelRecord
 from tdw_physics.rigidbodies_dataset import (RigidbodiesDataset,
                                              get_random_xyz_transform,
+                                             get_range,
                                              handle_random_transform_args)
 from tdw_physics.util import MODEL_LIBRARIES, get_parser, xyz_to_arr, arr_to_xyz, str_to_xyz
 
@@ -73,7 +74,7 @@ def get_tower_args(dataset_dir: str, parse=True):
                         help="scale of probe objects")
     parser.add_argument("--pscale",
                         type=str,
-                        default="[0.2,0.4]",
+                        default="[0.25,0.25]",
                         help="scale of probe objects")
     parser.add_argument("--tscale",
                         type=str,
@@ -233,7 +234,7 @@ class Tower(MultiDominoes):
                     record=record,
                     position=block_pos,
                     rotation=block_rot,
-                    mass=random.uniform(4.5,4.5),
+                    mass=random.uniform(*get_range(self.middle_mass_range)),
                     dynamic_friction=random.uniform(0, 0.9),
                     static_friction=random.uniform(0, 0.9),
                     bounciness=random.uniform(0, 1),
@@ -316,6 +317,7 @@ if __name__ == "__main__":
         spacing_jitter=args.spacing_jitter,
         middle_rotation_range=args.mrot,
         middle_scale_range=args.mscale,
+        middle_mass_range=args.mmass,
         middle_scale_gradient=args.mgrad,
         # domino specific
         target_objects=args.target,

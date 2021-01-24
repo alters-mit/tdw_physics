@@ -59,6 +59,10 @@ def get_args(dataset_dir: str, parse=True):
                         type=str,
                         default=None,
                         help="Scale or scale range for middle objects")
+    parser.add_argument("--mmass",
+                        type=str,
+                        default="[2.0,7.0]",
+                        help="Scale or scale range for middle objects")
     parser.add_argument("--horizontal",
                         type=int,
                         default=0,
@@ -110,11 +114,11 @@ def get_args(dataset_dir: str, parse=True):
     parser.add_argument("--camera_min_height",
                         type=float,
                         default=0.25,
-                         help="min height of camera as a fraction of drop height")
+                         help="min height of camera")
     parser.add_argument("--camera_max_height",
                         type=float,
                         default=1.0,
-                        help="max height of camera as a fraction of drop height")
+                        help="max height of camera")
     parser.add_argument("--camera_min_angle",
                         type=float,
                         default=0,
@@ -135,6 +139,7 @@ def get_args(dataset_dir: str, parse=True):
         args.pmass = handle_random_transform_args(args.pmass)
         args.mscale = handle_random_transform_args(args.mscale)
         args.mrot = handle_random_transform_args(args.mrot)
+        args.mmass = handle_random_transform_args(args.mmass)
 
         # the push force scale and direction
         args.fscale = handle_random_transform_args(args.fscale)
@@ -521,6 +526,7 @@ class MultiDominoes(Dominoes):
                  num_middle_objects=1,
                  middle_scale_range=None,
                  middle_rotation_range=None,
+                 middle_mass_range=[2.,7.],
                  horizontal=False,
                  middle_color=None,
                  spacing_jitter=0.25,
@@ -533,6 +539,7 @@ class MultiDominoes(Dominoes):
 
         # Appearance of middle objects
         self.middle_scale_range = middle_scale_range or self.target_scale_range
+        self.middle_mass_range = middle_mass_range
         self.middle_rotation_range = middle_rotation_range
         self.middle_color = middle_color
         self.horizontal = horizontal
@@ -600,7 +607,7 @@ class MultiDominoes(Dominoes):
                     record=record,
                     position=pos,
                     rotation=rot,
-                    mass=random.uniform(2,7),
+                    mass=random.uniform(*get_range(self.middle_mass_range)),
                     dynamic_friction=random.uniform(0, 0.9),
                     static_friction=random.uniform(0, 0.9),
                     bounciness=random.uniform(0, 1),
@@ -646,6 +653,7 @@ if __name__ == "__main__":
         spacing_jitter=args.spacing_jitter,
         middle_scale_range=args.mscale,
         middle_rotation_range=args.mrot,
+        middle_mass_range=args.mmass,
         horizontal=args.horizontal,
         remove_target=bool(args.remove_target),
         ## not scenario-specific
