@@ -219,8 +219,8 @@ class Dominoes(RigidbodiesDataset):
         self.target_color = target_color
         self.target_rotation_range = target_rotation_range
 
-        self.probe_scale_range = probe_scale_range
-        self.probe_mass_range = probe_mass_range
+        self.probe_scale_range = get_range(probe_scale_range)
+        self.probe_mass_range = get_range(probe_mass_range)
         self.match_probe_and_target_color = True
 
         ## Scenario config properties
@@ -362,7 +362,8 @@ class Dominoes(RigidbodiesDataset):
         push = np.array([np.cos(theta), 0., np.sin(theta)])
 
         # scale it
-        push *= random.uniform(scale_range[0], scale_range[1])
+        # push *= random.uniform(scale_range[0], scale_range[1])
+        push *= random.uniform(*get_range(scale_range))
 
         # convert to xyz
         return arr_to_xyz(push)
