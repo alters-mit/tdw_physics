@@ -10,6 +10,7 @@ from typing import List, Dict, Tuple
 from weighted_collection import WeightedCollection
 from tdw.tdw_utils import TDWUtils
 from tdw.librarian import ModelRecord
+from tdw.output_data import OutputData, Transforms
 from tdw_physics.rigidbodies_dataset import (RigidbodiesDataset,
                                              get_random_xyz_transform,
                                              get_range,
@@ -167,12 +168,45 @@ class Tower(MultiDominoes):
         super().clear_static_data()
 
         self.cap_type = None
+        self.did_fall = None
 
     def _write_static_data(self, static_group: h5py.Group) -> None:
         super()._write_static_data(static_group)
 
         static_group.create_dataset("cap_type", data=self.cap_type)
         static_group.create_dataset("use_cap", data=self.use_cap)
+
+    def _write_frame(self, frames_grp: h5py.Group, resp: List[bytes], frame_num: int) -> \
+        Tuple[h5py.Group, h5py.Group, dict, bool]:
+
+        frame, objs, tr, sleeping = super()._write_frame(frames_grp=frames_grp, resp=resp, frame_num=frame_num)
+        if frame_num > 5:
+            frame.create_dataset("did_fall", data=bool(self.did_fall))
+
+        return frame, objs, tr, sleeping
+
+    def _set_tower_height_now(self, resp: List[bytes]) -> None:
+        top_obj_id = self.object_ids[-1]
+        for r in resp[:-1]:
+            r_id = OutputData.get_data_type_id(r)
+            if r_id == "tran":
+                tr = Transforms(r)
+                for i in range(tr.get_num()):
+                    if tr.get_id(i) == top_obj_id:
+                        self.tower_height = tr.get_position(i)[1]
+
+    def get_per_frame_commands(self, resp: List[bytes], frame: int) -> List[dict]:
+        if frame == 5:
+            self._set_tower_height_now(resp)
+            self.init_height = self.tower_height + 0.
+            print("init tower height: %.2f" % self.tower_height)
+        elif frame > 5:
+            self._set_tower_height_now(resp)
+            print("tower height now: %.2f" % self.tower_height)
+            self.did_fall = (self.tower_height < 0.5 * self.init_height)
+            print("Did the tower fall? %s" % ("yes" if self.did_fall else "no"))
+
+        return []
 
     def _build_intermediate_structure(self) -> List[dict]:
         self.middle_color = self.random_color(exclude=self.target_color) if self.monochrome else None
@@ -193,14 +227,6 @@ class Tower(MultiDominoes):
         print("scale range", self.middle_scale_range)
         scale = get_random_xyz_transform(self.middle_scale_range)
         scale = {k:v+offset for k,v in scale.items()}
-        # if hasattr(self.middle_scale_range, 'keys'):
-        #     scale = {k:random.uniform(self.middle_scale_range[k][0], self.middle_scale_range[k][1]) + offset
-        #              for k in ["x","y","z"]}
-        # elif hasattr(self.middle_scale_range, '__len__'):
-        #     scale = {k:random.uniform(self.middle_scale_range[0], self.middle_scale_range[1]) + offset
-        #              for k in ["x","y","z"]}
-        # else:
-        #     scale = {k:self.middle_scale_range + offset for k in ["x","y","z"]}
 
         return scale
 
@@ -267,6 +293,7 @@ class Tower(MultiDominoes):
             scale=self.target_scale_range,
             color=self.target_color)
         o_id, scale, rgb = [data[k] for k in ["id", "scale", "color"]]
+        self.cap = record
         self.cap_type = data["name"]
 
         commands.extend(
@@ -354,5 +381,6 @@ if __name__ == "__main__":
                height=args.height,
                args_dict=vars(args)
         )
+        print("Did the tower fall? %s" % ("YES" if TC.did_fall else "NO"))
     else:
         TC.communicate({"$type": "terminate"})
