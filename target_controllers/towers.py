@@ -370,7 +370,7 @@ if __name__ == "__main__":
         probe_scale_range=args.pscale,
         probe_mass_range=args.pmass,
         target_color=args.color,
-        probe_color=args.probe_color,
+        probe_color=args.pcolor,
         collision_axis_length=args.collision_axis_length,
         force_scale_range=args.fscale,
         force_angle_range=args.frot,
