@@ -117,6 +117,9 @@ class Dataset(Controller, ABC):
             if int(f.stem) > exists_up_to:
                 exists_up_to = int(f.stem)
 
+        if exists_up_to > 0:
+            print('Trials up to %d already exist, skipping those' % exists_up_to)
+
         pbar.update(exists_up_to)
         for i in range(exists_up_to, num):
             filepath = output_dir.joinpath(TDWUtils.zero_padding(i, 4) + ".hdf5")
