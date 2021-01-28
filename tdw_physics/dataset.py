@@ -35,7 +35,8 @@ class Dataset(Controller, ABC):
         self.clear_static_data()
 
         # set random state
-        if not bool(randomize):
+        self.randomize = randomize
+        if not bool(self.randomize):
             random.seed(seed)
 
     def clear_static_data(self) -> None:
@@ -142,6 +143,7 @@ class Dataset(Controller, ABC):
 
         # Clear the object IDs and other static data
         self.clear_static_data()
+        self._trial_num = trial_num
 
         # Create the .hdf5 file.
         f = h5py.File(str(temp_path.resolve()), "a")

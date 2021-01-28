@@ -209,6 +209,9 @@ class Drop(RigidbodiesDataset):
     def get_trial_initialization_commands(self) -> List[dict]:
         commands = []
 
+        if not(self.randomize):
+            random.seed(self._trial_num)
+
         # Choose and place a target object.
         commands.extend(self._place_target_object())
 
