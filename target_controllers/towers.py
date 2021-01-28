@@ -9,7 +9,7 @@ import random
 from typing import List, Dict, Tuple
 from weighted_collection import WeightedCollection
 from tdw.tdw_utils import TDWUtils
-from tdw.librarian import ModelRecord
+from tdw.librarian import ModelRecord, MaterialLibrarian
 from tdw.output_data import OutputData, Transforms
 from tdw_physics.rigidbodies_dataset import (RigidbodiesDataset,
                                              get_random_xyz_transform,
@@ -20,6 +20,10 @@ from tdw_physics.util import MODEL_LIBRARIES, get_parser, xyz_to_arr, arr_to_xyz
 from dominoes import Dominoes, MultiDominoes, get_args
 
 MODEL_NAMES = [r.name for r in MODEL_LIBRARIES['models_flex.json'].records]
+M = MaterialLibrarian()
+MATERIAL_TYPES = M.get_material_types()
+MATERIAL_NAMES = {mtype: [m.name for m in M.get_all_materials_of_type(mtype)] \
+                  for mtype in MATERIAL_TYPES}
 
 def get_tower_args(dataset_dir: str, parse=True):
     """
@@ -266,6 +270,12 @@ class Tower(MultiDominoes):
                     bounciness=random.uniform(0, 1),
                     o_id=o_id))
 
+            # Set the block object material
+            commands.extend(
+                self.get_object_material_commands(
+                    record, o_id, self.get_material_name(self.middle_material)))
+
+
             # Scale the object and set its color.
             commands.extend([
                 {"$type": "set_color",
@@ -311,6 +321,11 @@ class Tower(MultiDominoes):
                 bounciness=random.uniform(0, 1),
                 o_id=o_id))
 
+        # Set the cap object material
+        commands.extend(
+            self.get_object_material_commands(
+                record, o_id, self.get_material_name(self.target_material)))
+
         # Scale the object and set its color.
         commands.extend([
             {"$type": "set_color",
@@ -355,6 +370,7 @@ if __name__ == "__main__":
         probe_scale_range=args.pscale,
         probe_mass_range=args.pmass,
         target_color=args.color,
+        probe_color=args.probe_color,
         collision_axis_length=args.collision_axis_length,
         force_scale_range=args.fscale,
         force_angle_range=args.frot,
@@ -369,7 +385,11 @@ if __name__ == "__main__":
         camera_max_angle=args.camera_max_angle,
         camera_min_height=args.camera_min_height,
         camera_max_height=args.camera_max_height,
-        monochrome=args.monochrome
+        monochrome=args.monochrome,
+        material_types=args.material_types,
+        target_material=args.tmaterial,
+        probe_material=args.pmaterial,
+        middle_material=args.mmaterial
     )
     print(TC.num_blocks, [r.name for r in TC._cap_types])
 

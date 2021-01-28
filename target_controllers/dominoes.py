@@ -18,7 +18,10 @@ from tdw_physics.util import MODEL_LIBRARIES, get_parser, xyz_to_arr, arr_to_xyz
 
 
 MODEL_NAMES = [r.name for r in MODEL_LIBRARIES['models_flex.json'].records]
-
+M = MaterialLibrarian()
+MATERIAL_TYPES = M.get_material_types()
+MATERIAL_NAMES = {mtype: [m.name for m in M.get_all_materials_of_type(mtype)] \
+                  for mtype in MATERIAL_TYPES}
 
 def get_args(dataset_dir: str, parse=True):
     """
@@ -93,8 +96,12 @@ def get_args(dataset_dir: str, parse=True):
                         help="jitter around object centroid to apply force")
     parser.add_argument("--color",
                         type=str,
-                        default=None,
+                        default="1.0,0.0,0.0",
                         help="comma-separated R,G,B values for the target object color. Defaults to random.")
+    parser.add_argument("--pcolor",
+                        type=str,
+                        default="0.0,1.0,1.0",
+                        help="comma-separated R,G,B values for the probe object color. Defaults to random.")
     parser.add_argument("--collision_axis_length",
                         type=float,
                         default=1.,
@@ -127,6 +134,23 @@ def get_args(dataset_dir: str, parse=True):
                         type=float,
                         default=180,
                         help="maximum angle of camera rotation around centerpoint")
+    parser.add_argument("--material_types",
+                        type=str,
+                        default="Wood",
+                        help="Which class of materials to sample material names from")
+    parser.add_argument("--tmaterial",
+                        type=str,
+                        default="parquet_wood_red_cedar",
+                        help="Material name for target. If None, samples from material_type")
+    parser.add_argument("--pmaterial",
+                        type=str,
+                        default="parquet_wood_red_cedar",
+                        help="Material name for probe. If None, samples from material_type")
+    parser.add_argument("--mmaterial",
+                        type=str,
+                        default="parquet_wood_red_cedar",
+                        help="Material name for middle objects. If None, samples from material_type")
+
 
     def postprocess(args):
         # whether to set all objects same color
@@ -175,6 +199,19 @@ def get_args(dataset_dir: str, parse=True):
             assert len(rgb) == 3, rgb
             args.color = rgb
 
+        if args.pcolor is not None:
+            rgb = [float(c) for c in args.pcolor.split(',')]
+            assert len(rgb) == 3, rgb
+            args.pcolor = rgb
+
+        if args.material_types is None:
+            args.material_types = MATERIAL_TYPES
+        else:
+            matlist = args.material_types.split(',')
+            assert all ([m in MATERIAL_TYPES for m in matlist]), \
+                "All material types must be elements of %s" % MATERIAL_TYPES
+            args.material_types = matlist
+
         return args
 
     if not parse:
@@ -195,6 +232,7 @@ class Dominoes(RigidbodiesDataset):
                  target_objects=MODEL_NAMES,
                  probe_scale_range=[0.2, 0.3],
                  probe_mass_range=[2.,7.],
+                 probe_color=None,
                  target_scale_range=[0.2, 0.3],
                  target_rotation_range=None,
                  target_color=None,
@@ -209,6 +247,9 @@ class Dominoes(RigidbodiesDataset):
                  camera_max_angle=360,
                  camera_min_height=1./3,
                  camera_max_height=2./3,
+                 material_types=MATERIAL_TYPES,
+                 target_material=None,
+                 probe_material=None,
                  **kwargs):
 
         ## initializes static data and RNG
@@ -217,15 +258,19 @@ class Dominoes(RigidbodiesDataset):
         ## allowable object types
         self.set_probe_types(probe_objects)
         self.set_target_types(target_objects)
+        self.material_types = material_types
         self.remove_target = remove_target
 
         ## object generation properties
         self.target_scale_range = target_scale_range
         self.target_color = target_color
         self.target_rotation_range = target_rotation_range
+        self.target_material = target_material
 
+        self.probe_color = probe_color
         self.probe_scale_range = probe_scale_range
         self.probe_mass_range = get_range(probe_mass_range)
+        self.probe_material = probe_material
         self.match_probe_and_target_color = True
 
         ## Scenario config properties
@@ -255,6 +300,28 @@ class Dominoes(RigidbodiesDataset):
     def set_target_types(self, olist):
         tlist = self.get_types(olist)
         self._target_types = tlist
+
+    def get_material_name(self, material):
+
+        if material is not None:
+            if material in MATERIAL_TYPES:
+                mat = random.choice(MATERIAL_NAMES[material])
+            else:
+                assert any((material in MATERIAL_NAMES[mtype] for mtype in self.material_types)), \
+                    (material, self.material_types)
+                mat = material
+        else:
+            mtype = random.choice(self.material_types)
+            mat = random.choice(MATERIAL_NAMES[mtype])
+
+        print("chose material: %s" % mat)
+
+        return mat
+
+    def get_object_material_commands(self, record, object_id, material):
+        commands = TDWUtils.set_visual_material(
+            self, record.substructure, object_id, material, quality="high")
+        return commands
 
     def clear_static_data(self) -> None:
         super().clear_static_data()
@@ -289,7 +356,8 @@ class Dominoes(RigidbodiesDataset):
         commands.extend(self._place_target_object())
 
         # Set the probe color
-        self.probe_color = self.target_color if (self.monochrome and self.match_probe_and_target_color) else None
+        if self.probe_color is None:
+            self.probe_color = self.target_color if (self.monochrome and self.match_probe_and_target_color) else None
 
         # Choose, place, and push a probe object.
         commands.extend(self._place_and_push_probe_object())
@@ -411,14 +479,20 @@ class Dominoes(RigidbodiesDataset):
                 bounciness=random.uniform(0, 1),
                 o_id=o_id))
 
+        # Set the object material
+        commands.extend(
+            self.get_object_material_commands(
+                record, o_id, self.get_material_name(self.target_material)))
+
         # messing around w material
-        c = MaterialLibrarian("materials_high.json")
-        ms = c.get_material_types()
-        print(ms)
-        metal = [m for m in c.get_all_materials_of_type("Wood") if "wood_american_cherry" in m.name]
-        print(metal[0], metal[0].name)
-        mat_commands = TDWUtils.set_visual_material(self, record.substructure, o_id, metal[0].name, quality="high")
-        commands += mat_commands
+        # c = MaterialLibrarian("materials_high.json")
+        # ms = c.get_material_types()
+        # print(ms)
+        # metal = [m for m in c.get_all_materials_of_type("Wood") if "wood_american_cherry" in m.name]
+        # print(metal[0], metal[0].name)
+        # mat_commands = TDWUtils.set_visual_material(self, record.substructure, o_id, metal[0].name, quality="high")
+        # commands += mat_commands
+
         # add_material = self.get_add_material(metal[0].name)
         # substruct = record.substructure
         # print("substructure", substruct)
@@ -483,6 +557,12 @@ class Dominoes(RigidbodiesDataset):
                 bounciness=random.uniform(0, 1),
                 o_id=o_id))
 
+        # Set the probe material
+        commands.extend(
+            self.get_object_material_commands(
+                record, o_id, self.get_material_name(self.probe_material)))
+
+
         # Scale the object and set its color.
         commands.extend([
             {"$type": "set_color",
@@ -532,6 +612,7 @@ class MultiDominoes(Dominoes):
                  horizontal=False,
                  middle_color=None,
                  spacing_jitter=0.25,
+                 middle_material=None,
                  **kwargs):
 
         super().__init__(port=port, **kwargs)
@@ -544,6 +625,7 @@ class MultiDominoes(Dominoes):
         self.middle_mass_range = middle_mass_range
         self.middle_rotation_range = middle_rotation_range
         self.middle_color = middle_color
+        self.middle_material = self.get_material_name(middle_material)
         self.horizontal = horizontal
 
         # How many middle objects and their spacing
@@ -615,6 +697,11 @@ class MultiDominoes(Dominoes):
                     bounciness=random.uniform(0, 1),
                     o_id=o_id))
 
+            # Set the middle object material
+            commands.extend(
+                self.get_object_material_commands(
+                    record, o_id, self.get_material_name(self.middle_material)))
+
             # Scale the object and set its color.
             commands.extend([
                 {"$type": "set_color",
@@ -647,6 +734,7 @@ if __name__ == "__main__":
         probe_scale_range=args.pscale,
         probe_mass_range=args.pmass,
         target_color=args.color,
+        probe_color=args.pcolor,
         collision_axis_length=args.collision_axis_length,
         force_scale_range=args.fscale,
         force_angle_range=args.frot,
@@ -664,7 +752,11 @@ if __name__ == "__main__":
         camera_max_angle=args.camera_max_angle,
         camera_min_height=args.camera_min_height,
         camera_max_height=args.camera_max_height,
-        monochrome=args.monochrome
+        monochrome=args.monochrome,
+        material_types=args.material_types,
+        target_material=args.tmaterial,
+        probe_material=args.pmaterial,
+        middle_material=args.mmaterial
     )
 
     if bool(args.run):
