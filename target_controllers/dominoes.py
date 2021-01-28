@@ -25,7 +25,7 @@ def get_args(dataset_dir: str, parse=True):
     Combine Domino-specific arguments with controller-common arguments
     """
     common = get_parser(dataset_dir, get_help=False)
-    parser = ArgumentParser(parents=[common], add_help=parse)
+    parser = ArgumentParser(parents=[common], add_help=parse, fromfile_prefix_chars='@')
 
     parser.add_argument("--num_middle_objects",
                         type=int,
@@ -224,7 +224,7 @@ class Dominoes(RigidbodiesDataset):
         self.target_color = target_color
         self.target_rotation_range = target_rotation_range
 
-        self.probe_scale_range = get_range(probe_scale_range)
+        self.probe_scale_range = probe_scale_range
         self.probe_mass_range = get_range(probe_mass_range)
         self.match_probe_and_target_color = True
 
@@ -415,19 +415,21 @@ class Dominoes(RigidbodiesDataset):
         c = MaterialLibrarian("materials_high.json")
         ms = c.get_material_types()
         print(ms)
-        metal = [m for m in c.get_all_materials_of_type("Wood") if "wood_oak_white" in m.name]
+        metal = [m for m in c.get_all_materials_of_type("Wood") if "wood_american_cherry" in m.name]
         print(metal[0], metal[0].name)
-        add_material = self.get_add_material(metal[0].name)
-        substruct = record.substructure
-        print("substructure", substruct)
-        set_material = []
-        for i,sub_obj in enumerate(substruct):
-            set_material.append({"$type": "set_visual_material",
-                                 "material_name": metal[0].name,
-                                 "object_name": sub_obj["name"],
-                                 "material_index": i,
-                                 "id": o_id})
-        commands += [add_material] + set_material
+        mat_commands = TDWUtils.set_visual_material(self, record.substructure, o_id, metal[0].name, quality="high")
+        commands += mat_commands
+        # add_material = self.get_add_material(metal[0].name)
+        # substruct = record.substructure
+        # print("substructure", substruct)
+        # set_material = []
+        # for i,sub_obj in enumerate(substruct):
+        #     set_material.append({"$type": "set_visual_material",
+        #                          "material_name": metal[0].name,
+        #                          "object_name": sub_obj["name"],
+        #                          "material_index": i,
+        #                          "id": o_id})
+        # commands += [add_material] + set_material
 
 
         # Scale the object and set its color.

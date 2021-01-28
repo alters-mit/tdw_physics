@@ -339,7 +339,6 @@ class Dataset(Controller, ABC):
 
         :return: Commands to send per frame.
         """
-        print("per frame commands", frame)
         raise Exception()
 
     @abstractmethod

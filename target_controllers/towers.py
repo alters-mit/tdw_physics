@@ -27,7 +27,7 @@ def get_tower_args(dataset_dir: str, parse=True):
     """
     common = get_parser(dataset_dir, get_help=False)
     domino, domino_postproc = get_args(dataset_dir, parse=False)
-    parser = ArgumentParser(parents=[common, domino], conflict_handler='resolve')
+    parser = ArgumentParser(parents=[common, domino], conflict_handler='resolve', fromfile_prefix_chars='@')
 
     parser.add_argument("--remove_target",
                         type=int,
