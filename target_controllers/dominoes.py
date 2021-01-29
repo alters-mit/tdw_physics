@@ -23,6 +23,12 @@ MATERIAL_TYPES = M.get_material_types()
 MATERIAL_NAMES = {mtype: [m.name for m in M.get_all_materials_of_type(mtype)] \
                   for mtype in MATERIAL_TYPES}
 
+def none_or_str(value):
+    if value == 'None':
+        return None
+    else:
+        return value
+
 def get_args(dataset_dir: str, parse=True):
     """
     Combine Domino-specific arguments with controller-common arguments
@@ -135,19 +141,19 @@ def get_args(dataset_dir: str, parse=True):
                         default=180,
                         help="maximum angle of camera rotation around centerpoint")
     parser.add_argument("--material_types",
-                        type=str,
+                        type=none_or_str,
                         default="Wood",
                         help="Which class of materials to sample material names from")
     parser.add_argument("--tmaterial",
-                        type=str,
+                        type=none_or_str,
                         default="parquet_wood_red_cedar",
                         help="Material name for target. If None, samples from material_type")
     parser.add_argument("--pmaterial",
-                        type=str,
+                        type=none_or_str,
                         default="parquet_wood_red_cedar",
                         help="Material name for probe. If None, samples from material_type")
     parser.add_argument("--mmaterial",
-                        type=str,
+                        type=none_or_str,
                         default="parquet_wood_red_cedar",
                         help="Material name for middle objects. If None, samples from material_type")
 
