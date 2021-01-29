@@ -71,6 +71,7 @@ _Regardless_ of which abstract controller you use, you must override the followi
 ## `RigidbodiesDataset`
 
 ```python
+from typing import List
 from tdw_physics.rigidbodies_dataset import RigidbodiesDataset
 
 class MyDataset(RigidbodiesDataset):
@@ -113,6 +114,7 @@ Get commands to add an object and assign physics properties. Write the object's 
 _Return:_ A list of commands: `[add_object, set_mass, set_physic_material]`
 
 ```python
+from typing import List
 from tdw.librarian import ModelLibrarian
 from tdw_physics.rigidbodies_dataset import RigidbodiesDataset
 
@@ -122,14 +124,15 @@ class MyDataset(RigidbodiesDataset):
         # Your code here.
         lib = ModelLibrarian("models_full.json")
         record = lib.get_record("iron_box")
-        commands.extend(self.add_physics_objec(record=record, 
-                                               position={"x": 0, "y": 0, "z": 0},
-                                               rotation={"x": 0, "y": 0, "z": 0},
-                                               o_id=0,
-                                               mass=1.5,
-                                               dynamic_friction=0.1,
-                                               static_friction=0.2,
-                                               bounciness=0.5))
+        commands.extend(self.add_physics_object(record=record, 
+                                                position={"x": 0, "y": 0, "z": 0},
+                                                rotation={"x": 0, "y": 0, "z": 0},
+                                                o_id=0,
+                                                mass=1.5,
+                                                dynamic_friction=0.1,
+                                                static_friction=0.2,
+                                                bounciness=0.5))
+        return commands
 ```
 
 | Parameter          | Type               | Default | Description                                                  |
@@ -150,6 +153,7 @@ Get commands to add an object and assign physics values based on _default physic
 _Return:_ A list of commands: `[add_object, set_mass, set_physic_material]`
 
 ```python
+from typing import List
 from tdw_physics.rigidbodies_dataset import RigidbodiesDataset
 
 class MyDataset(RigidbodiesDataset):
@@ -160,6 +164,7 @@ class MyDataset(RigidbodiesDataset):
                                                         position={"x": 0, "y": 0, "z": 0},
                                                         rotation={"x": 0, "y": 0, "z": 0},
                                                         o_id=0))
+        return commands
 ```
 
 | Parameter  | Type               | Default | Description                                                  |
@@ -190,7 +195,7 @@ _Return:_ A list of lists; per-frame commands to make small objects fly up.
 `RigidbodiesDataset` caches default physics info per object (see above) in a dictionary where the key is the model name and the values is a `PhysicsInfo` object:
 
 ```python
-from tdw_physics.RigidbodiesDataset import PHYSICS_INFO
+from tdw_physics.rigidbodies_dataset import PHYSICS_INFO
 
 info = PHYSICS_INFO["chair_billiani_doll"]
 
@@ -282,6 +287,7 @@ python3 physics_info_calculator.py [ARGUMENTS]
 ## `TransformsDataset`
 
 ```python
+from typing import List
 from tdw_physics.transforms_dataset import TransformsDataset
 
 class MyDataset(TransformsDataset):
@@ -318,6 +324,7 @@ A `TransformsDataset` trial has no "end" condition based on trial output data; y
 _Return:_ An `add_object` command.
 
 ```python
+from typing import List
 from tdw.librarian import ModelLibrarian
 from tdw_physics.transforms_dataset import TransformsDataset
 
@@ -331,6 +338,7 @@ class MyDataset(TransformsDataset):
                                                    position={"x": 0, "y": 0, "z": 0},
                                                    rotation={"x": 0, "y": 0, "z": 0},
                                                    o_id=0))
+        return commands
 ```
 
 | Parameter  | Type               | Default | Description                                                  |
@@ -374,6 +382,7 @@ frames/    # Per-frame data.
 ## `FlexDataset`
 
 ```python
+from typing import List
 from tdw_physics.flex_dataset import FlexDataset
 
 class MyDataset(FlexDataset):
@@ -401,6 +410,7 @@ A dataset creator that receives and writes per frame: `Transforms`, `Images`, `C
 _Return:_ A list of commands: `[add_object, scale_object, set_flex_solid_actor, assign_flex_container]`
 
 ```python
+from typing import List
 from tdw.librarian import ModelLibrarian
 from tdw_physics.flex_dataset import FlexDataset
 
@@ -410,7 +420,7 @@ class MyDataset(FlexDataset):
         # Your code here.
         lib = ModelLibrarian("models_full.json")
         record = lib.get_record("microwave")
-        commands.append(self.add_solid_object(record=record, 
+        commands.extend(self.add_solid_object(record=record, 
                                               position={"x": 0, "y": 0, "z": 0},
                                               rotation={"x": 0, "y": 0, "z": 0},
                                               scale={"x": 1, "y": 1, "z": 1},
@@ -418,6 +428,7 @@ class MyDataset(FlexDataset):
                                               mesh_expansion=0,
                                               particle_spacing=0.125,
                                               mass_scale=1))
+        return commands
 ```
 
 | Parameter          | Type               | Default | Description                                                  |
@@ -436,6 +447,7 @@ class MyDataset(FlexDataset):
 _Return:_ A list of commands: `[add_object, scale_object, set_flex_soft_actor, assign_flex_container]`
 
 ```python
+from typing import List
 from tdw.librarian import ModelLibrarian
 from tdw_physics.flex_dataset import FlexDataset
 
@@ -445,7 +457,7 @@ class MyDataset(FlexDataset):
         # Your code here.
         lib = ModelLibrarian("models_full.json")
         record = lib.get_record("microwave")
-        commands.append(self.add_soft_object(record=record, 
+        commands.extend(self.add_soft_object(record=record, 
                                              position={"x": 0, "y": 0, "z": 0},
                                              rotation={"x": 0, "y": 0, "z": 0},
                                              scale={"x": 1, "y": 1, "z": 1},
@@ -459,6 +471,7 @@ class MyDataset(FlexDataset):
                                              link_radius=0.1,
                                              link_stiffness=0.5,
                                              particle_spacing=0.02))
+        return commands
 ```
 
 | Parameter           | Type               | Default | Description                                                  |
@@ -483,6 +496,7 @@ class MyDataset(FlexDataset):
 _Return:_ A list of commands: `[add_object, scale_object, set_flex_cloth_actor, assign_flex_container]`
 
 ```python
+from typing import List
 from tdw.librarian import ModelLibrarian
 from tdw_physics.flex_dataset import FlexDataset
 
@@ -492,18 +506,18 @@ class MyDataset(FlexDataset):
         # Your code here.
         lib = ModelLibrarian("models_special.json")
         record = lib.get_record("cloth_square")
-        commands.append(self.add_cloth_object(record=record, 
+        commands.extend(self.add_cloth_object(record=record, 
                                               position={"x": 0, "y": 0, "z": 0},
                                               rotation={"x": 0, "y": 0, "z": 0},
                                               scale={"x": 1, "y": 1, "z": 1},
                                               o_id=0,
-                                              mass_tesselation=1,
-                                              stretch_stiffness=0.1
-                                              bend_stiffness=0.1
+                                              stretch_stiffness=0.1,
+                                              bend_stiffness=0.1,
                                               tether_stiffness=0.1,
                                               tether_give=0,
-                                              pressure=0
+                                              pressure=0,
                                               mass_scale=1))
+        return commands
 ```
 
 | Parameter           | Type               | Default | Description                                                  |
@@ -526,6 +540,8 @@ class MyDataset(FlexDataset):
 _Return:_ A list of commands: `[load_flex_fluid_from_resources, create_flex_fluid_object, assign_flex_container, step_physics]`
 
 ```python
+from typing import List
+from tdw.controller import Controller
 from tdw.librarian import ModelLibrarian
 from tdw_physics.flex_dataset import FlexDataset
 
@@ -537,15 +553,15 @@ class MyDataset(FlexDataset):
         
         # Cache the pool ID to destroy it correctly.
         pool_id = Controller.get_unique_id()
-        self.non_flex_objects.append(self.pool_id)
+        self.non_flex_objects.append(pool_id)
         
         # Add the pool.
         lib = ModelLibrarian("models_special.json")
         receptacle_record = lib.get_record("fluid_receptacle1x1")
-        commands.append(self.add_transforms_object(record=self.receptacle_record,
+        commands.append(self.add_transforms_object(record=receptacle_record,
                                                          position={"x": 0, "y": 0, "z": 0},
                                                          rotation={"x": 0, "y": 0, "z": 0},
-                                                         o_id=self.pool_id))
+                                                         o_id=pool_id))
         
         # Add a container here.
         
@@ -555,6 +571,7 @@ class MyDataset(FlexDataset):
                                               rotation={"x": 0, "y": 0, "z": 0},
                                               o_id=fluid_id,
                                               fluid_type="water"))
+        return commands
 ```
 
 | Parameter          | Type               | Default | Description                                                  |
@@ -634,9 +651,9 @@ Some helpful utility functions and variables.
 Cache of all default model libraries, mapped to their names.
 
 ```python
-from tdw_physics.utils import MODEL_LIBARIES
+from tdw_physics.util import MODEL_LIBRARIES
 
-print(MODEL_LIBARIES["models_full.json"].get_record("iron_box").name) # iron_box
+print(MODEL_LIBRARIES["models_full.json"].get_record("iron_box").name) # iron_box
 ```
 
 #### `def get_move_along_direction()`
@@ -644,7 +661,7 @@ print(MODEL_LIBARIES["models_full.json"].get_record("iron_box").name) # iron_box
 _Return:_ A position from pos by distance d along a directional vector defined by pos, target.
 
 ```python
-from tdw_physics.utils import get_move_along_direction
+from tdw_physics.util import get_move_along_direction
 
 p_0 = {"x": 1, "y": 0, "z": -2}
 p_1 = {"x": 5, "y": 0, "z": 3.4}
@@ -663,11 +680,11 @@ p_0 = get_move_along_direction(pos=p_0, target=p_1, d=0.7, noise=0.01)
 _Return:_ A list of commands to rotate an object to look at the target position.
 
 ```python
-from tdw_physics.utils import get_object_look_at
+from tdw_physics.util import get_object_look_at
 
 o_id = 0 # Assume that the object has been already added to the scene.
 p_1 = {"x": 5, "y": 0, "z": 3.4}
-p_0 = get_move_along_direction(o_id=o_id, pos=p_1, noise=5)
+p_0 = get_object_look_at(o_id=o_id, pos=p_1, noise=5)
 ```
 
 | Parameter | Type               | Default | Description                                                  |
@@ -681,7 +698,7 @@ p_0 = get_move_along_direction(o_id=o_id, pos=p_1, noise=5)
 _Return:_ Command line arguments common to all controllers.
 
 ```python
-from tdw.physics_utils import get_args
+from tdw_physics.util import get_args
 from tdw_physics.rigidbodies_dataset import RigidbodiesDataset
 
 class MyDataset(RigidbodiesDataset):
@@ -689,7 +706,7 @@ class MyDataset(RigidbodiesDataset):
     
 if __name__ == "__main__":
     args = get_args("my_dataset")
-    MyDataset().run(num=args.num, output_dir=args.dir, temp_path=args.temp)
+    MyDataset().run(num=args.num, output_dir=args.dir, temp_path=args.temp, width=args.width, height=args.height)
 ```
 
 | Parameter     | Type  | Default | Description                                                  |
@@ -698,7 +715,7 @@ if __name__ == "__main__":
 
 ## `extract_images.py`
 
-```python
+```bash
 python3 extract_images.py [ARGUMENTS]
 ```
 
