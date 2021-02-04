@@ -40,6 +40,10 @@ def get_args(dataset_dir: str, parse=True):
                         type=int,
                         default=0,
                         help="The number of middle objects to place")
+    parser.add_argument("--zone",
+                        type=str,
+                        default="cube",
+                        help="comma-separated list of possible target zone shapes")
     parser.add_argument("--target",
                         type=str,
                         default="cube",
@@ -52,6 +56,10 @@ def get_args(dataset_dir: str, parse=True):
                         type=str,
                         default=None,
                         help="comma-separated list of possible middle objects; default to same as target")
+    parser.add_argument("--zscale",
+                        type=str,
+                        default="0.5,0.01,0.5",
+                        help="scale of target zone")
     parser.add_argument("--tscale",
                         type=str,
                         default="0.1,0.5,0.25",
@@ -101,17 +109,21 @@ def get_args(dataset_dir: str, parse=True):
                         default=0.0,
                         help="jitter around object centroid to apply force")
     parser.add_argument("--color",
-                        type=str,
+                        type=none_or_str,
                         default="1.0,0.0,0.0",
-                        help="comma-separated R,G,B values for the target object color. Defaults to random.")
+                        help="comma-separated R,G,B values for the target object color. None to random.")
+    parser.add_argument("--zcolor",
+                        type=none_or_str,
+                        default="0.0,0.5,1.0",
+                        help="comma-separated R,G,B values for the target zone color. None is random")
     parser.add_argument("--pcolor",
-                        type=str,
+                        type=none_or_str,
                         default="0.0,1.0,1.0",
-                        help="comma-separated R,G,B values for the probe object color. Defaults to random.")
+                        help="comma-separated R,G,B values for the probe object color. None is random.")
     parser.add_argument("--mcolor",
-                        type=str,
+                        type=none_or_str,
                         default=None,
-                        help="comma-separated R,G,B values for the middle object color. Defaults to random.")
+                        help="comma-separated R,G,B values for the middle object color. None is random.")
     parser.add_argument("--collision_axis_length",
                         type=float,
                         default=1.,
@@ -152,6 +164,10 @@ def get_args(dataset_dir: str, parse=True):
                         type=none_or_str,
                         default="parquet_wood_red_cedar",
                         help="Material name for target. If None, samples from material_type")
+    parser.add_argument("--zmaterial",
+                        type=none_or_str,
+                        default="parquet_wood_red_cedar",
+                        help="Material name for target. If None, samples from material_type")
     parser.add_argument("--pmaterial",
                         type=none_or_str,
                         default="parquet_wood_red_cedar",
@@ -170,6 +186,7 @@ def get_args(dataset_dir: str, parse=True):
         args.monochrome = bool(args.monochrome)
 
         # scaling and rotating of objects
+        args.zscale = handle_random_transform_args(args.zscale)
         args.tscale = handle_random_transform_args(args.tscale)
         args.trot = handle_random_transform_args(args.trot)
         args.pscale = handle_random_transform_args(args.pscale)
@@ -184,6 +201,14 @@ def get_args(dataset_dir: str, parse=True):
         args.foffset = handle_random_transform_args(args.foffset)
 
         args.horizontal = bool(args.horizontal)
+
+        if args.zone is not None:
+            zone_list = args.zone.split(',')
+            assert all([t in MODEL_NAMES for t in zone_list]), \
+                "All target object names must be elements of %s" % MODEL_NAMES
+            args.zone = zone_list
+        else:
+            args.target = MODEL_NAMES
 
         if args.target is not None:
             targ_list = args.target.split(',')
@@ -211,6 +236,11 @@ def get_args(dataset_dir: str, parse=True):
             rgb = [float(c) for c in args.color.split(',')]
             assert len(rgb) == 3, rgb
             args.color = rgb
+
+        if args.zcolor is not None:
+            rgb = [float(c) for c in args.zcolor.split(',')]
+            assert len(rgb) == 3, rgb
+            args.zcolor = rgb
 
         if args.pcolor is not None:
             rgb = [float(c) for c in args.pcolor.split(',')]
@@ -248,6 +278,9 @@ class Dominoes(RigidbodiesDataset):
     def __init__(self,
                  port: int = 1071,
                  room='box',
+                 target_zone=['cube'],
+                 zone_color=[0.0,0.5,1.0],
+                 zone_scale_range=[0.5,0.001,0.5],
                  probe_objects=MODEL_NAMES,
                  target_objects=MODEL_NAMES,
                  probe_scale_range=[0.2, 0.3],
@@ -277,6 +310,11 @@ class Dominoes(RigidbodiesDataset):
 
         ## which room to use
         self.room = room
+
+        ## target zone
+        self.set_zone_types(target_zone)
+        self.zone_color = zone_color
+        self.zone_scale_range = zone_scale_range
 
         ## allowable object types
         self.set_probe_types(probe_objects)
@@ -323,6 +361,10 @@ class Dominoes(RigidbodiesDataset):
     def set_target_types(self, olist):
         tlist = self.get_types(olist)
         self._target_types = tlist
+
+    def set_zone_types(self, olist):
+        tlist = self.get_types(olist)
+        self._zone_types = tlist
 
     def get_material_name(self, material):
 
@@ -378,6 +420,9 @@ class Dominoes(RigidbodiesDataset):
 
     def get_trial_initialization_commands(self) -> List[dict]:
         commands = []
+
+        # Choose and place the target zone.
+        commands.extend(self._place_target_zone())
 
         # Choose and place a target object.
         commands.extend(self._place_target_object())
@@ -468,6 +513,69 @@ class Dominoes(RigidbodiesDataset):
         # convert to xyz
         return arr_to_xyz(push)
 
+    def _place_target_zone(self) -> List[dict]:
+
+        # create a target zone (usually flat, with same texture as room)
+        record, data = self.random_primitive(self._zone_types,
+                                             scale=self.zone_scale_range,
+                                             color=self.zone_color)
+        o_id, scale, rgb = [data[k] for k in ["id", "scale", "color"]]
+        self.zone = record
+        self.zone_type = data["name"]
+        self.zone_color = rgb
+
+        if any((s <= 0 for s in scale.values())):
+            self.remove_zone = True
+        else:
+            self.remove_zone = False
+
+        # place it just beyond the target object with an effectively immovable mass and high friction
+        commands = []
+        commands.extend(
+            self.add_physics_object(
+                record=record,
+                position={
+                    "x": 0.5 * self.collision_axis_length + scale["x"] + 0.1,
+                    "y": 0. if not self.remove_zone else 10.0,
+                    "z": 0. if not self.remove_zone else 10.0
+                },
+                rotation=TDWUtils.VECTOR3_ZERO,
+                mass=1000.,
+                dynamic_friction=10.,
+                static_friction=10.,
+                bounciness=0,
+                o_id=o_id))
+
+        # set its material to be the same as the room
+        # if self.room == 'tdw':
+        # print("REMOVE ZONE", self.remove_zone)
+        commands.extend(
+            self.get_object_material_commands(
+                record, o_id, "cotton_jean_light_blue"))
+                # record, o_id, self.get_material_name("parquet_wood_red_cedar")))
+
+        # Scale the object and set its color.
+        print("ZONE COLOR", rgb)
+        print("ZONE SCALE", scale)
+        commands.extend([
+            {"$type": "set_color",
+             "color": {"r": rgb[0], "g": rgb[1], "b": rgb[2], "a": 1.},
+             "id": o_id},
+            {"$type": "scale_object",
+             "scale_factor": scale if not self.remove_zone else TDWUtils.VECTOR3_ZERO,
+             "id": o_id}])
+
+        # get rid of it if not using a target object
+        if self.remove_zone:
+            commands.append(
+                {"$type": self._get_destroy_object_command_name(o_id),
+                 "id": int(o_id)})
+            self.object_ids = self.object_ids[:-1]
+
+        return commands
+
+
+
     def _place_target_object(self) -> List[dict]:
         """
         Place a primitive object at one end of the collision axis.
@@ -485,6 +593,9 @@ class Dominoes(RigidbodiesDataset):
         self.target_type = data["name"]
         self.target_color = rgb
         # self.probe_color = rgb if self.monochrome else None
+
+        if any((s <= 0 for s in scale.values())):
+            self.remove_target = True
 
         # add the object
         commands = []
@@ -510,28 +621,6 @@ class Dominoes(RigidbodiesDataset):
         commands.extend(
             self.get_object_material_commands(
                 record, o_id, self.get_material_name(self.target_material)))
-
-        # messing around w material
-        # c = MaterialLibrarian("materials_high.json")
-        # ms = c.get_material_types()
-        # print(ms)
-        # metal = [m for m in c.get_all_materials_of_type("Wood") if "wood_american_cherry" in m.name]
-        # print(metal[0], metal[0].name)
-        # mat_commands = TDWUtils.set_visual_material(self, record.substructure, o_id, metal[0].name, quality="high")
-        # commands += mat_commands
-
-        # add_material = self.get_add_material(metal[0].name)
-        # substruct = record.substructure
-        # print("substructure", substruct)
-        # set_material = []
-        # for i,sub_obj in enumerate(substruct):
-        #     set_material.append({"$type": "set_visual_material",
-        #                          "material_name": metal[0].name,
-        #                          "object_name": sub_obj["name"],
-        #                          "material_index": i,
-        #                          "id": o_id})
-        # commands += [add_material] + set_material
-
 
         # Scale the object and set its color.
         commands.extend([
@@ -682,7 +771,7 @@ class MultiDominoes(Dominoes):
 
     def _build_intermediate_structure(self) -> List[dict]:
         # set the middle object color
-        self.middle_color = self.middle_color or (self.probe_color if self.monochrome else self.random_color())
+        self.middle_color = self.middle_color or (self.probe_color if self.monochrome else self.random_color(exclude=self.target_color, exclude_range=0.33))
 
         return self._place_middle_objects() if bool(self.num_middle_objects) else []
 
@@ -756,6 +845,9 @@ if __name__ == "__main__":
         num_middle_objects=args.num_middle_objects,
         randomize=args.random,
         seed=args.seed,
+        target_zone=args.zone,
+        zone_scale_range=args.zscale,
+        zone_color=args.zcolor,
         target_objects=args.target,
         probe_objects=args.probe,
         middle_objects=args.middle,
