@@ -34,8 +34,6 @@ class Dataset(Controller, ABC):
                          check_version=check_version,
                          launch_build=launch_build)
 
-        self.clear_static_data()
-
         # set random state
         if not bool(randomize):
             random.seed(seed)

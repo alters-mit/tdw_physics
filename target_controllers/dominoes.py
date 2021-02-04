@@ -108,6 +108,10 @@ def get_args(dataset_dir: str, parse=True):
                         type=str,
                         default="0.0,1.0,1.0",
                         help="comma-separated R,G,B values for the probe object color. Defaults to random.")
+    parser.add_argument("--mcolor",
+                        type=str,
+                        default=None,
+                        help="comma-separated R,G,B values for the middle object color. Defaults to random.")
     parser.add_argument("--collision_axis_length",
                         type=float,
                         default=1.,
@@ -209,6 +213,12 @@ def get_args(dataset_dir: str, parse=True):
             rgb = [float(c) for c in args.pcolor.split(',')]
             assert len(rgb) == 3, rgb
             args.pcolor = rgb
+
+        if args.mcolor is not None:
+            rgb = [float(c) for c in args.mcolor.split(',')]
+            assert len(rgb) == 3, rgb
+            args.mcolor = rgb
+
 
         if args.material_types is None:
             args.material_types = MATERIAL_TYPES
@@ -345,7 +355,9 @@ class Dominoes(RigidbodiesDataset):
         return 55
 
     def get_scene_initialization_commands(self) -> List[dict]:
-        return [self.get_add_scene(scene_name="box_room_2018"),
+        # return [self.get_add_scene(scene_name="box_room_2018"),
+        return [self.get_add_scene(scene_name="tdw_room_2018"),
+        # return [self.get_add_scene(scene_name="monkey_physics_room"),
                 {"$type": "set_aperture",
                  "aperture": 8.0},
                 {"$type": "set_post_exposure",
@@ -612,11 +624,11 @@ class MultiDominoes(Dominoes):
                  port: int = 1071,
                  middle_objects=None,
                  num_middle_objects=1,
+                 middle_color=None,
                  middle_scale_range=None,
                  middle_rotation_range=None,
                  middle_mass_range=[2.,7.],
                  horizontal=False,
-                 middle_color=None,
                  spacing_jitter=0.25,
                  middle_material=None,
                  **kwargs):
@@ -631,6 +643,7 @@ class MultiDominoes(Dominoes):
         self.middle_mass_range = middle_mass_range
         self.middle_rotation_range = middle_rotation_range
         self.middle_color = middle_color
+        self.randomize_colors_across_trials = False if (middle_color is not None) else True
         self.middle_material = self.get_material_name(middle_material)
         self.horizontal = horizontal
 
@@ -650,7 +663,8 @@ class MultiDominoes(Dominoes):
         super().clear_static_data()
 
         self.middle_type = None
-        self.middle_color = None
+        if self.randomize_colors_across_trials:
+            self.middle_color = None
 
     def _write_static_data(self, static_group: h5py.Group) -> None:
         super()._write_static_data(static_group)
@@ -741,6 +755,7 @@ if __name__ == "__main__":
         probe_mass_range=args.pmass,
         target_color=args.color,
         probe_color=args.pcolor,
+        middle_color=args.mcolor,
         collision_axis_length=args.collision_axis_length,
         force_scale_range=args.fscale,
         force_angle_range=args.frot,

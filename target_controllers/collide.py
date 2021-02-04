@@ -9,7 +9,7 @@ import random
 from typing import List, Dict, Tuple
 from weighted_collection import WeightedCollection
 from tdw.tdw_utils import TDWUtils
-from tdw.librarian import ModelRecord, MaterialLibrarian
+from tdw.librarian import ModelRecord, MaterialLibrarian, SceneLibrarian, _Librarian
 from tdw_physics.rigidbodies_dataset import (RigidbodiesDataset,
                                              get_random_xyz_transform,
                                              handle_random_transform_args)
@@ -114,11 +114,12 @@ def get_collide_args(dataset_dir: str, parse=True):
 if __name__ == '__main__':
 
     # args = get_collide_args("collide")
-
-    c = MaterialLibrarian()
-    ms = c.get_material_types()
-    print(ms)
-    print([m.name for m in c.get_all_materials_of_type("Wood")])
+    c = SceneLibrarian()
+    print([r.name for r in c.search_records(search="room")])
+    # c = MaterialLibrarian()
+    # ms = c.get_material_types()
+    # print(ms)
+    # print([m.name for m in c.get_all_materials_of_type("Wood")])
     # metal = [m for m in c.get_all_materials_of_type("Metal") if "steel_rusty" in m.name]
     # print(metal[0], metal[0].name)
     # for m in ms:

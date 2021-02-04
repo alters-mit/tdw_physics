@@ -213,7 +213,9 @@ class Tower(MultiDominoes):
         return []
 
     def _build_intermediate_structure(self) -> List[dict]:
-        self.middle_color = self.random_color(exclude=self.target_color) if self.monochrome else None
+        print("middle color", self.middle_color)
+        if self.randomize_colors_across_trials:
+            self.middle_color = self.random_color(exclude=self.target_color) if self.monochrome else None
         self.cap_color = self.target_color
         commands = []
 
@@ -371,6 +373,7 @@ if __name__ == "__main__":
         probe_mass_range=args.pmass,
         target_color=args.color,
         probe_color=args.pcolor,
+        middle_color=args.mcolor,
         collision_axis_length=args.collision_axis_length,
         force_scale_range=args.fscale,
         force_angle_range=args.frot,
