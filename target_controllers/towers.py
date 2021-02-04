@@ -381,6 +381,7 @@ if __name__ == "__main__":
         force_offset_jitter=args.fjitter,
         remove_target=bool(args.remove_target),
         ## not scenario-specific
+        room=args.room,
         randomize=args.random,
         seed=args.seed,
         camera_radius=args.camera_distance,

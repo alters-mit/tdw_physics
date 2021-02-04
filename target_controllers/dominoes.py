@@ -163,6 +163,9 @@ def get_args(dataset_dir: str, parse=True):
 
 
     def postprocess(args):
+        # choose a valid room
+        assert args.room in ['box', 'tdw'], args.room
+
         # whether to set all objects same color
         args.monochrome = bool(args.monochrome)
 
@@ -244,6 +247,7 @@ class Dominoes(RigidbodiesDataset):
 
     def __init__(self,
                  port: int = 1071,
+                 room='box',
                  probe_objects=MODEL_NAMES,
                  target_objects=MODEL_NAMES,
                  probe_scale_range=[0.2, 0.3],
@@ -270,6 +274,9 @@ class Dominoes(RigidbodiesDataset):
 
         ## initializes static data and RNG
         super().__init__(port=port, **kwargs)
+
+        ## which room to use
+        self.room = room
 
         ## allowable object types
         self.set_probe_types(probe_objects)
@@ -355,9 +362,11 @@ class Dominoes(RigidbodiesDataset):
         return 55
 
     def get_scene_initialization_commands(self) -> List[dict]:
-        # return [self.get_add_scene(scene_name="box_room_2018"),
-        return [self.get_add_scene(scene_name="tdw_room_2018"),
-        # return [self.get_add_scene(scene_name="monkey_physics_room"),
+        if self.room == 'box':
+            add_scene = self.get_add_scene(scene_name="box_room_2018")
+        elif self.room == 'tdw':
+            add_scene = self.get_add_scene(scene_name="tdw_room_2018")
+        return [add_scene,
                 {"$type": "set_aperture",
                  "aperture": 8.0},
                 {"$type": "set_post_exposure",
@@ -743,6 +752,7 @@ if __name__ == "__main__":
     print("probe objects", args.probe)
 
     DomC = MultiDominoes(
+        room=args.room,
         num_middle_objects=args.num_middle_objects,
         randomize=args.random,
         seed=args.seed,
