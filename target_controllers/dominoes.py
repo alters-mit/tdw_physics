@@ -58,8 +58,12 @@ def get_args(dataset_dir: str, parse=True):
                         help="comma-separated list of possible middle objects; default to same as target")
     parser.add_argument("--zscale",
                         type=str,
-                        default="0.5,0.01,0.5",
+                        default="0.5,0.01,2.0",
                         help="scale of target zone")
+    parser.add_argument("--zlocation",
+                        type=none_or_str,
+                        default=None,
+                        help="Where to place the target zone. None will default to a scenario-specific place.")
     parser.add_argument("--tscale",
                         type=str,
                         default="0.1,0.5,0.25",
@@ -114,7 +118,7 @@ def get_args(dataset_dir: str, parse=True):
                         help="comma-separated R,G,B values for the target object color. None to random.")
     parser.add_argument("--zcolor",
                         type=none_or_str,
-                        default="0.0,0.5,1.0",
+                        default="1.0,1.0,0.0",
                         help="comma-separated R,G,B values for the target zone color. None is random")
     parser.add_argument("--pcolor",
                         type=none_or_str,
@@ -180,13 +184,14 @@ def get_args(dataset_dir: str, parse=True):
 
     def postprocess(args):
         # choose a valid room
-        assert args.room in ['box', 'tdw'], args.room
+        assert args.room in ['box', 'tdw', 'house'], args.room
 
         # whether to set all objects same color
         args.monochrome = bool(args.monochrome)
 
         # scaling and rotating of objects
         args.zscale = handle_random_transform_args(args.zscale)
+        args.zlocation = handle_random_transform_args(args.zlocation)
         args.tscale = handle_random_transform_args(args.tscale)
         args.trot = handle_random_transform_args(args.trot)
         args.pscale = handle_random_transform_args(args.pscale)
@@ -280,6 +285,7 @@ class Dominoes(RigidbodiesDataset):
                  room='box',
                  target_zone=['cube'],
                  zone_color=[0.0,0.5,1.0],
+                 zone_location=None,
                  zone_scale_range=[0.5,0.001,0.5],
                  probe_objects=MODEL_NAMES,
                  target_objects=MODEL_NAMES,
@@ -313,6 +319,7 @@ class Dominoes(RigidbodiesDataset):
 
         ## target zone
         self.set_zone_types(target_zone)
+        self.zone_location = zone_location
         self.zone_color = zone_color
         self.zone_scale_range = zone_scale_range
 
@@ -407,7 +414,9 @@ class Dominoes(RigidbodiesDataset):
         if self.room == 'box':
             add_scene = self.get_add_scene(scene_name="box_room_2018")
         elif self.room == 'tdw':
-            add_scene = self.get_add_scene(scene_name="tdw_room_2018")
+            add_scene = self.get_add_scene(scene_name="tdw_room")
+        elif self.room == 'house':
+            add_scene = self.get_add_scene(scene_name='archviz_house')
         return [add_scene,
                 {"$type": "set_aperture",
                  "aperture": 8.0},
@@ -513,6 +522,14 @@ class Dominoes(RigidbodiesDataset):
         # convert to xyz
         return arr_to_xyz(push)
 
+    def _get_zone_location(self, scale):
+        return {
+            "x": 0.5 * self.collision_axis_length + scale["x"] + 0.1,
+            "y": 0.0 if not self.remove_zone else 10.0,
+            "z": 0.0 if not self.remove_zone else 10.0
+        }
+
+
     def _place_target_zone(self) -> List[dict]:
 
         # create a target zone (usually flat, with same texture as room)
@@ -534,11 +551,7 @@ class Dominoes(RigidbodiesDataset):
         commands.extend(
             self.add_physics_object(
                 record=record,
-                position={
-                    "x": 0.5 * self.collision_axis_length + scale["x"] + 0.1,
-                    "y": 0. if not self.remove_zone else 10.0,
-                    "z": 0. if not self.remove_zone else 10.0
-                },
+                position=(self.zone_location or self._get_zone_location(scale)),
                 rotation=TDWUtils.VECTOR3_ZERO,
                 mass=1000.,
                 dynamic_friction=10.,
@@ -846,6 +859,7 @@ if __name__ == "__main__":
         randomize=args.random,
         seed=args.seed,
         target_zone=args.zone,
+        zone_location=args.zlocation,
         zone_scale_range=args.zscale,
         zone_color=args.zcolor,
         target_objects=args.target,
