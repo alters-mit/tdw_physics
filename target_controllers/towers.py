@@ -189,6 +189,17 @@ class Tower(MultiDominoes):
 
         return frame, objs, tr, sleeping
 
+    def _get_zone_location(self, scale):
+        bottom_block_width = get_range(self.middle_scale_range[-1])[1]
+        bottom_block_width += (self.num_blocks / 2.0) * np.abs(self.middle_scale_gradient)
+        probe_width = get_range(self.probe_scale_range[-1])[1]
+        return {
+            # "x": -0.5 * scale["x"] - bottom_block_width,
+            "x": 0.0,
+            "y": 0.0,
+            "z": -(0.5 + probe_width) * scale["z"] + bottom_block_width + 0.1,
+        }
+
     def _set_tower_height_now(self, resp: List[bytes]) -> None:
         top_obj_id = self.object_ids[-1]
         for r in resp[:-1]:
@@ -364,6 +375,10 @@ if __name__ == "__main__":
         middle_mass_range=args.mmass,
         middle_scale_gradient=args.mgrad,
         # domino specific
+        target_zone=args.zone,
+        zone_location=args.zlocation,
+        zone_scale_range=args.zscale,
+        zone_color=args.zcolor,
         target_objects=args.target,
         probe_objects=args.probe,
         middle_objects=args.middle,
