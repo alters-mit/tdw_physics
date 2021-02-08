@@ -83,21 +83,22 @@ def kaleidoscope_lp(x, h0, adj,
         h = _norm(h)
 
         # update which nodes are activated
+        receivers = tf.reduce_max(tf.maximum(adj_e, adj_i) * activated, axis=1, keepdims=False) > 0.5 # [B,N]
+        activated = tf.minimum(1., activated + tf.cast(receivers[...,None], tf.float32))
 
-
-
-
-    return init_inds
+    return h
 
 if __name__ == '__main__':
-    B,N,D = [4,256,10]
+    B,N,D = [4,32,10]
     x = tf.random.uniform([B,N,D], dtype=tf.float32)
     x = tf.nn.l2_normalize(x, axis=-1)
     h0 = x
     adj = tf.ones([B,N,N], dtype=tf.float32)
 
-    inds = kaleidoscope_lp(x,h0,adj, num_parallel_runs=3)
+    h = kaleidoscope_lp(x,h0,adj,
+                        num_parallel_runs=3,
+                        num_iters=10)
 
     sess = tf.Session()
-    _inds = sess.run(inds)
-    print(_inds)
+    h = sess.run(h)
+    print(h[0])
