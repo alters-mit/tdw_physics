@@ -110,7 +110,18 @@ def kaleidoscope_lp(x, h0, adj,
             h += d_effects
             h = _norm(h)
 
-    return (h, activated)
+    # outer product across different runs
+    if P > 1:
+        h = [tf.squeeze(_h, 1) for _h in tf.split(tf.reshape(h, [B,P,N,Q]), P, axis=1)] # list of P tensors sh [B,N,Q]
+        shapes = [[B,N] + ([1]*p) + [Q] + ([1]*(P-p-1)) for p in range(P)]
+        h = [tf.reshape(_h, shapes[i]) for i,_h in enumerate(h)]
+        _h = tf.ones_like(h[0])
+        for p in range(P):
+            _h = _h * h[p]
+        h = tf.reshape(_h, [B,N,Q**P])
+        h = _norm(h)
+
+    return h
 
 if __name__ == '__main__':
     B,N,D = [4,32,10]
