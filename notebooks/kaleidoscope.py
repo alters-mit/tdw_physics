@@ -1,5 +1,6 @@
 import numpy as np
-import tensorflow.compat.v1 as tf
+import tensorflow as tf
+from tqdm import tqdm
 
 def kaleidoscope_lp(x, h0, adj,
                     labels=None,
@@ -29,8 +30,8 @@ def kaleidoscope_lp(x, h0, adj,
 
     # frequent funcs
     _tr = lambda t: tf.transpose(t, [0,2,1])
-    _norm = lambda t: tf.nn.l2_normalize(t, axis=-1, epsilon=1e-8) if normalize else tf.identity
-
+    _norm = lambda t: tf.nn.l2_normalize(tf.nn.relu(t), axis=-1, epsilon=1e-8) if normalize else tf.identity
+    _softmax = lambda t: tf.nn.softmax(t * beta, axis=-1)
     # if running multiple copies in parallel
 
     if P > 1:
@@ -49,22 +50,24 @@ def kaleidoscope_lp(x, h0, adj,
     # create the excitatory and inhibitory affinity matrices.
     # by convention, affinity values that are exactly 0 are masked out
     # this allows passing of sparse, local connectivity matrices
-    adj_mask = tf.cast(adj > 0.0, tf.float32) # [BP,N,N]
+    adj_mask = tf.cast(adj >= 0.0, tf.float32) # [BP,N,N]
     adj_e = adj * valid_adj * adj_mask # [BP,N,N]
     adj_i = (1.0 - adj) * valid_adj * adj_mask # [BP,N,N]
     adj_e2 = tf.matmul(adj_e, adj_e) * valid_adj # can be less local
 
     # randomly initialize the active nodes
+    tf.set_random_seed(seed)
     probs = valid / tf.maximum(1., tf.reduce_sum(valid, axis=[1,2], keepdims=True))
     dist = tf.distributions.Categorical(probs=probs[:,:,0], dtype=tf.int32)
     init_inds = dist.sample()
     activated = tf.cast(tf.one_hot(init_inds, depth=N, axis=-1)[...,None], tf.float32) # [B,N,1]
+    running_activated = activated + 0.
 
     # initial state
     h = h0
 
     # iterate
-    for it in range(num_iters):
+    for it in tqdm(range(num_iters)):
         # how many sender neurons
         n_senders_e = tf.maximum(1., tf.reduce_sum(adj_e * activated, axis=-2, keepdims=True)) # [B,1,N]
         n_senders_i = tf.maximum(1., tf.reduce_sum(adj_i * activated, axis=-2, keepdims=True)) # [B,1,N]
@@ -84,9 +87,30 @@ def kaleidoscope_lp(x, h0, adj,
 
         # update which nodes are activated
         receivers = tf.reduce_max(tf.maximum(adj_e, adj_i) * activated, axis=1, keepdims=False) > 0.5 # [B,N]
-        activated = tf.minimum(1., activated + tf.cast(receivers[...,None], tf.float32))
+        running_activated += tf.cast(receivers[...,None], tf.float32)
+        activated = tf.minimum(1., running_activated)
 
-    return h
+        # push non-activated nodes into relatively unoccupied channel
+        avg = tf.reduce_sum(_softmax(h) * activated, axis=1, keepdims=True) / tf.reduce_sum(activated, axis=1, keepdims=True) # [B,1,Q]
+        if push:
+            free = _softmax(1. - avg)
+            p_effects = n_senders_i * _tr(activated)
+            p_effects = p_effects * _tr(((1. - activated) * free))
+            h += _tr(p_effects)
+            h = _norm(h)
+
+        if smooth:
+            s_effects = activated * adj_e2 * _tr(activated)
+            s_effects = tf.matmul(_tr(h), s_effects) / (n_senders_e ** 2)
+            h += _tr(s_effects)
+            h = _norm(h)
+
+        if damp:
+            d_effects = (1. - avg) * tf.nn.sigmoid(-running_activated)
+            h += d_effects
+            h = _norm(h)
+
+    return (h, activated)
 
 if __name__ == '__main__':
     B,N,D = [4,32,10]
