@@ -190,9 +190,9 @@ class Tower(MultiDominoes):
         return frame, objs, tr, sleeping
 
     def _get_zone_location(self, scale):
-        bottom_block_width = get_range(self.middle_scale_range[-1])[1]
+        bottom_block_width = get_range(self.middle_scale_range)[1]
         bottom_block_width += (self.num_blocks / 2.0) * np.abs(self.middle_scale_gradient)
-        probe_width = get_range(self.probe_scale_range[-1])[1]
+        probe_width = get_range(self.probe_scale_range)[1]
         return {
             # "x": -0.5 * scale["x"] - bottom_block_width,
             "x": 0.0,

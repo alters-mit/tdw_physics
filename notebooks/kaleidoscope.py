@@ -6,6 +6,7 @@ def kaleidoscope_lp(x, h0, adj,
                     labels=None,
                     num_parallel_runs=1,
                     beta=100.0,
+                    adj_thresh=0.5,
                     seed=0,
                     normalize=True,
                     render_func=None,
@@ -55,6 +56,11 @@ def kaleidoscope_lp(x, h0, adj,
     adj_i = (1.0 - adj) * valid_adj * adj_mask # [BP,N,N]
     adj_e2 = tf.matmul(adj_e, adj_e) * valid_adj # can be less local
 
+    if adj_thresh is not None:
+        adj_e *= tf.cast(adj_e > adj_thresh, tf.float32)
+        adj_i *= tf.cast(adj_i > adj_thresh, tf.float32)
+        adj_e2 *= tf.cast(adj_e > adj_thresh, tf.float32)
+
     # randomly initialize the active nodes
     tf.set_random_seed(seed)
     probs = valid / tf.maximum(1., tf.reduce_sum(valid, axis=[1,2], keepdims=True))
@@ -67,6 +73,7 @@ def kaleidoscope_lp(x, h0, adj,
     h = h0
 
     # iterate
+    activated = tf.Print(activated, [tf.reduce_sum(activated)], message='num_activated')
     for it in tqdm(range(num_iters)):
         # how many sender neurons
         n_senders_e = tf.maximum(1., tf.reduce_sum(adj_e * activated, axis=-2, keepdims=True)) # [B,1,N]
@@ -89,6 +96,7 @@ def kaleidoscope_lp(x, h0, adj,
         receivers = tf.reduce_max(tf.maximum(adj_e, adj_i) * activated, axis=1, keepdims=False) > 0.5 # [B,N]
         running_activated += tf.cast(receivers[...,None], tf.float32)
         activated = tf.minimum(1., running_activated)
+        activated = tf.Print(activated, [tf.reduce_sum(activated)], message='num_activated')
 
         # push non-activated nodes into relatively unoccupied channel
         avg = tf.reduce_sum(_softmax(h) * activated, axis=1, keepdims=True) / tf.reduce_sum(activated, axis=1, keepdims=True) # [B,1,Q]
