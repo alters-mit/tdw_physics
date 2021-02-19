@@ -32,7 +32,7 @@ class _TableScripted(RigidbodiesDataset, ABC):
         self._table_id = 0
 
     def get_scene_initialization_commands(self) -> List[dict]:
-        return [self.get_add_scene("archviz_house_2018"),
+        return [self.get_add_scene("archviz_house"),
                 {"$type": "set_aperture",
                  "aperture": 2.6},
                 {"$type": "set_focus_distance",
