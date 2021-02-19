@@ -67,7 +67,7 @@ class Submerge(FlexDataset):
         if system() != "Windows":
             raise Exception("Flex fluids are only supported in Windows (see Documentation/misc_frontend/flex.md)")
 
-        commands = [self.get_add_scene(scene_name="tdw_room_2018"),
+        commands = [self.get_add_scene(scene_name="tdw_room"),
                     {"$type": "set_aperture",
                      "aperture": 4.8},
                     {"$type": "set_focus_distance",

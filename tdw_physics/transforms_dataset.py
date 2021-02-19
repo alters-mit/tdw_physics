@@ -89,7 +89,13 @@ class TransformsDataset(Dataset, ABC):
                 im = Images(r)
                 # Add each image.
                 for i in range(im.get_num_passes()):
-                    images.create_dataset(im.get_pass_mask(i), data=im.get_image(i), compression="gzip")
+                    pass_mask = im.get_pass_mask(i)
+                    # Reshape the depth pass array.
+                    if pass_mask == "_depth":
+                        image_data = TDWUtils.get_shaped_depth_pass(images=im, index=i)
+                    else:
+                        image_data = im.get_image(i)
+                    images.create_dataset(pass_mask, data=image_data, compression="gzip")
             # Add the camera matrices.
             elif OutputData.get_data_type_id(r) == "cama":
                 matrices = CameraMatrices(r)
