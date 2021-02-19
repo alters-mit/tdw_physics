@@ -156,14 +156,18 @@ class RigidbodiesDataset(TransformsDataset, ABC):
         xyz = {k:arr[i] for i,k in enumerate(["x","y","z"])}
         return xyz
 
-    def random_color(self, exclude=None, exclude_range=0.25):
+    def random_color(self, exclude=None, exclude_range=0.33):
         rgb = [random.random(), random.random(), random.random()]
         if exclude is None:
             return rgb
 
         assert len(exclude) == 3, exclude
-        while all([np.abs(exclude[i] - rgb[i]) < exclude_range for i in range(3)]):
+        while any([np.abs(exclude[i] - rgb[i]) < exclude_range for i in range(3)]):
             rgb = [random.random(), random.random(), random.random()]
+
+        print("exclude range", exclude_range)
+        print("excluded color", exclude)
+        print("chosen color", rgb)
         return rgb
 
     def get_random_scale_transform(self, scale):

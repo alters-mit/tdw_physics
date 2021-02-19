@@ -565,7 +565,6 @@ class Dominoes(RigidbodiesDataset):
         commands.extend(
             self.get_object_material_commands(
                 record, o_id, self.get_material_name(self.zone_material)))
-        print("zone material", commands[-1])
 
         # Scale the object and set its color.
         commands.extend([
@@ -776,7 +775,7 @@ class MultiDominoes(Dominoes):
 
     def _build_intermediate_structure(self) -> List[dict]:
         # set the middle object color
-        self.middle_color = self.middle_color or (self.probe_color if self.monochrome else self.random_color(exclude=self.target_color, exclude_range=0.33))
+        self.middle_color = self.middle_color or (self.probe_color if self.monochrome else self.random_color(exclude=self.target_color))
 
         return self._place_middle_objects() if bool(self.num_middle_objects) else []
 

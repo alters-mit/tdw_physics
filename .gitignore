@@ -7,3 +7,4 @@ notebooks/*.py~
 *.py#
 *.pyc
 .DS_store
+tdw_physics/target_controller/D:*
