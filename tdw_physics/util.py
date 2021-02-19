@@ -83,6 +83,7 @@ def get_parser(dataset_dir: str, get_help: bool=False):
     parser.add_argument("--viewpoint", type=int, default=0, help="which viewpoint to render from")
     parser.add_argument("--run", type=int, default=1, help="run the simulation or not")
     parser.add_argument("--monochrome", type=int, default=0, help="whether to set all colorable objects to the same color")
+    parser.add_argument("--room", type=str, default="box", help="Which room to use. Either 'box' or 'tdw'.")
     return parser
 
 def get_args(dataset_dir: str):

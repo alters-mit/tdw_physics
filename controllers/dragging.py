@@ -28,7 +28,7 @@ class Dragging(ClothDataset):
         self._force_per_frame: float = 0
 
     def get_scene_initialization_commands(self) -> List[dict]:
-        return [self.get_add_scene(scene_name="tdw_room_2018"),
+        return [self.get_add_scene(scene_name="tdw_room"),
                 {"$type": "set_aperture",
                  "aperture": 3.0},
                 {"$type": "set_focus_distance",

@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.3.1
+
+- `tdw_physics` now requires TDW v1.8
+- Fixed the names of some of the scenes to match those in TDW v1.8
+- Fixed code examples in the README 
+
+## v0.3.0
+
+- Added a function to reshape the `_depth` pass in order to stay compatible with TDW v1.7.15 (the `_depth` pass is now far more accurate).
+
 ## v0.2.1
 
 - Removed some code made redundant by TDW v1.7

@@ -9,15 +9,21 @@ import random
 from typing import List, Dict, Tuple
 from weighted_collection import WeightedCollection
 from tdw.tdw_utils import TDWUtils
-from tdw.librarian import ModelRecord
+from tdw.librarian import ModelRecord, MaterialLibrarian
+from tdw.output_data import OutputData, Transforms
 from tdw_physics.rigidbodies_dataset import (RigidbodiesDataset,
                                              get_random_xyz_transform,
+                                             get_range,
                                              handle_random_transform_args)
 from tdw_physics.util import MODEL_LIBRARIES, get_parser, xyz_to_arr, arr_to_xyz, str_to_xyz
 
 from dominoes import Dominoes, MultiDominoes, get_args
 
 MODEL_NAMES = [r.name for r in MODEL_LIBRARIES['models_flex.json'].records]
+M = MaterialLibrarian()
+MATERIAL_TYPES = M.get_material_types()
+MATERIAL_NAMES = {mtype: [m.name for m in M.get_all_materials_of_type(mtype)] \
+                  for mtype in MATERIAL_TYPES}
 
 def get_tower_args(dataset_dir: str, parse=True):
     """
@@ -25,7 +31,7 @@ def get_tower_args(dataset_dir: str, parse=True):
     """
     common = get_parser(dataset_dir, get_help=False)
     domino, domino_postproc = get_args(dataset_dir, parse=False)
-    parser = ArgumentParser(parents=[common, domino], conflict_handler='resolve')
+    parser = ArgumentParser(parents=[common, domino], conflict_handler='resolve', fromfile_prefix_chars='@')
 
     parser.add_argument("--remove_target",
                         type=int,
@@ -59,6 +65,10 @@ def get_tower_args(dataset_dir: str, parse=True):
                         type=str,
                         default="[-45,45]",
                         help="comma separated list of initial middle object rotation values")
+    parser.add_argument("--middle",
+                        type=str,
+                        default="cube",
+                        help="comma-separated list of possible middle objects")
     parser.add_argument("--probe",
                         type=str,
                         default="sphere",
@@ -69,8 +79,12 @@ def get_tower_args(dataset_dir: str, parse=True):
                         help="scale of probe objects")
     parser.add_argument("--pscale",
                         type=str,
-                        default="[0.2,0.4]",
+                        default="[0.25,0.25]",
                         help="scale of probe objects")
+    parser.add_argument("--tscale",
+                        type=str,
+                        default="[0.5,0.5]",
+                        help="scale of target objects")
     parser.add_argument("--fscale",
                         type=str,
                         default="[4.0,15.0]",
@@ -135,10 +149,6 @@ class Tower(MultiDominoes):
         # probe and target different colors
         self.match_probe_and_target_color = False
 
-        # block types
-        self._middle_types = self.get_types(['cube'])
-        self.middle_type = "cube"
-
         # how many blocks in tower, sans cap
         self.num_blocks = num_blocks
 
@@ -162,15 +172,61 @@ class Tower(MultiDominoes):
         super().clear_static_data()
 
         self.cap_type = None
+        self.did_fall = None
 
     def _write_static_data(self, static_group: h5py.Group) -> None:
-        Dominoes._write_static_data(self, static_group)
+        super()._write_static_data(static_group)
 
         static_group.create_dataset("cap_type", data=self.cap_type)
         static_group.create_dataset("use_cap", data=self.use_cap)
 
+    def _write_frame(self, frames_grp: h5py.Group, resp: List[bytes], frame_num: int) -> \
+        Tuple[h5py.Group, h5py.Group, dict, bool]:
+
+        frame, objs, tr, sleeping = super()._write_frame(frames_grp=frames_grp, resp=resp, frame_num=frame_num)
+        if frame_num > 5:
+            frame.create_dataset("did_fall", data=bool(self.did_fall))
+
+        return frame, objs, tr, sleeping
+
+    def _get_zone_location(self, scale):
+        bottom_block_width = get_range(self.middle_scale_range)[1]
+        bottom_block_width += (self.num_blocks / 2.0) * np.abs(self.middle_scale_gradient)
+        probe_width = get_range(self.probe_scale_range)[1]
+        return {
+            # "x": -0.5 * scale["x"] - bottom_block_width,
+            "x": 0.0,
+            "y": 0.0,
+            "z": -(0.5 + probe_width) * scale["z"] + bottom_block_width + 0.1,
+        }
+
+    def _set_tower_height_now(self, resp: List[bytes]) -> None:
+        top_obj_id = self.object_ids[-1]
+        for r in resp[:-1]:
+            r_id = OutputData.get_data_type_id(r)
+            if r_id == "tran":
+                tr = Transforms(r)
+                for i in range(tr.get_num()):
+                    if tr.get_id(i) == top_obj_id:
+                        self.tower_height = tr.get_position(i)[1]
+
+    def get_per_frame_commands(self, resp: List[bytes], frame: int) -> List[dict]:
+        if frame == 5:
+            self._set_tower_height_now(resp)
+            self.init_height = self.tower_height + 0.
+            print("init tower height: %.2f" % self.tower_height)
+        elif frame > 5:
+            self._set_tower_height_now(resp)
+            print("tower height now: %.2f" % self.tower_height)
+            self.did_fall = (self.tower_height < 0.5 * self.init_height)
+            print("Did the tower fall? %s" % ("yes" if self.did_fall else "no"))
+
+        return []
+
     def _build_intermediate_structure(self) -> List[dict]:
-        self.middle_color = self.random_color(exclude=self.target_color) if self.monochrome else None
+        print("middle color", self.middle_color)
+        if self.randomize_colors_across_trials:
+            self.middle_color = self.random_color(exclude=self.target_color) if self.monochrome else None
         self.cap_color = self.target_color
         commands = []
 
@@ -185,14 +241,9 @@ class Tower(MultiDominoes):
         return {"x": jx, "y": y, "z": jz}
 
     def _get_block_scale(self, offset) -> dict:
-        if hasattr(self.middle_scale_range, 'keys'):
-            scale = {k:random.uniform(self.middle_scale_range[k][0], self.middle_scale_range[k][1]) + offset
-                     for k in ["x","y","z"]}
-        elif hasattr(self.middle_scale_range, '__len__'):
-            scale = {k:random.uniform(self.middle_scale_range[0], self.middle_scale_range[1]) + offset
-                     for k in ["x","y","z"]}
-        else:
-            scale = {k:self.middle_scale_range + offset for k in ["x","y","z"]}
+        print("scale range", self.middle_scale_range)
+        scale = get_random_xyz_transform(self.middle_scale_range)
+        scale = {k:v+offset for k,v in scale.items()}
 
         return scale
 
@@ -217,6 +268,7 @@ class Tower(MultiDominoes):
                 scale=self.block_scales[m],
                 color=self.middle_color,
                 exclude_color=self.target_color)
+            self.middle_type = data["name"]
             o_id, scale, rgb = [data[k] for k in ["id", "scale", "color"]]
             block_pos = self._get_block_position(scale, height)
             block_rot = self.get_y_rotation(self.middle_rotation_range)
@@ -225,11 +277,17 @@ class Tower(MultiDominoes):
                     record=record,
                     position=block_pos,
                     rotation=block_rot,
-                    mass=random.uniform(4.5,4.5),
+                    mass=random.uniform(*get_range(self.middle_mass_range)),
                     dynamic_friction=random.uniform(0, 0.9),
                     static_friction=random.uniform(0, 0.9),
                     bounciness=random.uniform(0, 1),
                     o_id=o_id))
+
+            # Set the block object material
+            commands.extend(
+                self.get_object_material_commands(
+                    record, o_id, self.get_material_name(self.middle_material)))
+
 
             # Scale the object and set its color.
             commands.extend([
@@ -243,7 +301,8 @@ class Tower(MultiDominoes):
             print("placed middle object %s" % str(m+1))
 
             # update height
-            height += scale["y"]
+            _y = record.bounds['top']['y'] if self.middle_type != 'bowl' else (record.bounds['bottom']['y'] + 0.1)
+            height += scale["y"] * _y
 
         self.tower_height = height
 
@@ -254,9 +313,10 @@ class Tower(MultiDominoes):
 
         record, data = self.random_primitive(
             self._cap_types,
-            scale=[0.5,0.5],
+            scale=self.target_scale_range,
             color=self.target_color)
         o_id, scale, rgb = [data[k] for k in ["id", "scale", "color"]]
+        self.cap = record
         self.cap_type = data["name"]
 
         commands.extend(
@@ -268,11 +328,16 @@ class Tower(MultiDominoes):
                     "z": 0.
                 },
                 rotation={"x":0.,"y":0.,"z":0.},
-                mass=random.uniform(2,7),
+                mass=random.uniform(4.5,4.5),
                 dynamic_friction=random.uniform(0, 0.9),
                 static_friction=random.uniform(0, 0.9),
                 bounciness=random.uniform(0, 1),
                 o_id=o_id))
+
+        # Set the cap object material
+        commands.extend(
+            self.get_object_material_commands(
+                record, o_id, self.get_material_name(self.target_material)))
 
         # Scale the object and set its color.
         commands.extend([
@@ -294,7 +359,7 @@ class Tower(MultiDominoes):
         return commands
 
     def is_done(self, resp: List[bytes], frame: int) -> bool:
-        return frame > 350
+        return frame > 300
 
 if __name__ == "__main__":
 
@@ -307,15 +372,23 @@ if __name__ == "__main__":
         spacing_jitter=args.spacing_jitter,
         middle_rotation_range=args.mrot,
         middle_scale_range=args.mscale,
+        middle_mass_range=args.mmass,
         middle_scale_gradient=args.mgrad,
         # domino specific
+        target_zone=args.zone,
+        zone_location=args.zlocation,
+        zone_scale_range=args.zscale,
+        zone_color=args.zcolor,
         target_objects=args.target,
         probe_objects=args.probe,
+        middle_objects=args.middle,
         target_scale_range=args.tscale,
         target_rotation_range=args.trot,
         probe_scale_range=args.pscale,
         probe_mass_range=args.pmass,
         target_color=args.color,
+        probe_color=args.pcolor,
+        middle_color=args.mcolor,
         collision_axis_length=args.collision_axis_length,
         force_scale_range=args.fscale,
         force_angle_range=args.frot,
@@ -323,6 +396,7 @@ if __name__ == "__main__":
         force_offset_jitter=args.fjitter,
         remove_target=bool(args.remove_target),
         ## not scenario-specific
+        room=args.room,
         randomize=args.random,
         seed=args.seed,
         camera_radius=args.camera_distance,
@@ -330,7 +404,11 @@ if __name__ == "__main__":
         camera_max_angle=args.camera_max_angle,
         camera_min_height=args.camera_min_height,
         camera_max_height=args.camera_max_height,
-        monochrome=args.monochrome
+        monochrome=args.monochrome,
+        material_types=args.material_types,
+        target_material=args.tmaterial,
+        probe_material=args.pmaterial,
+        middle_material=args.mmaterial
     )
     print(TC.num_blocks, [r.name for r in TC._cap_types])
 
@@ -339,6 +417,9 @@ if __name__ == "__main__":
                output_dir=args.dir,
                temp_path=args.temp,
                width=args.width,
-               height=args.height)
+               height=args.height,
+               args_dict=vars(args)
+        )
+        print("Did the tower fall? %s" % ("YES" if TC.did_fall else "NO"))
     else:
         TC.communicate({"$type": "terminate"})
