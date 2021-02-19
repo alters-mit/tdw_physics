@@ -10,7 +10,7 @@ from tdw.output_data import OutputData, Rigidbodies, Collision, EnvironmentColli
 from tdw.librarian import ModelRecord
 from tdw.tdw_utils import TDWUtils
 from tdw_physics.transforms_dataset import TransformsDataset
-from tdw_physics.util import MODEL_LIBRARIES, str_to_xyz
+from tdw_physics.util import MODEL_LIBRARIES, str_to_xyz, xyz_to_arr, arr_to_xyz
 
 
 def handle_random_transform_args(args):
@@ -218,6 +218,7 @@ class RigidbodiesDataset(TransformsDataset, ABC):
         :param dynamic_friction: The dynamic friction of the object's physic material.
         :param static_friction: The static friction of the object's physic material.
         :param bounciness: The bounciness of the object's physic material.
+        :param add_data: whether to add the chosen data to the hdf5
 
         :return: A list of commands: `[add_object, set_mass, set_physic_material]`
         """
@@ -229,7 +230,8 @@ class RigidbodiesDataset(TransformsDataset, ABC):
         add_object = self.add_transforms_object(o_id=o_id,
                                                 record=record,
                                                 position=position,
-                                                rotation=rotation
+                                                rotation=rotation,
+                                                add_data=add_data
                                                 )
 
         if add_data:
@@ -340,6 +342,7 @@ class RigidbodiesDataset(TransformsDataset, ABC):
 
         ## size and colors
         static_group.create_dataset("color", data=self.colors)
+        static_group.create_dataset("scale", data=np.stack([xyz_to_arr(_s) for _s in self.scales], 0))
         static_group.create_dataset("scale_x", data=[_s["x"] for _s in self.scales])
         static_group.create_dataset("scale_y", data=[_s["y"] for _s in self.scales])
         static_group.create_dataset("scale_z", data=[_s["z"] for _s in self.scales])

@@ -7,19 +7,35 @@ from tdw.output_data import OutputData, Transforms, Images, CameraMatrices
 from tdw.controller import Controller
 from tdw.librarian import ModelRecord
 from tdw_physics.dataset import Dataset
-
+from tdw_physics.util import xyz_to_arr, arr_to_xyz
 
 class TransformsDataset(Dataset, ABC):
     """
     A dataset creator that receives and writes per frame: `Transforms`, `Images`, `CameraMatrices`.
     See README for more info.
     """
+    def clear_static_data(self) -> None:
+        super().clear_static_data()
+
+        self.initial_positions = []
+        self.initial_rotations = []
+
+    def _write_static_data(self, static_group: h5py.Group) -> None:
+        super()._write_static_data(static_group)
+
+        # positions and rotations of objects
+        static_group.create_dataset("initial_position",
+                                    data=np.stack([xyz_to_arr(p) for p in self.initial_positions], 0))
+        static_group.create_dataset("initial_rotation",
+                                    data=np.stack([xyz_to_arr(r) for r in self.initial_rotations], 0))
 
     def add_transforms_object(self,
                               record: ModelRecord,
                               position: Dict[str, float],
                               rotation: Dict[str, float],
-                              o_id: Optional[int] = None) -> dict:
+                              o_id: Optional[int] = None,
+                              add_data: Optional[bool] = True
+    ) -> dict:
         """
         This is a wrapper for `Controller.get_add_object()` and the `add_object` command.
         This caches the ID of the object so that it can be easily cleaned up later.
@@ -28,6 +44,7 @@ class TransformsDataset(Dataset, ABC):
         :param position: The initial position of the object.
         :param rotation: The initial rotation of the object, in Euler angles.
         :param o_id: The unique ID of the object. If None, a random ID is generated.
+        :param add_data: whether to add the chosen data to the hdf5
 
         :return: An `add_object` command.
         """
@@ -37,6 +54,10 @@ class TransformsDataset(Dataset, ABC):
 
         # Log the static data.
         self.object_ids = np.append(self.object_ids, o_id)
+
+        if add_data:
+            self.initial_positions = np.append(self.initial_positions, position)
+            self.initial_rotations = np.append(self.initial_rotations, rotation)
 
         return {"$type": "add_object",
                 "name": record.name,
