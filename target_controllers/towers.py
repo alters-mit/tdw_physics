@@ -309,7 +309,9 @@ class Tower(MultiDominoes):
         record, data = self.random_primitive(
             self._cap_types,
             scale=self.target_scale_range,
-            color=self.target_color)
+            color=self.target_color,
+            add_data=self.use_cap
+        )
         o_id, scale, rgb = [data[k] for k in ["id", "scale", "color"]]
         self.cap = record
         self.cap_type = data["name"]
@@ -327,7 +329,9 @@ class Tower(MultiDominoes):
                 dynamic_friction=random.uniform(0, 0.9),
                 static_friction=random.uniform(0, 0.9),
                 bounciness=random.uniform(0, 1),
-                o_id=o_id))
+                o_id=o_id,
+                add_data=self.use_cap
+            ))
 
         # Set the cap object material
         commands.extend(

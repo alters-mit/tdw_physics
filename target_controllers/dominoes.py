@@ -154,11 +154,11 @@ def get_args(dataset_dir: str, parse=True):
                         help="max height of camera")
     parser.add_argument("--camera_min_angle",
                         type=float,
-                        default=-15,
+                        default=0,
                         help="minimum angle of camera rotation around centerpoint")
     parser.add_argument("--camera_max_angle",
                         type=float,
-                        default=315,
+                        default=270,
                         help="maximum angle of camera rotation around centerpoint")
     parser.add_argument("--material_types",
                         type=none_or_str,
@@ -526,7 +526,7 @@ class Dominoes(RigidbodiesDataset):
 
     def _get_zone_location(self, scale):
         return {
-            "x": 0.5 * self.collision_axis_length + scale["x"] + 0.1,
+            "x": 0.5 * self.collision_axis_length + scale["x"]*1.1,
             "y": 0.0 if not self.remove_zone else 10.0,
             "z": 0.0 if not self.remove_zone else 10.0
         }
@@ -537,7 +537,9 @@ class Dominoes(RigidbodiesDataset):
         # create a target zone (usually flat, with same texture as room)
         record, data = self.random_primitive(self._zone_types,
                                              scale=self.zone_scale_range,
-                                             color=self.zone_color)
+                                             color=self.zone_color,
+                                             add_data=True
+        )
         o_id, scale, rgb = [data[k] for k in ["id", "scale", "color"]]
         self.zone = record
         self.zone_type = data["name"]
@@ -545,6 +547,8 @@ class Dominoes(RigidbodiesDataset):
 
         if any((s <= 0 for s in scale.values())):
             self.remove_zone = True
+            self.scales = self.scales[:-1]
+            self.colors = self.colors[:-1]
         else:
             self.remove_zone = False
 
@@ -559,7 +563,9 @@ class Dominoes(RigidbodiesDataset):
                 dynamic_friction=0.5,
                 static_friction=0.5,
                 bounciness=0,
-                o_id=o_id))
+                o_id=o_id,
+                add_data=(not self.remove_zone)
+            ))
 
         # set its material to be the same as the room
         commands.extend(
@@ -592,11 +598,14 @@ class Dominoes(RigidbodiesDataset):
         # create a target object
         record, data = self.random_primitive(self._target_types,
                                              scale=self.target_scale_range,
-                                             color=self.target_color)
+                                             color=self.target_color,
+                                             add_data=(not self.remove_target)
+        )
         o_id, scale, rgb = [data[k] for k in ["id", "scale", "color"]]
         self.target = record
         self.target_type = data["name"]
         self.target_color = rgb
+        self.target_scale = scale
 
         if any((s <= 0 for s in scale.values())):
             self.remove_target = True
@@ -619,7 +628,9 @@ class Dominoes(RigidbodiesDataset):
                 dynamic_friction=random.uniform(0, 0.9),
                 static_friction=random.uniform(0, 0.9),
                 bounciness=random.uniform(0, 1),
-                o_id=o_id))
+                o_id=o_id,
+                add_data=(not self.remove_target)
+            ))
 
         # Set the object material
         commands.extend(
@@ -657,8 +668,7 @@ class Dominoes(RigidbodiesDataset):
         o_id, scale, rgb = [data[k] for k in ["id", "scale", "color"]]
         self.probe = record
         self.probe_type = data["name"]
-
-        print("target", self.target.bounds)
+        self.probe_scale = scale
 
         # Add the object with random physics values
         commands = []
@@ -696,9 +706,9 @@ class Dominoes(RigidbodiesDataset):
         self.push_force = self.get_push_force(
             scale_range=self.probe_mass * np.array(self.force_scale_range),
             angle_range=self.force_angle_range)
-        print("pos, force, scales", self.probe_initial_position, self.force_offset, self.scales[-1])
+        print("pos, force, scales", self.probe_initial_position, self.force_offset, self.probe_scale)
         self.push_position = {
-            k:v+self.force_offset[k]*self.scales[-1][k]
+            k:v+self.force_offset[k]*self.probe_scale[k]
             for k,v in self.probe_initial_position.items()}
         self.push_position = {
             k:v+random.uniform(-self.force_offset_jitter, self.force_offset_jitter)
@@ -775,15 +785,17 @@ class MultiDominoes(Dominoes):
 
     def _build_intermediate_structure(self) -> List[dict]:
         # set the middle object color
-        self.middle_color = self.middle_color or (self.probe_color if self.monochrome else self.random_color(exclude=self.target_color))
+        if self.monochrome:
+            self.middle_color = self.random_color(exclude=self.target_color)
 
         return self._place_middle_objects() if bool(self.num_middle_objects) else []
 
     def _place_middle_objects(self) -> List[dict]:
 
         offset = -0.5 * self.collision_axis_length
-        min_offset = offset + self.scales[-1]["x"]
-        max_offset = 0.5 * self.collision_axis_length - self.scales[0]["x"]
+        min_offset = offset + self.target_scale["x"]
+        max_offset = 0.5 * self.collision_axis_length - self.target_scale["x"]
+        print("offset, min, max", offset, min_offset, max_offset)
 
         commands = []
         for m in range(self.num_middle_objects):
@@ -791,12 +803,15 @@ class MultiDominoes(Dominoes):
             offset = np.minimum(np.maximum(offset, min_offset), max_offset)
             if offset >= max_offset:
                 print("couldn't place middle object %s" % str(m+1))
+                print("offset now", offset)
                 break
 
             print("middle color", self.middle_color)
             record, data = self.random_primitive(self._middle_types,
                                                  scale=self.middle_scale_range,
-                                                 color=self.middle_color)
+                                                 color=self.middle_color,
+                                                 exclude_color=self.target_color
+            )
             o_id, scale, rgb = [data[k] for k in ["id", "scale", "color"]]
             pos = arr_to_xyz([offset,0.,0.])
             rot = self.get_y_rotation(self.middle_rotation_range)

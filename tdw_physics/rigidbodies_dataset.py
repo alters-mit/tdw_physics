@@ -179,7 +179,8 @@ class RigidbodiesDataset(TransformsDataset, ABC):
                          scale: List[float] = [0.2, 0.3],
                          color: List[float] = None,
                          exclude_color: List[float] = None,
-                         exclude_range: float = 0.25
+                         exclude_range: float = 0.25,
+                         add_data=True
     ) -> dict:
         obj_record = random.choice(object_types)
         s = self.get_random_scale_transform(scale)
@@ -189,8 +190,10 @@ class RigidbodiesDataset(TransformsDataset, ABC):
             "color": np.array(color if color is not None else self.random_color(exclude_color, exclude_range)),
             "name": obj_record.name
         }
-        self.scales.append(obj_data["scale"])
-        self.colors = np.concatenate([self.colors, obj_data["color"].reshape((1,3))], axis=0)
+
+        if add_data:
+            self.scales.append(obj_data["scale"])
+            self.colors = np.concatenate([self.colors, obj_data["color"].reshape((1,3))], axis=0)
         return obj_record, obj_data
 
     def add_physics_object(self,
@@ -201,7 +204,9 @@ class RigidbodiesDataset(TransformsDataset, ABC):
                            dynamic_friction: float,
                            static_friction: float,
                            bounciness: float,
-                           o_id: Optional[int] = None) -> List[dict]:
+                           o_id: Optional[int] = None,
+                           add_data: Optional[bool] = True
+    ) -> List[dict]:
         """
         Get commands to add an object and assign physics properties. Write the object's static info to the .hdf5 file.
 
@@ -227,10 +232,11 @@ class RigidbodiesDataset(TransformsDataset, ABC):
                                                 rotation=rotation
                                                 )
 
-        self.masses = np.append(self.masses, mass)
-        self.dynamic_frictions = np.append(self.dynamic_frictions, dynamic_friction)
-        self.static_frictions = np.append(self.static_frictions, static_friction)
-        self.bouncinesses = np.append(self.bouncinesses, bounciness)
+        if add_data:
+            self.masses = np.append(self.masses, mass)
+            self.dynamic_frictions = np.append(self.dynamic_frictions, dynamic_friction)
+            self.static_frictions = np.append(self.static_frictions, static_friction)
+            self.bouncinesses = np.append(self.bouncinesses, bounciness)
 
         # Log the physics info per object for easy reference in a controller.
         self.physics_info[o_id] = PhysicsInfo(record=record,
