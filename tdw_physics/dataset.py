@@ -8,6 +8,7 @@ import numpy as np
 import random
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
+import shutil
 
 
 class Dataset(Controller, ABC):
@@ -35,7 +36,8 @@ class Dataset(Controller, ABC):
                          launch_build=launch_build)
 
         # set random state
-        if not bool(randomize):
+        self.randomize = randomize
+        if not bool(self.randomize):
             random.seed(seed)
 
         self.save_args = save_args
@@ -155,6 +157,9 @@ class Dataset(Controller, ABC):
             if int(f.stem) > exists_up_to:
                 exists_up_to = int(f.stem)
 
+        if exists_up_to > 0:
+            print('Trials up to %d already exist, skipping those' % exists_up_to)
+
         pbar.update(exists_up_to)
         for i in range(exists_up_to, num):
             filepath = output_dir.joinpath(TDWUtils.zero_padding(i, 4) + ".hdf5")
@@ -181,6 +186,7 @@ class Dataset(Controller, ABC):
 
         # Clear the object IDs and other static data
         self.clear_static_data()
+        self._trial_num = trial_num
 
         # Create the .hdf5 file.
         f = h5py.File(str(temp_path.resolve()), "a")
@@ -226,7 +232,10 @@ class Dataset(Controller, ABC):
         # Close the file.
         f.close()
         # Move the file.
-        temp_path.replace(filepath)
+        try:
+            temp_path.replace(filepath)
+        except OSError:
+            shutil.move(temp_path, filepath)
 
     @staticmethod
     def get_random_avatar_position(radius_min: float,

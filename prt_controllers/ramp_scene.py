@@ -32,6 +32,7 @@ def get_args(dataset_dir: str):
 
     if args.ramp is not None:
         ramp_list = args.ramp.split(',')
+
         assert all([t in RAMP_NAMES for t in ramp_list]), \
             "All target object names must be elements of %s" % RAMP_NAMES
         args.ramp = ramp_list
@@ -46,6 +47,7 @@ class RampCollide(RigidbodiesDataset):
                 port: int = 1071,
                 ramp_objects=RAMP_NAMES,
                 **kwargs):
+
 
         ## initializes static data and RNG
         super().__init__(port=port, **kwargs)
@@ -104,6 +106,7 @@ class RampCollide(RigidbodiesDataset):
         ])
         return commands
 
+
     def get_per_frame_commands(self, resp: List[bytes], frame: int) -> List[dict]:
         return []
 
@@ -127,6 +130,7 @@ class RampCollide(RigidbodiesDataset):
         """
         Place a ramp at the room center.
         """
+
         recs = MODEL_LIBRARIES["models_full.json"].records
         self._ramp_types = [r for r in recs if r.name in self.ramp_objects]
 
@@ -135,6 +139,7 @@ class RampCollide(RigidbodiesDataset):
         self.ramp_type = data["name"]
         print("obj scale",scale)
         print("obj name:", self.ramp_type)
+
 
         # add the object
         commands = []
@@ -148,6 +153,7 @@ class RampCollide(RigidbodiesDataset):
                     "y": 0.,
                     "z": 0.
                 },
+
                 rotation=TDWUtils.VECTOR3_ZERO,
                 # mass=10,
                 # dynamic_friction=random.uniform(0, 0.9),
@@ -162,6 +168,7 @@ class RampCollide(RigidbodiesDataset):
         #     {"$type": "scale_object",
         #      "scale_factor": scale,
         #      "id": o_id}])
+
 
         return commands
 
