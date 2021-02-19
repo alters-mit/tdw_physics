@@ -408,7 +408,8 @@ if __name__ == "__main__":
         material_types=args.material_types,
         target_material=args.tmaterial,
         probe_material=args.pmaterial,
-        middle_material=args.mmaterial
+        middle_material=args.mmaterial,
+        zone_material=args.zmaterial
     )
     print(TC.num_blocks, [r.name for r in TC._cap_types])
 

@@ -170,7 +170,7 @@ def get_args(dataset_dir: str, parse=True):
                         help="Material name for target. If None, samples from material_type")
     parser.add_argument("--zmaterial",
                         type=none_or_str,
-                        default="parquet_wood_red_cedar",
+                        default="wood_european_ash",
                         help="Material name for target. If None, samples from material_type")
     parser.add_argument("--pmaterial",
                         type=none_or_str,
@@ -309,6 +309,7 @@ class Dominoes(RigidbodiesDataset):
                  material_types=MATERIAL_TYPES,
                  target_material=None,
                  probe_material=None,
+                 zone_material=None,
                  **kwargs):
 
         ## initializes static data and RNG
@@ -322,6 +323,7 @@ class Dominoes(RigidbodiesDataset):
         self.zone_location = zone_location
         self.zone_color = zone_color
         self.zone_scale_range = zone_scale_range
+        self.zone_material = zone_material
 
         ## allowable object types
         self.set_probe_types(probe_objects)
@@ -554,22 +556,18 @@ class Dominoes(RigidbodiesDataset):
                 position=(self.zone_location or self._get_zone_location(scale)),
                 rotation=TDWUtils.VECTOR3_ZERO,
                 mass=1000.,
-                dynamic_friction=0.,
-                static_friction=10.,
+                dynamic_friction=0.5,
+                static_friction=0.5,
                 bounciness=0,
                 o_id=o_id))
 
         # set its material to be the same as the room
-        # if self.room == 'tdw':
-        # print("REMOVE ZONE", self.remove_zone)
         commands.extend(
             self.get_object_material_commands(
-                record, o_id, "cotton_jean_light_blue"))
-                # record, o_id, self.get_material_name("parquet_wood_red_cedar")))
+                record, o_id, self.get_material_name(self.zone_material)))
+        print("zone material", commands[-1])
 
         # Scale the object and set its color.
-        print("ZONE COLOR", rgb)
-        print("ZONE SCALE", scale)
         commands.extend([
             {"$type": "set_color",
              "color": {"r": rgb[0], "g": rgb[1], "b": rgb[2], "a": 1.},
@@ -587,17 +585,12 @@ class Dominoes(RigidbodiesDataset):
 
         return commands
 
-
-
     def _place_target_object(self) -> List[dict]:
         """
         Place a primitive object at one end of the collision axis.
         """
 
         # create a target object
-        # XXX TODO: Why is scaling part of random primitives
-        # but rotation and translation are not?
-        # Consider integrating!
         record, data = self.random_primitive(self._target_types,
                                              scale=self.target_scale_range,
                                              color=self.target_color)
@@ -605,7 +598,6 @@ class Dominoes(RigidbodiesDataset):
         self.target = record
         self.target_type = data["name"]
         self.target_color = rgb
-        # self.probe_color = rgb if self.monochrome else None
 
         if any((s <= 0 for s in scale.values())):
             self.remove_target = True
@@ -862,6 +854,7 @@ if __name__ == "__main__":
         zone_location=args.zlocation,
         zone_scale_range=args.zscale,
         zone_color=args.zcolor,
+        zone_material=args.zmaterial,
         target_objects=args.target,
         probe_objects=args.probe,
         middle_objects=args.middle,
