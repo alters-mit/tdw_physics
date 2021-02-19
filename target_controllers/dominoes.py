@@ -50,7 +50,7 @@ def get_args(dataset_dir: str, parse=True):
                         help="comma-separated list of possible target objects")
     parser.add_argument("--probe",
                         type=str,
-                        default="sphere",
+                        default="cube",
                         help="comma-separated list of possible target objects")
     parser.add_argument("--middle",
                         type=str,
@@ -90,19 +90,19 @@ def get_args(dataset_dir: str, parse=True):
                         help="Whether to rotate middle objects horizontally")
     parser.add_argument("--pscale",
                         type=str,
-                        default="0.2,0.2,0.2",
+                        default="0.1,0.5,0.25",
                         help="scale of probe objects")
     parser.add_argument("--pmass",
                         type=str,
-                        default="[2.0,7.0]",
+                        default="3.5",
                         help="scale of probe objects")
     parser.add_argument("--fscale",
                         type=str,
-                        default="[4.0,10.0]",
+                        default="[2.5,2.5]",
                         help="range of scales to apply to push force")
     parser.add_argument("--frot",
                         type=str,
-                        default="[-30,30]",
+                        default="[0,0]",
                         help="range of angles in xz plane to apply push force")
     parser.add_argument("--foffset",
                         type=str,
@@ -130,7 +130,7 @@ def get_args(dataset_dir: str, parse=True):
                         help="comma-separated R,G,B values for the middle object color. None is random.")
     parser.add_argument("--collision_axis_length",
                         type=float,
-                        default=1.,
+                        default=2.,
                         help="Length of spacing between probe and target objects at initialization.")
     parser.add_argument("--spacing_jitter",
                         type=float,
@@ -142,23 +142,23 @@ def get_args(dataset_dir: str, parse=True):
                         help="Don't actually put the target object in the scene.")
     parser.add_argument("--camera_distance",
                         type=float,
-                        default=1.25,
+                        default=2.0,
                         help="radial distance from camera to centerpoint")
     parser.add_argument("--camera_min_height",
                         type=float,
-                        default=0.25,
+                        default=0.5,
                          help="min height of camera")
     parser.add_argument("--camera_max_height",
                         type=float,
-                        default=1.0,
+                        default=1.5,
                         help="max height of camera")
     parser.add_argument("--camera_min_angle",
                         type=float,
-                        default=0,
+                        default=-15,
                         help="minimum angle of camera rotation around centerpoint")
     parser.add_argument("--camera_max_angle",
                         type=float,
-                        default=180,
+                        default=315,
                         help="maximum angle of camera rotation around centerpoint")
     parser.add_argument("--material_types",
                         type=none_or_str,

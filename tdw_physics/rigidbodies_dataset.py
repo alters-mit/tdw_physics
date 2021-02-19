@@ -14,12 +14,13 @@ from tdw_physics.util import MODEL_LIBRARIES, str_to_xyz
 
 
 def handle_random_transform_args(args):
-    try:
-        args = json.loads(args)
-    except:
-        args = str_to_xyz(args)
 
     if args is not None:
+        try:
+            args = json.loads(args)
+        except:
+            args = str_to_xyz(args)
+
         if hasattr(args, 'keys'):
             if 'class' in args:
                 data = args['data']

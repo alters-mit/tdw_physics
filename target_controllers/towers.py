@@ -256,11 +256,6 @@ class Tower(MultiDominoes):
         grad = self.middle_scale_gradient
         self.block_scales = [self._get_block_scale(offset=grad*(mid-i)) for i in range(self.num_blocks)]
 
-        # self.block_scales = [random.uniform(self.middle_scale_range[0], self.middle_scale_range[1])
-        #                      for _ in range(self.num_blocks)]
-
-        # self.block_scales = [s + (mid - i) * self.middle_scale_gradient for i,s in enumerate(self.block_scales)]
-
         # place the blocks
         for m in range(self.num_blocks):
             record, data = self.random_primitive(
