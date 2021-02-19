@@ -70,7 +70,7 @@ def get_args(dataset_dir: str, parse=True):
                         help="scale of target objects")
     parser.add_argument("--trot",
                         type=str,
-                        default="0.,0.,0.",
+                        default="0.0,0.0,0.0",
                         help="comma separated list of initial target rotation values")
     parser.add_argument("--mrot",
                         type=str,
