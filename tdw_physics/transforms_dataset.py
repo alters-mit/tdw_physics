@@ -80,6 +80,7 @@ class TransformsDataset(Dataset, ABC):
 
         # Create a group for this frame.
         frame = frames_grp.create_group(TDWUtils.zero_padding(frame_num, 4))
+
         # Create a group for images.
         images = frame.create_group("images")
 

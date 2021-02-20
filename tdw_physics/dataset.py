@@ -89,7 +89,7 @@ class Dataset(Controller, ABC):
                     {"$type": "set_shadow_strength",
                      "strength": 1.0},
                     {"$type": "set_sleep_threshold",
-                     "sleep_threshold": 0.1}]
+                     "sleep_threshold": 0.25}]
 
         commands.extend(self.get_scene_initialization_commands())
         # Add the avatar.
@@ -211,7 +211,8 @@ class Dataset(Controller, ABC):
         # Add the first frame.
         done = False
         frames_grp = f.create_group("frames")
-        self._write_frame(frames_grp=frames_grp, resp=resp, frame_num=frame)
+        frame_grp, _, _, _ = self._write_frame(frames_grp=frames_grp, resp=resp, frame_num=frame)
+        self._write_frame_labels(frame_grp, resp, frame, False)
 
         # Continue the trial. Send commands, and parse output data.
         while not done:
@@ -219,8 +220,9 @@ class Dataset(Controller, ABC):
             frame += 1
             resp = self.communicate(self.get_per_frame_commands(resp, frame))
             frame_grp, objs_grp, tr_dict, done = self._write_frame(frames_grp=frames_grp, resp=resp, frame_num=frame)
-            done = done or self.is_done(resp, frame)
-            # print("frame, done", frame, done)
+
+            # Write whether this frame completed the trial and any other trial-level data
+            done = self._write_frame_labels(frame_grp, resp, frame, done)
 
         # Cleanup.
         commands = []
@@ -328,6 +330,38 @@ class Dataset(Controller, ABC):
         """
 
         raise Exception()
+
+    def _write_frame_labels(self, frame_grp: h5py.Group, resp: List[bytes], frame_num: int, sleeping: bool) -> bool:
+        """
+        Writes the trial-level data for this frame.
+
+        :param frame_grp: The hdf5 group for a single frame.
+        :param resp: The response from the build.
+        :param frame_num: The frame number.
+        :param sleeping: Whether this trial timed out due to objects falling asleep.
+
+        :return: bool done: whether this is the last frame of the trial.
+        """
+        labels = frame_grp.create_group("labels")
+        if frame_num > 0:
+            complete = self.is_done(resp, frame_num)
+        else:
+            complete = False
+
+        # If the trial is over, one way or another
+        done = sleeping or complete
+
+        # Write labels indicate whether and why the trial is over
+        labels.create_dataset("trial_end", data=done)
+        labels.create_dataset("trial_timeout", data=(sleeping and not complete))
+        labels.create_dataset("trial_complete", data=(complete and not sleeping))
+
+        if done:
+            print("Trial Ended: timeout? %s, completed? %s" % \
+                  ("YES" if sleeping and not complete else "NO",\
+                   "YES" if complete and not sleeping else "NO"))
+
+        return done
 
     def _get_destroy_object_command_name(self, o_id: int) -> str:
         """
