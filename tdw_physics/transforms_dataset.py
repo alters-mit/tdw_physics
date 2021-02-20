@@ -133,3 +133,16 @@ class TransformsDataset(Dataset, ABC):
         objs.create_dataset("rotations", data=rotations.reshape(num_objects, 4), compression="gzip")
 
         return frame, objs, tr_dict, False
+
+    def get_object_position(self, obj_id: int, resp: List[bytes]) -> None:
+        position = None
+        print([OutputData.get_data_type_id(r) for r in resp])
+        for r in resp:
+            r_id = OutputData.get_data_type_id(r)
+            if r_id == "tran":
+                tr = Transforms(r)
+                for i in range(tr.get_num()):
+                    if tr.get_id(i) == obj_id:
+                        position = tr.get_position(i)
+
+        return position

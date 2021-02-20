@@ -295,6 +295,7 @@ class Dominoes(RigidbodiesDataset):
                  target_scale_range=[0.2, 0.3],
                  target_rotation_range=None,
                  target_color=None,
+                 target_motion_thresh=0.01,
                  collision_axis_length=1.,
                  force_scale_range=[0.,8.],
                  force_angle_range=[-60,60],
@@ -336,6 +337,7 @@ class Dominoes(RigidbodiesDataset):
         self.target_color = target_color
         self.target_rotation_range = target_rotation_range
         self.target_material = target_material
+        self.target_motion_thresh = target_motion_thresh
 
         self.probe_color = probe_color
         self.probe_scale_range = probe_scale_range
@@ -403,6 +405,7 @@ class Dominoes(RigidbodiesDataset):
         ## scenario-specific metadata: object types and drop position
         self.target_type = None
         self.target_rotation = None
+        self.target_position = None
 
         self.probe_type = None
         self.probe_mass = None
@@ -493,17 +496,62 @@ class Dominoes(RigidbodiesDataset):
         # If this is a stable structure, disregard whether anything is actually moving.
         return frame, objs, tr, sleeping and not (frame_num < 150)
 
+    def _update_target_position(self, resp: List[bytes], frame_num: int) -> None:
+        if frame_num <= 0:
+            self.target_delta_position = xyz_to_arr(TDWUtils.VECTOR3_ZERO)
+        else:
+            target_position_new = self.get_object_position(self.target_id, resp) or self.target_position
+            self.target_delta_position += (target_position_new - xyz_to_arr(self.target_position))
+            self.target_position = arr_to_xyz(target_position_new)
+
     def _write_frame_labels(self,
                             frame_grp: h5py.Group,
                             resp: List[bytes],
                             frame_num: int,
                             sleeping: bool) -> Tuple[h5py.Group, bool]:
 
-        labels, done = super()._write_frame_labels(frame_grp, resp, frame_num, sleeping)
+        labels, resp, frame_num, done = super()._write_frame_labels(frame_grp, resp, frame_num, sleeping)
 
-        ## TODO: detect whether target fell, whether it hit target zone, etc.
+        # Whether this trial has a target or zone to track
+        has_target = not self.remove_target
+        has_zone = not self.remove_zone
+        labels.create_dataset("has_target", data=has_target)
+        labels.create_dataset("has_zone", data=has_zone)
+        if not (has_target or has_zone):
+            return labels, done
 
-        return labels, done
+        # Whether target moved from its initial position, and how much
+        if has_target:
+            self._update_target_position(resp, frame_num)
+            has_moved = np.sqrt((self.target_delta_position**2).sum()) > self.target_motion_thresh
+            labels.create_dataset("target_delta_position", data=self.target_delta_position)
+            labels.create_dataset("target_has_moved", data=has_moved)
+
+            # Whether target has fallen to the ground
+            c_points, c_normals = self.get_object_environment_collision(
+                self.target_id, resp)
+
+            if frame_num <= 0:
+                self.target_on_ground = False
+                self.target_ground_contacts = c_points
+            elif len(c_points) == 0:
+                self.target_on_ground = False
+            elif len(c_points) != len(self.target_ground_contacts):
+                self.target_on_ground = True
+            elif any([np.sqrt(((c_points[i] - self.target_ground_contacts[i])**2).sum()) > self.target_motion_thresh \
+                      for i in range(min(len(c_points), len(self.target_ground_contacts)))]):
+                self.target_on_ground = True
+
+            labels.create_dataset("target_on_ground", data=self.target_on_ground)
+
+        # Whether target has hit the zone
+        if has_target and has_zone:
+            c_points, c_normals = self.get_object_target_collision(
+                self.target_id, self.zone_id, resp)
+            target_zone_contact = bool(len(c_points))
+            labels.create_dataset("target_contacting_zone", data=target_zone_contact)
+
+        return labels, resp, frame_num, done
 
     def is_done(self, resp: List[bytes], frame: int) -> bool:
         return frame > 250
@@ -556,6 +604,7 @@ class Dominoes(RigidbodiesDataset):
         self.zone = record
         self.zone_type = data["name"]
         self.zone_color = rgb
+        self.zone_id = o_id
 
         if any((s <= 0 for s in scale.values())):
             self.remove_zone = True
@@ -618,28 +667,33 @@ class Dominoes(RigidbodiesDataset):
         self.target_type = data["name"]
         self.target_color = rgb
         self.target_scale = scale
+        self.target_id = o_id
 
         if any((s <= 0 for s in scale.values())):
             self.remove_target = True
 
-        # add the object
-        commands = []
+        # Where to put the target
         if self.target_rotation is None:
             self.target_rotation = self.get_rotation(self.target_rotation_range)
 
+        if self.target_position is None:
+            self.target_position = {
+                "x": 0.5 * self.collision_axis_length,
+                "y": 0. if not self.remove_target else 10.0,
+                "z": 0. if not self.remove_target else 10.0
+            }
+
+        # Commands for adding hte object
+        commands = []
         commands.extend(
             self.add_physics_object(
                 record=record,
-                position={
-                    "x": 0.5 * self.collision_axis_length,
-                    "y": 0. if not self.remove_target else 10.0,
-                    "z": 0. if not self.remove_target else 10.0
-                },
+                position=self.target_position,
                 rotation=self.target_rotation,
-                mass=random.uniform(2,3),
-                dynamic_friction=random.uniform(0, 0.9),
-                static_friction=random.uniform(0, 0.9),
-                bounciness=random.uniform(0, 1),
+                mass=2.5,
+                dynamic_friction=0.5,
+                static_friction=0.5,
+                bounciness=0.0,
                 o_id=o_id,
                 add_data=(not self.remove_target)
             ))
@@ -658,7 +712,7 @@ class Dominoes(RigidbodiesDataset):
              "scale_factor": scale if not self.remove_target else TDWUtils.VECTOR3_ZERO,
              "id": o_id}])
 
-
+        # If this scene won't have a target
         if self.remove_target:
             commands.append(
                 {"$type": self._get_destroy_object_command_name(o_id),

@@ -212,17 +212,17 @@ class Dataset(Controller, ABC):
         done = False
         frames_grp = f.create_group("frames")
         frame_grp, _, _, _ = self._write_frame(frames_grp=frames_grp, resp=resp, frame_num=frame)
-        self._write_frame_labels(frame_grp, resp, frame, False)
+        self._write_frame_labels(frame_grp, resp, -1, False)
 
         # Continue the trial. Send commands, and parse output data.
         while not done:
-            print('frame %d' % frame)
             frame += 1
+            print('frame %d' % frame)
             resp = self.communicate(self.get_per_frame_commands(resp, frame))
             frame_grp, objs_grp, tr_dict, done = self._write_frame(frames_grp=frames_grp, resp=resp, frame_num=frame)
 
             # Write whether this frame completed the trial and any other trial-level data
-            labels_grp, done = self._write_frame_labels(frame_grp, resp, frame, done)
+            labels_grp, _, _, done = self._write_frame_labels(frame_grp, resp, frame, done)
 
         # Cleanup.
         commands = []
@@ -365,7 +365,7 @@ class Dataset(Controller, ABC):
                   ("YES" if sleeping and not complete else "NO",\
                    "YES" if complete and not sleeping else "NO"))
 
-        return labels, done
+        return labels, resp, frame_num, done
 
     def _get_destroy_object_command_name(self, o_id: int) -> str:
         """

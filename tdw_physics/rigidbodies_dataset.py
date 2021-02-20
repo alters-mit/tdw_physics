@@ -407,3 +407,34 @@ class RigidbodiesDataset(TransformsDataset, ABC):
         env_collisions.create_dataset("contacts", data=env_collision_contacts.reshape((-1, 2, 3)),
                                       compression="gzip")
         return frame, objs, tr, sleeping
+
+    def get_object_target_collision(self, obj_id: int, target_id: int, resp: List[bytes]):
+
+        contact_points = []
+        contact_normals = []
+
+        for r in resp[:-1]:
+            r_id = OutputData.get_data_type_id(r)
+            if r_id == "coll":
+                co = Collision(r)
+                coll_ids = [co.get_collider_id(), co.get_collidee_id()]
+                if [obj_id, target_id] == coll_ids or [target_id, obj_id] == coll_ids:
+                    contact_points = [co.get_contact_point(i) for i in range(co.get_num_contacts())]
+                    contact_normals = [co.get_contact_normal(i) for i in range(co.get_num_contacts())]
+
+        return (contact_points, contact_normals)
+
+    def get_object_environment_collision(self, obj_id: int, resp: List[bytes]):
+
+        contact_points = []
+        contact_normals = []
+
+        for r in resp[:-1]:
+            r_id = OutputData.get_data_type_id(r)
+            if r_id == 'enco':
+                en = EnvironmentCollision(r)
+                if en.get_object_id() == obj_id:
+                    contact_points = [np.array(en.get_contact_point(i)) for i in range(en.get_num_contacts())]
+                    contact_normals = [np.array(en.get_contact_normal(i)) for i in range(en.get_num_contacts())]
+
+        return (contact_points, contact_normals)
