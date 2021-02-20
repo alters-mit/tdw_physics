@@ -491,7 +491,19 @@ class Dominoes(RigidbodiesDataset):
                                                          resp=resp,
                                                          frame_num=frame_num)
         # If this is a stable structure, disregard whether anything is actually moving.
-        return frame, objs, tr, sleeping and frame_num < 300
+        return frame, objs, tr, sleeping and not (frame_num < 150)
+
+    def _write_frame_labels(self,
+                            frame_grp: h5py.Group,
+                            resp: List[bytes],
+                            frame_num: int,
+                            sleeping: bool) -> Tuple[h5py.Group, bool]:
+
+        labels, done = super()._write_frame_labels(frame_grp, resp, frame_num, sleeping)
+
+        ## TODO: detect whether target fell, whether it hit target zone, etc.
+
+        return labels, done
 
     def is_done(self, resp: List[bytes], frame: int) -> bool:
         return frame > 250

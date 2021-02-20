@@ -222,7 +222,7 @@ class Dataset(Controller, ABC):
             frame_grp, objs_grp, tr_dict, done = self._write_frame(frames_grp=frames_grp, resp=resp, frame_num=frame)
 
             # Write whether this frame completed the trial and any other trial-level data
-            done = self._write_frame_labels(frame_grp, resp, frame, done)
+            labels_grp, done = self._write_frame_labels(frame_grp, resp, frame, done)
 
         # Cleanup.
         commands = []
@@ -331,7 +331,11 @@ class Dataset(Controller, ABC):
 
         raise Exception()
 
-    def _write_frame_labels(self, frame_grp: h5py.Group, resp: List[bytes], frame_num: int, sleeping: bool) -> bool:
+    def _write_frame_labels(self,
+                            frame_grp: h5py.Group,
+                            resp: List[bytes],
+                            frame_num: int,
+                            sleeping: bool) -> Tuple[h5py.Group, bool]:
         """
         Writes the trial-level data for this frame.
 
@@ -340,7 +344,7 @@ class Dataset(Controller, ABC):
         :param frame_num: The frame number.
         :param sleeping: Whether this trial timed out due to objects falling asleep.
 
-        :return: bool done: whether this is the last frame of the trial.
+        :return: Tuple(h5py.Group labels, bool done): the labels data and whether this is the last frame of the trial.
         """
         labels = frame_grp.create_group("labels")
         if frame_num > 0:
@@ -361,7 +365,7 @@ class Dataset(Controller, ABC):
                   ("YES" if sleeping and not complete else "NO",\
                    "YES" if complete and not sleeping else "NO"))
 
-        return done
+        return labels, done
 
     def _get_destroy_object_command_name(self, o_id: int) -> str:
         """
