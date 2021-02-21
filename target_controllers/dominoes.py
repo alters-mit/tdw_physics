@@ -10,6 +10,7 @@ from typing import List, Dict, Tuple
 from weighted_collection import WeightedCollection
 from tdw.tdw_utils import TDWUtils
 from tdw.librarian import ModelRecord, MaterialLibrarian
+from tdw.output_data import OutputData, Transforms, Images, CameraMatrices
 from tdw_physics.rigidbodies_dataset import (RigidbodiesDataset,
                                              get_random_xyz_transform,
                                              get_range,
@@ -499,7 +500,7 @@ class Dominoes(RigidbodiesDataset):
     def _update_target_position(self, resp: List[bytes], frame_num: int) -> None:
         if frame_num <= 0:
             self.target_delta_position = xyz_to_arr(TDWUtils.VECTOR3_ZERO)
-        else:
+        elif 'tran' in [OutputData.get_data_type_id(r) for r in resp[:-1]]:
             target_position_new = self.get_object_position(self.target_id, resp) or self.target_position
             self.target_delta_position += (target_position_new - xyz_to_arr(self.target_position))
             self.target_position = arr_to_xyz(target_position_new)
@@ -971,9 +972,10 @@ if __name__ == "__main__":
 
     if bool(args.run):
         DomC.run(num=args.num,
-               output_dir=args.dir,
-               temp_path=args.temp,
-               width=args.width,
-               height=args.height)
+                 output_dir=args.dir,
+                 temp_path=args.temp,
+                 width=args.width,
+                 height=args.height,
+                 args_dict=vars(args))
     else:
         DomC.communicate({"$type": "terminate"})

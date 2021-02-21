@@ -149,7 +149,6 @@ class TransformsDataset(Dataset, ABC):
 
     def get_object_position(self, obj_id: int, resp: List[bytes]) -> None:
         position = None
-        print([OutputData.get_data_type_id(r) for r in resp])
         for r in resp:
             r_id = OutputData.get_data_type_id(r)
             if r_id == "tran":

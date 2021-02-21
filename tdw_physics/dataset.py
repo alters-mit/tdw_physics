@@ -8,6 +8,7 @@ import numpy as np
 import random
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
+from tdw_physics.postprocessing.stimuli import pngs_to_mp4
 import shutil
 
 
@@ -30,7 +31,8 @@ class Dataset(Controller, ABC):
                  randomize: int=1,
                  seed: int=0,
                  save_args=True,
-                 save_passes=[],
+                 save_passes=["_img"],
+                 save_movies=True,
                  save_trial_labels=False
     ):
         super().__init__(port=port,
@@ -47,6 +49,7 @@ class Dataset(Controller, ABC):
 
         # which passes to save as an MP4
         self.save_passes = save_passes
+        self.save_movies = save_movies
 
         # whether to save a JSON of trial-level labels
         self.save_trial_labels = save_trial_labels
@@ -131,7 +134,7 @@ class Dataset(Controller, ABC):
         :param height: Screen height in pixels.
         """
 
-
+        self._height, self._width = height, width
         initialization_commands = self.get_initialization_commands(width=width, height=height)
 
         # Initialize the scene.
@@ -188,6 +191,20 @@ class Dataset(Controller, ABC):
                 self.trial(filepath=filepath,
                            temp_path=temp_path,
                            trial_num=i)
+
+                # Save an MP4 of the stimulus
+                if self.save_movies:
+                    for pass_mask in self.save_passes:
+                        cmd, stdout, stderr = pngs_to_mp4(
+                            filename=str(filepath).split('.hdf5')[0],
+                            image_stem=pass_mask[1:]+'_',
+                            png_dir=self.png_dir,
+                            size=[self._height, self._width],
+                            overwrite=True,
+                            remove_pngs=True,
+                            use_parent_dir=False)
+                        print("saving to MP4: %s" % ' '.join(cmd))
+
             pbar.update(1)
         pbar.close()
 
