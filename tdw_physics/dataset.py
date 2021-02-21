@@ -29,7 +29,9 @@ class Dataset(Controller, ABC):
                  launch_build: bool=True,
                  randomize: int=1,
                  seed: int=0,
-                 save_args=True
+                 save_args=True,
+                 save_passes=[],
+                 save_trial_labels=False
     ):
         super().__init__(port=port,
                          check_version=check_version,
@@ -40,8 +42,14 @@ class Dataset(Controller, ABC):
         if not bool(self.randomize):
             random.seed(seed)
 
+        # save the command-line args
         self.save_args = save_args
 
+        # which passes to save as an MP4
+        self.save_passes = save_passes
+
+        # whether to save a JSON of trial-level labels
+        self.save_trial_labels = save_trial_labels
 
     def clear_static_data(self) -> None:
         self.object_ids = np.empty(dtype=int, shape=0)
@@ -96,6 +104,8 @@ class Dataset(Controller, ABC):
         commands.extend([{"$type": "create_avatar",
                           "type": "A_Img_Caps_Kinematic",
                           "id": "a"},
+                         {"$type": "set_target_framerate",
+                          "framerate": 30},
                          {"$type": "set_pass_masks",
                           "pass_masks": ["_img", "_id", "_depth", "_normals", "_flow"]},
                          {"$type": "set_field_of_view",
@@ -123,6 +133,7 @@ class Dataset(Controller, ABC):
 
 
         initialization_commands = self.get_initialization_commands(width=width, height=height)
+
         # Initialize the scene.
         self.communicate(initialization_commands)
         self.trial_loop(num, output_dir, temp_path)
@@ -164,8 +175,16 @@ class Dataset(Controller, ABC):
         for i in range(exists_up_to, num):
             filepath = output_dir.joinpath(TDWUtils.zero_padding(i, 4) + ".hdf5")
             if not filepath.exists():
-                # Do the trial.
+
                 print('trial %d' % i)
+
+                # Save out images
+                if len(self.save_passes):
+                    self.png_dir = output_dir.joinpath("pngs_" + TDWUtils.zero_padding(i, 4))
+                    if not self.png_dir.exists():
+                        self.png_dir.mkdir(parents=True)
+
+                # Do the trial.
                 self.trial(filepath=filepath,
                            temp_path=temp_path,
                            trial_num=i)

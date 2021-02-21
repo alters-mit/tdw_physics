@@ -9,6 +9,8 @@ from tdw.librarian import ModelRecord
 from tdw_physics.dataset import Dataset
 from tdw_physics.util import xyz_to_arr, arr_to_xyz
 
+from PIL import Image
+
 class TransformsDataset(Dataset, ABC):
     """
     A dataset creator that receives and writes per frame: `Transforms`, `Images`, `CameraMatrices`.
@@ -121,6 +123,17 @@ class TransformsDataset(Dataset, ABC):
                     else:
                         image_data = im.get_image(i)
                     images.create_dataset(pass_mask, data=image_data, compression="gzip")
+
+                    # Save PNGs
+                    if pass_mask in self.save_passes:
+                        filename = pass_mask[1:] + "_" + TDWUtils.zero_padding(frame_num, 4) + "." + im.get_extension(i)
+                        path = self.png_dir.joinpath(filename)
+                        if pass_mask in ["_depth", "_depth_simple"]:
+                            Image.fromarray(TDWUtils.get_shaped_depth_pass(images=im, index=i)).save(path)
+                        else:
+                            with open(path, "wb") as f:
+                                f.write(im.get_image(i))
+
             # Add the camera matrices.
             elif OutputData.get_data_type_id(r) == "cama":
                 matrices = CameraMatrices(r)
