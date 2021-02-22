@@ -976,6 +976,8 @@ if __name__ == "__main__":
                  temp_path=args.temp,
                  width=args.width,
                  height=args.height,
+                 save_passes=args.save_passes.split(','),
+                 save_movies=args.save_movies,
                  args_dict=vars(args))
     else:
         DomC.communicate({"$type": "terminate"})

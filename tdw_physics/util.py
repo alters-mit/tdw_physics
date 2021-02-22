@@ -84,6 +84,9 @@ def get_parser(dataset_dir: str, get_help: bool=False):
     parser.add_argument("--run", type=int, default=1, help="run the simulation or not")
     parser.add_argument("--monochrome", type=int, default=0, help="whether to set all colorable objects to the same color")
     parser.add_argument("--room", type=str, default="box", help="Which room to use. Either 'box' or 'tdw'.")
+    parser.add_argument("--save_passes", type=str, default='_img,_id', help="Which passes to save: _img, _depth, _normals, _id, _flow")
+    parser.add_argument("--save_movies", action='store_true', help="Whether to write out MP4s of each trial")
+    parser.add_argument("--save_labels", action='store_true', help="Whether to save out JSON labels for the full trial set.")
     return parser
 
 def get_args(dataset_dir: str):

@@ -54,14 +54,6 @@ def pngs_to_mp4(
     stdout, stderr = make_video.communicate(input=(b'y' if overwrite else b'N'))
 
     if remove_pngs:
-        rm = subprocess.run('rm -r ' + str(png_dir), shell=True)
+        rm = subprocess.run('rm ' + str(png_dir) + '/' + image_stem + '*.png', shell=True)
 
     return cmd, stdout, stderr
-
-if __name__ == '__main__':
-
-    fname = 'test.mp4'
-    image_stem = 'img_'
-    png_dir = os.path.expanduser('~/neuroailab/physion/stimuli/scratch/domi_24/pngs_0000/')
-
-    cmd = pngs_to_mp4(fname, image_stem, png_dir, size=[1024,1024], overwrite=True)

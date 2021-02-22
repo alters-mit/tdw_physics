@@ -1,4 +1,4 @@
-import sys, os, copy
+import sys, os, copy, subprocess
 from typing import List, Dict, Tuple
 from abc import ABC, abstractmethod
 from pathlib import Path
@@ -30,10 +30,7 @@ class Dataset(Controller, ABC):
                  launch_build: bool=True,
                  randomize: int=1,
                  seed: int=0,
-                 save_args=True,
-                 save_passes=["_img"],
-                 save_movies=True,
-                 save_trial_labels=False
+                 save_args=True
     ):
         super().__init__(port=port,
                          check_version=check_version,
@@ -47,12 +44,6 @@ class Dataset(Controller, ABC):
         # save the command-line args
         self.save_args = save_args
 
-        # which passes to save as an MP4
-        self.save_passes = save_passes
-        self.save_movies = save_movies
-
-        # whether to save a JSON of trial-level labels
-        self.save_trial_labels = save_trial_labels
 
     def clear_static_data(self) -> None:
         self.object_ids = np.empty(dtype=int, shape=0)
@@ -123,6 +114,9 @@ class Dataset(Controller, ABC):
             temp_path: str,
             width: int,
             height: int,
+            save_passes: List[str] = [],
+            save_movies: bool = False,
+            save_labels: bool = False,
             args_dict: dict={}) -> None:
         """
         Create the dataset.
@@ -132,9 +126,24 @@ class Dataset(Controller, ABC):
         :param temp_path: Temporary path to a file being written.
         :param width: Screen width in pixels.
         :param height: Screen height in pixels.
+        :param save_passes: a list of which passes to save out as PNGs (or convert to MP4)
+        :param save_movies: whether to save out a movie of each trial
+        :param save_labels: whether to save out JSON labels for the full trial set.
         """
 
         self._height, self._width = height, width
+
+        # which passes to save as an MP4
+        self.save_passes = save_passes
+        self.save_movies = save_movies
+
+        # whether to save a JSON of trial-level labels
+        self.save_labels = save_labels
+
+        print("save passes", self.save_passes)
+        print("save movies", self.save_movies)
+        print("save labels", self.save_labels)
+
         initialization_commands = self.get_initialization_commands(width=width, height=height)
 
         # Initialize the scene.
@@ -195,8 +204,9 @@ class Dataset(Controller, ABC):
                 # Save an MP4 of the stimulus
                 if self.save_movies:
                     for pass_mask in self.save_passes:
+                        mp4_filename = str(filepath).split('.hdf5')[0] + pass_mask
                         cmd, stdout, stderr = pngs_to_mp4(
-                            filename=str(filepath).split('.hdf5')[0],
+                            filename=mp4_filename,
                             image_stem=pass_mask[1:]+'_',
                             png_dir=self.png_dir,
                             size=[self._height, self._width],
@@ -204,6 +214,7 @@ class Dataset(Controller, ABC):
                             remove_pngs=True,
                             use_parent_dir=False)
                         print("saving to MP4: %s" % ' '.join(cmd))
+                    rm = subprocess.run('rm -rf ' + str(self.png_dir), shell=True)
 
             pbar.update(1)
         pbar.close()
