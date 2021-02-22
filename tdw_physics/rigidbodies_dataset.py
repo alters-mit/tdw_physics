@@ -378,8 +378,11 @@ class RigidbodiesDataset(TransformsDataset, ABC):
                         sleeping = False
                 # Add the Rigibodies data.
                 for o_id, i in zip(self.object_ids, range(num_objects)):
-                    velocities[i] = ri_dict[o_id]["vel"]
-                    angular_velocities[i] = ri_dict[o_id]["ang"]
+                    try:
+                        velocities[i] = ri_dict[o_id]["vel"]
+                        angular_velocities[i] = ri_dict[o_id]["ang"]
+                    except KeyError:
+                        print("Couldn't store velocity data for object %d" % o_id)
             elif r_id == "coll":
                 co = Collision(r)
                 collision_states = np.append(collision_states, co.get_state())

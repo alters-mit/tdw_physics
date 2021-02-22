@@ -95,6 +95,9 @@ def does_target_contact_zone(d):
 def does_target_move(d):
     return is_trial_valid(d, 'target_has_moved')
 
+def does_target_miss_zone(d):
+    return (does_target_move(d) and not does_target_contact_zone(d))
+
 def does_target_hit_ground(d):
     return is_trial_valid(d, 'target_on_ground')
 
@@ -127,6 +130,7 @@ TRIAL_LABELS = [
     is_trial_valid,
     does_target_move,
     does_target_contact_zone,
+    does_target_miss_zone,
     does_target_hit_ground,
     first_target_move_frame,
     first_target_contact_zone_frame,
@@ -151,20 +155,3 @@ def get_labels_from(d, label_funcs, res=None):
 
 def get_all_labels(d, res=None):
     return get_labels_from(d, label_funcs=get_all_label_funcs(), res=res)
-
-if __name__ == '__main__':
-
-    filepath = '/Users/db/neuroailab/physion/stimuli/scratch/domi_26/0000.hdf5'
-    f = h5py.File(filepath)
-
-    print(filepath)
-    outfile = Path('./meta.json')
-    print(outfile)
-    data = OrderedDict(stim='test.mp4')
-    data = get_all_labels(f, data)
-
-    json_str = json.dumps([data], indent=4)
-    print(json_str)
-    # outfile.write_text(json_str, encoding='utf-8')
-
-    f.close()
