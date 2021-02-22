@@ -513,8 +513,11 @@ class Dominoes(RigidbodiesDataset):
             self.target_delta_position = xyz_to_arr(TDWUtils.VECTOR3_ZERO)
         elif 'tran' in [OutputData.get_data_type_id(r) for r in resp[:-1]]:
             target_position_new = self.get_object_position(self.target_id, resp) or self.target_position
-            self.target_delta_position += (target_position_new - xyz_to_arr(self.target_position))
-            self.target_position = arr_to_xyz(target_position_new)
+            try:
+                self.target_delta_position += (target_position_new - xyz_to_arr(self.target_position))
+                self.target_position = arr_to_xyz(target_position_new)
+            except TypeError:
+                print("Failed to get a new object position, %s" % target_position_new)
 
     def _write_frame_labels(self,
                             frame_grp: h5py.Group,

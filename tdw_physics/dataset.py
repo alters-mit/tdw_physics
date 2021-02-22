@@ -152,7 +152,11 @@ class Dataset(Controller, ABC):
         # whether to save a JSON of trial-level labels
         self.save_labels = save_labels
         if self.save_labels:
-            self.trial_metadata = []
+            meta_file = Path(output_dir).joinpath('metadata.json')
+            if meta_file.exists():
+                self.trial_metadata = json.loads(meta_file.read_text())
+            else:
+                self.trial_metadata = []
 
         print("save passes", self.save_passes)
         print("save movies", self.save_movies)
