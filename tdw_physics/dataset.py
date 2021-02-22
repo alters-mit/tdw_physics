@@ -41,8 +41,9 @@ class Dataset(Controller, ABC):
 
         # set random state
         self.randomize = randomize
+        self.seed = seed
         if not bool(self.randomize):
-            random.seed(seed)
+            random.seed(self.seed)
 
         # save the command-line args
         self.save_args = save_args

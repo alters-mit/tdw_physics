@@ -442,6 +442,11 @@ class Dominoes(RigidbodiesDataset):
     def get_trial_initialization_commands(self) -> List[dict]:
         commands = []
 
+        # randomization across trials
+        if not(self.randomize):
+            self.trial_seed = (self.seed + 1) * self._trial_num
+            random.seed(self.trial_seed)
+
         # Choose and place the target zone.
         commands.extend(self._place_target_zone())
 
