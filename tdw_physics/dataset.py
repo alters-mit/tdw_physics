@@ -3,14 +3,17 @@ from typing import List, Dict, Tuple
 from abc import ABC, abstractmethod
 from pathlib import Path
 from tqdm import tqdm
-import h5py
+import h5py, json
+from collections import OrderedDict
 import numpy as np
 import random
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw_physics.postprocessing.stimuli import pngs_to_mp4
+from tdw_physics.postprocessing.labels import get_all_labels, get_labels_from
 import shutil
 
+PASSES = ["_img", "_depth", "_normals", "_flow", "_id"]
 
 class Dataset(Controller, ABC):
     """
@@ -23,7 +26,6 @@ class Dataset(Controller, ABC):
         2. Run the trial until it is "done" (defined by output from the writer). Write per-frame data to disk,.
         3. Clean up the scene and start a new trial.
     """
-
     def __init__(self,
                  port: int = 1071,
                  check_version: bool=False,
@@ -44,9 +46,17 @@ class Dataset(Controller, ABC):
         # save the command-line args
         self.save_args = save_args
 
-
     def clear_static_data(self) -> None:
         self.object_ids = np.empty(dtype=int, shape=0)
+
+    def get_controller_label_funcs(self):
+        """
+        A list of funcs with signature func(f: h5py.File) -> JSON-serializeable data
+        """
+        def controller_name(f):
+            return type(self).__name__
+
+        return [controller_name]
 
     def save_command_line_args(self, output_dir: str) -> None:
         if not self.save_args:
@@ -139,6 +149,8 @@ class Dataset(Controller, ABC):
 
         # whether to save a JSON of trial-level labels
         self.save_labels = save_labels
+        if self.save_labels:
+            self.trial_metadata = []
 
         print("save passes", self.save_passes)
         print("save movies", self.save_movies)
@@ -154,6 +166,12 @@ class Dataset(Controller, ABC):
         if self.save_args:
             self.args_dict = copy.deepcopy(args_dict)
         self.save_command_line_args(output_dir)
+
+        # Save the trial-level metadata
+        json_str =json.dumps(self.trial_metadata, indent=4)
+        meta_file = Path(output_dir).joinpath('metadata.json')
+        meta_file.write_text(json_str, encoding='utf-8')
+        print(json_str)
 
         # Finish
         self.communicate({"$type": "terminate"})
@@ -191,7 +209,7 @@ class Dataset(Controller, ABC):
                 print('trial %d' % i)
 
                 # Save out images
-                if len(self.save_passes):
+                if any([pa in PASSES for pa in self.save_passes]):
                     self.png_dir = output_dir.joinpath("pngs_" + TDWUtils.zero_padding(i, 4))
                     if not self.png_dir.exists():
                         self.png_dir.mkdir(parents=True)
@@ -277,6 +295,14 @@ class Dataset(Controller, ABC):
             commands.append({"$type": self._get_destroy_object_command_name(o_id),
                              "id": int(o_id)})
         self.communicate(commands)
+
+        # Compute the trial-level metadata.
+        if self.save_labels:
+            stim_name = '_'.join([filepath.parent.name, str(Path(filepath.name).with_suffix(''))])
+            meta = OrderedDict(stimulus=stim_name)
+            meta = get_labels_from(f, label_funcs=self.get_controller_label_funcs(), res=meta)
+            meta = get_all_labels(f, res=meta)
+            self.trial_metadata.append(meta)
 
         # Close the file.
         f.close()
