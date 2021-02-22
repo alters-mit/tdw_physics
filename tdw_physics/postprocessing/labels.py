@@ -102,8 +102,11 @@ def does_target_hit_ground(d):
     return is_trial_valid(d, 'target_on_ground')
 
 def final_target_displacement(d):
-    disp = arr_to_xyz(get_labels(d, 'target_delta_position')[-1])
-    return {k:round(float(v), 3) for k,v in disp.items()}
+    try:
+        disp = arr_to_xyz(get_labels(d, 'target_delta_position')[-1])
+        return {k:round(float(v), 3) for k,v in disp.items()}
+    except TypeError:
+        return None
 
 def get_valid_frames(d, label_key):
     return np.where(get_labels(d, label_key))[0]

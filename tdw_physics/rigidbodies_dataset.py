@@ -180,16 +180,20 @@ class RigidbodiesDataset(TransformsDataset, ABC):
                          color: List[float] = None,
                          exclude_color: List[float] = None,
                          exclude_range: float = 0.25,
-                         add_data=True
+                         add_data: bool = True,
+                         random_obj_id: bool = False
     ) -> dict:
         obj_record = random.choice(object_types)
         s = self.get_random_scale_transform(scale)
+
         obj_data = {
-            "id": self.get_unique_id(),
+            "id": self.get_unique_id() if random_obj_id else self._get_next_object_id(),
             "scale": s,
             "color": np.array(color if color is not None else self.random_color(exclude_color, exclude_range)),
             "name": obj_record.name
         }
+
+        print("object id", obj_data["id"])
 
         if add_data:
             self.scales.append(obj_data["scale"])

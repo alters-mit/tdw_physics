@@ -74,7 +74,10 @@ class TransformsDataset(Dataset, ABC):
         return [{"$type": "send_transforms",
                 "frequency": "always"},
                 {"$type": "send_camera_matrices",
-                 "frequency": "always"}]
+                 "frequency": "always"},
+                {"$type": "send_segmentation_colors",
+                 "ids": [int(oid) for oid in self.object_ids],
+                 "frequency": "once"}]
 
     def _write_frame(self, frames_grp: h5py.Group, resp: List[bytes], frame_num: int) -> \
             Tuple[h5py.Group, h5py.Group, dict, bool]:

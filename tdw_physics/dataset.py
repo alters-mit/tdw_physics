@@ -9,7 +9,7 @@ import numpy as np
 import random
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
-from tdw.output_data import OutputData
+from tdw.output_data import OutputData, SegmentationColors
 from tdw_physics.postprocessing.stimuli import pngs_to_mp4
 from tdw_physics.postprocessing.labels import get_labels_from
 import shutil
@@ -31,7 +31,7 @@ class Dataset(Controller, ABC):
                  port: int = 1071,
                  check_version: bool=False,
                  launch_build: bool=True,
-                 randomize: int=1,
+                 randomize: int=0,
                  seed: int=0,
                  save_args=True
     ):
@@ -49,6 +49,7 @@ class Dataset(Controller, ABC):
 
     def clear_static_data(self) -> None:
         self.object_ids = np.empty(dtype=int, shape=0)
+        self._initialize_object_counter()
 
     def get_controller_label_funcs(self):
         """
@@ -266,13 +267,15 @@ class Dataset(Controller, ABC):
         commands.extend(self.get_trial_initialization_commands())
         # Add commands to request output data.
         commands.extend(self._get_send_data_commands())
-        # Write static data to disk.
-        static_group = f.create_group("static")
-        self._write_static_data(static_group)
 
         # Send the commands and start the trial.
         resp = self.communicate(commands)
+        self._set_segmentation_colors(resp)
         frame = 0
+
+        # Write static data to disk.
+        static_group = f.create_group("static")
+        self._write_static_data(static_group)
 
         # Add the first frame.
         done = False
@@ -397,6 +400,8 @@ class Dataset(Controller, ABC):
         """
 
         static_group.create_dataset("object_ids", data=self.object_ids)
+        if self.object_segmentation_colors is not None:
+            static_group.create_dataset("object_segmentation_colors", data=self.object_segmentation_colors)
 
     @abstractmethod
     def _write_frame(self, frames_grp: h5py.Group, resp: List[bytes], frame_num: int) -> \
@@ -483,3 +488,32 @@ class Dataset(Controller, ABC):
     def get_add_object(self, model_name: str, object_id: int, position={"x": 0, "y": 0, "z": 0},
                        rotation={"x": 0, "y": 0, "z": 0}, library: str = "") -> dict:
         raise Exception("Don't use this function; see README for functions that supersede it.")
+
+    def _initialize_object_counter(self) -> None:
+        self._object_id_counter = int(0)
+        self._object_id_increment = int(1)
+
+    def _increment_object_id(self) -> None:
+        self._object_id_counter = int(self._object_id_counter + self._object_id_increment)
+
+    def _get_next_object_id(self) -> int:
+        self._increment_object_id()
+        return int(self._object_id_counter)
+
+    def _set_segmentation_colors(self, resp: List[bytes]) -> None:
+
+        self.object_segmentation_colors = None
+        for r in resp:
+            if OutputData.get_data_type_id(r) == 'segm':
+                seg = SegmentationColors(r)
+                colors = {}
+                for i in range(seg.get_num()):
+                    colors[seg.get_object_id(i)] = seg.get_object_color(i)
+
+                self.object_segmentation_colors = []
+                for o_id in self.object_ids:
+                    if o_id in colors.keys():
+                        self.object_segmentation_colors.append(
+                            np.array(colors[o_id], dtype=np.uint8).reshape(1,3))
+
+                self.object_segmentation_colors = np.concatenate(self.object_segmentation_colors, 0)

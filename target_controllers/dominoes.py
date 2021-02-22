@@ -484,6 +484,11 @@ class Dominoes(RigidbodiesDataset):
     def _write_static_data(self, static_group: h5py.Group) -> None:
         super()._write_static_data(static_group)
 
+        ## which objects are the zone, target, and probe
+        static_group.create_dataset("zone_id", data=self.zone_id)
+        static_group.create_dataset("target_id", data=self.target_id)
+        static_group.create_dataset("probe_id", data=self.probe_id)
+
         ## color and scales of primitive objects
         static_group.create_dataset("target_type", data=self.target_type)
         static_group.create_dataset("target_rotation", data=xyz_to_arr(self.target_rotation))
@@ -742,6 +747,7 @@ class Dominoes(RigidbodiesDataset):
         self.probe = record
         self.probe_type = data["name"]
         self.probe_scale = scale
+        self.probe_id = o_id
 
         # Add the object with random physics values
         commands = []

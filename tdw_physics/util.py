@@ -16,13 +16,17 @@ def str_to_xyz(s: str, to_json=False):
     return s
 
 def xyz_to_arr(xyz : dict):
-    arr = np.array(
-        [xyz[k] for k in ["x","y","z"]], dtype=np.float32)
-    return arr
+    if xyz is not None:
+        arr = np.array(
+            [xyz[k] for k in ["x","y","z"]], dtype=np.float32)
+        return arr
+    return xyz
 
 def arr_to_xyz(arr : np.ndarray):
-    xyz = {k:arr[i] for i,k in enumerate(["x","y","z"])}
-    return xyz
+    if arr is not None:
+        xyz = {k:arr[i] for i,k in enumerate(["x","y","z"])}
+        return xyz
+    return arr
 
 def get_move_along_direction(pos: Dict[str, float], target: Dict[str, float], d: float, noise: float = 0) -> \
         Dict[str, float]:
