@@ -16,6 +16,7 @@ from tdw_physics.rigidbodies_dataset import (RigidbodiesDataset,
                                              get_range,
                                              handle_random_transform_args)
 from tdw_physics.util import MODEL_LIBRARIES, get_parser, xyz_to_arr, arr_to_xyz, str_to_xyz
+from tdw_physics.postprocessing.labels import get_all_label_funcs
 
 
 MODEL_NAMES = [r.name for r in MODEL_LIBRARIES['models_flex.json'].records]
@@ -407,11 +408,18 @@ class Dominoes(RigidbodiesDataset):
         self.target_type = None
         self.target_rotation = None
         self.target_position = None
+        self.target_delta_position = None
 
         self.probe_type = None
         self.probe_mass = None
         self.push_force = None
         self.push_position = None
+
+    def get_controller_label_funcs(self):
+
+        funcs = super().get_controller_label_funcs()
+        funcs += get_all_label_funcs()
+        return funcs
 
     def get_field_of_view(self) -> float:
         return 55

@@ -148,8 +148,10 @@ def get_labels_from(d, label_funcs, res=None):
     for func in label_funcs:
         try:
             res[func.__name__] = func(d)
-        except:
+        except AttributeError:
             print("%s is not a valid function", func)
+        except KeyError:
+            res[func.__name__] = None
 
     return res
 

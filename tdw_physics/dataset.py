@@ -10,7 +10,7 @@ import random
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw_physics.postprocessing.stimuli import pngs_to_mp4
-from tdw_physics.postprocessing.labels import get_all_labels, get_labels_from
+from tdw_physics.postprocessing.labels import get_labels_from
 import shutil
 
 PASSES = ["_img", "_depth", "_normals", "_flow", "_id"]
@@ -101,7 +101,7 @@ class Dataset(Controller, ABC):
                     {"$type": "set_shadow_strength",
                      "strength": 1.0},
                     {"$type": "set_sleep_threshold",
-                     "sleep_threshold": 0.25}]
+                     "sleep_threshold": 0.05}]
 
         commands.extend(self.get_scene_initialization_commands())
         # Add the avatar.
@@ -301,7 +301,6 @@ class Dataset(Controller, ABC):
             stim_name = '_'.join([filepath.parent.name, str(Path(filepath.name).with_suffix(''))])
             meta = OrderedDict(stimulus=stim_name)
             meta = get_labels_from(f, label_funcs=self.get_controller_label_funcs(), res=meta)
-            meta = get_all_labels(f, res=meta)
             self.trial_metadata.append(meta)
 
         # Close the file.
