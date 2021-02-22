@@ -392,8 +392,6 @@ class Dominoes(RigidbodiesDataset):
             mtype = random.choice(self.material_types)
             mat = random.choice(MATERIAL_NAMES[mtype])
 
-        print("chose material: %s" % mat)
-
         return mat
 
     def get_object_material_commands(self, record, object_id, material):
@@ -870,7 +868,6 @@ class MultiDominoes(Dominoes):
         offset = -0.5 * self.collision_axis_length
         min_offset = offset + self.target_scale["x"]
         max_offset = 0.5 * self.collision_axis_length - self.target_scale["x"]
-        print("offset, min, max", offset, min_offset, max_offset)
 
         commands = []
         for m in range(self.num_middle_objects):
@@ -881,7 +878,6 @@ class MultiDominoes(Dominoes):
                 print("offset now", offset)
                 break
 
-            print("middle color", self.middle_color)
             record, data = self.random_primitive(self._middle_types,
                                                  scale=self.middle_scale_range,
                                                  color=self.middle_color,
@@ -894,8 +890,6 @@ class MultiDominoes(Dominoes):
                 rot["z"] = 90
                 pos["z"] += -np.sin(np.radians(rot["y"])) * scale["y"] * 0.5
                 pos["x"] += np.cos(np.radians(rot["y"])) * scale["y"] * 0.5
-            print("horizontal", self.horizontal)
-            print("middle rotation", rot)
             self.middle_type = data["name"]
 
             commands.extend(
@@ -922,8 +916,6 @@ class MultiDominoes(Dominoes):
                 {"$type": "scale_object",
                  "scale_factor": scale,
                  "id": o_id}])
-
-            print("placed middle object %s" % str(m+1))
 
         return commands
 

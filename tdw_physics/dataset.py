@@ -9,6 +9,7 @@ import numpy as np
 import random
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
+from tdw.output_data import OutputData
 from tdw_physics.postprocessing.stimuli import pngs_to_mp4
 from tdw_physics.postprocessing.labels import get_labels_from
 import shutil
@@ -284,6 +285,15 @@ class Dataset(Controller, ABC):
             frame += 1
             print('frame %d' % frame)
             resp = self.communicate(self.get_per_frame_commands(resp, frame))
+            r_ids = [OutputData.get_data_type_id(r) for r in resp[:-1]]
+
+            # Sometimes the build freezes and has to reopen the socket.
+            # This prevents such errors from throwing off the frame numbering
+            if ('imag' not in r_ids) or ('tran' not in r_ids):
+                print("retrying frame %d, response only had %s" % (frame, r_ids))
+                frame -= 1
+                continue
+
             frame_grp, objs_grp, tr_dict, done = self._write_frame(frames_grp=frames_grp, resp=resp, frame_num=frame)
 
             # Write whether this frame completed the trial and any other trial-level data
