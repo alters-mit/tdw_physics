@@ -1,4 +1,4 @@
-import sys, os, copy, subprocess
+import sys, os, copy, subprocess, glob
 from typing import List, Dict, Tuple
 from abc import ABC, abstractmethod
 from pathlib import Path
@@ -11,7 +11,9 @@ from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.output_data import OutputData, SegmentationColors
 from tdw_physics.postprocessing.stimuli import pngs_to_mp4
-from tdw_physics.postprocessing.labels import get_labels_from
+from tdw_physics.postprocessing.labels import (get_labels_from,
+                                               get_all_label_funcs,
+                                               get_across_trial_stats_from)
 import shutil
 
 PASSES = ["_img", "_depth", "_normals", "_flow", "_id"]
@@ -56,10 +58,12 @@ class Dataset(Controller, ABC):
         """
         A list of funcs with signature func(f: h5py.File) -> JSON-serializeable data
         """
+        def stimulus_name(f):
+            return str(np.array(f['static']['stimulus_name']))
         def controller_name(f):
             return type(self).__name__
 
-        return [controller_name]
+        return [stimulus_name, controller_name]
 
     def save_command_line_args(self, output_dir: str) -> None:
         if not self.save_args:
@@ -159,10 +163,6 @@ class Dataset(Controller, ABC):
             else:
                 self.trial_metadata = []
 
-        print("save passes", self.save_passes)
-        print("save movies", self.save_movies)
-        print("save labels", self.save_labels)
-
         initialization_commands = self.get_initialization_commands(width=width, height=height)
 
         # Initialize the scene.
@@ -174,11 +174,24 @@ class Dataset(Controller, ABC):
             self.args_dict = copy.deepcopy(args_dict)
         self.save_command_line_args(output_dir)
 
-        # Save the trial-level metadata
-        json_str =json.dumps(self.trial_metadata, indent=4)
-        meta_file = Path(output_dir).joinpath('metadata.json')
-        meta_file.write_text(json_str, encoding='utf-8')
-        print(json_str)
+        if self.save_labels:
+            # Save the trial-level metadata
+            json_str =json.dumps(self.trial_metadata, indent=4)
+            meta_file = Path(output_dir).joinpath('metadata.json')
+            meta_file.write_text(json_str, encoding='utf-8')
+            print("TRIAL LABELS")
+            print(json_str)
+
+            # Save the across-trial stats
+            hdf5_paths = glob.glob(str(output_dir) + '/*.hdf5')
+            stats = get_across_trial_stats_from(
+                hdf5_paths, funcs=self.get_controller_label_funcs())
+            stats["num_trials"] = int(len(hdf5_paths))
+            stats_str = json.dumps(stats, indent=4)
+            stats_file = Path(output_dir).joinpath('trial_stats.json')
+            stats_file.write_text(stats_str, encoding='utf-8')
+            print("ACROSS TRIAL STATS")
+            print(stats_str)
 
         # Finish
         self.communicate({"$type": "terminate"})
@@ -211,9 +224,9 @@ class Dataset(Controller, ABC):
         pbar.update(exists_up_to)
         for i in range(exists_up_to, num):
             filepath = output_dir.joinpath(TDWUtils.zero_padding(i, 4) + ".hdf5")
-            if not filepath.exists():
+            self.stimulus_name = '/'.join([filepath.parent.name, str(Path(filepath.name).with_suffix(''))])
 
-                print('trial %d' % i)
+            if not filepath.exists():
 
                 # Save out images
                 if any([pa in PASSES for pa in self.save_passes]):
@@ -238,7 +251,6 @@ class Dataset(Controller, ABC):
                             overwrite=True,
                             remove_pngs=True,
                             use_parent_dir=False)
-                        print("saving to MP4: %s" % ' '.join(cmd))
                     rm = subprocess.run('rm -rf ' + str(self.png_dir), shell=True)
 
             pbar.update(1)
@@ -291,7 +303,7 @@ class Dataset(Controller, ABC):
         # Continue the trial. Send commands, and parse output data.
         while not done:
             frame += 1
-            print('frame %d' % frame)
+            # print('frame %d' % frame)
             resp = self.communicate(self.get_per_frame_commands(resp, frame))
             r_ids = [OutputData.get_data_type_id(r) for r in resp[:-1]]
 
@@ -316,8 +328,7 @@ class Dataset(Controller, ABC):
 
         # Compute the trial-level metadata.
         if self.save_labels:
-            stim_name = '_'.join([filepath.parent.name, str(Path(filepath.name).with_suffix(''))])
-            meta = OrderedDict(stimulus=stim_name)
+            meta = OrderedDict()
             meta = get_labels_from(f, label_funcs=self.get_controller_label_funcs(), res=meta)
             self.trial_metadata.append(meta)
 
@@ -403,7 +414,7 @@ class Dataset(Controller, ABC):
 
         :param static_group: The static data group.
         """
-
+        static_group.create_dataset("stimulus_name", data=self.stimulus_name)
         static_group.create_dataset("object_ids", data=self.object_ids)
         if self.object_segmentation_colors is not None:
             static_group.create_dataset("object_segmentation_colors", data=self.object_segmentation_colors)
@@ -452,10 +463,10 @@ class Dataset(Controller, ABC):
         labels.create_dataset("trial_timeout", data=(sleeping and not complete))
         labels.create_dataset("trial_complete", data=(complete and not sleeping))
 
-        if done:
-            print("Trial Ended: timeout? %s, completed? %s" % \
-                  ("YES" if sleeping and not complete else "NO",\
-                   "YES" if complete and not sleeping else "NO"))
+        # if done:
+        #     print("Trial Ended: timeout? %s, completed? %s" % \
+        #           ("YES" if sleeping and not complete else "NO",\
+        #            "YES" if complete and not sleeping else "NO"))
 
         return labels, resp, frame_num, done
 

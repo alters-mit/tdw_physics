@@ -471,7 +471,6 @@ class Dominoes(RigidbodiesDataset):
                                                 y_min=self.camera_min_height,
                                                 y_max=self.camera_max_height,
                                                 center=TDWUtils.VECTOR3_ZERO)
-        print("avatar position", a_pos)
 
         commands.extend([
             {"$type": "teleport_avatar_to",
@@ -793,7 +792,6 @@ class Dominoes(RigidbodiesDataset):
         self.push_force = self.get_push_force(
             scale_range=self.probe_mass * np.array(self.force_scale_range),
             angle_range=self.force_angle_range)
-        print("pos, force, scales", self.probe_initial_position, self.force_offset, self.probe_scale)
         self.push_position = {
             k:v+self.force_offset[k]*self.probe_scale[k]
             for k,v in self.probe_initial_position.items()}
@@ -936,9 +934,6 @@ class MultiDominoes(Dominoes):
 if __name__ == "__main__":
 
     args = get_args("dominoes")
-    print("all object types", MODEL_NAMES)
-    print("target objects", args.target)
-    print("probe objects", args.probe)
 
     DomC = MultiDominoes(
         room=args.room,

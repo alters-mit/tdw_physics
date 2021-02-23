@@ -166,9 +166,6 @@ class RigidbodiesDataset(TransformsDataset, ABC):
         while any([np.abs(exclude[i] - rgb[i]) < exclude_range for i in range(3)]):
             rgb = [random.random(), random.random(), random.random()]
 
-        print("exclude range", exclude_range)
-        print("excluded color", exclude)
-        print("chosen color", rgb)
         return rgb
 
     def get_random_scale_transform(self, scale):
@@ -192,8 +189,6 @@ class RigidbodiesDataset(TransformsDataset, ABC):
             "color": np.array(color if color is not None else self.random_color(exclude_color, exclude_range)),
             "name": obj_record.name
         }
-
-        print("object id", obj_data["id"])
 
         if add_data:
             self.scales.append(obj_data["scale"])
@@ -387,6 +382,7 @@ class RigidbodiesDataset(TransformsDataset, ABC):
                         angular_velocities[i] = ri_dict[o_id]["ang"]
                     except KeyError:
                         print("Couldn't store velocity data for object %d" % o_id)
+                        print([OutputData.get_data_type_id(r) for r in resp])
             elif r_id == "coll":
                 co = Collision(r)
                 collision_states = np.append(collision_states, co.get_state())

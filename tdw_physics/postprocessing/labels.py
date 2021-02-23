@@ -1,4 +1,4 @@
-import os, io
+import os, io, glob
 from pathlib import Path
 import numpy as np
 import h5py, json
@@ -7,6 +7,9 @@ from PIL import Image
 
 
 from tdw_physics.util import arr_to_xyz
+
+def round_float(x, places=3):
+    return round(float(x), places)
 
 #################
 #### STATIC #####
@@ -20,6 +23,33 @@ def get_static_val(d, key='object_ids'):
 
 def get_object_ids(d):
     return list(d['static']['object_ids'])
+
+def avg_label(label_list):
+    if len(label_list) == 0:
+        return None
+    elif all([label is None for label in label_list]):
+        return None
+    elif any([label is None for label in label_list]):
+        label_list = [label if label is not None else np.NaN
+                      for label in label_list]
+
+    if isinstance(label_list[0], (bool, int, float)):
+        return round(float(np.nanmean(label_list)), 3)
+    elif isinstance(label_list[0], list):
+        res = np.nanmean(np.stack([np.array(label) for label in label_list], 0), axis=0)
+        return list(map(round_float, list(res)))
+    elif isinstance(label_list[0], dict):
+        res = {k: np.nanmean([label_list[i][k] for i in range(len(label_list))], axis=0)
+               for k in label_list[0].keys()}
+        return {k: round_float(v) for k,v in res.items()}
+    elif isinstance(label_list[0], str):
+        label_list = sorted(label_list)
+        if all([label == label_list[0] for label in label_list]):
+            return str(label_list[0])
+        else:
+            return str(label_list[0]) + '-' + str(label_list[-1])
+    else:
+        return None
 
 #################
 #### IMAGES #####
@@ -231,7 +261,17 @@ def final_target_mask_displacement(d):
 ########################
 #####INFRASTRUCTURE#####
 ########################
+"""all data processing statistics are described with two functions
+    (f, g)
+where:
+   -- g takes an hdf5 and produces a per-trial statistic
 
+and
+
+   -- f takes the outcomes of the per-trial statistics and returns a final summary scalar
+"""
+
+# set of funcs 'g' as defined above
 TRIAL_LABELS = [
     num_frames,
     is_trial_valid,
@@ -243,7 +283,6 @@ TRIAL_LABELS = [
     first_target_contact_zone_frame,
     first_target_hit_ground_frame,
     final_target_displacement,
-
     final_target_mask_displacement,
     target_visible_area,
     zone_visible_area,
@@ -270,14 +309,36 @@ def get_labels_from(d, label_funcs, res=None):
 def get_all_labels(d, res=None):
     return get_labels_from(d, label_funcs=get_all_label_funcs(), res=res)
 
+def get_across_trial_stats_from(paths, funcs, agg_func=avg_label):
+    fs = [h5py.File(path, mode='r') for path in paths]
+    stats = {
+        func.__name__ + '/' + agg_func.__name__: \
+        agg_func(list(map(func, fs))) for func in funcs}
+
+    for f in fs:
+        f.close()
+
+    return stats
 
 if __name__ == '__main__':
 
-    filename = '/Users/db/neuroailab/physion/stimuli/scratch/domi_22/0001.hdf5'
-    f = h5py.File(filename)
+    # filename = '/Users/db/neuroailab/physion/stimuli/scratch/domi_22/0001.hdf5'
+    paths = glob.glob('/Users/db/neuroailab/physion/stimuli/scratch/domi_25/*.hdf5')
+    res = get_across_trial_stats_from(paths, get_all_label_funcs(), avg_label)
+    res_str = json.dumps(res, indent=4)
+    print(res_str)
 
-    res = get_all_labels(f)
-    for k,v in res.items():
-        print (k, v)
+    # fs = [h5py.File(path, mode='r') for path in paths]
+    # stats = {func.__name__: avg_label(list(map(func, fs)))
+    #          for func in get_all_label_funcs()}
+    # print(stats)
+    # for f in fs:
+    #     f.close()
 
-    f.close()
+    # f = h5py.File(filename)
+
+    # res = get_all_labels(f)
+    # for k,v in res.items():
+    #     print (k, v)
+
+    # f.close()
