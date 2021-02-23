@@ -157,9 +157,9 @@ class Dataset(Controller, ABC):
         # whether to save a JSON of trial-level labels
         self.save_labels = save_labels
         if self.save_labels:
-            meta_file = Path(output_dir).joinpath('metadata.json')
-            if meta_file.exists():
-                self.trial_metadata = json.loads(meta_file.read_text())
+            self.meta_file = Path(output_dir).joinpath('metadata.json')
+            if self.meta_file.exists():
+                self.trial_metadata = json.loads(self.meta_file.read_text())
             else:
                 self.trial_metadata = []
 
@@ -175,13 +175,6 @@ class Dataset(Controller, ABC):
         self.save_command_line_args(output_dir)
 
         if self.save_labels:
-            # Save the trial-level metadata
-            json_str =json.dumps(self.trial_metadata, indent=4)
-            meta_file = Path(output_dir).joinpath('metadata.json')
-            meta_file.write_text(json_str, encoding='utf-8')
-            print("TRIAL LABELS")
-            print(json_str)
-
             # Save the across-trial stats
             hdf5_paths = glob.glob(str(output_dir) + '/*.hdf5')
             stats = get_across_trial_stats_from(
@@ -326,11 +319,17 @@ class Dataset(Controller, ABC):
                              "id": int(o_id)})
         self.communicate(commands)
 
-        # Compute the trial-level metadata.
+        # Compute the trial-level metadata. Save it per trial in case of failure mid-trial loop
         if self.save_labels:
             meta = OrderedDict()
             meta = get_labels_from(f, label_funcs=self.get_controller_label_funcs(), res=meta)
             self.trial_metadata.append(meta)
+
+            # Save the trial-level metadata
+            json_str =json.dumps(self.trial_metadata, indent=4)
+            self.meta_file.write_text(json_str, encoding='utf-8')
+            print("TRIAL %d LABELS" % self._trial_num)
+            print(json.dumps(self.trial_metadata[-1], indent=4))
 
         # Close the file.
         f.close()

@@ -382,6 +382,8 @@ class RigidbodiesDataset(TransformsDataset, ABC):
                         angular_velocities[i] = ri_dict[o_id]["ang"]
                     except KeyError:
                         print("Couldn't store velocity data for object %d" % o_id)
+                        print("frame num", frame_num)
+                        print("ri_dict", ri_dict)
                         print([OutputData.get_data_type_id(r) for r in resp])
             elif r_id == "coll":
                 co = Collision(r)
