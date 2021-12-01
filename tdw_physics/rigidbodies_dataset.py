@@ -1,61 +1,15 @@
 import random
-from typing import List, Tuple, Dict, Optional
+from pathlib import Path
+from typing import List, Tuple, Dict
 from abc import ABC
 import h5py
 import numpy as np
-import pkg_resources
-import io
-import json
+from tdw.controller import Controller
 from tdw.output_data import OutputData, Rigidbodies, Collision, EnvironmentCollision
-from tdw.librarian import ModelRecord
 from tdw.tdw_utils import TDWUtils
 from tdw_physics.transforms_dataset import TransformsDataset
-from tdw_physics.util import MODEL_LIBRARIES
-
-
-class PhysicsInfo:
-    """
-    Physics info for an object.
-    """
-
-    def __init__(self, record: ModelRecord, mass: float, dynamic_friction: float, static_friction: float,
-                 bounciness: float):
-        """
-        :param record: The model's metadata record.
-        :param mass: The mass of the object.
-        :param dynamic_friction: The dynamic friction.
-        :param static_friction: The static friction.
-        :param bounciness: The object's bounciness.
-        """
-
-        self.record = record
-        self.mass = mass
-        self.dynamic_friction = dynamic_friction
-        self.static_friction = static_friction
-        self.bounciness = bounciness
-
-
-def _get_default_physics_info() -> Dict[str, PhysicsInfo]:
-    """
-    :return: The default object physics info from `data/physics_info.json`.
-    """
-
-    info: Dict[str, PhysicsInfo] = {}
-
-    with io.open(pkg_resources.resource_filename(__name__, "data/physics_info.json"), "rt", encoding="utf-8") as f:
-        _data = json.load(f)
-        for key in _data:
-            obj = _data[key]
-            info[key] = PhysicsInfo(record=MODEL_LIBRARIES[obj["library"]].get_record(obj["name"]),
-                                    mass=obj["mass"],
-                                    bounciness=obj["bounciness"],
-                                    dynamic_friction=obj["dynamic_friction"],
-                                    static_friction=obj["static_friction"])
-    return info
-
-
-# The default physics info
-PHYSICS_INFO: Dict[str, PhysicsInfo] = _get_default_physics_info()
+from tdw_physics.dataset import Dataset
+from tdw_physics.physics_info import PhysicsInfo
 
 
 class RigidbodiesDataset(TransformsDataset, ABC):
@@ -63,91 +17,98 @@ class RigidbodiesDataset(TransformsDataset, ABC):
     A dataset for Rigidbody (PhysX) physics.
     """
 
-    def __init__(self, port: int = 1071):
-        super().__init__(port=port)
+    # Static physics data.
+    MASSES: np.array = np.empty(dtype=np.float32, shape=0)
+    STATIC_FRICTIONS: np.array = np.empty(dtype=np.float32, shape=0)
+    DYNAMIC_FRICTIONS: np.array = np.empty(dtype=np.float32, shape=0)
+    BOUNCINESSES: np.array = np.empty(dtype=np.float32, shape=0)
+    # The physics info of each object instance. Useful for referencing in a controller, but not written to disk.
+    PHYSICS_INFO: Dict[int, PhysicsInfo] = dict()
 
-        # Static physics data.
-        self.masses = np.empty(dtype=np.float32, shape=0)
-        self.static_frictions = np.empty(dtype=np.float32, shape=0)
-        self.dynamic_frictions = np.empty(dtype=np.float32, shape=0)
-        self.bouncinesses = np.empty(dtype=np.float32, shape=0)
-
-        # The physics info of each object instance. Useful for referencing in a controller, but not written to disk.
-        self.physics_info: Dict[int, PhysicsInfo] = {}
-
-    def add_physics_object(self, record: ModelRecord, position: Dict[str, float], rotation: Dict[str, float],
-                           mass: float, dynamic_friction: float, static_friction: float, bounciness: float,
-                           o_id: Optional[int] = None) -> List[dict]:
+    @staticmethod
+    def get_add_physics_object(model_name: str, object_id: int, position: Dict[str, float] = None,
+                               rotation: Dict[str, float] = None, library: str = "",
+                               scale_factor: Dict[str, float] = None, kinematic: bool = False, gravity: bool = True,
+                               default_physics_values: bool = True, mass: float = 1, dynamic_friction: float = 0.3,
+                               static_friction: float = 0.3, bounciness: float = 0.7) -> List[dict]:
         """
-        Get commands to add an object and assign physics properties. Write the object's static info to the .hdf5 file.
+        Add an object to the scene with physics values (mass, friction coefficients, etc.).
 
-        :param o_id: The unique ID of the object. If None, a random ID will be generated.
-        :param record: The model record.
-        :param position: The initial position of the object.
-        :param rotation: The initial rotation of the object, in Euler angles.
-        :param mass: The mass of the object.
-        :param dynamic_friction: The dynamic friction of the object's physic material.
-        :param static_friction: The static friction of the object's physic material.
-        :param bounciness: The bounciness of the object's physic material.
+        :param model_name: The name of the model.
+        :param position: The position of the model. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param rotation: The starting rotation of the model, in Euler angles. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param library: The path to the records file. If left empty, the default library will be selected. See `ModelLibrarian.get_library_filenames()` and `ModelLibrarian.get_default_library()`.
+        :param object_id: The ID of the new object.
+        :param scale_factor: The [scale factor](../api/command_api.md#scale_object).
+        :param kinematic: If True, the object will be [kinematic](../api/command_api.md#set_kinematic_state).
+        :param gravity: If True, the object won't respond to [gravity](../api/command_api.md#set_kinematic_state).
+        :param default_physics_values: If True, use default physics values. Not all objects have default physics values. To determine if object does: `has_default_physics_values = model_name in DEFAULT_OBJECT_AUDIO_STATIC_DATA`.
+        :param mass: The mass of the object. Ignored if `default_physics_values == True`.
+        :param dynamic_friction: The [dynamic friction](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`.
+        :param static_friction: The [static friction](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`.
+        :param bounciness: The [bounciness](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`.
 
-        :return: A list of commands: `[add_object, set_mass, set_physic_material]`
-        """
-
-        if o_id is None:
-            o_id: int = self.get_unique_id()
-
-        # Get the add_object command.
-        add_object = self.add_transforms_object(o_id=o_id, record=record, position=position, rotation=rotation)
-
-        self.masses = np.append(self.masses, mass)
-        self.dynamic_frictions = np.append(self.dynamic_frictions, dynamic_friction)
-        self.static_frictions = np.append(self.static_frictions, static_friction)
-        self.bouncinesses = np.append(self.bouncinesses, bounciness)
-
-        # Log the physics info per object for easy reference in a controller.
-        self.physics_info[o_id] = PhysicsInfo(record=record,
-                                              mass=mass,
-                                              dynamic_friction=dynamic_friction,
-                                              static_friction=static_friction,
-                                              bounciness=bounciness)
-
-        # Return commands to create the object.
-        return [add_object,
-                {"$type": "set_mass",
-                 "id": o_id,
-                 "mass": mass},
-                {"$type": "set_physic_material",
-                 "id": o_id,
-                 "dynamic_friction": dynamic_friction,
-                 "static_friction": static_friction,
-                 "bounciness": bounciness}]
-
-    def add_physics_object_default(self, name: str, position: Dict[str, float], rotation: Dict[str, float],
-                                   o_id: Optional[int] = None) -> List[dict]:
-        """
-        Add an object with default physics material values.
-
-        :param o_id: The unique ID of the object. If None, a random ID number will be generated.
-        :param name: The name of the model.
-        :param position: The initial position of the object.
-        :param rotation: The initial rotation of the object.
-
-        :return: A list of commands: `[add_object, set_mass, set_physic_material]`
+        :return: A list of commands to add the object and apply physics values.
         """
 
-        info = PHYSICS_INFO[name]
-        return self.add_physics_object(o_id=o_id, record=info.record, position=position, rotation=rotation,
-                                       mass=info.mass, dynamic_friction=info.dynamic_friction,
-                                       static_friction=info.static_friction, bounciness=info.bounciness)
+        commands = TransformsDataset.get_add_physics_object(model_name=model_name,
+                                                            object_id=object_id,
+                                                            position=position,
+                                                            rotation=rotation,
+                                                            library=library,
+                                                            scale_factor=scale_factor,
+                                                            kinematic=kinematic,
+                                                            gravity=gravity,
+                                                            default_physics_values=default_physics_values,
+                                                            mass=mass,
+                                                            dynamic_friction=dynamic_friction,
+                                                            static_friction=static_friction,
+                                                            bounciness=bounciness)
+        # Log the object ID.
+        Dataset.OBJECT_IDS = np.append(Dataset.OBJECT_IDS, object_id)
+        # Get the static data from the commands (these values might be automatically set).
+        mass = 0
+        dynamic_friction = 0
+        static_friction = 0
+        bounciness = 0
+        for command in commands:
+            if command["$type"] == "set_mass":
+                mass = command["mass"]
+            elif command["$type"] == "set_physic_material":
+                dynamic_friction = command["dynamic_friction"]
+                static_friction = command["static_friction"]
+                bounciness = command["bounciness"]
+        # Cache the static data.
+        RigidbodiesDataset.MASSES = np.append(RigidbodiesDataset.MASSES, mass)
+        RigidbodiesDataset.DYNAMIC_FRICTIONS = np.append(RigidbodiesDataset.DYNAMIC_FRICTIONS, dynamic_friction)
+        RigidbodiesDataset.STATIC_FRICTIONS = np.append(RigidbodiesDataset.STATIC_FRICTIONS, static_friction)
+        RigidbodiesDataset.BOUNCINESSES = np.append(RigidbodiesDataset.BOUNCINESSES, bounciness)
+        # Cache the physics info.
+        record = Controller.MODEL_LIBRARIANS[library].get_record(model_name)
+        RigidbodiesDataset.PHYSICS_INFO[object_id] = PhysicsInfo(record=record,
+                                                                 mass=mass,
+                                                                 dynamic_friction=dynamic_friction,
+                                                                 static_friction=static_friction,
+                                                                 bounciness=bounciness)
+        return commands
 
-    def get_objects_by_mass(self, mass: float) -> List[int]:
+    def trial(self, filepath: Path, temp_path: Path, trial_num: int) -> None:
+        # Clear data.
+        RigidbodiesDataset.MASSES = np.empty(dtype=int, shape=0)
+        RigidbodiesDataset.DYNAMIC_FRICTIONS = np.empty(dtype=int, shape=0)
+        RigidbodiesDataset.STATIC_FRICTIONS = np.empty(dtype=int, shape=0)
+        RigidbodiesDataset.BOUNCINESSES = np.empty(dtype=int, shape=0)
+        super().trial(filepath=filepath, temp_path=temp_path, trial_num=trial_num)
+
+    @staticmethod
+    def get_objects_by_mass(mass: float) -> List[int]:
         """
         :param mass: The mass threshold.
 
         :return: A list of object IDs for objects with mass <= the mass threshold.
         """
 
-        return [o for o in self.physics_info.keys() if self.physics_info[o].mass < mass]
+        return [o for o in RigidbodiesDataset.PHYSICS_INFO.keys() if RigidbodiesDataset.PHYSICS_INFO[o].mass < mass]
 
     def get_falling_commands(self, mass: float = 3) -> List[List[dict]]:
         """
@@ -170,8 +131,8 @@ class RigidbodiesDataset(TransformsDataset, ABC):
             o_id = small_ids.pop(0)
             force_dir = np.array([random.uniform(-0.125, 0.125), random.uniform(0.7, 1), random.uniform(-0.125, 0.125)])
             force_dir = force_dir / np.linalg.norm(force_dir)
-            min_force = self.physics_info[o_id].mass * 2
-            max_force = self.physics_info[o_id].mass * 4
+            min_force = RigidbodiesDataset.PHYSICS_INFO[o_id].mass * 2
+            max_force = RigidbodiesDataset.PHYSICS_INFO[o_id].mass * 4
             force = TDWUtils.array_to_vector3(force_dir * random.uniform(min_force, max_force))
             per_frame_commands.append([{"$type": "apply_force_to_object",
                                         "force": force,
@@ -195,15 +156,15 @@ class RigidbodiesDataset(TransformsDataset, ABC):
     def _write_static_data(self, static_group: h5py.Group) -> None:
         super()._write_static_data(static_group)
 
-        static_group.create_dataset("mass", data=self.masses)
-        static_group.create_dataset("static_friction", data=self.static_frictions)
-        static_group.create_dataset("dynamic_friction", data=self.dynamic_frictions)
-        static_group.create_dataset("bounciness", data=self.bouncinesses)
+        static_group.create_dataset("mass", data=RigidbodiesDataset.MASSES)
+        static_group.create_dataset("static_friction", data=RigidbodiesDataset.STATIC_FRICTIONS)
+        static_group.create_dataset("dynamic_friction", data=RigidbodiesDataset.DYNAMIC_FRICTIONS)
+        static_group.create_dataset("bounciness", data=RigidbodiesDataset.BOUNCINESSES)
 
     def _write_frame(self, frames_grp: h5py.Group, resp: List[bytes], frame_num: int) -> \
             Tuple[h5py.Group, h5py.Group, dict, bool]:
         frame, objs, tr, done = super()._write_frame(frames_grp=frames_grp, resp=resp, frame_num=frame_num)
-        num_objects = len(self.object_ids)
+        num_objects = len(Dataset.OBJECT_IDS)
         # Physics data.
         velocities = np.empty(dtype=np.float32, shape=(num_objects, 3))
         angular_velocities = np.empty(dtype=np.float32, shape=(num_objects, 3))
@@ -229,7 +190,7 @@ class RigidbodiesDataset(TransformsDataset, ABC):
                     if not ri.get_sleeping(i) and tr[ri.get_id(i)]["pos"][1] >= -1:
                         sleeping = False
                 # Add the Rigibodies data.
-                for o_id, i in zip(self.object_ids, range(num_objects)):
+                for o_id, i in zip(Dataset.OBJECT_IDS, range(num_objects)):
                     velocities[i] = ri_dict[o_id]["vel"]
                     angular_velocities[i] = ri_dict[o_id]["ang"]
             elif r_id == "coll":
