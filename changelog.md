@@ -1,8 +1,10 @@
 # Changelog
 
-## 0.3.2
+## 0.4.0
 
+- Refactored for TDW v1.9.0 (`tdw_physics` now requires TDW v1.9.0 or newer)
 - Removed `physics_info_calculator.py`
+- Moved `PhysicsInfo` class and `PHYSICS_INFO` dictionary to `tdw_physics.physics_info`
 
 ## 0.3.1
 
