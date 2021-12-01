@@ -4,7 +4,7 @@ import random
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw_physics.rigidbodies_dataset import RigidbodiesDataset, PHYSICS_INFO
-from tdw_physics.util import get_move_along_direction, get_object_look_at, MODEL_LIBRARIES
+from tdw_physics.util import get_move_along_direction, get_object_look_at
 
 
 class _TableSetting:
@@ -134,6 +134,7 @@ class _TableProcGen(RigidbodiesDataset, ABC):
         super().__init__(port=port)
 
         self._table_id = 0
+        self._table_name = ""
         self._a_pos: Dict[str, float] = {}
 
     def get_scene_initialization_commands(self) -> List[dict]:
@@ -154,19 +155,17 @@ class _TableProcGen(RigidbodiesDataset, ABC):
 
     def get_trial_initialization_commands(self) -> List[dict]:
         self._table_id = Controller.get_unique_id()
-
         self._a_pos = self.get_random_avatar_position(radius_min=1.7, radius_max=2.3, y_min=1.8, y_max=2.5,
                                                       center=TDWUtils.VECTOR3_ZERO)
-
         # Teleport the avatar.
         commands = []
-
         # Add the table.
-        table_name = random.choice(self._TABLES)
-        commands.extend(self.add_physics_object_default(name=table_name,
-                                                        position=TDWUtils.VECTOR3_ZERO,
-                                                        rotation=TDWUtils.VECTOR3_ZERO,
-                                                        o_id=self._table_id))
+        self._table_name = random.choice(self._TABLES)
+        commands.extend(self.get_add_physics_object(model_name=self._table_name,
+                                                    library="models_full.json",
+                                                    object_id=self._table_id,
+                                                    position=TDWUtils.VECTOR3_ZERO,
+                                                    rotation=TDWUtils.VECTOR3_ZERO))
         commands.extend([{"$type": "teleport_avatar_to",
                           "position": self._a_pos},
                          {"$type": "look_at",
@@ -175,9 +174,8 @@ class _TableProcGen(RigidbodiesDataset, ABC):
                          {"$type": "focus_on_object",
                           "object_id": self._table_id,
                           "use_centroid": True}])
-        table_record = PHYSICS_INFO[table_name].record
+        table_record = PHYSICS_INFO[self._table_name].record
         top = table_record.bounds["top"]
-
         # Select random model names.
         chair_name = random.choice(self._CHAIRS)
         plate_name = random.choice(self._PLATES)
@@ -190,15 +188,15 @@ class _TableProcGen(RigidbodiesDataset, ABC):
                              table_record.bounds["right"],
                              table_record.bounds["front"],
                              table_record.bounds["back"]]
-
         # Add 4 chairs around the table and their table settings.
         for setting_pos, s_p in zip(setting_positions, self._SETTINGS):
             chair_id = Controller.get_unique_id()
             chair_pos = {"x": setting_pos["x"], "y": 0, "z": setting_pos["z"]}
-            commands.extend(self.add_physics_object_default(position=chair_pos,
-                                                            rotation=TDWUtils.VECTOR3_ZERO,
-                                                            o_id=chair_id,
-                                                            name=chair_name))
+            commands.extend(self.get_add_physics_object(model_name=chair_name,
+                                                        library="models_full.json",
+                                                        object_id=chair_id,
+                                                        position=chair_pos,
+                                                        rotation=TDWUtils.VECTOR3_ZERO))
             # Move the chair back a bit.
             chair_pos = get_move_along_direction(pos=chair_pos,
                                                  target=TDWUtils.VECTOR3_ZERO,
@@ -218,23 +216,24 @@ class _TableProcGen(RigidbodiesDataset, ABC):
                                                  d=random.uniform(0.1, 0.125),
                                                  noise=0.01)
             # Add a plate.
-            commands.extend(self.add_physics_object_default(position=plate_pos,
-                                                            rotation=TDWUtils.VECTOR3_ZERO,
-                                                            name=plate_name))
+            commands.extend(self.get_add_physics_object(model_name=plate_name,
+                                                        library="models_full.json",
+                                                        object_id=self.get_unique_id(),
+                                                        position=plate_pos,
+                                                        rotation=TDWUtils.VECTOR3_ZERO))
             # Maybe add food on the plate.
             if random.random() > 0.33:
                 # Use the plate bounds to add the food on top of the plate.
-                plate_bounds = MODEL_LIBRARIES["models_full.json"].get_record(plate_name).bounds
+                plate_bounds = Controller.MODEL_LIBRARIANS["models_full.json"].get_record(plate_name).bounds
                 food_id = Controller.get_unique_id()
                 food_pos = {"x": plate_pos["x"] + random.uniform(-0.02, 0.02),
                             "y": top["y"] + plate_bounds["top"]["y"] + 0.001,
                             "z": plate_pos["z"] + random.uniform(-0.02, 0.02)}
-                commands.extend(self.add_physics_object_default(position=food_pos,
-                                                                rotation={"x": 0,
-                                                                          "y": random.uniform(-89, 89),
-                                                                          "z": 0},
-                                                                name=random.choice(self._FOOD),
-                                                                o_id=food_id))
+                commands.extend(self.get_add_physics_object(model_name=random.choice(self._FOOD),
+                                                            library="models_full.json",
+                                                            object_id=food_id,
+                                                            position=food_pos,
+                                                            rotation={"x": 0, "y": random.uniform(-89, 89), "z": 0}))
                 # Make the food small.
                 c_s = random.uniform(0.2, 0.45)
                 commands.append({"$type": "scale_object",
@@ -244,26 +243,25 @@ class _TableProcGen(RigidbodiesDataset, ABC):
                                        [s_p.fork_offset, s_p.knife_offset, s_p.spoon_offset, s_p.cup_offset]):
                 # Maybe add cutlery at this position.
                 if random.random() > 0.25:
-                    c_id = Controller.get_unique_id()
                     # Add the object. Slide it offset from the plate.
-                    commands.extend(self.add_physics_object_default(position={"x": plate_pos["x"] + offset["x"],
-                                                                              "y": top["y"],
-                                                                              "z": plate_pos["z"] + offset["z"]},
-                                                                    rotation={"x": 0,
-                                                                              "y": s_p.cutlery_rotation,
-                                                                              "z": 0},
-                                                                    name=cutlery,
-                                                                    o_id=c_id))
+                    commands.extend(self.get_add_physics_object(model_name=cutlery,
+                                                                object_id=Controller.get_unique_id(),
+                                                                library="models_full.json",
+                                                                position={"x": plate_pos["x"] + offset["x"],
+                                                                          "y": top["y"],
+                                                                          "z": plate_pos["z"] + offset["z"]},
+                                                                rotation={"x": 0,
+                                                                          "y": s_p.cutlery_rotation,
+                                                                          "z": 0}))
         # Add a centerpiece.
         if random.random() > 0.25:
-            centerpiece_id = Controller.get_unique_id()
-            commands.extend(self.add_physics_object_default(position={"x": 0, "y": top["y"], "z": 0},
-                                                            rotation={"x": 0,
-                                                                      "y": random.uniform(-89, 89),
-                                                                      "z": 0},
-                                                            name=random.choice(self._CENTERPIECES),
-                                                            o_id=centerpiece_id))
-
+            commands.extend(self.get_add_physics_object(model_name=random.choice(self._CENTERPIECES),
+                                                        object_id=Controller.get_unique_id(),
+                                                        library="models_full.json",
+                                                        position={"x": 0, "y": top["y"], "z": 0},
+                                                        rotation={"x": 0,
+                                                                  "y": random.uniform(-89, 89),
+                                                                  "z": 0}))
         return commands
 
 
@@ -281,8 +279,7 @@ class TableProcGenTilt(_TableProcGen):
 
     def get_trial_initialization_commands(self) -> List[dict]:
         commands = super().get_trial_initialization_commands()
-        table_record = self.physics_info[self._table_id].record
-
+        table_record = PHYSICS_INFO[self._table_name].record
         tip_positions = [table_record.bounds["front"],
                          table_record.bounds["back"],
                          table_record.bounds["left"],
@@ -292,7 +289,6 @@ class TableProcGenTilt(_TableProcGen):
         self._tip_table_frames = random.randint(60, 80)
         # Calculate the table force from a pre-determined value using quatre_dining_table's mass.
         self._tip_table_force = random.uniform(15, 16.5) * PHYSICS_INFO[table_record.name].mass / 300
-
         return commands
 
     def is_done(self, resp: List[bytes], frame: int) -> bool:

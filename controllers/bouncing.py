@@ -2,10 +2,11 @@ import numpy as np
 from typing import List
 import random
 from pathlib import Path
+from tdw.controller import Controller
 from tdw.librarian import ModelLibrarian
 from tdw.tdw_utils import TDWUtils
 from tdw_physics.rigidbodies_dataset import RigidbodiesDataset
-from tdw_physics.util import MODEL_LIBRARIES, get_args
+from tdw_physics.util import get_args
 
 
 class Bouncing(RigidbodiesDataset):
@@ -15,9 +16,9 @@ class Bouncing(RigidbodiesDataset):
                      {"x": 4.95, "y": 2.0, "z": -1.65},
                      {"x": 1.95, "y": 2.0, "z": -3.25},
                      {"x": -4.2, "y": 1.0, "z": -3}]
-
-    RAMPS = [MODEL_LIBRARIES["models_full.json"].get_record("ramp_with_platform_30"),
-             MODEL_LIBRARIES["models_full.json"].get_record("ramp_with_platform_60")]
+    Controller.MODEL_LIBRARIANS["models_full.json"] = ModelLibrarian("models_full.json")
+    RAMPS = [Controller.MODEL_LIBRARIANS["models_full.json"].get_record("ramp_with_platform_30"),
+             Controller.MODEL_LIBRARIANS["models_full.json"].get_record("ramp_with_platform_60")]
     RAMP_MASS = 500
 
     def __init__(self, port: int = 1071):
@@ -52,32 +53,24 @@ class Bouncing(RigidbodiesDataset):
 
     def get_trial_initialization_commands(self) -> List[dict]:
         commands = []
-        lib = MODEL_LIBRARIES["models_full.json"]
-
         random.shuffle(self.ramp_positions)
         random.shuffle(self.ramp_rotations)
-
         # Add ramps.
         for i in range(4):
             ramp_id = self.get_unique_id()
-            commands.extend(self.add_physics_object(record=lib.get_record("ramp_with_platform_30"),
-                                                    position=self.ramp_positions[i],
-                                                    rotation=self.ramp_rotations[i],
-                                                    mass=self.RAMP_MASS,
-                                                    dynamic_friction=random.uniform(0.1, 0.9),
-                                                    static_friction=random.uniform(0.1, 0.9),
-                                                    bounciness=random.uniform(0.1, 0.9),
-                                                    o_id=ramp_id))
-            commands.extend([{"$type": "scale_object",
-                              "id": ramp_id,
-                              "scale_factor": {"x": 0.75, "y": 0.75, "z": 0.75}},
-                             {"$type": "set_object_collision_detection_mode",
-                              "mode": "continuous_speculative",
-                              "id": ramp_id},
-                             {"$type": "set_kinematic_state",
-                              "id": ramp_id,
-                              "is_kinematic": True,
-                              "use_gravity": True}])
+            commands.extend(self.get_add_physics_object(model_name="ramp_with_platform_30",
+                                                        library="models_full.json",
+                                                        object_id=ramp_id,
+                                                        position=self.ramp_positions[i],
+                                                        rotation=self.ramp_rotations[i],
+                                                        default_physics_values=False,
+                                                        mass=self.RAMP_MASS,
+                                                        dynamic_friction=random.uniform(0.1, 0.9),
+                                                        static_friction=random.uniform(0.1, 0.9),
+                                                        bounciness=random.uniform(0.1, 0.9),
+                                                        kinematic=True,
+                                                        gravity=True,
+                                                        scale_factor={"x": 0.75, "y": 0.75, "z": 0.75}))
         # Teleport the avatar.
         cam_pos = random.choice(self.CAM_POSITIONS)
         cam_aim = {"x": 0, "y": 0.45, "z": 0}
@@ -100,24 +93,25 @@ class Bouncing(RigidbodiesDataset):
             pos = TDWUtils.get_random_point_in_circle(center=np.array([0, 0, 0]), radius=1.5)
             pos[1] = random.uniform(0.7, 2)
             record = self.toy_records[i]
-            commands.extend(self.add_physics_object(record=record,
-                                                    position=TDWUtils.array_to_vector3(pos),
-                                                    rotation=TDWUtils.VECTOR3_ZERO,
-                                                    mass=random.uniform(0.5, 4),
-                                                    dynamic_friction=random.uniform(0.1, 0.7),
-                                                    static_friction=random.uniform(0.1, 0.7),
-                                                    bounciness=random.uniform(0.7, 1),
-                                                    o_id=toy_id))
+            # Add a toy-sized object.
             s = TDWUtils.get_unit_scale(record) * random.uniform(0.85, 1.12)
-            look_at = TDWUtils.array_to_vector3(TDWUtils.get_random_point_in_circle(center=np.array([0, 0, 0]),
-                                                                                    radius=5))
-            # Scale to "toy size" and look at a random point on the ground.
-            commands.extend([{"$type": "scale_object",
-                              "scale_factor": {"x": s, "y": s, "z": s},
-                              "id": toy_id},
-                             {"$type": "object_look_at_position",
-                              "position": look_at,
-                              "id": toy_id}])
+            commands.extend(self.get_add_physics_object(model_name=record.name,
+                                                        library="models_full.json",
+                                                        object_id=toy_id,
+                                                        position=TDWUtils.array_to_vector3(pos),
+                                                        rotation=TDWUtils.VECTOR3_ZERO,
+                                                        default_physics_values=False,
+                                                        mass=random.uniform(0.5, 4),
+                                                        dynamic_friction=random.uniform(0.1, 0.7),
+                                                        static_friction=random.uniform(0.1, 0.7),
+                                                        bounciness=random.uniform(0.7, 1),
+                                                        scale_factor={"x": s, "y": s, "z": s}))
+            # Point the object at a random floor position.
+            commands.append({"$type": "object_look_at_position",
+                             "position": TDWUtils.array_to_vector3(TDWUtils.get_random_point_in_circle(
+                                 center=np.array([0, 0, 0]),
+                                 radius=5)),
+                             "id": toy_id})
             # Rotate the object randomly.
             for axis in ["yaw", "roll"]:
                 commands.append({"$type": "rotate_object_by",

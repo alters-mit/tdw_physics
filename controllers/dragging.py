@@ -1,6 +1,7 @@
-import numpy as np
+from pathlib import Path
 import random
 from typing import List
+import numpy as np
 from tdw.output_data import FlexParticles
 from tdw.tdw_utils import TDWUtils
 from tdw_physics.cloth_dataset import ClothDataset
@@ -60,10 +61,11 @@ class Dragging(ClothDataset):
         self._force_per_frame = random.uniform(-30, -55)
 
         commands = []
-        commands.extend(self.add_cloth_object(record=self.cloth_record,
+        commands.extend(self.add_cloth_object(model_name=self.cloth_record.name,
+                                              object_id=self.cloth_id,
+                                              library="models_special.json",
                                               position={"x": 0, "y": 1, "z": 0},
                                               rotation=TDWUtils.VECTOR3_ZERO,
-                                              o_id=self.cloth_id,
                                               mass_scale=10,
                                               mesh_tesselation=1,
                                               tether_stiffness=random.uniform(0.5, 1),
@@ -79,12 +81,14 @@ class Dragging(ClothDataset):
                          "frames": 100}])
         # Add the other object.
         o_id = self.get_unique_id()
-        commands.extend(self.add_solid_object(record=random.choice(self.object_records),
+        record = random.choice(self.object_records)
+        commands.extend(self.add_solid_object(model_name=record.name,
+                                              library=str(Path("flex.json").resolve()),
+                                              object_id=o_id,
                                               position={"x": 0, "y": 0.2, "z": 0},
                                               rotation={"x": 0.0, "y": random.uniform(0, 360.0), "z": 0.0},
                                               mass_scale=random.uniform(0.25, 1),
-                                              particle_spacing=0.035,
-                                              o_id=o_id))
+                                              particle_spacing=0.035))
         # Let the object settle.
         # Position and aim the camera.
         commands.extend([{"$type": "set_kinematic_state",

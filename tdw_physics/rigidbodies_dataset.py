@@ -9,7 +9,7 @@ from tdw.output_data import OutputData, Rigidbodies, Collision, EnvironmentColli
 from tdw.tdw_utils import TDWUtils
 from tdw_physics.transforms_dataset import TransformsDataset
 from tdw_physics.dataset import Dataset
-from tdw_physics.physics_info import PhysicsInfo
+from tdw_physics.physics_info import PhysicsInfo, PHYSICS_INFO
 
 
 class RigidbodiesDataset(TransformsDataset, ABC):
@@ -51,6 +51,13 @@ class RigidbodiesDataset(TransformsDataset, ABC):
         :return: A list of commands to add the object and apply physics values.
         """
 
+        # Use override physics values.
+        if not default_physics_values and model_name in PHYSICS_INFO:
+            default_physics_values = False
+            mass = PHYSICS_INFO[model_name].mass
+            dynamic_friction = PHYSICS_INFO[model_name].dynamic_friction
+            static_friction = PHYSICS_INFO[model_name].static_friction
+            bounciness = PHYSICS_INFO[model_name].bounciness
         commands = TransformsDataset.get_add_physics_object(model_name=model_name,
                                                             object_id=object_id,
                                                             position=position,

@@ -13,8 +13,9 @@ class ClothDataset(FlexDataset, ABC):
 
     def __init__(self, port: int = 1071):
         Controller.MODEL_LIBRARIANS["models_special.json"] = ModelLibrarian("models_special.json")
+        Controller.MODEL_LIBRARIANS[str(Path("flex.json").resolve())] = ModelLibrarian(str(Path("flex.json").resolve()))
         # Load the objects.
-        self.object_records = ModelLibrarian(str(Path("flex.json").resolve())).records
+        self.object_records = Controller.MODEL_LIBRARIANS[str(Path("flex.json").resolve())].records
         # Get the cloth record.
         self.cloth_record = Controller.MODEL_LIBRARIANS["models_special.json"].get_record("cloth_square")
         self.cloth_id = 0

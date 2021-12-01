@@ -3,6 +3,7 @@ import random
 from pathlib import Path
 from json import loads
 from typing import List, Dict, Tuple
+from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.librarian import ModelLibrarian
 from tdw_physics.flex_dataset import FlexDataset
@@ -21,7 +22,8 @@ class Squishing(FlexDataset):
 
     def __init__(self, port: int = 1071):
         super().__init__(port=port)
-        self.model_librarian = ModelLibrarian("models_flex.json")
+
+        Controller.MODEL_LIBRARIANS["models_flex.json"] = ModelLibrarian("models_flex.json")
 
         # A list of functions that will return commands to initialize a trial.
         self.scenarios = [self.drop_onto_floor, self.drop_onto_object, self.throw_into_wall, self.push_into_other]
@@ -32,7 +34,7 @@ class Squishing(FlexDataset):
         # Cached pressure parameters per model.
         self.pressures = loads(Path("squish_pressures.json").read_text())
         # Only use records in the pressures dictionary.
-        self.records = [r for r in self.model_librarian.records if r.name in self.pressures]
+        self.records = [r for r in Controller.MODEL_LIBRARIANS["models_flex.json"].records if r.name in self.pressures]
 
     def get_scene_initialization_commands(self) -> List[dict]:
         return [self.get_add_scene(scene_name="box_room_2018"),
@@ -103,22 +105,20 @@ class Squishing(FlexDataset):
         solid_id = self.get_unique_id()
         # Add the soft-body (squishable) object.
         solid_record = random.choice(self.records)
-        commands = self.add_solid_object(record=solid_record,
-                                         o_id=solid_id,
+        commands = self.add_solid_object(model_name=solid_record.name,
+                                         object_id=solid_id,
+                                         library="models_flex.json",
                                          position=o_pos,
                                          rotation={"x": random.uniform(0, 360),
                                                    "y": random.uniform(0, 360),
                                                    "z": random.uniform(0, 360)},
                                          mass_scale=random.uniform(4, 8))
-
-        # Set the color.
-        # Add a small downward force.
+        # Set the color. Add a small downward force.
         commands.append({"$type": "set_color",
                          "color": {"r": random.random(), "g": random.random(), "b": random.random(), "a": 1.0},
                          "id": solid_id})
         commands.append(self._get_drop_force(solid_id))
         commands.extend(self._get_drop_camera(o_pos))
-
         # Add a second object on the floor.
         second_object_commands, s_id = self._get_squishable(position={"x": o_pos["x"] + random.uniform(-0.125, 0.125),
                                                                       "y": 0.1,
@@ -286,11 +286,11 @@ class Squishing(FlexDataset):
         # Add the soft-body (squishable) object.
         record = random.choice(self.records)
         pressures = self.pressures[record.name]
-        commands.extend(self.add_cloth_object(record=record,
-                                              o_id=soft_id,
+        commands.extend(self.add_cloth_object(model_name=record.name,
+                                              library="models_flex.json",
+                                              object_id=soft_id,
                                               position=position,
                                               rotation=rotation,
-                                              scale={"x": 1, "y": 1, "z": 1},
                                               stretch_stiffness=1,
                                               bend_stiffness=1,
                                               pressure=random.uniform(pressures[0], pressures[1])))
