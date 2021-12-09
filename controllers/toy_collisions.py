@@ -5,6 +5,7 @@ from typing import List, Dict
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.librarian import ModelLibrarian
+from tdw_physics.dataset import Dataset
 from tdw_physics.rigidbodies_dataset import RigidbodiesDataset
 from tdw_physics.object_position import ObjectPosition
 from tdw_physics.util import get_args
@@ -62,27 +63,24 @@ class ToysDataset(RigidbodiesDataset):
             o_pos = self._get_object_position(object_positions=object_positions)
             # Add the object and the radius, which is defined by its scale.
             object_positions.append(ObjectPosition(position=o_pos, radius=scale))
-
-            commands.extend(self.add_physics_object(o_id=o_id,
-                                                    record=self.records[i],
-                                                    position=self._get_object_position(
-                                                        object_positions=object_positions),
-                                                    rotation={"x": 0, "y": random.uniform(-90, 90), "z": 0},
-                                                    mass=random.uniform(1, 5),
-                                                    dynamic_friction=random.uniform(0, 0.9),
-                                                    static_friction=random.uniform(0, 0.9),
-                                                    bounciness=random.uniform(0, 1)))
-            # Scale the object.
-            commands.append({"$type": "scale_object",
-                             "id": o_id,
-                             "scale_factor": {"x": scale, "y": scale, "z": scale}})
-
+            commands.extend(self.get_add_physics_object(model_name=self.records[i].name,
+                                                        library="models_full.json",
+                                                        object_id=o_id,
+                                                        position=self._get_object_position(
+                                                            object_positions=object_positions),
+                                                        rotation={"x": 0, "y": random.uniform(-90, 90), "z": 0},
+                                                        default_physics_values=False,
+                                                        mass=random.uniform(1, 5),
+                                                        dynamic_friction=random.uniform(0, 0.9),
+                                                        static_friction=random.uniform(0, 0.9),
+                                                        bounciness=random.uniform(0, 1),
+                                                        scale_factor={"x": scale, "y": scale, "z": scale}))
         # Point one object at the center, and then offset the rotation.
         # Apply a force allow the forward directional vector.
         # Teleport the avatar and look at the object that will be hit. Then slightly rotate the camera randomly.
         # Listen for output data.
-        force_id = int(self.object_ids[0])
-        self._target_id = int(self.object_ids[1])
+        force_id = int(Dataset.OBJECT_IDS[0])
+        self._target_id = int(Dataset.OBJECT_IDS[1])
         commands.extend([{"$type": "object_look_at",
                           "other_object_id": self._target_id,
                           "id": force_id},
@@ -108,7 +106,6 @@ class ToysDataset(RigidbodiesDataset):
                           "angle": random.uniform(-5, 5)},
                          {"$type": "focus_on_object",
                           "object_id": self._target_id}])
-
         return commands
 
     def get_per_frame_commands(self, resp: List[bytes], frame: int) -> List[dict]:

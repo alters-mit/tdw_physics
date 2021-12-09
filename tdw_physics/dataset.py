@@ -21,11 +21,11 @@ class Dataset(Controller, ABC):
         3. Clean up the scene and start a new trial.
     """
 
+    # IDs of the objects in the current trial.
+    OBJECT_IDS: np.array = np.empty(dtype=int, shape=0)
+
     def __init__(self, port: int = 1071):
         super().__init__(port=port, launch_build=False)
-
-        # IDs of the objects in the current trial.
-        self.object_ids = np.empty(dtype=int, shape=0)
 
     def run(self, num: int, output_dir: str, temp_path: str, width: int, height: int) -> None:
         """
@@ -57,8 +57,6 @@ class Dataset(Controller, ABC):
                      "render_quality": 5},
                     {"$type": "set_physics_solver_iterations",
                      "iterations": 32},
-                    {"$type": "set_vignette",
-                     "enabled": False},
                     {"$type": "set_shadow_strength",
                      "strength": 1.0},
                     {"$type": "set_sleep_threshold",
@@ -105,7 +103,7 @@ class Dataset(Controller, ABC):
         """
 
         # Clear the object IDs.
-        self.object_ids = np.empty(dtype=int, shape=0)
+        Dataset.OBJECT_IDS = np.empty(dtype=int, shape=0)
 
         # Create the .hdf5 file.
         f = h5py.File(str(temp_path.resolve()), "a")
@@ -141,7 +139,7 @@ class Dataset(Controller, ABC):
 
         # Cleanup.
         commands = []
-        for o_id in self.object_ids:
+        for o_id in Dataset.OBJECT_IDS:
             commands.append({"$type": self._get_destroy_object_command_name(o_id),
                              "id": int(o_id)})
         self.communicate(commands)
@@ -219,7 +217,7 @@ class Dataset(Controller, ABC):
         :param static_group: The static data group.
         """
 
-        static_group.create_dataset("object_ids", data=self.object_ids)
+        static_group.create_dataset("object_ids", data=Dataset.OBJECT_IDS)
 
     @abstractmethod
     def _write_frame(self, frames_grp: h5py.Group, resp: List[bytes], frame_num: int) -> \
@@ -263,11 +261,3 @@ class Dataset(Controller, ABC):
         """
 
         raise Exception()
-
-    def add_object(self, model_name: str, position={"x": 0, "y": 0, "z": 0}, rotation={"x": 0, "y": 0, "z": 0},
-                   library: str = "") -> int:
-        raise Exception("Don't use this function; see README for functions that supersede it.")
-
-    def get_add_object(self, model_name: str, object_id: int, position={"x": 0, "y": 0, "z": 0},
-                       rotation={"x": 0, "y": 0, "z": 0}, library: str = "") -> dict:
-        raise Exception("Don't use this function; see README for functions that supersede it.")

@@ -1,3 +1,4 @@
+from pathlib import Path
 from random import choice, uniform, random
 from typing import List
 from tdw_physics.cloth_dataset import ClothDataset
@@ -50,7 +51,10 @@ class Draping(ClothDataset):
         if another_object:
             # Add object and convert to Flex SolidActor.
             # Give the object a high mass, for stability.
-            trial_commands.extend(self.add_solid_object(record=choice(self.object_records),
+            record = choice(self.object_records)
+            trial_commands.extend(self.add_solid_object(model_name=record.name,
+                                                        object_id=self.get_unique_id(),
+                                                        library=str(Path("flex.json").resolve()),
                                                         position={"x": -1.2, "y": 0, "z": -1.6},
                                                         rotation={"x": 0.0, "y": uniform(0, 360.0), "z": 0.0},
                                                         mass_scale=500,
@@ -63,10 +67,11 @@ class Draping(ClothDataset):
             rotation = {"x": 0, "y": 0, "z": 0}
         else:
             rotation = {"x": uniform(0, 90.0), "y": uniform(-90.0, 90.0), "z": uniform(-90.0, 90.0)}
-        trial_commands.extend(self.add_cloth_object(record=self.cloth_record,
+        trial_commands.extend(self.add_cloth_object(model_name=self.cloth_record.name,
+                                                    library="models_special.json",
+                                                    object_id=self.cloth_id,
                                                     position={"x": -1.2, "y": 2.0, "z": -1.6},
                                                     rotation=rotation,
-                                                    o_id=self.cloth_id,
                                                     mass_scale=1,
                                                     mesh_tesselation=1,
                                                     tether_stiffness=uniform(0.5, 1.0),

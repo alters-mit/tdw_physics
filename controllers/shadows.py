@@ -104,22 +104,24 @@ class Shadows(RigidbodiesDataset):
         commands = []
         # Add the ball.
         mass = random.uniform(1, 4)
-        commands.extend(self.add_physics_object(record=self._ball,
-                                                position=self._p0,
-                                                rotation=TDWUtils.VECTOR3_ZERO,
-                                                o_id=self._ball_id,
-                                                mass=mass,
-                                                dynamic_friction=random.uniform(0, 0.1),
-                                                static_friction=random.uniform(0, 0.1),
-                                                bounciness=random.uniform(0, 0.1)))
+        commands.extend(self.get_add_physics_object(model_name=self._ball.name,
+                                                    library="models_special.json",
+                                                    object_id=self._ball_id,
+                                                    position=self._p0,
+                                                    rotation=TDWUtils.VECTOR3_ZERO,
+                                                    default_physics_values=False,
+                                                    mass=mass,
+                                                    dynamic_friction=random.uniform(0, 0.1),
+                                                    static_friction=random.uniform(0, 0.1),
+                                                    bounciness=random.uniform(0, 0.1),
+                                                    scale_factor={"x": self._BALL_SCALE,
+                                                                  "y": self._BALL_SCALE,
+                                                                  "z": self._BALL_SCALE}))
         ball_material: MaterialRecord = random.choice(self._BALL_MATERIAL_RECORDS)
-        # Scale the ball and apply a force and a spin.
+        # Apply a force and a spin.
         # Set a random visual material.
         # Add a random skybox.
-        commands.extend([{"$type": "scale_object",
-                          "scale_factor": {"x": self._BALL_SCALE, "y": self._BALL_SCALE, "z": self._BALL_SCALE},
-                          "id": self._ball_id},
-                         {"$type": "rotate_object_by",
+        commands.extend([{"$type": "rotate_object_by",
                           "angle": random.uniform(30, 45),
                           "id": self._ball_id,
                           "axis": "pitch",
@@ -144,7 +146,6 @@ class Shadows(RigidbodiesDataset):
                          self.get_add_hdri_skybox(skybox_name=random.choice(self._skyboxes)),
                          {"$type": "rotate_hdri_skybox_by",
                           "angle": random.uniform(0, 360)}])
-
         # Teleport the avatar such that it can see both points.
         d0 = TDWUtils.get_distance(self._p0, self._p1)
         p_med = np.array([(self._p0["x"] + self._p1["x"]) / 2, 0, (self._p0["z"] + self._p1["z"]) / 2])

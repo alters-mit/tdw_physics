@@ -3,9 +3,9 @@ from typing import List, Dict
 from operator import add
 import random
 from tdw.controller import Controller
+from tdw.librarian import ModelLibrarian
 from tdw.tdw_utils import TDWUtils
 from tdw_physics.rigidbodies_dataset import RigidbodiesDataset
-from tdw_physics.util import MODEL_LIBRARIES
 
 
 class _TableScripted(RigidbodiesDataset, ABC):
@@ -25,10 +25,10 @@ class _TableScripted(RigidbodiesDataset, ABC):
                          {"x": -8.1, "y": 2.5, "z": -6.0},
                          {"x": -11.0, "y": 3.65, "z": -5.8}]
     _TABLE_POSITION = {"x": -10.8, "y": 1.0, "z": -5.5}
+    Controller.MODEL_LIBRARIANS["models_full.json"] = ModelLibrarian("models_full.json")
 
     def __init__(self, port: int = 1071):
         super().__init__(port=port)
-
         self._table_id = 0
 
     def get_scene_initialization_commands(self) -> List[dict]:
@@ -57,10 +57,11 @@ class _TableScripted(RigidbodiesDataset, ABC):
                     {"$type": "look_at_position",
                      "position": {"x": -10.8, "y": _TableScripted._TABLE_HEIGHT, "z": -5.5}}]
         # Add the table.
-        commands.extend(self.add_physics_object_default(name="quatre_dining_table",
-                                                        position=self._TABLE_POSITION,
-                                                        rotation={"x": 0, "y": -90, "z": 0},
-                                                        o_id=self._table_id))
+        commands.extend(self.get_add_physics_object(model_name="quatre_dining_table",
+                                                    library="models_full.json",
+                                                    object_id=self._table_id,
+                                                    position=self._TABLE_POSITION,
+                                                    rotation={"x": 0, "y": -90, "z": 0}))
         x0 = -9.35
         x1 = -9.9
         x2 = -10.15
@@ -79,48 +80,45 @@ class _TableScripted(RigidbodiesDataset, ABC):
         for x, z, rot in zip([x2, x3, x4, x6, x4, x3, x2, x0],
                              [z0, z0, z0, z2, z4, z4, z4, z2],
                              [180, 180, 180, 90, 0, 0, 0, -90]):
-            commands.extend(self.add_physics_object_default(name="brown_leather_dining_chair",
-                                                            position={"x": x,
-                                                                      "y": _TableScripted._FLOOR_HEIGHT,
-                                                                      "z": z},
-                                                            rotation={"x": 0, "y": rot, "z": 0}))
-
+            commands.extend(self.get_add_physics_object(model_name="brown_leather_dining_chair",
+                                                        library="models_full.json",
+                                                        object_id=self.get_unique_id(),
+                                                        position={"x": x, "y": _TableScripted._FLOOR_HEIGHT, "z": z},
+                                                        rotation={"x": 0, "y": rot, "z": 0}))
         # Add plates.
         plates_x = [x2, x3, x4, x5, x4, x3, x2, x1]
         plates_z = [z1, z1, z1, z2, z3, z3, z3, z2]
         for x, z in zip(plates_x, plates_z):
-            commands.extend(self.add_physics_object_default(name="plate05",
-                                                            position={"x": x,
-                                                                      "y": _TableScripted._TABLE_HEIGHT,
-                                                                      "z": z},
-                                                            rotation=TDWUtils.VECTOR3_ZERO))
+            commands.extend(self.get_add_physics_object(model_name="plate05",
+                                                        object_id=self.get_unique_id(),
+                                                        library="models_full.json",
+                                                        position={"x": x, "y": _TableScripted._TABLE_HEIGHT, "z": z},
+                                                        rotation=TDWUtils.VECTOR3_ZERO))
         # Cutlery offset from plate (can be + or -).
         cutlery_off = 0.1
         cutlery_rots = [180, 180, 180, 90, 0, 0, 0, -90]
-
         # Forks.
         fork_x_offsets = [cutlery_off, cutlery_off, cutlery_off, 0, -cutlery_off, -cutlery_off, -cutlery_off, 0]
         fork_z_offsets = [0, 0, 0, cutlery_off, 0, 0, 0, -cutlery_off]
         forks_x = list(map(add, plates_x, fork_x_offsets))
         forks_z = list(map(add, plates_z, fork_z_offsets))
         for x, z, rot in zip(forks_x, forks_z, cutlery_rots):
-            commands.extend(self.add_physics_object_default(name="vk0010_dinner_fork_subd0",
-                                                            position={"x": x,
-                                                                      "y": _TableScripted._TABLE_HEIGHT,
-                                                                      "z": z},
-                                                            rotation={"x": 0, "y": rot, "z": 0}))
+            commands.extend(self.get_add_physics_object(model_name="vk0010_dinner_fork_subd0",
+                                                        object_id=self.get_unique_id(),
+                                                        library="models_full.json",
+                                                        position={"x": x, "y": _TableScripted._TABLE_HEIGHT, "z": z},
+                                                        rotation={"x": 0, "y": rot, "z": 0}))
         # Knives.
         knife_x_offsets = [-cutlery_off, -cutlery_off, -cutlery_off, 0, cutlery_off, cutlery_off, cutlery_off, 0]
         knife_z_offsets = [0, 0, 0, -cutlery_off, 0, 0, 0, cutlery_off]
         knives_x = list(map(add, plates_x, knife_x_offsets))
         knives_z = list(map(add, plates_z, knife_z_offsets))
         for x, z, rot in zip(knives_x, knives_z, cutlery_rots):
-            commands.extend(self.add_physics_object_default(name="vk0007_steak_knife",
-                                                            position={"x": x,
-                                                                      "y": _TableScripted._TABLE_HEIGHT,
-                                                                      "z": z},
-                                                            rotation={"x": 0, "y": rot, "z": 0}))
-
+            commands.extend(self.get_add_physics_object(model_name="vk0007_steak_knife",
+                                                        object_id=self.get_unique_id(),
+                                                        library="models_full.json",
+                                                        position={"x": x, "y": _TableScripted._TABLE_HEIGHT, "z": z},
+                                                        rotation={"x": 0, "y": rot, "z": 0}))
         incidental_names = ["moet_chandon_bottle_vray", "peppermill", "salt_shaker", "coffeemug", "coffeecup004",
                             "bowl_wood_a_01", "glass1", "glass2", "glass3"]
         incidental_positions = [{"x": -10.35, "y": _TableScripted._TABLE_HEIGHT, "z": -5.325},
@@ -135,16 +133,16 @@ class _TableScripted(RigidbodiesDataset, ABC):
         for i in range(4):
             name = incidental_names.pop(0)
             o_id = Controller.get_unique_id()
-            commands.extend(self.add_physics_object_default(name=name,
-                                                            position=incidental_positions.pop(0),
-                                                            rotation=TDWUtils.VECTOR3_ZERO,
-                                                            o_id=o_id))
+            commands.extend(self.get_add_physics_object(model_name=name,
+                                                        object_id=self.get_unique_id(),
+                                                        library="models_full.json",
+                                                        position=incidental_positions.pop(0),
+                                                        rotation=TDWUtils.VECTOR3_ZERO))
             # These objects need further scaling.
             if name in ["salt_shaker", "peppermill"]:
                 commands.append({"$type": "scale_object",
                                  "id": o_id,
                                  "scale_factor": {"x": 0.254, "y": 0.254, "z": 0.254}})
-
         # Select 2 bread objects.
         bread_names = ["bread", "bread_01", "bread_02", "bread_03"]
         bread_positions = [{"x": x2, "y": _TableScripted._TABLE_HEIGHT, "z": z2},
@@ -153,9 +151,11 @@ class _TableScripted(RigidbodiesDataset, ABC):
         random.shuffle(bread_names)
         random.shuffle(bread_positions)
         for i in range(2):
-            commands.extend(self.add_physics_object_default(name=bread_names.pop(0),
-                                                            position=bread_positions.pop(0),
-                                                            rotation=TDWUtils.VECTOR3_ZERO))
+            commands.extend(self.get_add_physics_object(model_name=bread_names.pop(0),
+                                                        object_id=self.get_unique_id(),
+                                                        library="models_full.json",
+                                                        position=bread_positions.pop(0),
+                                                        rotation=TDWUtils.VECTOR3_ZERO))
         return commands
 
 
@@ -166,12 +166,9 @@ class TableScriptedTilt(_TableScripted):
 
     def __init__(self, port: int = 1071):
         super().__init__(port=port)
-
         self._tip_table_frames = 0
         self._tip_table_force = 0
-
-        table_record = MODEL_LIBRARIES["models_full.json"].get_record("quatre_dining_table")
-
+        table_record = Controller.MODEL_LIBRARIANS["models_full.json"].get_record("quatre_dining_table")
         self._tip_positions = [table_record.bounds["front"],
                                table_record.bounds["back"],
                                table_record.bounds["left"],

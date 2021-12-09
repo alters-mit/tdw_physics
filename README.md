@@ -103,54 +103,13 @@ You can override this by adding the function `def is_done()`:
 
 ### Adding objects
 
-**`Controller.add_object()` and `Conroller.get_add_object()` will throw an exception.** You must instead use `RigidbodiesDataset.add_physics_object()` or `RigidbodiesDataset.add_physics_object_default()`. This will automatically cache the object ID, allowing the object to be destroyed at the end of the trial.
-
 Objects should only be added in `get_trial_initialization_commands()` or (more rarely) `get_per_frame_commands()`.
 
-#### `def add_physics_object()`
+#### `def get_add_physics_object()`
 
 Get commands to add an object and assign physics properties. Write the object's static info to the .hdf5 file.
 
-_Return:_ A list of commands: `[add_object, set_mass, set_physic_material]`
-
-```python
-from typing import List
-from tdw.librarian import ModelLibrarian
-from tdw_physics.rigidbodies_dataset import RigidbodiesDataset
-
-class MyDataset(RigidbodiesDataset):
-    def get_trial_initialization_commands(self) -> List[dict]:
-        commands = []
-        # Your code here.
-        lib = ModelLibrarian("models_full.json")
-        record = lib.get_record("iron_box")
-        commands.extend(self.add_physics_object(record=record, 
-                                                position={"x": 0, "y": 0, "z": 0},
-                                                rotation={"x": 0, "y": 0, "z": 0},
-                                                o_id=0,
-                                                mass=1.5,
-                                                dynamic_friction=0.1,
-                                                static_friction=0.2,
-                                                bounciness=0.5))
-        return commands
-```
-
-| Parameter          | Type               | Default | Description                                                  |
-| ------------------ | ------------------ | ------- | ------------------------------------------------------------ |
-| `record`           | `ModelRecord`      |         | The model record.                                            |
-| `position`         | `Dict[str, float]` |         | The initial position of the object.                          |
-| `rotation`         | `Dict[str, float]` |         | The initial rotation of the object, in Euler angles.         |
-| `o_id`             | `Optional[int]`    | `None`  | The unique ID of the object. If None, a random ID is generated. |
-| `mass`             | `float`            |         | The mass of the object.                                      |
-| `dynamic_friction` | `float`            |         | The dynamic friction of the object's physic material.        |
-| `static_friction`  | `float`            |         | The static friction of the object's physic material.         |
-| `bounciness`       | `float`            |         | The bounciness of the object's physic material.              |
-
-#### `def add_physics_object_default()`
-
-Get commands to add an object and assign physics values based on _default physics values_. These values are loaded automatically and located in: `tdw_physics/data/physics_info.json` Note that _only a small percentage of TDW objects have physics info._ More will be added over time.
-
-_Return:_ A list of commands: `[add_object, set_mass, set_physic_material]`
+_Return:_ A list of commands to add an object and set its physics values.
 
 ```python
 from typing import List
@@ -160,19 +119,35 @@ class MyDataset(RigidbodiesDataset):
     def get_trial_initialization_commands(self) -> List[dict]:
         commands = []
         # Your code here.
-        commands.extend(self.add_physics_object_default(name="iron_box", 
-                                                        position={"x": 0, "y": 0, "z": 0},
-                                                        rotation={"x": 0, "y": 0, "z": 0},
-                                                        o_id=0))
+        object_id = self.get_unique_id()
+        commands.extend(self.get_add_physics_object(model_name="iron_box",
+                                                    library="models_core.json",
+                                                    object_id=object_id,
+                                                    position={"x": 0, "y": 0, "z": 0},
+                                                    rotation={"x": 0, "y": 0, "z": 0},
+                                                    default_physics_values=False,
+                                                    mass=1.5,
+                                                    dynamic_friction=0.1,
+                                                    static_friction=0.2,
+                                                    bounciness=0.5))
         return commands
 ```
 
-| Parameter  | Type               | Default | Description                                                  |
-| ---------- | ------------------ | ------- | ------------------------------------------------------------ |
-| `name`     | `str`              |         | The name of the model.                                       |
-| `position` | `Dict[str, float]` |         | The initial position of the object.                          |
-| `rotation` | `Dict[str, float]` |         | The initial rotation of the object, in Euler angles.         |
-| `o_id`     | `Optional[int]`    | `None`  | The unique ID of the object. If None, a random ID is generated. |
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| model_name |  str |  | The name of the model. |
+| position |  Dict[str, float] | None | The position of the model. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
+| rotation |  Dict[str, float] | None | The starting rotation of the model, in Euler angles. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
+| library |  str  | "" | The path to the records file. If left empty, the default library will be selected. See `ModelLibrarian.get_library_filenames()` and `ModelLibrarian.get_default_library()`. |
+| object_id |  int |  | The ID of the new object. |
+| scale_factor |  Dict[str, float] | None | The [scale factor](../api/command_api.md#scale_object). |
+| kinematic |  bool  | False | If True, the object will be [kinematic](../api/command_api.md#set_kinematic_state). |
+| gravity |  bool  | True | If True, the object won't respond to [gravity](../api/command_api.md#set_kinematic_state). |
+| default_physics_values |  bool  | True | If True, use default physics values. Not all objects have default physics values. To determine if object does: `has_default_physics_values = model_name in DEFAULT_OBJECT_AUDIO_STATIC_DATA`. |
+| mass |  float  | 1 | The mass of the object. Ignored if `default_physics_values == True`. |
+| dynamic_friction |  float  | 0.3 | The [dynamic friction](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`. |
+| static_friction |  float  | 0.3 | The [static friction](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`. |
+| bounciness |  float  | 0.7 | The [bounciness](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`. |
 
 #### `def get_objects_by_mass()`
 
@@ -195,11 +170,12 @@ _Return:_ A list of lists; per-frame commands to make small objects fly up.
 `RigidbodiesDataset` caches default physics info per object (see above) in a dictionary where the key is the model name and the values is a `PhysicsInfo` object:
 
 ```python
-from tdw_physics.rigidbodies_dataset import PHYSICS_INFO
+from tdw_physics.physics_info import PHYSICS_INFO
 
 info = PHYSICS_INFO["chair_billiani_doll"]
 
-print(info.record.name) # chair_billiani_doll
+print(info.model_name) # chair_billiani_doll
+print(info.library)
 print(info.mass)
 print(info.dynamic_friction)
 print(info.static_friction)
@@ -253,35 +229,6 @@ frames/    # Per-frame data.
   -  `frames/env_collisions/object_ids` has the shape `(num_collisions)` (only 1 ID per collision).
   -  `frames/collisions/contacts` and `frames/env_collision/contacts` are tuples of `(normal, point)`, i.e. the shape is `(num_collisions, 2, 3)`.
 
-#### `physics_info_calculator.py`
-
-Use this controller to add more default `PhysicsInfo`. The controller will assign "best guess" values based on the object's material and size.
-
-```bash
-python3 physics_info_calculator.py [ARGUMENTS]
-```
-
-| Argument | Type  | Default            | Description                        |
-| -------- | ----- | ------------------ | ---------------------------------- |
-| `--name` | `str` |                    | The name of the model.             |
-| `--lib`  | `str` | `models_full.json` | The model library.                 |
-| `--mat`  | `str` |                    | The semantic material (see below). |
-
-**Semantic Materials**
-
-- ceramic
-- concrete
-- fabric
-- glass
-- leather
-- metal
-- plastic
-- rubber
-- stone
-- wood
-- paper
-- organic
-
 ***
 
 ## `TransformsDataset`
@@ -317,36 +264,33 @@ A `TransformsDataset` trial has no "end" condition based on trial output data; y
 
 ### Adding objects
 
-**`Controller.add_object()` and `Conroller.get_add_object()` will throw an exception.** You must instead use `TransformsDataset.add_transforms_object()`. This will automatically cache the object ID, allowing the object to be destroyed at the end of the trial.
-
-#### `def add_transforms_object()`
+#### `def get_add_object()`
 
 _Return:_ An `add_object` command.
 
 ```python
 from typing import List
-from tdw.librarian import ModelLibrarian
 from tdw_physics.transforms_dataset import TransformsDataset
 
 class MyDataset(TransformsDataset):
     def get_trial_initialization_commands(self) -> List[dict]:
         commands = []
         # Your code here.
-        lib = ModelLibrarian("models_full.json")
-        record = lib.get_record("iron_box")
-        commands.append(self.add_transforms_object(record=record, 
-                                                   position={"x": 0, "y": 0, "z": 0},
-                                                   rotation={"x": 0, "y": 0, "z": 0},
-                                                   o_id=0))
+        commands.append(self.get_add_object(model_name="iron_box",
+                                            library="models_core.json",
+                                            object_id=self.get_unique_id(),
+                                            position={"x": 0, "y": 0, "z": 0},
+                                            rotation={"x": 0, "y": 0, "z": 0}))
         return commands
 ```
 
-| Parameter  | Type               | Default | Description                                                  |
-| ---------- | ------------------ | ------- | ------------------------------------------------------------ |
-| `record`   | `ModelRecord`      |         | The model record.                                            |
-| `position` | `Dict[str, float]` |         | The initial position of the object.                          |
-| `rotation` | `Dict[str, float]` |         | The initial rotation of the object, in Euler angles.         |
-| `o_id`     | `Optional[int]`    | `None`  | The unique ID of the object. If None, a random ID is generated. |
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| model_name |  str |  | The name of the model. |
+| position |  Dict[str, float] | None | The position of the model. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
+| rotation |  Dict[str, float] | None | The starting rotation of the model, in Euler angles. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
+| library |  str  | "" | The path to the records file. If left empty, the default library will be selected. See `ModelLibrarian.get_library_filenames()` and `ModelLibrarian.get_default_library()`. |
+| object_id |  int |  | The ID of the new object. |
 
 ### .hdf5 file structure
 
@@ -407,61 +351,58 @@ A dataset creator that receives and writes per frame: `Transforms`, `Images`, `C
 
 #### `def add_solid_object()`
 
-_Return:_ A list of commands: `[add_object, scale_object, set_flex_solid_actor, assign_flex_container]`
+_Return:_ A list of commands to add a solid-body object.
 
 ```python
 from typing import List
-from tdw.librarian import ModelLibrarian
 from tdw_physics.flex_dataset import FlexDataset
 
 class MyDataset(FlexDataset):
     def get_trial_initialization_commands(self) -> List[dict]:
         commands = []
         # Your code here.
-        lib = ModelLibrarian("models_full.json")
-        record = lib.get_record("microwave")
-        commands.extend(self.add_solid_object(record=record, 
+        commands.extend(self.add_solid_object(model_name="microwave",
+                                              library="models_full.json", 
+                                              object_id=self.get_unique_id(),                                      
                                               position={"x": 0, "y": 0, "z": 0},
                                               rotation={"x": 0, "y": 0, "z": 0},
-                                              scale={"x": 1, "y": 1, "z": 1},
-                                              o_id=0,
+                                              scale_factor={"x": 1, "y": 1, "z": 1},
                                               mesh_expansion=0,
                                               particle_spacing=0.125,
                                               mass_scale=1))
         return commands
 ```
 
-| Parameter          | Type               | Default | Description                                                  |
-| ------------------ | ------------------ | ------- | ------------------------------------------------------------ |
-| `record`           | `ModelRecord`      |         | The model record.                                            |
-| `position`         | `Dict[str, float`] |         | The initial position of the object.                          |
-| `rotation`         | `Dict[str, float]` |         | The initial rotation of the object, in Euler angles.         |
-| `scale`            | `Dict[str, float]` | `None`  | The object scale factor. If None, the scale is (1, 1, 1).    |
-| `o_id`             | `Optional[int]`    | `None`  | The unique ID of the object. If None, a random ID is generated. |
-| `mesh_expansion`   | `float`            | 0       |                                                              |
-| `particle_spacing` | `float`            | 0.125   |                                                              |
-| `mass_scale`       | float              | 1       |                                                              |
+| Parameter          | Type               | Default | Description                                               |
+| ------------------ | ------------------ | ------- | --------------------------------------------------------- |
+| `model_name`       | `str`              |         | The model name.                                           |
+| `object_id`        | `int`              |         | The object ID.                                            |
+| `library`          | `str`              |         | The model librarian.                                      |
+| `position`         | `Dict[str, float`] |         | The initial position of the object.                       |
+| `rotation`         | `Dict[str, float]` |         | The initial rotation of the object, in Euler angles.      |
+| `scale_factor`     | `Dict[str, float]` | `None`  | The object scale factor. If None, the scale is (1, 1, 1). |
+| `mesh_expansion`   | `float`            | 0       |                                                           |
+| `particle_spacing` | `float`            | 0.125   |                                                           |
+| `mass_scale`       | float              | 1       |                                                           |
 
-#### `def get_soft_object()`
+#### `def add_soft_object()`
 
-_Return:_ A list of commands: `[add_object, scale_object, set_flex_soft_actor, assign_flex_container]`
+_Return:_ A list of commands to add a soft-body object.
 
 ```python
 from typing import List
-from tdw.librarian import ModelLibrarian
 from tdw_physics.flex_dataset import FlexDataset
 
 class MyDataset(FlexDataset):
     def get_trial_initialization_commands(self) -> List[dict]:
         commands = []
         # Your code here.
-        lib = ModelLibrarian("models_full.json")
-        record = lib.get_record("microwave")
-        commands.extend(self.add_soft_object(record=record, 
+        commands.extend(self.add_soft_object(model_name="microwave",
+                                             library="models_full.json",
+                                             object_id=self.get_unique_id(),
                                              position={"x": 0, "y": 0, "z": 0},
                                              rotation={"x": 0, "y": 0, "z": 0},
-                                             scale={"x": 1, "y": 1, "z": 1},
-                                             o_id=0,
+                                             scale_factor={"x": 1, "y": 1, "z": 1},
                                              volume_sampling=2,
                                              surface_sampling=0,
                                              mass_scale=1,
@@ -476,11 +417,12 @@ class MyDataset(FlexDataset):
 
 | Parameter           | Type               | Default | Description                                                  |
 | ------------------- | ------------------ | ------- | ------------------------------------------------------------ |
-| `record`            | `ModelRecord`      |         | The model record.                                            |
+| `model_name`       | `str`              |         | The model name.                                           |
+| `object_id`        | `int`              |         | The object ID.                                            |
+| `library`          | `str`              |         | The model librarian.                                      |
 | `position`          | `Dict[str, float`] |         | The initial position of the object.                          |
 | `rotation`          | `Dict[str, float]` |         | The initial rotation of the object, in Euler angles.         |
-| `scale`             | `Dict[str, float]` | `None`  | The object scale factor. If None, the scale is (1, 1, 1).    |
-| `o_id`              | `Optional[int]`    | `None`  | The unique ID of the object. If None, a random ID is generated. |
+| `scale_factor`             | `Dict[str, float]` | `None`  | The object scale factor. If None, the scale is (1, 1, 1).    |
 | `volume_sampling`   | `float`            | 2       |                                                              |
 | `surface_sampling`  | `float`            | 0       |                                                              |
 | `mass_scale`        | `float`            | 1       |                                                              |
@@ -491,26 +433,24 @@ class MyDataset(FlexDataset):
 | `link_stiffness`    | `float`            | 0.5     |                                                              |
 | `particle_spacing`  | `float`            | 0.02    |                                                              |
 
-#### `def get_cloth_object()`
+#### `def add_cloth_object()`
 
-_Return:_ A list of commands: `[add_object, scale_object, set_flex_cloth_actor, assign_flex_container]`
+_Return:_ A list of commands to add a cloth object.
 
 ```python
 from typing import List
-from tdw.librarian import ModelLibrarian
 from tdw_physics.flex_dataset import FlexDataset
 
 class MyDataset(FlexDataset):
     def get_trial_initialization_commands(self) -> List[dict]:
         commands = []
         # Your code here.
-        lib = ModelLibrarian("models_special.json")
-        record = lib.get_record("cloth_square")
-        commands.extend(self.add_cloth_object(record=record, 
+        commands.extend(self.add_cloth_object(model_name="cloth_square",
+                                              library="models_special.json",
+                                              object_id=self.get_unique_id(),
                                               position={"x": 0, "y": 0, "z": 0},
                                               rotation={"x": 0, "y": 0, "z": 0},
-                                              scale={"x": 1, "y": 1, "z": 1},
-                                              o_id=0,
+                                              scale_factor={"x": 1, "y": 1, "z": 1},
                                               stretch_stiffness=0.1,
                                               bend_stiffness=0.1,
                                               tether_stiffness=0.1,
@@ -522,11 +462,12 @@ class MyDataset(FlexDataset):
 
 | Parameter           | Type               | Default | Description                                                  |
 | ------------------- | ------------------ | ------- | ------------------------------------------------------------ |
-| `record`            | `ModelRecord`      |         | The model record.                                            |
+| `model_name`       | `str`              |         | The model name.                                           |
+| `object_id`        | `int`              |         | The object ID.                                            |
+| `library`          | `str`              |         | The model librarian.                                      |
 | `position`          | `Dict[str, float`] |         | The initial position of the object.                          |
 | `rotation`          | `Dict[str, float]` |         | The initial rotation of the object, in Euler angles.         |
-| `scale`             | `Dict[str, float]` | `None`  | The object scale factor. If None, the scale is (1, 1, 1).    |
-| `o_id`              | `Optional[int]`    | `None`  | The unique ID of the object. If None, a random ID is generated. |
+| `scale_factor`             | `Dict[str, float]` | `None`  | The object scale factor. If None, the scale is (1, 1, 1).    |
 | `mesh_tesselation`  | `int`              | 1       |                                                              |
 | `stretch_stiffness` | `int`              | 0.1     |                                                              |
 | `bend_stiffness`    | `int`              | 0.1     |                                                              |
@@ -535,52 +476,46 @@ class MyDataset(FlexDataset):
 | `pressure`          | `float`            | 0       |                                                              |
 | `mass_scale`        | `float`            | 1       |                                                              |
 
-#### `def get_fluid_object()`
+#### `def add_fluid_object()`
 
-_Return:_ A list of commands: `[load_flex_fluid_from_resources, create_flex_fluid_object, assign_flex_container, step_physics]`
+_Return:_ A list of commands to add a fluid object.
 
 ```python
 from typing import List
-from tdw.controller import Controller
-from tdw.librarian import ModelLibrarian
 from tdw_physics.flex_dataset import FlexDataset
+
 
 class MyDataset(FlexDataset):
     def get_trial_initialization_commands(self) -> List[dict]:
         commands = []
-        
+
         # Your code here.
-        
+
         # Cache the pool ID to destroy it correctly.
         pool_id = Controller.get_unique_id()
         self.non_flex_objects.append(pool_id)
-        
         # Add the pool.
-        lib = ModelLibrarian("models_special.json")
-        receptacle_record = lib.get_record("fluid_receptacle1x1")
-        commands.append(self.add_transforms_object(record=receptacle_record,
-                                                         position={"x": 0, "y": 0, "z": 0},
-                                                         rotation={"x": 0, "y": 0, "z": 0},
-                                                         o_id=pool_id))
-        
+        commands.append(self.get_add_object(model_name="fluid_receptacle1x1",
+                                            library="models_special.json",
+                                            object_id=pool_id,
+                                            position={"x": 0, "y": 0, "z": 0},
+                                            rotation={"x": 0, "y": 0, "z": 0}))
         # Add a container here.
-        
+
         # Add the fluid.
-        fluid_id = Controller.get_unique_id()
         commands.extend(self.add_fluid_object(position={"x": 0, "y": 1.0, "z": 0},
                                               rotation={"x": 0, "y": 0, "z": 0},
-                                              o_id=fluid_id,
+                                              object_id=Controller.get_unique_id(),
                                               fluid_type="water"))
         return commands
 ```
 
 | Parameter          | Type               | Default | Description                                                  |
 | ------------------ | ------------------ | ------- | ------------------------------------------------------------ |
-| `record`           | `ModelRecord`      |         | The model record.                                            |
+| `object_id`        | `int`              |         | The object ID.                                            |
 | `position`         | `Dict[str, float`] |         | The initial position of the object.                          |
 | `rotation`         | `Dict[str, float]` |         | The initial rotation of the object, in Euler angles.         |
 | `scale`            | `Dict[str, float]` | `None`  | The object scale factor. If None, the scale is (1, 1, 1).    |
-| `o_id`             | `Optional[int]`    | `None`  | The unique ID of the object. If None, a random ID is generated. |
 | `particle_spacing` | `float`            | 0.05    |                                                              |
 | `mass_scale`       | `float`            | 1       |                                                              |
 | `fluid_type`       | `str`              |         | The name of the fluid type.                                  |
@@ -645,16 +580,6 @@ frames/    # Per-frame data.
 ## `utils.py`
 
 Some helpful utility functions and variables.
-
-#### `MODEL_LIBRARIES`
-
-Cache of all default model libraries, mapped to their names.
-
-```python
-from tdw_physics.util import MODEL_LIBRARIES
-
-print(MODEL_LIBRARIES["models_full.json"].get_record("iron_box").name) # iron_box
-```
 
 #### `def get_move_along_direction()`
 

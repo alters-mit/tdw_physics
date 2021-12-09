@@ -5,7 +5,7 @@ from tdw_physics.rigidbodies_dataset import PHYSICS_INFO
 from tdw.controller import Controller
 from random import choice, uniform
 from platform import system
-from tdw.flex.fluid_types import FluidTypes
+from tdw.flex_data.fluid_type import FLUID_TYPES
 from typing import List
 
 
@@ -15,58 +15,51 @@ class Submerge(FlexDataset):
     Run several trials, dropping ball objects of increasing mass into the fluid.
     """
 
-    def __init__(self):
-        self.model_list = [
-                      "b03_db_apps_tech_08_04",
-                      "trashbin",
-                      "trunck",
-                      "whirlpool_akzm7630ix",
-                      "satiro_sculpture",
-                      "towel-radiator-2",
-                      "b03_folding-screen-panel-room-divider",
-                      "naughtone_pinch_stool_chair",
-                      "microwave",
-                      "trunk_6810-0009",
-                      "suitcase",
-                      "kayak_small",
-                      "elephant_bowl",
-                      "trapezoidal_table",
-                      "b05_pc-computer-printer-1",
-                      "dishwasher_4",
-                      "chista_slice_of_teak_table",
-                      "buddah",
-                      "b05_elsafe_infinity_ii",
-                      "backpack",
-                      "b06_firehydrant_lod0",
-                      "b05_ticketmachine",
-                      "b05_trophy",
-                      "b05_kitchen_aid_toster",
-                      "b05_heavybag",
-                      "bongo_drum_hr_blend",
-                      "b03_worldglobe",
-                      "ceramic_pot",
-                      "b04_kenmore_refr_70419",
-                      "b03_zebra",
-                      "b05_gibson_j-45",
-                      "b03_cow",
-                      "b03_sheep",
-                      "b04_stringer"]
+    Controller.MODEL_LIBRARIANS["models_full.json"] = ModelLibrarian("models_full.json")
 
+    def __init__(self):
+        self.model_list = ["b03_db_apps_tech_08_04",
+                           "trashbin",
+                           "trunck",
+                           "whirlpool_akzm7630ix",
+                           "satiro_sculpture",
+                           "towel-radiator-2",
+                           "b03_folding-screen-panel-room-divider",
+                           "naughtone_pinch_stool_chair",
+                           "microwave",
+                           "trunk_6810-0009",
+                           "suitcase",
+                           "kayak_small",
+                           "elephant_bowl",
+                           "trapezoidal_table",
+                           "b05_pc-computer-printer-1",
+                           "dishwasher_4",
+                           "chista_slice_of_teak_table",
+                           "buddah",
+                           "b05_elsafe_infinity_ii",
+                           "backpack",
+                           "b06_firehydrant_lod0",
+                           "b05_ticketmachine",
+                           "b05_trophy",
+                           "b05_kitchen_aid_toster",
+                           "b05_heavybag",
+                           "bongo_drum_hr_blend",
+                           "b03_worldglobe",
+                           "ceramic_pot",
+                           "b04_kenmore_refr_70419",
+                           "b03_zebra",
+                           "b05_gibson_j-45",
+                           "b03_cow",
+                           "b03_sheep",
+                           "b04_stringer"]
         # Cache the record for the receptacle.
         self.receptacle_record = ModelLibrarian("models_special.json").get_record("fluid_receptacle1x1")
-        # Cache the fluid types.
-        self.ft = FluidTypes()
-
-        self.full_lib = ModelLibrarian("models_full.json")
-
         self.pool_id = None
-
         super().__init__()
 
     def get_scene_initialization_commands(self) -> List[dict]:
         if system() != "Windows":
             raise Exception("Flex fluids are only supported in Windows (see Documentation/misc_frontend/flex.md)")
-
         commands = [self.get_add_scene(scene_name="tdw_room"),
                     {"$type": "set_aperture",
                      "aperture": 4.8},
@@ -78,7 +71,6 @@ class Submerge(FlexDataset):
                      "intensity": 0.175},
                     {"$type": "set_ambient_occlusion_thickness_modifier",
                      "thickness": 3.5}]
-
         return commands
 
     def get_trial_initialization_commands(self) -> List[dict]:
@@ -92,10 +84,11 @@ class Submerge(FlexDataset):
         # Load a pool container for the fluid.
         self.pool_id = Controller.get_unique_id()
         self.non_flex_objects.append(self.pool_id)
-        trial_commands.append(self.add_transforms_object(record=self.receptacle_record,
-                                                         position={"x": 0, "y": 0, "z": 0},
-                                                         rotation={"x": 0, "y": 0, "z": 0},
-                                                         o_id=self.pool_id))
+        trial_commands.append(self.get_add_object(model_name=self.receptacle_record.name,
+                                                  library="models_special.json",
+                                                  object_id=self.pool_id,
+                                                  position={"x": 0, "y": 0, "z": 0},
+                                                  rotation={"x": 0, "y": 0, "z": 0}))
         trial_commands.extend([{"$type": "scale_object",
                                 "id": self.pool_id,
                                 "scale_factor": {"x": 1.5, "y": 2.5, "z": 1.5}},
@@ -103,10 +96,8 @@ class Submerge(FlexDataset):
                                 "id": self.pool_id,
                                 "is_kinematic": True,
                                 "use_gravity": False}])
-
-        # Randomly select a fluid type
-        fluid_type_selection = choice(self.ft.fluid_type_names)
-
+        # Randomly select a fluid type.
+        fluid_type_selection = choice(list(FLUID_TYPES.keys()))
         # Create the container, set up for fluids.
         # Slow down physics so the water can settle without splashing out of the container.
         trial_commands.extend([{"$type": "create_flex_container",
@@ -114,9 +105,9 @@ class Submerge(FlexDataset):
                                 "static_friction": 0.1,
                                 "dynamic_friction": 0.1,
                                 "particle_friction": 0.1,
-                                "viscocity": self.ft.fluid_types[fluid_type_selection].viscosity,
-                                "adhesion": self.ft.fluid_types[fluid_type_selection].adhesion,
-                                "cohesion": self.ft.fluid_types[fluid_type_selection].cohesion,
+                                "viscocity": FLUID_TYPES[fluid_type_selection].viscosity,
+                                "adhesion": FLUID_TYPES[fluid_type_selection].adhesion,
+                                "cohesion": FLUID_TYPES[fluid_type_selection].cohesion,
                                 "radius": 0.1,
                                 "fluid_rest": 0.05,
                                 "damping": 0.01,
@@ -125,33 +116,29 @@ class Submerge(FlexDataset):
                                 "buoyancy": 1.0},
                                {"$type": "set_time_step",
                                 "time_step": 0.005}])
-
         # Recreate fluid.
         # Add the fluid actor, using the FluidPrimitive. Allow 500 frames for the fluid to settle before continuing.
         fluid_id = Controller.get_unique_id()
         trial_commands.extend(self.add_fluid_object(position={"x": 0, "y": 1.0, "z": 0},
                                                     rotation={"x": 0, "y": 0, "z": 0},
-                                                    o_id=fluid_id,
+                                                    object_id=fluid_id,
                                                     fluid_type=fluid_type_selection))
 
         trial_commands.append({"$type": "set_time_step",
                                "time_step": 0.03})
-
-        # Select an object at random.
-        model = choice(self.model_list)
-        model_record = self.full_lib.get_record(model)
-        info = PHYSICS_INFO[model]
-
         # Randomly select an object, and randomly orient it.
         # Set the solid actor and assign the container.
+        model = choice(self.model_list)
+        info = PHYSICS_INFO[model]
         o_id = Controller.get_unique_id()
-        trial_commands.extend(self.add_solid_object(record=model_record,
+        trial_commands.extend(self.add_solid_object(model_name=model,
+                                                    library="models_full.json",
+                                                    object_id=o_id,
                                                     position={"x": 0, "y": 2, "z": 0},
                                                     rotation={"x": uniform(-45.0, 45.0),
                                                               "y": uniform(-45.0, 45.0),
                                                               "z": uniform(-45.0, 45.0)},
-                                                    o_id=o_id,
-                                                    scale={"x": 0.5, "y": 0.5, "z": 0.5},
+                                                    scale_factor={"x": 0.5, "y": 0.5, "z": 0.5},
                                                     mass_scale=info.mass,
                                                     particle_spacing=0.05))
         # Reset physics time-step to a more normal value.
@@ -163,7 +150,6 @@ class Submerge(FlexDataset):
                                {"$type": "look_at",
                                 "object_id": self.pool_id,
                                 "use_centroid": True}])
-
         return trial_commands
 
     def get_per_frame_commands(self, frame: int, resp: List[bytes]) -> List[dict]:

@@ -1,11 +1,9 @@
-from typing import List, Tuple, Dict, Optional
+from typing import List, Tuple, Dict
 from abc import ABC
 import h5py
 import numpy as np
 from tdw.tdw_utils import TDWUtils
 from tdw.output_data import OutputData, Transforms, Images, CameraMatrices
-from tdw.controller import Controller
-from tdw.librarian import ModelRecord
 from tdw_physics.dataset import Dataset
 
 
@@ -15,34 +13,26 @@ class TransformsDataset(Dataset, ABC):
     See README for more info.
     """
 
-    def add_transforms_object(self, record: ModelRecord, position: Dict[str, float], rotation: Dict[str, float],
-                              o_id: Optional[int] = None) -> dict:
+    @staticmethod
+    def get_add_object(model_name: str, object_id: int, position: Dict[str, float] = None,
+                       rotation: Dict[str, float] = None, library: str = "") -> dict:
         """
-        This is a wrapper for `Controller.get_add_object()` and the `add_object` command.
-        This caches the ID of the object so that it can be easily cleaned up later.
+        Returns a valid add_object command.
 
-        :param record: The model record.
-        :param position: The initial position of the object.
-        :param rotation: The initial rotation of the object, in Euler angles.
-        :param o_id: The unique ID of the object. If None, a random ID is generated.
+        :param model_name: The name of the model.
+        :param position: The position of the model. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param rotation: The starting rotation of the model, in Euler angles. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param library: The path to the records file. If left empty, the default library will be selected. See `ModelLibrarian.get_library_filenames()` and `ModelLibrarian.get_default_library()`.
+        :param object_id: The ID of the new object.
 
-        :return: An `add_object` command.
+        :return An add_object command that the controller can then send.
         """
-
-        if o_id is None:
-            o_id: int = Controller.get_unique_id()
 
         # Log the static data.
-        self.object_ids = np.append(self.object_ids, o_id)
+        Dataset.OBJECT_IDS = np.append(Dataset.OBJECT_IDS, object_id)
 
-        return {"$type": "add_object",
-                "name": record.name,
-                "url": record.get_url(),
-                "scale_factor": record.scale_factor,
-                "position": position,
-                "rotation": rotation,
-                "category": record.wcategory,
-                "id": o_id}
+        return Dataset.get_add_object(model_name=model_name, object_id=object_id, position=position, rotation=rotation,
+                                      library=library)
 
     def _get_send_data_commands(self) -> List[dict]:
         return [{"$type": "send_transforms",
@@ -52,7 +42,7 @@ class TransformsDataset(Dataset, ABC):
 
     def _write_frame(self, frames_grp: h5py.Group, resp: List[bytes], frame_num: int) -> \
             Tuple[h5py.Group, h5py.Group, dict, bool]:
-        num_objects = len(self.object_ids)
+        num_objects = len(Dataset.OBJECT_IDS)
 
         # Create a group for this frame.
         frame = frames_grp.create_group(TDWUtils.zero_padding(frame_num, 4))
@@ -79,7 +69,7 @@ class TransformsDataset(Dataset, ABC):
                                                    "for": tr.get_forward(i),
                                                    "rot": tr.get_rotation(i)}})
                 # Add the Transforms data.
-                for o_id, i in zip(self.object_ids, range(num_objects)):
+                for o_id, i in zip(Dataset.OBJECT_IDS, range(num_objects)):
                     if o_id not in tr_dict:
                         continue
                     positions[i] = tr_dict[o_id]["pos"]

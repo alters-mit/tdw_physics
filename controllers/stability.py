@@ -3,10 +3,12 @@ from enum import Enum
 import random
 from typing import List, Dict, Tuple
 from weighted_collection import WeightedCollection
+from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
-from tdw.librarian import ModelRecord
+from tdw.librarian import ModelRecord, ModelLibrarian
+from tdw_physics.dataset import Dataset
 from tdw_physics.rigidbodies_dataset import RigidbodiesDataset
-from tdw_physics.util import MODEL_LIBRARIES, get_args
+from tdw_physics.util import get_args
 
 
 class _StackType(Enum):
@@ -40,7 +42,8 @@ class Stability(RigidbodiesDataset):
     BASE_STABLE: List[ModelRecord] = []
     # These objects are generally unstable.
     UNSTABLE: List[ModelRecord] = []
-    for record in MODEL_LIBRARIES["models_flex.json"].records:
+    Controller.MODEL_LIBRARIANS["models_flex.json"] = ModelLibrarian("models_flex.json")
+    for record in Controller.MODEL_LIBRARIANS["models_flex.json"].records:
         if record.name in ["cube", "cylinder", "pentagon"]:
             STABLE.append(record)
         elif record.name in ["bowl", "pipe", "torus"]:
@@ -151,7 +154,7 @@ class Stability(RigidbodiesDataset):
                           "force": {"x": random.uniform(-0.05, 0.05),
                                     "y": 0,
                                     "z": random.uniform(-0.05, 0.05)},
-                          "id": int(self.object_ids[0])}])
+                          "id": int(Dataset.OBJECT_IDS[0])}])
         return commands
 
     def get_per_frame_commands(self, resp: List[bytes], frame: int) -> List[dict]:
@@ -181,26 +184,25 @@ class Stability(RigidbodiesDataset):
 
         # Add the object with random physics values.
         commands = []
-        commands.extend(self.add_physics_object(record=record,
-                                                position={"x": random.uniform(-0.02, 0.02),
-                                                          "y": y,
-                                                          "z": random.uniform(-0.02, 0.02)},
-                                                rotation={"x": 0,
-                                                          "y": random.uniform(0, 360),
-                                                          "z": 0},
-                                                mass=random.uniform(2, 7),
-                                                dynamic_friction=random.uniform(0, 0.9),
-                                                static_friction=random.uniform(0, 0.9),
-                                                bounciness=random.uniform(0, 1),
-                                                o_id=o_id))
+        commands.extend(self.get_add_physics_object(model_name=record.name,
+                                                    library="models_flex.json",
+                                                    object_id=o_id,
+                                                    position={"x": random.uniform(-0.02, 0.02),
+                                                              "y": y,
+                                                              "z": random.uniform(-0.02, 0.02)},
+                                                    rotation={"x": 0,
+                                                              "y": random.uniform(0, 360),
+                                                              "z": 0},
+                                                    default_physics_values=False,
+                                                    mass=random.uniform(2, 7),
+                                                    dynamic_friction=random.uniform(0, 0.9),
+                                                    static_friction=random.uniform(0, 0.9),
+                                                    bounciness=random.uniform(0, 1),
+                                                    scale_factor={"x": scale, "y": scale, "z": scale}))
         # Set a random color.
-        # Scale the object.
-        commands.extend([{"$type": "set_color",
-                          "color": {"r": random.random(), "g": random.random(), "b": random.random(), "a": 1.0},
-                          "id": o_id},
-                         {"$type": "scale_object",
-                          "id": o_id,
-                          "scale_factor": {"x": scale, "y": scale, "z": scale}}])
+        commands.append({"$type": "set_color",
+                         "color": {"r": random.random(), "g": random.random(), "b": random.random(), "a": 1.0},
+                         "id": o_id})
         return commands
 
 

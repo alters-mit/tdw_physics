@@ -73,27 +73,27 @@ class Permanence(RigidbodiesDataset):
         commands = []
         # Add the ball.
         mass = random.uniform(1, 4)
-        commands.extend(self.add_physics_object(record=self._ball,
-                                                position={"x": random.uniform(-2.2, -2.6),
-                                                          "y": 0,
-                                                          "z": random.uniform(1.25, 1.45)},
-                                                rotation=TDWUtils.VECTOR3_ZERO,
-                                                o_id=self._ball_id,
-                                                mass=mass,
-                                                dynamic_friction=random.uniform(0, 0.1),
-                                                static_friction=random.uniform(0, 0.1),
-                                                bounciness=random.uniform(0, 0.1)))
+        commands.extend(self.get_add_physics_object(model_name=self._ball.name,
+                                                    library="models_flex.json",
+                                                    object_id=self._ball_id,
+                                                    position={"x": random.uniform(-2.2, -2.6),
+                                                              "y": 0,
+                                                              "z": random.uniform(1.25, 1.45)},
+                                                    rotation=TDWUtils.VECTOR3_ZERO,
+                                                    default_physics_values=False,
+                                                    mass=mass,
+                                                    dynamic_friction=random.uniform(0, 0.1),
+                                                    static_friction=random.uniform(0, 0.1),
+                                                    bounciness=random.uniform(0, 0.1),
+                                                    scale_factor={"x": self._BALL_SCALE,
+                                                                  "y": self._BALL_SCALE,
+                                                                  "z": self._BALL_SCALE}))
         # Set a random material.
         commands.extend(TDWUtils.set_visual_material(self, self._ball.substructure, self._ball_id,
                                                      random.choice(self._BALL_MATERIALS)))
-
-        # Set a random mass and color.
         # Rotate the object and apply a force twice (to give it a spin).
         # Set the force as a function of the mass.
-        commands.extend([{"$type": "scale_object",
-                          "scale_factor": {"x": self._BALL_SCALE, "y": self._BALL_SCALE, "z": self._BALL_SCALE},
-                          "id": self._ball_id},
-                         {"$type": "object_look_at_position",
+        commands.extend([{"$type": "object_look_at_position",
                           "position": {"x": 100, "y": 0, "z": 0},
                           "id": self._ball_id},
                          {"$type": "rotate_object_by",
@@ -112,25 +112,20 @@ class Permanence(RigidbodiesDataset):
                           "id": self._ball_id}])
         # Add an occluder.
         occ_record: ModelRecord = random.choice(self._occluders)
-        commands.extend(self.add_physics_object(record=occ_record,
-                                                position={"x": 0, "y": 0, "z": 0},
-                                                rotation={"x": 0, "y": random.uniform(0, 360), "z": 0},
-                                                o_id=self._occ_id,
-                                                mass=random.uniform(100, 150),
-                                                dynamic_friction=random.uniform(0.9, 1),
-                                                static_friction=random.uniform(0.9, 1),
-                                                bounciness=random.uniform(0, 0.1)))
         s_occ = TDWUtils.get_unit_scale(occ_record) * random.uniform(0.8, 1.2)
-        commands.extend([{"$type": "scale_object",
-                          "scale_factor": {"x": s_occ, "y": s_occ, "z": s_occ},
-                          "id": self._occ_id},
-                         {"$type": "set_object_collision_detection_mode",
-                          "mode": "continuous_speculative",
-                          "id": self._occ_id},
-                         {"$type": "set_kinematic_state",
-                          "id": self._occ_id,
-                          "is_kinematic": True,
-                          "use_gravity": False}])
+        commands.extend(self.get_add_physics_object(model_name=occ_record.name,
+                                                    library=str(Path("occluders.json").resolve()),
+                                                    object_id=self._occ_id,
+                                                    position={"x": 0, "y": 0, "z": 0},
+                                                    default_physics_values=False,
+                                                    rotation={"x": 0, "y": random.uniform(0, 360), "z": 0},
+                                                    mass=random.uniform(100, 150),
+                                                    dynamic_friction=random.uniform(0.9, 1),
+                                                    static_friction=random.uniform(0.9, 1),
+                                                    bounciness=random.uniform(0, 0.1),
+                                                    kinematic=True,
+                                                    gravity=False,
+                                                    scale_factor={"x": s_occ, "y": s_occ, "z": s_occ}))
         # Reset the avatar.
         occ_y = occ_record.bounds["top"]["y"] * s_occ
         commands.extend([{"$type": "teleport_avatar_to",
