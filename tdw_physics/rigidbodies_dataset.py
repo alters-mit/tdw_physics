@@ -30,7 +30,7 @@ class RigidbodiesDataset(TransformsDataset, ABC):
                                rotation: Dict[str, float] = None, library: str = "",
                                scale_factor: Dict[str, float] = None, kinematic: bool = False, gravity: bool = True,
                                default_physics_values: bool = True, mass: float = 1, dynamic_friction: float = 0.3,
-                               static_friction: float = 0.3, bounciness: float = 0.7) -> List[dict]:
+                               static_friction: float = 0.3, bounciness: float = 0.7, scale_mass: bool = True) -> List[dict]:
         """
         Add an object to the scene with physics values (mass, friction coefficients, etc.).
 
@@ -47,6 +47,7 @@ class RigidbodiesDataset(TransformsDataset, ABC):
         :param dynamic_friction: The [dynamic friction](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`.
         :param static_friction: The [static friction](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`.
         :param bounciness: The [bounciness](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`.
+        :param scale_mass: If True, the mass of the object will be scaled proportionally to the spatial scale.
 
         :return: A list of commands to add the object and apply physics values.
         """
@@ -70,7 +71,8 @@ class RigidbodiesDataset(TransformsDataset, ABC):
                                                             mass=mass,
                                                             dynamic_friction=dynamic_friction,
                                                             static_friction=static_friction,
-                                                            bounciness=bounciness)
+                                                            bounciness=bounciness,
+                                                            scale_mass=scale_mass)
         # Log the object ID.
         Dataset.OBJECT_IDS = np.append(Dataset.OBJECT_IDS, object_id)
         # Get the static data from the commands (these values might be automatically set).

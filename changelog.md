@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.1
+
+- Added `mass_scale` parameter to `RigidbodyDataset.get_add_physics_object()`
+
 ## 0.4.0
 
 - Refactored for TDW v1.9.0 (`tdw_physics` now requires TDW v1.9.0 or newer)
