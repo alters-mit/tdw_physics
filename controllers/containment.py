@@ -129,6 +129,7 @@ class Containment(RigidbodiesDataset):
                                                               "y": uniform(0, 360),
                                                               "z": uniform(0, 360)},
                                                     default_physics_values=False,
+                                                    scale_mass=False,
                                                     mass=uniform(0.1, 0.5),
                                                     dynamic_friction=uniform(0.1, 0.5),
                                                     static_friction=uniform(0.1, 0.5),

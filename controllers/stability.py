@@ -194,6 +194,7 @@ class Stability(RigidbodiesDataset):
                                                               "y": random.uniform(0, 360),
                                                               "z": 0},
                                                     default_physics_values=False,
+                                                    scale_mass=False,
                                                     mass=random.uniform(2, 7),
                                                     dynamic_friction=random.uniform(0, 0.9),
                                                     static_friction=random.uniform(0, 0.9),

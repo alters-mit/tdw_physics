@@ -1,5 +1,10 @@
 # Changelog
 
+### 0.4.2
+
+- Fixed: Mass is scaled when it shouldn't be in `bouncing.py`, `permanence.py`, `containment.py`, `shadow.py`, `stability.py`, and `toy_collisions.py`.
+- `tdw_physics` now requires TDW v1.11.3.0 or newer.
+
 ## 0.4.1
 
 - Added `mass_scale` parameter to `RigidbodyDataset.get_add_physics_object()`

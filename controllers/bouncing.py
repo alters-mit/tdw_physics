@@ -105,6 +105,7 @@ class Bouncing(RigidbodiesDataset):
                                                         dynamic_friction=random.uniform(0.1, 0.7),
                                                         static_friction=random.uniform(0.1, 0.7),
                                                         bounciness=random.uniform(0.7, 1),
+                                                        scale_mass=False,
                                                         scale_factor={"x": s, "y": s, "z": s}))
             # Point the object at a random floor position.
             commands.append({"$type": "object_look_at_position",

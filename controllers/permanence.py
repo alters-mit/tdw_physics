@@ -85,6 +85,7 @@ class Permanence(RigidbodiesDataset):
                                                     dynamic_friction=random.uniform(0, 0.1),
                                                     static_friction=random.uniform(0, 0.1),
                                                     bounciness=random.uniform(0, 0.1),
+                                                    scale_mass=False,
                                                     scale_factor={"x": self._BALL_SCALE,
                                                                   "y": self._BALL_SCALE,
                                                                   "z": self._BALL_SCALE}))

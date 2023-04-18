@@ -71,6 +71,7 @@ class ToysDataset(RigidbodiesDataset):
                                                         rotation={"x": 0, "y": random.uniform(-90, 90), "z": 0},
                                                         default_physics_values=False,
                                                         mass=random.uniform(1, 5),
+                                                        scale_mass=False,
                                                         dynamic_friction=random.uniform(0, 0.9),
                                                         static_friction=random.uniform(0, 0.9),
                                                         bounciness=random.uniform(0, 1),

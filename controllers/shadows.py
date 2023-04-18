@@ -111,6 +111,7 @@ class Shadows(RigidbodiesDataset):
                                                     rotation=TDWUtils.VECTOR3_ZERO,
                                                     default_physics_values=False,
                                                     mass=mass,
+                                                    scale_mass=False,
                                                     dynamic_friction=random.uniform(0, 0.1),
                                                     static_friction=random.uniform(0, 0.1),
                                                     bounciness=random.uniform(0, 0.1),

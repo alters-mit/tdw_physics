@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='tdw_physics',
-    version="0.4.1",
+    version="0.4.2",
     description='Generic structure to create physics datasets with TDW.',
     long_description="Required Python scripts for TDW.",
     url='https://github.com/alters-mit/tdw_physics',
@@ -21,5 +21,5 @@ setup(
     ],
     keywords='unity simulation tdw hdf5',
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),
-    install_requires=['tqdm', 'numpy', 'h5py', 'pillow', 'weighted-collection', 'tdw'],
+    install_requires=['tqdm', 'numpy', 'h5py', 'pillow', 'weighted-collection', 'tdw >= 1.11.13.0'],
 )
