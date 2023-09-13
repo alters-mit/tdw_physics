@@ -1,5 +1,9 @@
 # Changelog
 
+### 0.4.3
+
+- Fixed: tdw_physics doesn't work on Python 3.10 or newer.
+
 ### 0.4.2
 
 - Fixed: Mass is scaled when it shouldn't be in `bouncing.py`, `permanence.py`, `containment.py`, `shadow.py`, `stability.py`, and `toy_collisions.py`.

@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='tdw_physics',
-    version="0.4.2",
+    version="0.4.3",
     description='Generic structure to create physics datasets with TDW.',
     long_description="Required Python scripts for TDW.",
     url='https://github.com/alters-mit/tdw_physics',
@@ -17,7 +17,10 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8'
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11'
     ],
     keywords='unity simulation tdw hdf5',
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),

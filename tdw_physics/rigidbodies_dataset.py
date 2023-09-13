@@ -207,14 +207,14 @@ class RigidbodiesDataset(TransformsDataset, ABC):
                 collision_ids = np.append(collision_ids, [co.get_collider_id(), co.get_collidee_id()])
                 collision_relative_velocities = np.append(collision_relative_velocities, co.get_relative_velocity())
                 for i in range(co.get_num_contacts()):
-                    collision_contacts = np.append(collision_contacts, (co.get_contact_normal(i),
-                                                                        co.get_contact_point(i)))
+                    collision_contacts = np.append(collision_contacts, np.array([co.get_contact_normal(i),
+                                                                                 co.get_contact_point(i)]))
             elif r_id == "enco":
                 en = EnvironmentCollision(r)
                 env_collision_ids = np.append(env_collision_ids, en.get_object_id())
                 for i in range(en.get_num_contacts()):
-                    env_collision_contacts = np.append(env_collision_contacts, (en.get_contact_normal(i),
-                                                                                en.get_contact_point(i)))
+                    env_collision_contacts = np.append(env_collision_contacts, np.array([en.get_contact_normal(i),
+                                                                                         en.get_contact_point(i)]))
         objs.create_dataset("velocities", data=velocities.reshape(num_objects, 3), compression="gzip")
         objs.create_dataset("angular_velocities", data=angular_velocities.reshape(num_objects, 3), compression="gzip")
         collisions = frame.create_group("collisions")
